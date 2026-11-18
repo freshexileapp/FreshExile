@@ -321,7 +321,7 @@ public sealed class TreeOverlayController : IDisposable
             if (_vm.Tree is { } tree && _vm.Plan is { Order.Count: > 0 } plan)
             {
                 if (!ReferenceEquals(tree, _edgesTree)) { _edges = TreeAligner.EdgesByNode(tree); _edgesTree = tree; }
-                var taken = aligner!.DetectTaken(tree, plan, _edges!, res, w, h);
+                var taken = Steady(aligner!.DetectTaken(tree, plan, _edges!, res, w, h), tree);
                 if (taken.Count > 0)
                 {
                     Log.Write($"taken on screen: {string.Join(", ", taken.Select(id => tree.Nodes[id].Name))}");
@@ -334,7 +334,7 @@ public sealed class TreeOverlayController : IDisposable
             {
                 if (!ReferenceEquals(tree3, _edgesTree)) { _edges = TreeAligner.EdgesByNode(tree3); _edgesTree = tree3; }
                 var lost = aligner!.DetectGone(tree3, live, plan3.Have, _edges!, res, w, h);
-                var sureLost = lost.Where(_lostSeen.Contains).ToList();
+                var sureLost = Steady(lost.Where(_lostSeen.Contains), tree3).ToList();
                 _lostSeen = lost;
                 if (sureLost.Count > 0)
                 {
@@ -348,7 +348,7 @@ public sealed class TreeOverlayController : IDisposable
             {
                 if (!ReferenceEquals(tree4, _edgesTree)) { _edges = TreeAligner.EdgesByNode(tree4); _edgesTree = tree4; }
                 var back = aligner!.DetectBack(tree4, refunded, plan4.Have, _edges!, res, w, h);
-                var sureBack = back.Where(_backSeen.Contains).ToList();
+                var sureBack = Steady(back.Where(_backSeen.Contains), tree4).ToList();
                 _backSeen = back;
                 if (sureBack.Count > 0)
                 {
@@ -362,7 +362,7 @@ public sealed class TreeOverlayController : IDisposable
             {
                 if (!ReferenceEquals(tree2, _edgesTree)) { _edges = TreeAligner.EdgesByNode(tree2); _edgesTree = tree2; }
                 var gone = aligner!.DetectRefunded(tree2, plan2, _edges!, res, w, h);
-                var sure = gone.Where(_refundSeen.Contains).ToList();
+                var sure = Steady(gone.Where(_refundSeen.Contains), tree2).ToList();
                 _refundSeen = gone;
                 if (sure.Count > 0)
                 {
@@ -468,12 +468,42 @@ public sealed class TreeOverlayController : IDisposable
 
     AlignResult? _shownView;
 
+    /// <summary>
+    /// A node whose link sits between "gold" and "not gold" can be read taken, then not, frame after frame: its ring or
+    /// red mark blinks. Three changes within 10 s and the node is left as the plan has it until the tree closes.
+    /// </summary>
+    readonly Dictionary<int, List<DateTime>> _flips = new();
+    readonly HashSet<int> _frozen = new();
+
+    HashSet<int> Steady(IEnumerable<int> changed, PassiveTree tree)
+    {
+        var now = DateTime.UtcNow;
+        var keep = new HashSet<int>();
+        foreach (var id in changed)
+        {
+            if (_frozen.Contains(id)) continue;
+            if (!_flips.TryGetValue(id, out var times)) _flips[id] = times = new();
+            times.RemoveAll(t => now - t > TimeSpan.FromSeconds(10));
+            times.Add(now);
+            if (times.Count >= 3)
+            {
+                _frozen.Add(id);
+                Log.Write($"unstable on screen, left as planned: {(tree.Nodes.TryGetValue(id, out var n) ? n.Name : id.ToString())}");
+                continue;
+            }
+            keep.Add(id);
+        }
+        return keep;
+    }
+
     void Close()
     {
         if (!_open) return;
         Log.Write("tree closed -> overlay hidden");
         _open = false;
         _shownView = null;
+        _flips.Clear();
+        _frozen.Clear();
         _misses = 0;
         _overlay?.Hide();
         _header?.Hide();

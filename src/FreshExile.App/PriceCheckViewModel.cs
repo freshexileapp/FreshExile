@@ -26,6 +26,11 @@ public sealed class PriceFilterVm(PriceFilter f) : Observable
     public bool IsHidden { get => _hidden; set => Set(ref _hidden, value); }
     public string Label => Filter.Label;
     public bool Searchable => Filter.Searchable;
+
+    /// <summary>An anointment ("Allocates Toxic Strikes"): its three oils, the game's icons, the name on hover.</summary>
+    IReadOnlyList<OilVm> _oils = [];
+    public IReadOnlyList<OilVm> Oils { get => _oils; set { if (Set(ref _oils, value)) Raise(nameof(HasOils)); } }
+    public bool HasOils => _oils.Count > 0;
     public string? TierText => Filter.Tier is int t ? $"T{t}" : null;
     public bool HasTier => Filter.Tier != null;
     public string? RangeText => Filter.Range is { } r ? $"({r})" : null;

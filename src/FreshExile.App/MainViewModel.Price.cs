@@ -63,9 +63,29 @@ public sealed partial class MainViewModel
         {
             TopMods = CurrentTopMods(),
         };
+        AddOils(vm);
         vm.InheritCooldown(_priceReadyAt);
         vm.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(PriceCheckViewModel.CooldownLeft)) _priceReadyAt = vm.ReadyAt; };
         return (vm, null);
+    }
+
+    /// <summary>An anointment line gets its three oils (the tree's recipe), their icons loaded from the icon cache.</summary>
+    void AddOils(PriceCheckViewModel vm)
+    {
+        if (Tree is not { } tree) return;
+        const string Prefix = "Allocates ";
+        foreach (var f in vm.Filters)
+        {
+            if (!f.Label.StartsWith(Prefix, StringComparison.Ordinal) || tree.AnointRecipe(f.Label[Prefix.Length..].Trim()) is not { } recipe) continue;
+            var oils = recipe.Select(OilVm.Of).ToList();
+            f.Oils = oils;
+            foreach (var oil in oils) _ = LoadOilAsync(oil);
+        }
+    }
+
+    async Task LoadOilAsync(OilVm oil)
+    {
+        if (await ItemIcons.FileFor(_http, oil.IconUrl) is { } path && LoadPicture(path) is { } pic) oil.Icon = pic;
     }
 
     /// <summary>
