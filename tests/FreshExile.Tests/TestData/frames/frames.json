@@ -1,0 +1,107 @@
+{
+  "allocated": [
+    465,
+    3469,
+    4944,
+    6042,
+    6538,
+    9373,
+    10017,
+    10141,
+    14156,
+    16236,
+    16602,
+    17788,
+    18703,
+    19401,
+    23438,
+    23471,
+    25178,
+    25766,
+    29379,
+    32802,
+    38344,
+    38579,
+    38662,
+    41016,
+    41137,
+    42133,
+    42533,
+    43787,
+    45035,
+    49978,
+    50338,
+    50690,
+    51101,
+    52230,
+    53002,
+    54142,
+    56589,
+    57240,
+    61306,
+    63453,
+    63620,
+    64265,
+    64709,
+    65033
+  ],
+  "titleFrame": "open-zoom-0175.png",
+  "frames": [
+    {
+      "file": "closed-synthetic-desktop.png",
+      "open": false,
+      "scale": null,
+      "offsetX": null,
+      "offsetY": null
+    },
+    {
+      "file": "closed-town-vendor.png",
+      "open": false,
+      "scale": null,
+      "offsetX": null,
+      "offsetY": null
+    },
+    {
+      "file": "closed-inventory-tooltip.png",
+      "open": false,
+      "scale": null,
+      "offsetX": null,
+      "offsetY": null
+    },
+    {
+      "file": "closed-field-loot.png",
+      "open": false,
+      "scale": null,
+      "offsetX": null,
+      "offsetY": null
+    },
+    {
+      "file": "closed-field-effects.png",
+      "open": false,
+      "scale": null,
+      "offsetX": null,
+      "offsetY": null
+    },
+    {
+      "file": "open-zoom-0175.png",
+      "open": true,
+      "scale": 0.17479777716866016,
+      "offsetX": -36,
+      "offsetY": 260
+    },
+    {
+      "file": "open-zoom-0244.png",
+      "open": true,
+      "scale": 0.2435543946773026,
+      "offsetX": -354,
+      "offsetY": 172
+    },
+    {
+      "file": "open-zoom-0312.png",
+      "open": true,
+      "scale": 0.31239375673010955,
+      "offsetX": -670,
+      "offsetY": 80
+    }
+  ]
+}

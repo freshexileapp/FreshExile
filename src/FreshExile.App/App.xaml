@@ -1,0 +1,15 @@
+<Application x:Class="FreshExile.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:FreshExile.App"
+             ShutdownMode="OnMainWindowClose">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <local:BoolToVisibility x:Key="Vis"/>
+            <local:BoolToVisibility x:Key="NotVis" Invert="True"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

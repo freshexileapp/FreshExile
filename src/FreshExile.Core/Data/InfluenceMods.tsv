@@ -1,0 +1,543 @@
+i	Eater	#% chance to Aggravate Bleeding on targets you Hit with Attacks
+i	Exarch	#% chance to Avoid being Frozen
+i	Exarch	#% chance to Avoid being Ignited
+i	Eater	#% chance to Avoid being Poisoned
+i	Exarch	#% chance to Avoid being Shocked
+i	Exarch	#% chance to Avoid being Stunned
+i	Eater	#% chance to Avoid Bleeding
+i	Eater	#% chance to Avoid Elemental Ailments
+i	Eater	#% Chance to Block Attack Damage
+i	Eater	#% Chance to Block Spell Damage
+i	Exarch	#% chance to Extinguish Enemies on Hit
+i	Eater	#% chance to Freeze
+i	Eater	#% chance to Hinder Enemies on Hit with Spells
+i	Eater	#% chance to Ignite
+i	Eater	#% chance to Impale Enemies on Hit with Attacks
+i	Exarch	#% chance to Intimidate Enemies for # seconds on Hit
+i	Eater	#% chance to Poison on Hit
+i	Eater	#% chance to Shock
+i	Exarch	#% chance to Unnerve Enemies for # seconds on Hit
+i	Exarch	#% increased Action Speed
+i	Exarch	#% increased Arctic Armour Buff Effect
+i	Exarch	#% increased Area of Effect
+i	Eater	#% increased Armour
+i	Eater	#% increased Armour from Equipped Helmet and Gloves
+i	Eater	#% increased Attack Damage
+i	Exarch	#% increased Attack Speed
+i	Eater	#% increased Battlemage's Cry Buff Effect
+i	Eater	#% increased Blind Effect
+i	Exarch	#% increased Brand Attachment range
+i	Exarch	#% increased Cast Speed
+i	Exarch	#% increased Chaos Damage
+i	Exarch	#% increased Cold Damage
+i	Exarch	#% increased Conductivity Curse Effect
+i	Eater	#% increased Cooldown Recovery Rate
+i	Eater	#% increased Cooldown Recovery Rate of Travel Skills
+i	Exarch	#% increased Critical Strike Chance for Attacks
+i	Eater	#% increased Damage per # Dexterity
+i	Eater	#% increased Damage per # Intelligence
+i	Eater	#% increased Damage per # Strength
+i	Exarch	#% increased Damage per Endurance Charge
+i	Exarch	#% increased Damage per Frenzy Charge
+i	Exarch	#% increased Damage per Power Charge
+i	Exarch	#% increased Despair Curse Effect
+i	Eater	#% increased Duration of Ailments on Enemies
+i	Eater	#% increased Effect of Arcane Surge on you
+i	Exarch	#% increased Effect of Buffs granted by your Golems
+i	Exarch	#% increased effect of Non-Curse Auras from your Skills
+i	Eater	#% increased Effect of Non-Damaging Ailments
+i	Exarch	#% increased effect of Offerings
+i	Exarch	#% increased Effect of Onslaught on you
+i	Exarch	#% increased Effect of the Buff granted by your Carrion Golems
+i	Exarch	#% increased Effect of the Buff granted by your Chaos Golems
+i	Exarch	#% increased Effect of the Buff granted by your Flame Golems
+i	Exarch	#% increased Effect of the Buff granted by your Ice Golems
+i	Exarch	#% increased Effect of the Buff granted by your Lightning Golems
+i	Exarch	#% increased Effect of the Buff granted by your Stone Golems
+i	Exarch	#% increased Effect of your Curses
+i	Eater	#% increased Effect of your Marks
+i	Exarch	#% increased Elemental Weakness Curse Effect
+i	Eater	#% increased Elusive Effect
+i	Eater	#% increased Energy Shield Recharge Rate
+i	Eater	#% increased Energy Shield Recovery rate
+i	Exarch	#% increased Enfeeble Curse Effect
+i	Eater	#% increased Evasion Rating
+i	Eater	#% increased Evasion Rating from Equipped Helmet and Boots
+i	Exarch	#% increased Fire Damage
+i	Exarch	#% increased Flammability Curse Effect
+i	Exarch	#% increased Frostbite Curse Effect
+i	Eater	#% increased Global Accuracy Rating
+i	Exarch	#% increased Global Physical Damage
+i	Eater	#% increased Life Recovery rate
+i	Eater	#% increased Life Regeneration rate
+i	Exarch	#% increased Lightning Damage
+i	Exarch	#% increased Mana Cost Efficiency
+i	Eater	#% increased Mana Recovery rate
+i	Eater	#% increased Mana Regeneration Rate
+i	Eater	#% increased Mana Regeneration Rate per Power Charge
+i	Eater	#% increased Mana Reservation Efficiency of Skills
+i	Eater	#% increased maximum Energy Shield
+i	Eater	#% increased Maximum Energy Shield from Equipped Gloves and Boots
+i	Exarch	#% increased Mine Throwing Speed
+i	Exarch	#% increased Movement Speed
+i	Exarch	#% increased Punishment Curse Effect
+i	Eater	#% increased Rallying Cry Buff Effect
+i	Eater	#% increased Skill Effect Duration
+i	Exarch	#% increased Spell Critical Strike Chance
+i	Eater	#% increased Spell Damage
+i	Eater	#% increased Stun Threshold
+i	Exarch	#% increased Temporal Chains Curse Effect
+i	Exarch	#% increased Totem Placement speed
+i	Exarch	#% increased Trap Throwing Speed
+i	Exarch	#% increased Vulnerability Curse Effect
+i	Exarch	#% increased Warcry Buff Effect
+i	Eater	#% increased Warcry Speed
+i	Eater	#% less Damage Taken per # Dexterity
+i	Eater	#% less Damage Taken per # Intelligence
+i	Eater	#% less Damage Taken per # Strength
+i	Eater	#% of Chaos Damage Leeched as Life
+i	Eater	#% of Cold Damage Leeched as Life
+i	Exarch	#% of Cold Damage taken Recouped as Life
+i	Exarch	#% of Damage is taken from Mana before Life
+i	Exarch	#% of Damage taken Recouped as Life
+i	Eater	#% of Fire Damage Leeched as Life
+i	Exarch	#% of Fire Damage taken Recouped as Life
+i	Eater	#% of Lightning Damage Leeched as Life
+i	Exarch	#% of Lightning Damage taken Recouped as Life
+i	Eater	#% of Physical Damage Converted to Chaos Damage
+i	Eater	#% of Physical Damage Converted to Cold Damage
+i	Eater	#% of Physical Damage Converted to Fire Damage
+i	Eater	#% of Physical Damage Converted to Lightning Damage
+i	Eater	#% of Physical Damage from Hits taken as Chaos Damage
+i	Eater	#% of Physical Damage from Hits taken as Cold Damage
+i	Eater	#% of Physical Damage from Hits taken as Fire Damage
+i	Eater	#% of Physical Damage from Hits taken as Lightning Damage
+i	Eater	#% of Physical Damage Leeched as Life
+i	Exarch	#% of Physical Damage taken Recouped as Life
+i	Eater	#% reduced Effect of Shock on you
+i	Exarch	#% reduced Enemy Stun Threshold
+i	Eater	#% reduced Freeze Duration on you
+i	Eater	#% reduced Ignite Duration on you
+i	Exarch	#% reduced Mana Cost of Attacks
+i	Eater	+# to Accuracy Rating per Frenzy Charge
+i	Eater	+#% chance to Suppress Spell Damage
+i	Eater	+#% to all Elemental Resistances
+i	Exarch	+#% to all maximum Resistances
+i	Exarch	+#% to Chaos Damage over Time Multiplier
+i	Exarch	+#% to Chaos Resistance
+i	Exarch	+#% to Cold Damage over Time Multiplier
+i	Exarch	+#% to Cold Resistance
+i	Exarch	+#% to Critical Strike Multiplier for Attack Damage
+i	Exarch	+#% to Critical Strike Multiplier for Spell Damage
+i	Exarch	+#% to Fire Damage over Time Multiplier
+i	Exarch	+#% to Fire Resistance
+i	Exarch	+#% to Lightning Resistance
+i	Exarch	+#% to maximum Chaos Resistance
+i	Exarch	+#% to maximum Cold Resistance
+i	Exarch	+#% to maximum Fire Resistance
+i	Exarch	+#% to maximum Lightning Resistance
+i	Exarch	+#% to Physical Damage over Time Multiplier
+i	Exarch	Adds # to # Chaos Damage to Attacks
+i	Exarch	Adds # to # Chaos Damage to Spells
+i	Exarch	Adds # to # Cold Damage to Attacks
+i	Exarch	Adds # to # Cold Damage to Spells
+i	Exarch	Adds # to # Fire Damage to Attacks
+i	Exarch	Adds # to # Fire Damage to Spells
+i	Exarch	Adds # to # Lightning Damage to Attacks
+i	Exarch	Adds # to # Lightning Damage to Spells
+i	Exarch	Adds # to # Physical Damage to Attacks
+i	Exarch	Adds # to # Physical Damage to Spells
+i	Eater	Anger has #% increased Aura Effect
+i	Eater	Attacks always Maim on Hit
+i	Eater	Attacks Exerted by Ancestral Cry deal #% increased Damage
+i	Eater	Attacks Exerted by Seismic Cry deal #% increased Damage
+i	Eater	Attacks have #% chance to cause Bleeding
+i	Eater	Attacks have #% chance to Maim on Hit
+i	Eater	Bleeding you inflict deals Damage #% Faster
+i	Exarch	Bone Offering has #% increased Effect
+i	Eater	Damage Penetrates #% Cold Resistance
+i	Eater	Damage Penetrates #% Fire Resistance
+i	Eater	Damage Penetrates #% Lightning Resistance
+i	Eater	Determination has #% increased Aura Effect
+i	Eater	Discipline has #% increased Aura Effect
+i	Exarch	Drops Brittle Ground while moving, lasting # seconds
+i	Exarch	Drops Sapped Ground while moving, lasting # seconds
+i	Exarch	Drops Scorched Ground while moving, lasting # seconds
+i	Eater	Enduring Cry has #% increased Cooldown Recovery Rate
+i	Eater	Enemies you've Hit Recently have #% reduced Life Regeneration rate
+i	Eater	Exerted Attacks deal #% increased Damage
+i	Exarch	Flasks applied to you have #% increased Effect
+i	Exarch	Flasks gain # Charges every # seconds
+i	Exarch	Flasks gain a Charge every # seconds
+i	Exarch	Flesh and Stone has #% increased Area of Effect
+i	Exarch	Flesh Offering has #% increased Effect
+i	Exarch	Freezes you inflict spread to other Enemies within # metres
+i	Exarch	Gain # Rage on Attack Hit
+i	Exarch	Gain # Rage on Hit with Attacks
+i	Eater	Gain #% of Physical Damage as Extra Chaos Damage
+i	Eater	Gain #% of Physical Damage as Extra Cold Damage
+i	Eater	Gain #% of Physical Damage as Extra Fire Damage
+i	Eater	Gain #% of Physical Damage as Extra Lightning Damage
+i	Exarch	Gain a Frenzy Charge every # seconds
+i	Exarch	Gain a Power Charge every # seconds
+i	Exarch	Gain an Endurance Charge every # seconds
+i	Eater	General's Cry has #% increased Cooldown Recovery Rate
+i	Eater	Grace has #% increased Aura Effect
+i	Eater	Haste has #% increased Aura Effect
+i	Eater	Hatred has #% increased Aura Effect
+i	Exarch	Herald of Agony has #% increased Buff Effect
+i	Exarch	Herald of Ash has #% increased Buff Effect
+i	Exarch	Herald of Ice has #% increased Buff Effect
+i	Exarch	Herald of Purity has #% increased Buff Effect
+i	Exarch	Herald of Thunder has #% increased Buff Effect
+i	Eater	Hinder Enemies on Hit with Spells
+i	Eater	Hits have #% chance to ignore Enemy Physical Damage Reduction
+i	Eater	Ignites you inflict deal Damage #% Faster
+i	Exarch	Ignites you inflict spread to other Enemies within # metres
+i	Eater	Infernal Cry has #% increased Area of Effect
+i	Eater	Inflict Cold Exposure on Hit, applying -#% to Cold Resistance
+i	Eater	Inflict Fire Exposure on Hit, applying -#% to Fire Resistance
+i	Eater	Inflict Lightning Exposure on Hit, applying -#% to Lightning Resistance
+i	Exarch	Intimidate Enemies for # seconds on Hit
+i	Eater	Intimidating Cry has #% increased Cooldown Recovery Rate
+i	Eater	Malevolence has #% increased Aura Effect
+i	Eater	Melee Hits have #% chance to Fortify
+i	Exarch	Minions deal #% increased Damage
+i	Exarch	Minions have #% increased maximum Life
+i	Exarch	Minions have #% increased Movement Speed
+i	Eater	Minions prevent +#% of Reflected Damage they would take
+i	Exarch	Non-Vaal Strike Skills target # additional nearby Enemies
+i	Exarch	Non-Vaal Strike Skills target # additional nearby Enemy
+i	Eater	Poisons you inflict deal Damage #% Faster
+i	Eater	Prevent +#% of Reflected Damage
+i	Eater	Pride has #% increased Aura Effect
+i	Eater	Projectiles Pierce # additional Targets
+i	Eater	Projectiles Pierce an additional Target
+i	Eater	Purity of Elements has #% increased Aura Effect
+i	Eater	Purity of Fire has #% increased Aura Effect
+i	Eater	Purity of Ice has #% increased Aura Effect
+i	Eater	Purity of Lightning has #% increased Aura Effect
+i	Eater	Regenerate #% of Life per second per Endurance Charge
+i	Exarch	Shocks you inflict spread to other Enemies within # metres
+i	Exarch	Spirit Offering has #% increased Effect
+i	Exarch	Tempest Shield has #% increased Buff Effect
+i	Exarch	Unnerve Enemies for # seconds on Hit
+i	Eater	Withered you Inflict expires #% slower
+i	Eater	Wrath has #% increased Aura Effect
+i	Eater	Zealotry has #% increased Aura Effect
+e	Hunter,Shaper	-# Physical Damage taken from Attack Hits
+e	Hunter	-#% to Chaos Resistance
+e	Redeemer	-#% to Cold Resistance
+e	Warlord	-#% to Fire Resistance
+e	Crusader	-#% to Lightning Resistance
+e	Elder,Redeemer	# to # Added Cold Damage per Frenzy Charge
+e	Warlord	# to # added Fire Damage against Burning Enemies
+e	Warlord	# to # Fire Damage per Endurance Charge
+e	Crusader	# to # Lightning Damage per Power Charge
+e	Hunter	#% chance to Avoid being Poisoned
+e	Elder,Warlord	#% chance to Avoid being Stunned
+e	Hunter	#% chance to Avoid Bleeding
+e	Warlord	#% chance to Avoid Cold Damage from Hits
+e	Warlord	#% chance to Avoid Fire Damage from Hits
+e	Warlord	#% chance to Avoid Lightning Damage from Hits
+e	Redeemer	#% chance to Avoid Physical Damage from Hits
+e	Redeemer,Shaper	#% chance to avoid Projectiles
+e	Elder,Redeemer,Shaper	#% chance to Blind Enemies on Hit with Attacks
+e	Elder,Warlord	#% Chance to Block Attack Damage
+e	Elder	#% chance to cause Bleeding on Hit
+e	Crusader,Shaper	#% chance to Chill Attackers for # seconds on Block
+e	Shaper	#% chance to deal Double Damage
+e	Redeemer	#% chance to deal Double Damage if you have Stunned an Enemy Recently
+e	Elder	#% chance to Defend with #% of Armour
+e	Redeemer	#% chance to double Stun Duration
+e	Elder,Shaper	#% chance to Freeze, Shock and Ignite
+e	Redeemer	#% chance to gain a Frenzy Charge on Hit
+e	Elder,Redeemer,Shaper	#% chance to gain a Frenzy Charge on Kill
+e	Shaper	#% chance to gain a Frenzy Charge when you Block
+e	Elder	#% chance to gain a Frenzy Charge when you Hit a Rare or Unique Enemy
+e	Crusader,Shaper	#% chance to gain a Power Charge on Critical Strike
+e	Redeemer,Shaper	#% chance to gain a Power Charge on Kill
+e	Elder	#% chance to gain a Power Charge when you Block
+e	Hunter,Shaper	#% chance to gain a Power, Frenzy or Endurance Charge on Kill
+e	Shaper	#% chance to gain an Endurance Charge on Critical Strike
+e	Elder,Redeemer	#% chance to gain an Endurance Charge on Kill
+e	Elder	#% chance to gain an Endurance Charge when you Block
+e	Elder	#% chance to gain an Endurance Charge when you Hit a Bleeding Enemy
+e	Shaper	#% chance to gain an Endurance Charge when you Taunt an Enemy
+e	Crusader	#% chance to Gain Arcane Surge when you deal a Critical Strike
+e	Redeemer	#% chance to gain Elusive on Critical Strike
+e	Redeemer,Shaper	#% chance to gain Onslaught for # seconds on Kill
+e	Elder,Warlord	#% chance to gain Phasing for # seconds on Kill
+e	Elder,Warlord	#% chance to gain Unholy Might for # seconds on Kill
+e	Crusader,Elder,Shaper	#% chance to Ignore Stuns while Casting
+e	Hunter	#% chance to Impale Enemies on Hit with Attacks
+e	Redeemer	#% chance to inflict Cold Exposure on Hit
+e	Warlord	#% chance to inflict Fire Exposure on Hit
+e	Crusader	#% chance to inflict Lightning Exposure on Hit
+e	Hunter	#% chance to Intimidate Enemies for # seconds on Hit
+e	Shaper,Warlord	#% chance to Maim on Hit
+e	Crusader,Shaper	#% chance to Shock Attackers for # seconds on Block
+e	Crusader	#% chance to Taunt Enemies on Hit with Attacks
+e	Hunter	#% chance to Unnerve Enemies for # seconds on Hit
+e	Shaper	#% increased Accuracy Rating per Frenzy Charge
+e	Elder,Shaper	#% increased Area Damage
+e	Crusader,Elder	#% increased Area of Effect if you have Stunned an Enemy Recently
+e	Hunter	#% increased Area of Effect if you've Killed Recently
+e	Elder	#% increased Area of Effect per # Strength
+e	Elder	#% increased Area of Effect per Endurance Charge
+e	Elder	#% increased Attack and Cast Speed
+e	Elder,Redeemer	#% increased Attack Speed during any Flask Effect
+e	Redeemer	#% increased Attack Speed if you've been Hit Recently
+e	Elder,Warlord	#% increased Attack Speed if you've Killed Recently
+e	Crusader	#% increased Attack Speed while Fortified
+e	Elder,Hunter,Shaper	#% increased Attributes
+e	Warlord	#% increased Bleeding Duration
+e	Hunter,Shaper	#% increased Cast Speed during any Flask Effect
+e	Redeemer,Shaper	#% increased Cast Speed if you've Killed Recently
+e	Hunter	#% increased Chaos Damage
+e	Hunter	#% increased Chaos Damage over Time
+e	Crusader,Shaper	#% increased Cooldown Recovery Rate
+e	Shaper	#% increased Critical Strike Chance against Blinded Enemies
+e	Elder	#% increased Critical Strike Chance against Poisoned Enemies
+e	Crusader	#% increased Critical Strike Chance against Shocked Enemies
+e	Crusader,Shaper	#% increased Critical Strike Chance if you have Killed Recently
+e	Shaper	#% increased Critical Strike Chance if you haven't dealt a Critical Strike Recently
+e	Warlord	#% increased Damage
+e	Warlord	#% increased Damage over Time
+e	Redeemer,Shaper	#% increased Damage per # Dexterity
+e	Crusader,Shaper	#% increased Damage per # Intelligence
+e	Elder,Warlord	#% increased Damage per # Strength
+e	Crusader,Elder	#% increased Damage per #% Chance to Block Attack Damage
+e	Warlord	#% increased Damage per Endurance Charge
+e	Redeemer	#% increased Damage per Frenzy Charge
+e	Crusader,Elder	#% increased Damage per Power Charge
+e	Crusader	#% increased Damage while Leeching
+e	Elder,Warlord	#% increased Damage with Bleeding
+e	Redeemer	#% increased Damage with Hits against Chilled Enemies
+e	Elder,Hunter,Shaper	#% increased Damage with Poison
+e	Elder,Hunter,Redeemer	#% increased Dexterity
+e	Hunter	#% increased Duration of Ailments on Enemies
+e	Shaper	#% increased Effect of Cold Ailments
+e	Redeemer,Shaper	#% increased Effect of Lightning Ailments
+e	Redeemer	#% increased effect of Non-Curse Auras from your Skills
+e	Redeemer	#% increased Effect of Non-Damaging Ailments
+e	Hunter	#% increased effect of Offerings
+e	Shaper,Warlord	#% increased Elemental Damage
+e	Shaper	#% increased Elemental Damage taken
+e	Shaper	#% increased Energy Shield from Equipped Body Armour
+e	Crusader,Shaper	#% increased Energy Shield Recovery rate
+e	Hunter,Shaper	#% increased Experience gain
+e	Redeemer	#% increased Freeze Duration on Enemies
+e	Elder	#% increased Global Physical Damage
+e	Elder	#% increased Ignite Duration on Enemies
+e	Crusader	#% increased Impale Effect
+e	Crusader,Hunter,Shaper	#% increased Intelligence
+e	Elder,Warlord	#% increased Life Recovery rate
+e	Redeemer,Shaper	#% increased Mana Recovery rate
+e	Elder,Hunter	#% increased maximum Life
+e	Crusader,Elder,Shaper	#% increased maximum Mana
+e	Crusader	#% increased Maximum total Energy Shield Recovery per second from Leech
+e	Crusader,Elder	#% increased Maximum total Life Recovery per second from Leech
+e	Elder,Warlord	#% increased Melee Damage
+e	Elder,Warlord	#% increased Melee Damage during any Flask Effect
+e	Shaper	#% increased Mine Damage
+e	Hunter,Shaper	#% increased Movement Speed during any Flask Effect
+e	Redeemer	#% increased Movement Speed if you've Hit an Enemy Recently
+e	Elder,Warlord	#% increased Physical Attack Damage while Dual Wielding
+e	Warlord	#% increased Physical Damage over Time
+e	Elder	#% increased Physical Damage taken
+e	Redeemer,Warlord	#% increased Projectile Attack Damage
+e	Elder,Redeemer	#% increased Projectile Attack Damage during any Flask Effect
+e	Elder	#% increased Projectile Attack Damage per # Accuracy Rating
+e	Elder,Shaper	#% increased Projectile Damage
+e	Elder	#% increased Skill Effect Duration
+e	Crusader,Shaper	#% increased Spell Damage during any Flask Effect
+e	Elder,Hunter	#% increased Spell Damage per # Dexterity
+e	Elder,Hunter	#% increased Spell Damage per # Intelligence
+e	Elder,Hunter	#% increased Spell Damage per # Strength
+e	Elder,Hunter,Warlord	#% increased Strength
+e	Crusader	#% increased total Recovery per second from Life Leech
+e	Elder,Shaper	#% increased Totem Damage
+e	Elder,Shaper	#% increased Totem Placement speed
+e	Shaper	#% increased Trap Damage
+e	Shaper	#% increased Trap Throwing Speed
+e	Crusader	#% increased Warcry Buff Effect
+e	Hunter	#% increased Warcry Cooldown Recovery Rate
+e	Redeemer	#% increased Warcry Speed
+e	Hunter	#% of Chaos Damage Leeched as Life
+e	Redeemer	#% of Cold Damage Leeched as Energy Shield
+e	Redeemer,Shaper	#% of Cold Damage Leeched as Life
+e	Warlord	#% of Fire Damage Leeched as Energy Shield
+e	Elder,Warlord	#% of Fire Damage Leeched as Life
+e	Crusader	#% of Lightning Damage Leeched as Energy Shield
+e	Crusader,Shaper	#% of Lightning Damage Leeched as Life
+e	Elder,Hunter	#% of Physical Damage Converted to Chaos Damage
+e	Crusader	#% of Physical Damage Converted to Cold Damage
+e	Crusader	#% of Physical Damage Converted to Fire Damage
+e	Crusader	#% of Physical Damage Converted to Lightning Damage
+e	Hunter	#% of Physical Damage from Hits taken as Chaos Damage
+e	Redeemer,Shaper	#% of Physical Damage from Hits taken as Cold Damage
+e	Elder,Warlord	#% of Physical Damage from Hits taken as Fire Damage
+e	Crusader,Shaper	#% of Physical Damage from Hits taken as Lightning Damage
+e	Elder,Hunter	#% of Physical Damage Leeched as Life
+e	Hunter	#% reduced Damage taken from Damage Over Time
+e	Crusader,Shaper	#% reduced Effect of Curses on you
+e	Crusader	#% reduced Effect of Shock on you
+e	Crusader	#% reduced Freeze Duration on you
+e	Crusader	#% reduced Ignite Duration on you
+e	Elder	+# Armour if you've Blocked Recently
+e	Elder,Warlord	+# metres to Melee Strike Range
+e	Elder,Warlord	+# metres to Melee Strike Range if you have Killed Recently
+e	Elder,Warlord	+# metres to Weapon Range
+e	Elder	+# to Level of all Raise Spectre Gems
+e	Shaper,Warlord	+# to Level of Socketed Skill Gems
+e	Elder,Redeemer	+# to Level of Socketed Support Gems
+e	Elder	+# to maximum number of Raised Zombies
+e	Elder	+# to maximum number of Skeletons
+e	Shaper	+# to maximum number of Summoned Totems
+e	Warlord	+# to Minimum Endurance Charges
+e	Redeemer	+# to Minimum Frenzy Charges
+e	Crusader	+# to Minimum Power Charges
+e	Elder	+#% Chance to Block Attack Damage if there are at least # Enemies within # metres
+e	Warlord	+#% Chance to Block Attack Damage if you have Blocked Attack Damage Recently
+e	Redeemer	+#% Chance to Block Attack Damage if you were Damaged by a Hit Recently
+e	Elder	+#% Chance to Block Attack Damage per Endurance Charge
+e	Redeemer,Shaper	+#% Chance to Block Attack Damage while Dual Wielding
+e	Crusader	+#% Chance to Block Spell Damage if you have Blocked Spell Damage Recently
+e	Redeemer	+#% Chance to Block Spell Damage if you were Damaged by a Hit Recently
+e	Hunter	+#% to Chaos Damage over Time Multiplier with Attack Skills
+e	Elder	+#% to Chaos Resistance during any Flask Effect
+e	Shaper,Warlord	+#% to Critical Strike Multiplier against Enemies that are on Full Life
+e	Shaper	+#% to Critical Strike Multiplier if you have Blocked Recently
+e	Elder	+#% to Critical Strike Multiplier if you haven't dealt a Critical Strike Recently
+e	Warlord	+#% to Critical Strike Multiplier if you've Killed Recently
+e	Elder	+#% to Damage over Time Multiplier for Bleeding from Hits with this Weapon
+e	Elder	+#% to Damage over Time Multiplier for Poison inflicted with this Weapon
+e	Hunter	+#% to Fire Damage over Time Multiplier with Attack Skills
+e	Shaper	+#% to Item Rarity from Slain Unique Enemies
+e	Shaper,Warlord	+#% to maximum Chance to Block Attack Damage
+e	Crusader	+#% to maximum Chance to Block Spell Damage
+e	Hunter	+#% to Physical Damage over Time Multiplier with Attack Skills
+e	Hunter,Shaper	+#% to Spell Critical Strike Chance
+e	Elder,Hunter	Adds # to # Chaos Damage to Spells
+e	Redeemer,Shaper	Adds # to # Cold Damage against Chilled or Frozen Enemies
+e	Redeemer	Adds # to # Cold Damage if you've dealt a Critical Strike Recently
+e	Hunter,Shaper	Adds # to # Cold Damage to Attacks with this Weapon per # Dexterity
+e	Elder,Warlord	Adds # to # Fire Damage against Ignited Enemies
+e	Redeemer	Adds # to # Fire Damage if you've dealt a Critical Strike Recently
+e	Hunter,Shaper	Adds # to # Fire Damage to Attacks with this Weapon per # Strength
+e	Crusader,Shaper	Adds # to # Lightning Damage against Shocked Enemies
+e	Redeemer	Adds # to # Lightning Damage if you've dealt a Critical Strike Recently
+e	Hunter,Shaper	Adds # to # Lightning Damage to Attacks with this Weapon per # Intelligence
+e	Redeemer	Adds # to # Physical Damage if you've dealt a Critical Strike Recently
+e	Elder,Hunter	Adds # to # Physical Damage to Spells
+e	Warlord	Anger has #% increased Aura Effect
+e	Elder,Hunter	Attacks have +#% to Critical Strike Chance
+e	Hunter	Attacks with this Weapon Penetrate #% Chaos Resistance
+e	Redeemer	Attacks with this Weapon Penetrate #% Cold Resistance
+e	Hunter	Attacks with this Weapon Penetrate #% Elemental Resistances
+e	Warlord	Attacks with this Weapon Penetrate #% Fire Resistance
+e	Crusader	Attacks with this Weapon Penetrate #% Lightning Resistance
+e	Redeemer	Auras from your Skills grant #% increased Damage to you and Allies
+e	Elder,Warlord	Culling Strike
+e	Crusader	Curse Enemies with Conductivity on Hit
+e	Hunter	Curse Enemies with Despair on Hit
+e	Hunter	Curse Enemies with Elemental Weakness on Hit
+e	Warlord	Curse Enemies with Flammability on Hit
+e	Redeemer	Curse Enemies with Frostbite on Hit
+e	Warlord	Curse Enemies with Vulnerability on Hit
+e	Redeemer	Damage Penetrates #% Cold Resistance
+e	Hunter,Shaper	Damage Penetrates #% Elemental Resistances
+e	Warlord	Damage Penetrates #% Fire Resistance
+e	Crusader	Damage Penetrates #% Lightning Resistance
+e	Warlord	Determination has #% increased Mana Reservation Efficiency
+e	Crusader	Discipline has #% increased Mana Reservation Efficiency
+e	Shaper	Enemies have #% reduced Evasion if you have Hit them Recently
+e	Redeemer,Shaper	Enemies Killed with Attack or Spell Hits Explode, dealing #% of their Life as Fire Damage
+e	Redeemer	Enemies within # metres are Blinded
+e	Hunter	Enemies within # metres have -#% to Chaos Resistance
+e	Redeemer	Enemies within # metres have -#% to Cold Resistance
+e	Warlord	Enemies within # metres have -#% to Fire Resistance
+e	Crusader	Enemies within # metres have -#% to Lightning Resistance
+e	Shaper	Enemies within # metres take #% increased Elemental Damage
+e	Elder	Enemies within # metres take #% increased Physical Damage
+e	Crusader	Enemies you Kill have a #% chance to Explode, dealing a tenth of their maximum Life as Physical Damage
+e	Hunter	Every # seconds, Regenerate #% of Life over one second
+e	Hunter	Exerted Attacks deal #% increased Damage
+e	Warlord	Gain # Endurance Charge every second if you've been Hit Recently
+e	Elder	Gain # Life per Blinded Enemy Hit with this Weapon
+e	Crusader,Shaper	Gain # Life per Enemy Hit with Spells
+e	Elder,Hunter,Shaper	Gain # Mana per Enemy Hit with Attacks
+e	Shaper	Gain # Mana per Enemy Hit with Spells
+e	Shaper	Gain #% of Elemental Damage as Extra Chaos Damage
+e	Elder	Gain #% of Non-Chaos Damage as extra Chaos Damage
+e	Redeemer,Shaper	Gain #% of Physical Damage as Extra Cold Damage
+e	Crusader,Shaper	Gain #% of Physical Damage as Extra Damage of a random Element
+e	Elder,Shaper,Warlord	Gain #% of Physical Damage as Extra Fire Damage
+e	Crusader,Shaper	Gain #% of Physical Damage as Extra Lightning Damage
+e	Hunter	Gain a Flask Charge when you deal a Critical Strike
+e	Shaper	Gain a Power Charge after Spending a total of # Mana
+e	Warlord	Gain Accuracy Rating equal to your Strength
+e	Elder	Gain an Endurance Charge every # seconds while Stationary
+e	Hunter,Shaper	Gain an Endurance, Frenzy or Power charge when you Block
+e	Redeemer	Grace has #% increased Mana Reservation Efficiency
+e	Redeemer	Hatred has #% increased Aura Effect
+e	Redeemer	Hatred has #% increased Mana Reservation Efficiency
+e	Hunter	Hits have #% chance to ignore Enemy Physical Damage Reduction
+e	Shaper	Hits with Melee Movement Skills have #% chance to Fortify
+e	Hunter	Hits with this Weapon have #% chance to ignore Enemy Physical Damage Reduction
+e	Elder	Hits with this Weapon have Culling Strike against Bleeding Enemies
+e	Hunter	Ignites you inflict deal Damage #% Faster
+e	Hunter,Shaper	Items and Gems have #% reduced Attribute Requirements
+e	Hunter	Malevolence has #% increased Aura Effect
+e	Hunter	Malevolence has #% increased Mana Reservation Efficiency
+e	Crusader,Elder,Shaper	Melee Hits which Stun have #% chance to Fortify
+e	Hunter	Poisons you inflict deal Damage #% Faster
+e	Redeemer	Prevent +#% of Suppressed Spell Damage
+e	Warlord	Pride has #% increased Mana Reservation Efficiency
+e	Crusader,Shaper	Projectiles deal #% increased Damage with Hits and Ailments for each Enemy Pierced
+e	Crusader	Projectiles from Socketed Gems Fork
+e	Hunter,Shaper	Projectiles Pierce # additional Targets
+e	Elder,Hunter,Shaper	Projectiles Pierce an additional Target
+e	Warlord	Purity of Fire has #% increased Mana Reservation Efficiency
+e	Redeemer	Purity of Ice has #% increased Mana Reservation Efficiency
+e	Crusader	Purity of Lightning has #% increased Mana Reservation Efficiency
+e	Crusader,Shaper	Recover #% of Energy Shield on Kill
+e	Crusader,Shaper	Recover #% of Energy Shield when you Block
+e	Elder,Warlord	Recover #% of Life on Kill
+e	Shaper,Warlord	Recover #% of Life when you Block
+e	Redeemer,Shaper	Recover #% of Mana on Kill
+e	Redeemer,Shaper	Recover #% of your maximum Mana when you Block
+e	Redeemer,Shaper	Regenerate # Mana per second
+e	Warlord	Regenerate #% of Mana per second
+e	Redeemer,Shaper	Remove Chill and Freeze when you use a Flask
+e	Elder,Warlord	Remove Ignite and Burning when you use a Flask
+e	Crusader,Shaper	Remove Shock when you use a Flask
+e	Elder	Removes Bleeding when you use a Warcry
+e	Elder,Warlord	Skills fire an additional Projectile
+e	Redeemer	Skills supported by Unleash have +# to maximum number of Seals
+e	Warlord	Socketed Attacks have -# to Total Mana Cost
+e	Elder	Socketed Attacks have +#% to Critical Strike Chance
+e	Elder	Socketed Attacks have +#% to Critical Strike Multiplier
+e	Crusader,Shaper	Socketed Gems Chain # additional times
+e	Hunter,Shaper	Socketed Gems have #% increased Reservation Efficiency
+e	Shaper	Socketed Movement Skills Cost no Mana
+e	Shaper	Socketed Skills deal #% more Attack Damage
+e	Shaper	Socketed Skills deal #% more Spell Damage
+e	Shaper	Socketed Spells have +#% to Critical Strike Chance
+e	Shaper	Socketed Spells have +#% to Critical Strike Multiplier
+e	Redeemer	Spells have a #% chance to deal Double Damage
+e	Warlord	Warcry Skills have #% increased Area of Effect
+e	Elder,Warlord	When you Kill a Rare Monster, #% chance to gain one of its Modifiers for # seconds
+e	Crusader	Wrath has #% increased Aura Effect
+e	Crusader	Wrath has #% increased Mana Reservation Efficiency
+e	Hunter,Redeemer,Shaper	You and your Minions prevent +#% of Reflected Elemental Damage
+e	Elder,Hunter,Warlord	You and your Minions prevent +#% of Reflected Physical Damage
+e	Hunter	You can apply an additional Curse
+e	Hunter	You have Chilling Conflux for # seconds every # seconds
+e	Crusader	You have Consecrated Ground around you while stationary
+e	Hunter	You have Igniting Conflux for # seconds every # seconds
+e	Hunter	You have Shocking Conflux for # seconds every # seconds
+e	Hunter	You have Tailwind if you have dealt a Critical Strike Recently
+e	Crusader	Zealotry has #% increased Aura Effect
+e	Crusader	Zealotry has #% increased Mana Reservation Efficiency

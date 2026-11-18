@@ -1,0 +1,49 @@
+affliction_area_damage	Assert Dominance|Expansive Might|Magnifier|Powerful Assault|Titanic Swings|Towering Threat|Vast Power
+affliction_armour	Battle-Hardened|Blacksmith|Dragon Hunter|Enduring Composure|Heart of Iron|Militarism|Prismatic Carapace|Second Skin|Stubborn Student
+affliction_attack_damage_	Calamitous|Devastator|Drive the Destruction|Feed the Fury|Fuel the Fight|Heavy Hitter|Martial Prowess|Smite the Weak|Vicious Skewering
+affliction_attack_damage_while_dual_wielding_	Calamitous|Combat Rhythm|Deadly Repartee|Devastator|Drive the Destruction|Feed the Fury|Fuel the Fight|Heavy Hitter|Hit and Run|Insatiable Killer|Mage Bane|Martial Momentum|Martial Prowess|Quick and Deadly|Smite the Weak|Vicious Skewering
+affliction_attack_damage_while_holding_a_shield	Advance Guard|Calamitous|Devastator|Drive the Destruction|Feed the Fury|Fuel the Fight|Gladiator's Fortitude|Heavy Hitter|Martial Prowess|Precise Retaliation|Prodigious Defence|Riot Queller|Smite the Weak|Strike Leader|Veteran Defender|Vicious Skewering
+affliction_axe_and_sword_damage	Aggressive Defence|Bloodscent|Calamitous|Devastator|Drive the Destruction|Feed the Fury|Fuel the Fight|Heavy Hitter|Martial Prowess|Run Through|Smite the Weak|Vicious Skewering|Wound Aggravation
+affliction_bow_damage	Arcing Shot|Broadside|Calamitous|Devastator|Drive the Destruction|Feed the Fury|Fuel the Fight|Heavy Hitter|Martial Prowess|Smite the Weak|Tempered Arrowheads|Vicious Skewering
+affliction_brand_damage	Brand Loyalty|Chip Away|Grand Design|Holy Conquest|Remarkable|Seeker Runes
+affliction_chance_to_block	Enduring Ward|Fiery Aegis|Flexible Sentry|Mage Bane|Mage Hunter|Mystical Ward|One with the Shield|Powerful Ward|Prodigious Defence|Riot Queller|Rote Reinforcement|Second Skin|Stoic Focus|Strike Leader|Vicious Guard
+affliction_chance_to_dodge_attacks	Aerialist|Darting Movements|Elegant Form|Hit and Run|Untouchable
+affliction_channelling_skill_damage	Enduring Focus|Hex Breaker|Precise Focus|Stoic Focus|Unwavering Focus|Vital Focus
+affliction_chaos_damage	Dark Ideation|Grim Oath|Overwhelming Malice|Touch of Cruelty|Unholy Grace|Unspeakable Gifts|Unwaveringly Evil|Wicked Pall
+affliction_chaos_damage_over_time_multiplier	Brewed for Potency|Brush with Death|Circling Oblivion|Dark Ideation|Eldritch Inspiration|Eternal Suffering|Exposure Therapy|Flow of Life|Haemorrhage|Low Tolerance|Septic Spells|Steady Torment|Student of Decay|Unwaveringly Evil|Vile Reinvigoration|Wasting Affliction|Wicked Pall
+affliction_chaos_resistance	Antivenom|Blessed|Born of Chaos|Exposure Therapy|Rot-Resistant|Student of Decay
+affliction_cold_damage	Blanketed Snow|Blast-Freeze|Cold to the Core|Cold-Blooded Killer|Corrosive Elements|Deep Chill|Disorienting Display|Doryani's Lesson|Inspired Oppression|Prismatic Heart|Sadist|Snowstorm|Stormrider|Widespread Destruction
+affliction_cold_damage_over_time_multiplier	Blast-Freeze|Brewed for Potency|Brush with Death|Chilling Presence|Circling Oblivion|Cold-Blooded Killer|Deep Chill|Exposure Therapy|Flow of Life|Haemorrhage|Vile Reinvigoration|Wasting Affliction
+affliction_cold_resistance	Alchemist|Antifreeze|Flexible Sentry|Hibernator|Prismatic Carapace|Prismatic Dance|Prismatic Heart|Pure Guile|Winter Prowler
+affliction_critical_chance	Basics of Pain|Eye of the Storm|Haemorrhage|Magnifier|Overwhelming Malice|Precise Retaliation|Pressure Points|Provocateur|Quick Getaway|Savage Response|Skullbreaker
+affliction_curse_effect_small	Doedre's Apathy|Doedre's Gluttony|Evil Eye|Hound's Mark|Master of the Maelstrom|Victim Maker
+affliction_dagger_and_claw_damage	Aggressive Defence|Calamitous|Devastator|Disease Vector|Drive the Destruction|Fan of Blades|Feed the Fury|Fuel the Fight|Heavy Hitter|Martial Prowess|Smite the Weak|Vicious Skewering|Wind-up
+affliction_damage_over_time_multiplier	Brewed for Potency|Brush with Death|Circling Oblivion|Exposure Therapy|Flow of Life|Haemorrhage|Student of Decay|Vile Reinvigoration|Wasting Affliction
+affliction_damage_while_you_have_a_herald	Agent of Destruction|Dark Messenger|Empowered Envoy|Endbringer|Heraldry|Lasting Impression|Purposeful Harbinger|Self-Fulfilling Prophecy
+affliction_damage_with_two_handed_melee_weapons	Battlefield Dominator|Brutal Infamy|Calamitous|Devastator|Drive the Destruction|Fearsome Warrior|Feed the Fury|Fuel the Fight|Graceful Execution|Heavy Hitter|Martial Mastery|Martial Prowess|Smite the Weak|Surefooted Striker|Titanic Swings|Vicious Skewering
+affliction_effect_of_non-damaging_ailments	Astonishing Affliction|Blast-Freeze|Chilling Presence|Cold Conduction|Deep Chill|Eye of the Storm|Inspired Oppression|Overshock|Stormrider
+affliction_elemental_damage	Corrosive Elements|Disorienting Display|Doryani's Lesson|Inspired Oppression|Prismatic Heart|Sadist|Widespread Destruction
+affliction_evasion	Battle-Hardened|Natural Vigour|Prismatic Dance|Readiness|Shifting Shadow|Untouchable
+affliction_fire_damage	Burning Bright|Corrosive Elements|Cremator|Disorienting Display|Doryani's Lesson|Master of Fire|Prismatic Heart|Sadist|Smoking Remains|Widespread Destruction
+affliction_fire_damage_over_time_multiplier	Blowback|Brewed for Potency|Brush with Death|Burning Bright|Circling Oblivion|Cooked Alive|Cremator|Exposure Therapy|Eye of the Storm|Fan the Flames|Flow of Life|Haemorrhage|Master of Fire|Smoking Remains|Student of Decay|Vile Reinvigoration|Wasting Affliction|Wrapped in Flame
+affliction_fire_resistance	Blacksmith|Dragon Hunter|Fire Attunement|Flexible Sentry|Molten One's Mark|Non-Flammable|Prismatic Carapace|Prismatic Dance|Prismatic Heart|Pure Might
+affliction_flask_duration	Brewed for Potency|Distilled Perfection|Fasting|Liquid Inspiration|Mender's Wellspring|Numbing Elixir|Peak Vigour|Special Reserve|Spiked Concoction
+affliction_life_and_mana_recovery_from_flasks	Distilled Perfection|Fasting|Mender's Wellspring|Numbing Elixir|Special Reserve|Spiked Concoction
+affliction_lightning_damage	Corrosive Elements|Disorienting Display|Doryani's Lesson|Inspired Oppression|Overshock|Paralysis|Prismatic Heart|Sadist|Scintillating Idea|Snowstorm|Storm Drinker|Stormrider|Thunderstruck|Widespread Destruction
+affliction_lightning_resistance	Capacitor|Flexible Sentry|Insulated|Prismatic Carapace|Prismatic Dance|Prismatic Heart|Pure Aptitude|Sage|Wizardry
+affliction_mace_and_staff_damage	Aggressive Defence|Calamitous|Devastator|Drive the Destruction|Expansive Might|Feed the Fury|Fuel the Fight|Heavy Hitter|Martial Prowess|Overlord|Smite the Weak|Vicious Skewering|Weight Advantage
+affliction_maximum_energy_shield	Brush with Death|Conservation of Energy|Energy From Naught|Mystical Ward|Savour the Moment|Spring Back|Sublime Sensation|Vile Reinvigoration|Will Shaper
+affliction_maximum_life	Adrenaline|Blessed|Brush with Death|Careful Handling|Feast of Flesh|Fettle|Flow of Life|Gladiator's Fortitude|Heart of Iron|Holistic Health|Natural Vigour|Peace Amidst Chaos|Peak Vigour|Rote Reinforcement|Sage|Sublime Sensation|Surging Vitality|Towering Threat|Vicious Guard|Wall of Muscle
+affliction_maximum_mana	Blessed|Careful Handling|Clarity of Purpose|Daring Ideas|Eldritch Inspiration|Genius|Holistic Health|Improvisor|Liquid Inspiration|Mindfulness|Openness|Sage|Scintillating Idea|Stubborn Student|Will Shaper|Wizardry
+affliction_minion_damage	Call to the Slaughter|Feasting Fiends|Primordial Bond|Raze and Pillage|Renewal|Rotten Claws|Skeletal Atrophy|Vicious Bite
+affliction_minion_damage_while_you_have_a_herald	Cult-Leader|Disciples|Endbringer|Heraldry|Invigorating Portents|Lasting Impression|Pure Agony|Purposeful Harbinger
+affliction_minion_life	Blessed Rebirth|Bodyguards|Dread March|Feasting Fiends|Hulking Corpses|Life from Death|Renewal
+affliction_physical_damage	Battle-Hardened|Force Multiplier|Furious Assault|Grim Oath|Iron Breaker|Master the Fundamentals
+affliction_physical_damage_over_time_multiplier	Blood Artist|Brewed for Potency|Brush with Death|Circling Oblivion|Compound Injury|Disorienting Wounds|Exposure Therapy|Flow of Life|Haemorrhage|Phlebotomist|Rend|Steady Torment|Student of Decay|Vile Reinvigoration|Vivid Hues|Wasting Affliction|Wound Aggravation
+affliction_projectile_damage	Aerodynamics|Eye to Eye|Follow-Through|Repeater|Shrieking Bolts|Streamlined
+affliction_reservation_efficiency_small	Master of Command|Pure Aptitude|Pure Guile|Pure Might|Purposeful Harbinger|Replenishing Presence
+affliction_spell_damage	Ancestral Inspiration|Arcane Heroism|Burden Projection|Conjured Wall|Essence Rush|Mage Hunter|Practiced Caster|Sap Psyche|Seal Mender|Thaumophage
+affliction_totem_damage	Ancestral Echo|Ancestral Guidance|Ancestral Inspiration|Ancestral Might|Ancestral Preservation|Ancestral Reach|Sleepless Sentries|Snaring Spirits
+affliction_trap_and_mine_damage	Arcane Pyrotechnics|Careful Handling|Expendability|Expert Sabotage|Guerilla Tactics|Set and Forget|Surprise Sabotage
+affliction_wand_damage	Calamitous|Devastator|Drive the Destruction|Explosive Force|Feed the Fury|Fuel the Fight|Heavy Hitter|Martial Prowess|Opportunistic Fusilade|Smite the Weak|Storm's Hand|Vicious Skewering
+affliction_warcry_buff_effect	Cry Wolf|Haunting Shout|Holy Word|Lead By Example|Mob Mentality|Provocateur|Rattling Bellow|Warning Call

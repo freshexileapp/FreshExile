@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FreshExile.App/FreshExile.App.csproj" />
+    <Project Path="src/FreshExile.Core/FreshExile.Core.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FreshExile.Tests/FreshExile.Tests.csproj" />
+  </Folder>
+</Solution>

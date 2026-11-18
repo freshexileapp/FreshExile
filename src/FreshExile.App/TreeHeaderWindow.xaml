@@ -1,0 +1,92 @@
+<Window x:Class="FreshExile.App.TreeHeaderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:l="clr-namespace:FreshExile.App"
+        xmlns:local="clr-namespace:FreshExile.App"
+        Title="{l:T 'Fresh Exile · шапка'}" SizeToContent="WidthAndHeight"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent" Topmost="True"
+        ShowInTaskbar="False" ShowActivated="False" ResizeMode="NoResize"
+        FontFamily="{StaticResource UiFont}" Foreground="{StaticResource Text}"
+        UseLayoutRounding="True">
+
+  <StackPanel>
+    <!-- outline as two filled layers: even corners (a stroked rounded border fades on the arcs) -->
+    <Border Background="{StaticResource LineStrong}" CornerRadius="8" Padding="1" UseLayoutRounding="False" HorizontalAlignment="Left">
+    <Border Background="{StaticResource PanelBrush}" CornerRadius="7" Padding="9,5,5,5" MouseLeftButtonDown="Drag_MouseDown">
+        <StackPanel UseLayoutRounding="True" Orientation="Horizontal">
+            <Image Source="logo.png" Width="26" Height="26" VerticalAlignment="Center" IsHitTestVisible="False"
+                   RenderOptions.BitmapScalingMode="HighQuality"/>
+
+            <StackPanel Margin="10,0,6,0" VerticalAlignment="Center" IsHitTestVisible="False">
+                <TextBlock Text="{Binding StageNumberText}" Style="{StaticResource Caption}" FontSize="9.5"/>
+                <TextBlock Text="{Binding StageTitle}" FontFamily="{StaticResource DisplayFont}" FontSize="15" FontWeight="SemiBold"/>
+            </StackPanel>
+            <Button Style="{StaticResource IconButton}" Width="26" Height="26" Content="&#xE76B;" Command="{Binding PrevCommand}" ToolTip="{Binding TipPrev}"/>
+            <Button Style="{StaticResource IconButton}" Width="26" Height="26" Content="&#xE76C;" Command="{Binding NextCommand}" ToolTip="{Binding TipNext}"/>
+
+            <Border Width="1" Height="26" Background="{StaticResource Line}" Margin="8,0" VerticalAlignment="Center"/>
+
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" IsHitTestVisible="False">
+                <Ellipse Width="11" Height="11" Stroke="White" StrokeThickness="1.6" VerticalAlignment="Center"/>
+                <TextBlock Margin="7,0,0,0" FontSize="12.5" VerticalAlignment="Center">
+                    <Run Text="{l:T 'Взять'}"/> <Run Text="{Binding PointsToTake, Mode=OneWay}" FontWeight="SemiBold"/>
+                </TextBlock>
+                <TextBlock Text="{Binding AlignStatus}" Foreground="{StaticResource Text3}" FontSize="11.5" Margin="14,0,6,0" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <Button Style="{StaticResource IconButton}" Width="26" Height="26" Content="&#xE72C;" FontSize="11"
+                    ToolTip="{l:T 'Откалибровать масштаб заново (если менял зум дерева)'}" Click="Recalibrate_Click"/>
+            <Button Style="{StaticResource IconButton}" Width="26" Height="26" Content="&#xE8BB;" FontSize="9.5"
+                    ToolTip="{l:T 'Выключить наложение (включается в настройках)'}" Click="Off_Click"/>
+        </StackPanel>
+    </Border>
+    </Border>
+
+    <!-- what each numbered node on the tree gives -->
+    <Border Background="{StaticResource Line}" CornerRadius="8" Padding="1" UseLayoutRounding="False" Margin="0,6,0,0" MaxWidth="460" HorizontalAlignment="Left"
+            Visibility="{Binding HasPlanSteps, Converter={StaticResource Vis}}">
+    <Border Background="{StaticResource PanelBrush}" CornerRadius="7" Padding="5,7,7,5">
+        <StackPanel UseLayoutRounding="True">
+            <TextBlock Text="{l:T 'ЧТО ДАЮТ УЗЛЫ · НАВЕДИ — ПОКАЖУ НА ДЕРЕВЕ'}" Style="{StaticResource Caption}" FontSize="9.5" Margin="4,0,0,6"
+                       IsHitTestVisible="False"/>
+            <ItemsControl ItemsSource="{Binding PlanSteps}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border x:Name="row" CornerRadius="5" Padding="4,2,4,2" Margin="0,0,0,2" Background="Transparent"
+                                MouseEnter="Step_MouseEnter" MouseLeave="Step_MouseLeave">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <!-- same badge as on the tree -->
+                            <local:StepBadge Text="{Binding Step}" IsFocus="{Binding IsNext}" VerticalAlignment="Top" Margin="0,0,8,0"/>
+                            <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="12" LineHeight="16">
+                                <Run x:Name="name" Text="{Binding Name, Mode=OneWay}" FontWeight="SemiBold"/><Run Text=" — " Foreground="{StaticResource Text3}"/><Run Text="{Binding Effect, Mode=OneWay}" Foreground="{StaticResource Text2}"/>
+                            </TextBlock>
+                        </Grid>
+                        </Border>
+                        <DataTemplate.Triggers>
+                            <!-- the first point to spend: the same colour as its ring on the tree -->
+                            <DataTrigger Binding="{Binding IsNext}" Value="True">
+                                <Setter TargetName="row" Property="Background" Value="#1A3DD6FF"/>
+                            </DataTrigger>
+                            <Trigger SourceName="row" Property="IsMouseOver" Value="True">
+                                <Setter TargetName="row" Property="Background" Value="#333DD6FF"/>
+                            </Trigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <!-- fold / unfold: the next five points are what matters while playing -->
+            <TextBlock Text="{Binding MoreSteps}" Foreground="{StaticResource Text2}" FontSize="11" Margin="30,1,0,2" Cursor="Hand"
+                       TextDecorations="Underline" Visibility="{Binding HasMoreSteps, Converter={StaticResource Vis}}">
+                <TextBlock.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding ToggleStepsCommand}"/>
+                </TextBlock.InputBindings>
+            </TextBlock>
+        </StackPanel>
+    </Border>
+    </Border>
+  </StackPanel>
+</Window>

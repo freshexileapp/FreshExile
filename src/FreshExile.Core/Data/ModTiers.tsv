@@ -1,0 +1,3013 @@
+T	axe,two_hand_weapon,twohand,weapon,default,sceptre,one_hand_weapon,onehand,not_for_sale,experimental_base,wand_can_roll_caster_modifiers,wand,ranged,int_armour,gloves,armour,amulet,dex_int_armour,dex_int_shield,shield,boots,dagger,attack_dagger,ring,sword,mace,str_armour,top_tier_base_item_type,helmet,focus,str_int_armour,str_int_shield,rapier,talisman,atlas_base_type,glovesatlasstrint,dex_armour,body_armour,quiveratlas1,quiver,bow,abyss_jewel_special,abyss_jewel,str_dex_armour,claw,str_dex_shield,staff,dex_shield,maraketh,amuletatlas1,trade_market_legacy_item,helmetatlas1,ring_can_roll_minion_modifiers,focus_can_roll_minion_modifiers,str_shield,weapon_can_roll_minion_modifiers,attack_staff,ringatlas4,belt,jewel,not_dex,not_str,intjewel,warstaff,wandatlas1,not_int,strjewel,beltatlas2,glovesatlasint,bootsatlasdexint,abyss_jewel_summoner,small_staff,demigods,str_dex_int_armour,glovesatlasdex,abyss_jewel_caster,ringatlas5,expansion_jewel_large,amuletatlas2,expansion_jewel_medium,abyss_jewel_melee,ringatlas2,ward_armour,amuletatlas3,abyss_jewel_ranged,expansion_jewel_small,glovesatlasstr,ringatlas1,twostonering,bootsatlas2,bootsatlas3,bootsatlas1,unset_ring,beltatlas1,ringatlas3,dexjewel
+B	Abyssal Axe	item	0,1,2,3,4
+B	Abyssal Sceptre	item	5,5,6,7,3,4
+B	Accumulator Wand	item	8,9,10,11,12,6,7,3,4
+B	Aetherwind Gloves	item	13,8,14,15,4
+B	Agate Amulet	item	16,4
+B	Alder Spiked Shield	item	17,18,19,15,4
+B	Alloyed Spiked Shield	item	17,18,19,15,4
+B	Alternating Sceptre	item	8,9,5,6,7,3,4
+B	Amber Amulet	item	16,4
+B	Ambush Boots	item	17,20,15,4
+B	Ambush Mitts	item	17,14,15,4
+B	Ambusher	item	21,22,6,7,3,4
+B	Amethyst Ring	item	23,4
+B	Anarchic Spiritblade	item	8,9,24,6,7,3,4
+B	Ancestral Club	item	25,6,7,3,4
+B	Ancient Gauntlets	item	26,14,15,4
+B	Ancient Greaves	item	26,20,15,4
+B	Ancient Mask	item	17,27,8,28,15,4
+B	Ancient Spirit Shield	item	13,29,19,15,4
+B	Ancient Sword	item	24,6,7,3,4
+B	Angelic Kite Shield	item	30,31,19,15,4
+B	Antique Gauntlets	item	26,14,15,4
+B	Antique Greaves	item	26,20,15,4
+B	Antique Rapier	item	32,24,6,7,3,4
+B	Ape Talisman	item	33,16,4
+B	Apex Cleaver	item	8,9,0,1,2,3,4
+B	Apex Rapier	item	32,24,6,7,3,4
+B	Apothecary's Gloves	item	8,34,35,30,14,15,4
+B	Apprentice Gloves	item	36,8,14,15,4
+B	Arcane Vestment	item	13,27,8,37,15,4
+B	Arcanist Gloves	item	13,27,14,15,4
+B	Arcanist Slippers	item	13,27,20,15,4
+B	Archdemon Crown	item	30,8,28,15,4
+B	Archon Kite Shield	item	30,31,27,19,15,4
+B	Arena Plate	item	26,37,15,4
+B	Arming Axe	item	0,6,7,3,4
+B	Artillery Quiver	item	8,34,38,39,4
+B	Ashscale Talisman	item	33,16,4
+B	Assassin Bow	item	27,40,12,1,2,3,4
+B	Assassin's Boots	item	17,27,20,15,4
+B	Assassin's Garb	item	36,27,37,15,4
+B	Assassin's Mitts	item	17,27,14,15,4
+B	Assembled Eye Jewel	abyss_jewel	8,41,42,4
+B	Assembler Wand	item	8,9,10,11,12,6,7,3,4
+B	Astral Leather	item	36,27,8,37,15,4
+B	Astral Plate	item	26,27,37,15,4
+B	Astrolabe Amulet	item	8,9,16,4
+B	Atonement Mask	item	43,8,28,15,4
+B	Auric Mace	item	27,25,6,7,3,4
+B	Aventail Helmet	item	30,28,15,4
+B	Avian Slippers	item	8,20,15,4
+B	Avian Twins Talisman	item	33,16,4
+B	Avian Twins Talisman	item	33,16,4
+B	Avian Twins Talisman	item	33,16,4
+B	Avian Twins Talisman	item	33,16,4
+B	Avian Twins Talisman	item	33,16,4
+B	Avian Twins Talisman	item	33,16,4
+B	Awl	item	44,6,7,3,4
+B	Banishing Blade	item	8,9,24,1,2,3,4
+B	Barbed Club	item	25,6,7,3,4
+B	Barbute Helmet	item	26,28,15,4
+B	Baroque Round Shield	item	43,45,19,15,4
+B	Baselard	item	24,6,7,3,4
+B	Basemetal Treads	item	26,8,20,15,4
+B	Basket Rapier	item	32,24,6,7,3,4
+B	Bastard Sword	item	24,1,2,3,4
+B	Battered Foil	item	32,24,6,7,3,4
+B	Battered Helm	item	43,28,15,4
+B	Battery Staff	item	8,9,46,1,2,3,4
+B	Battle Buckler	item	36,47,19,15,4
+B	Battle Hammer	item	25,6,7,3,4
+B	Battle Lamellar	item	43,37,15,4
+B	Battle Plate	item	26,37,15,4
+B	Battle Sword	item	24,6,7,3,4
+B	Behemoth Mace	item	8,48,25,6,7,3,4
+B	Black Maw Talisman	item	33,16,4
+B	Black Maw Talisman	item	33,16,4
+B	Black Widow Talisman	item	33,16,4
+B	Bladed Mace	item	25,6,7,3,4
+B	Blasting Blade	item	8,9,24,1,2,3,4
+B	Blasting Wand	item	11,12,6,7,3,4
+B	Blazing Arrow Quiver	item	39,4
+B	Blinder	item	44,6,7,3,4
+B	Blizzard Crown	item	17,8,28,15,4
+B	Blood Raiment	item	17,27,37,15,4
+B	Blood Sceptre	item	5,5,6,7,3,4
+B	Blood Viper Talisman	item	33,16,4
+B	Blue Pearl Amulet	item	8,34,49,16,4
+B	Blunt Arrow Quiver	item	39,4
+B	Blunt Arrow Quiver	item	50,39,4
+B	Blunt Force Condenser	item	8,9,25,1,2,3,4
+B	Boarding Axe	item	0,6,7,3,4
+B	Bone Armour	item	17,37,15,4
+B	Bone Bow	item	40,12,1,2,3,4
+B	Bone Circlet	item	13,28,15,4
+B	Bone Helmet	item	8,34,51,30,28,15,4
+B	Bone Ring	item	52,23,4
+B	Bone Spirit Shield	item	13,29,53,19,15,4
+B	Bonespire Talisman	item	33,16,4
+B	Boom Mace	item	8,9,25,6,7,3,4
+B	Boot Blade	item	21,6,7,3,4
+B	Boot Knife	item	21,6,7,3,4
+B	Branded Kite Shield	item	30,31,19,15,4
+B	Brass Maul	item	25,1,2,3,4
+B	Brass Spirit Shield	item	13,29,19,15,4
+B	Breach Ring	item	8,23,4
+B	Breakrib Talisman	item	33,16,4
+B	Brimstone Treads	item	26,8,20,15,4
+B	Broad Axe	item	0,6,7,3,4
+B	Broad Sword	item	24,6,7,3,4
+B	Broadhead Arrow Quiver	item	39,4
+B	Broadhead Arrow Quiver	item	50,39,4
+B	Bronze Gauntlets	item	26,14,15,4
+B	Bronze Plate	item	26,37,15,4
+B	Bronze Sceptre	item	5,5,6,7,3,4
+B	Bronze Tower Shield	item	26,54,19,15,4
+B	Bronzescale Boots	item	43,20,15,4
+B	Bronzescale Gauntlets	item	43,14,15,4
+B	Buckskin Tower Shield	item	26,54,19,15,4
+B	Buckskin Tunic	item	36,37,15,4
+B	Burnished Foil	item	32,24,6,7,3,4
+B	Burnished Spiked Shield	item	17,18,19,15,4
+B	Butcher Axe	item	27,0,6,7,3,4
+B	Butcher Knife	item	21,6,7,3,4
+B	Butcher Sword	item	24,1,2,3,4
+B	Cabalist Regalia	item	13,37,15,4
+B	Calling Wand	item	55,10,11,12,6,7,3,4
+B	Callous Mask	item	17,28,15,4
+B	Capacity Rod	item	8,9,46,56,1,2,3,4
+B	Capricious Spiritblade	item	8,9,24,6,7,3,4
+B	Cardinal Round Shield	item	43,45,27,19,15,4
+B	Carnal Armour	item	17,27,37,15,4
+B	Carnal Boots	item	17,20,15,4
+B	Carnal Mitts	item	17,14,15,4
+B	Carnal Sceptre	item	5,27,5,6,7,3,4
+B	Carrion Queen Talisman	item	33,16,4
+B	Carved Wand	item	10,11,12,6,7,3,4
+B	Carving Knife	item	21,6,7,3,4
+B	Cat's Paw	item	44,6,7,3,4
+B	Cedar Tower Shield	item	26,54,19,15,4
+B	Ceremonial Axe	item	0,6,7,3,4
+B	Ceremonial Kite Shield	item	30,31,19,15,4
+B	Ceremonial Mace	item	25,6,7,3,4
+B	Cerulean Ring	item	8,34,57,23,4
+B	Chain Belt	item	58,4
+B	Chain Boots	item	30,20,15,4
+B	Chain Gloves	item	30,14,15,4
+B	Chain Hauberk	item	30,37,15,4
+B	Chainmail Doublet	item	30,37,15,4
+B	Chainmail Tunic	item	30,37,15,4
+B	Chainmail Vest	item	30,37,15,4
+B	Champion Kite Shield	item	30,31,27,19,15,4
+B	Chest Splitter	item	0,6,7,3,4
+B	Chestplate	item	26,37,15,4
+B	Chieftain Talisman	item	33,16,4
+B	Chimeral Talisman	item	33,16,4
+B	Chimerascale Boots	item	43,27,8,20,15,4
+B	Chimerascale Gauntlets	item	43,27,8,14,15,4
+B	Chiming Spirit Shield	item	13,29,19,15,4
+B	Chrysalis Talisman	item	33,16,4
+B	Citadel Bow	item	40,12,1,2,3,4
+B	Citrine Amulet	item	16,4
+B	Clasped Boots	item	17,20,15,4
+B	Clasped Mitts	item	17,14,15,4
+B	Cleaver	item	0,6,7,3,4
+B	Close Helmet	item	26,28,15,4
+B	Cloth Belt	item	8,58,4
+B	Cloth Belt	item	58,4
+B	Cloudwhisper Boots	item	36,8,20,15,4
+B	Clutching Talisman	item	33,16,4
+B	Cobalt Jewel	jewel	59,60,61,8,62,4
+B	Cobra Talisman	item	33,16,4
+B	Cogwork Ring	item	8,9,23,4
+B	Coiled Staff	item	63,46,56,1,2,3,4
+B	Coiled Wand	item	10,11,12,6,7,3,4
+B	Cold-attuned Buckler	item	36,47,8,9,19,15,4
+B	Colossal Tower Shield	item	26,54,27,19,15,4
+B	Colosseum Plate	item	26,37,15,4
+B	Colossus Mallet	item	25,1,2,3,4
+B	Commander's Brigandine	item	43,37,15,4
+B	Composite Bow	item	40,12,1,2,3,4
+B	Composite Ring	item	8,9,23,4
+B	Compound Bow	item	40,12,1,2,3,4
+B	Compound Spiked Shield	item	17,18,19,15,4
+B	Cone Helmet	item	26,28,15,4
+B	Congregator Wand	item	8,9,10,11,12,6,7,3,4
+B	Conjurer Boots	item	13,20,15,4
+B	Conjurer Gloves	item	13,14,15,4
+B	Conjurer's Vestment	item	13,37,15,4
+B	Conqueror's Helmet	item	26,27,8,28,15,4
+B	Conquest Chainmail	item	30,37,15,4
+B	Conquest Helmet	item	43,27,8,28,15,4
+B	Conquest Lamellar	item	43,27,8,37,15,4
+B	Convening Wand	item	55,10,11,12,6,7,3,4
+B	Convoking Wand	item	34,64,55,27,10,11,12,6,7,3,4
+B	Copper Kris	item	21,6,7,3,4
+B	Copper Plate	item	26,37,15,4
+B	Copper Sword	item	24,6,7,3,4
+B	Copper Tower Shield	item	26,54,19,15,4
+B	Coral Amulet	item	16,4
+B	Coral Ring	item	23,4
+B	Cord Belt	item	8,58,4
+B	Coronal Leather	item	36,37,15,4
+B	Coronal Maul	item	8,48,25,1,2,3,4
+B	Corroded Blade	item	24,1,2,3,4
+B	Corroded Tower Shield	item	26,54,19,15,4
+B	Corrugated Buckler	item	36,47,19,15,4
+B	Corsair Sword	item	24,6,7,3,4
+B	Courtesan Sword	item	32,8,48,24,6,7,3,4
+B	Crack Mace	item	8,9,25,6,7,3,4
+B	Craicic Talisman	item	33,16,4
+B	Crescent Staff	item	8,48,46,1,2,3,4
+B	Crested Tower Shield	item	26,54,19,15,4
+B	Crimson Jewel	jewel	59,60,65,8,66,4
+B	Crimson Raiment	item	17,37,15,4
+B	Crimson Round Shield	item	43,45,19,15,4
+B	Croaker Talisman	item	33,16,4
+B	Crude Bow	item	40,12,1,2,3,4
+B	Crude Bow	item	40,12,1,2,3,4
+B	Crusader Boots	item	30,27,20,15,4
+B	Crusader Buckler	item	36,47,27,19,15,4
+B	Crusader Chainmail	item	30,37,15,4
+B	Crusader Gloves	item	30,27,14,15,4
+B	Crusader Helmet	item	30,28,15,4
+B	Crusader Plate	item	26,37,15,4
+B	Crushing Force Magnifier	item	8,9,25,1,2,3,4
+B	Cryonic Ring	item	8,23,4
+B	Crypt Armour	item	17,37,15,4
+B	Crystal Belt	item	8,34,67,58,4
+B	Crystal Sceptre	item	5,5,6,7,3,4
+B	Crystal Wand	item	10,11,12,6,7,3,4
+B	Curved Blade	item	8,48,24,1,2,3,4
+B	Cutlass	item	24,6,7,3,4
+B	Cutthroat's Garb	item	36,37,15,4
+B	Dagger Axe	item	8,48,0,1,2,3,4
+B	Darksteel Treads	item	26,8,20,15,4
+B	Darkwood Sceptre	item	5,5,6,7,3,4
+B	Deadhand Talisman	item	33,16,4
+B	Death Bow	item	40,12,1,2,3,4
+B	Decimation Bow	item	40,12,1,2,3,4
+B	Decorative Axe	item	0,6,7,3,4
+B	Decurve Bow	item	40,12,1,2,3,4
+B	Deep One Talisman	item	33,16,4
+B	Deerskin Boots	item	36,20,15,4
+B	Deerskin Gloves	item	36,14,15,4
+B	Deicide Mask	item	17,27,28,15,4
+B	Demon Crown	item	30,8,28,15,4
+B	Demon Dagger	item	27,21,6,7,3,4
+B	Demon's Horn	item	10,11,12,6,7,3,4
+B	Desert Brigandine	item	43,37,15,4
+B	Despot Axe	item	27,0,1,2,3,4
+B	Destiny Leather	item	36,37,15,4
+B	Destroyer Regalia	item	13,37,15,4
+B	Devourer Talisman	item	33,16,4
+B	Devout Chainmail	item	30,37,15,4
+B	Diamond Ring	item	23,4
+B	Diamond Ring	item	8,23,4
+B	Dire Pelt	item	36,27,8,28,15,4
+B	Disapprobation Axe	item	8,9,0,6,7,3,4
+B	Divine Crown	item	30,27,8,28,15,4
+B	Double Axe	item	0,1,2,3,4
+B	Double Claw	item	8,48,44,6,7,3,4
+B	Dragon Mace	item	8,48,25,6,7,3,4
+B	Dragonbone Rapier	item	32,24,6,7,3,4
+B	Dragonscale Boots	item	43,27,20,15,4
+B	Dragonscale Doublet	item	43,37,15,4
+B	Dragonscale Gauntlets	item	43,27,14,15,4
+B	Dragoon Sword	item	32,8,48,24,6,7,3,4
+B	Dread Maul	item	25,1,2,3,4
+B	Dream Mace	item	25,6,7,3,4
+B	Dreamquest Slippers	item	13,8,20,15,4
+B	Driftwood Club	item	25,6,7,3,4
+B	Driftwood Maul	item	25,1,2,3,4
+B	Driftwood Sceptre	item	5,5,6,7,3,4
+B	Driftwood Spiked Shield	item	17,18,19,15,4
+B	Driftwood Wand	item	11,12,6,7,3,4
+B	Driftwood Wand	item	10,11,12,6,7,3,4
+B	Dusk Blade	item	24,6,7,3,4
+B	Dusk Ring	item	8,23,4
+B	Duskwalk Slippers	item	13,8,20,15,4
+B	Eagle Claw	item	44,6,7,3,4
+B	Ebony Tower Shield	item	26,54,19,15,4
+B	Eclipse Staff	item	8,48,46,1,2,3,4
+B	Eelskin Boots	item	36,20,15,4
+B	Eelskin Gloves	item	36,14,15,4
+B	Eelskin Tunic	item	36,37,15,4
+B	Elder Sword	item	24,6,7,3,4
+B	Elegant Foil	item	32,24,6,7,3,4
+B	Elegant Ringmail	item	30,27,37,15,4
+B	Elegant Round Shield	item	43,45,27,19,15,4
+B	Elegant Sword	item	24,6,7,3,4
+B	Embroidered Gloves	item	13,14,15,4
+B	Enameled Buckler	item	36,47,19,15,4
+B	Endothermic Buckler	item	36,47,8,9,19,15,4
+B	Energy Blade	item	8,24,1,2,3,4
+B	Energy Blade	item	8,24,6,7,3,4
+B	Engraved Greatsword	item	24,1,2,3,4
+B	Engraved Hatchet	item	8,48,0,6,7,3,4
+B	Engraved Wand	item	10,11,12,6,7,3,4
+B	Enthalpic Ring	item	8,23,4
+B	Estoc	item	32,24,6,7,3,4
+B	Etched Greatsword	item	24,1,2,3,4
+B	Etched Hatchet	item	8,48,0,6,7,3,4
+B	Etched Kite Shield	item	30,31,19,15,4
+B	Eternal Burgonet	item	26,27,28,15,4
+B	Eternal Sword	item	27,24,6,7,3,4
+B	Ethereal Blade	undefined	8,21,22,6,7,3,4
+B	Ethereal Bow	undefined	8,40,12,1,2,3,4
+B	Eventuality Rod	item	8,9,46,56,1,2,3,4
+B	Exhausting Spirit Shield	item	13,29,8,9,19,15,4
+B	Exothermic Tower Shield	item	26,54,8,9,19,15,4
+B	Exquisite Blade	item	8,48,24,1,2,3,4
+B	Exquisite Leather	item	36,27,37,15,4
+B	Eye Gouger	item	27,44,6,7,3,4
+B	Ezomyte Axe	item	27,0,1,2,3,4
+B	Ezomyte Blade	item	27,24,1,2,3,4
+B	Ezomyte Burgonet	item	26,28,15,4
+B	Ezomyte Dagger	item	27,21,6,7,3,4
+B	Ezomyte Spiked Shield	item	17,18,27,19,15,4
+B	Ezomyte Staff	item	63,27,46,56,1,2,3,4
+B	Ezomyte Tower Shield	item	26,54,27,19,15,4
+B	Faithful Helmet	item	30,27,8,28,15,4
+B	Fancy Foil	item	32,24,6,7,3,4
+B	Fangjaw Talisman	item	33,16,4
+B	Farric Talisman	item	33,16,4
+B	Faun's Horn	item	10,11,12,6,7,3,4
+B	Feathered Arrow Quiver	item	39,4
+B	Fencer Helm	item	43,28,15,4
+B	Fenumal Talisman	item	33,16,4
+B	Festival Mask	item	17,28,15,4
+B	Fickle Spiritblade	item	8,9,24,6,7,3,4
+B	Field Lamellar	item	43,37,15,4
+B	Fiend Dagger	item	21,6,7,3,4
+B	Fingerless Silk Gloves	item	8,34,68,13,14,15,4
+B	Fir Round Shield	item	43,45,19,15,4
+B	Fire Arrow Quiver	item	50,39,4
+B	Fire Arrow Quiver	item	39,4
+B	Fishscale Gauntlets	item	43,14,15,4
+B	Flame Hellion Talisman	item	33,16,4
+B	Flanged Mace	item	25,6,7,3,4
+B	Flare Mace	item	8,9,25,6,7,3,4
+B	Flashfire Blade	item	8,9,21,6,7,3,4
+B	Flaying Knife	item	21,22,6,7,3,4
+B	Fleshripper	item	8,48,0,1,2,3,4
+B	Flickerflame Blade	item	8,9,21,6,7,3,4
+B	Fluted Bascinet	item	43,28,15,4
+B	Focused Amulet	item	8,9,16,4
+B	Footman Sword	item	24,1,2,3,4
+B	Formless Ring	item	8,23,4
+B	Fossilised Spirit Shield	item	13,29,53,27,19,15,4
+B	Foul Staff	item	63,46,56,1,2,3,4
+B	Foundry Bow	item	8,9,40,12,1,2,3,4
+B	Fright Claw	item	44,6,7,3,4
+B	Fright Maul	item	25,1,2,3,4
+B	Frontier Leather	item	36,37,15,4
+B	Frost Hellion Talisman	item	33,16,4
+B	Fugitive Boots	item	8,34,69,17,20,15,4
+B	Fugitive Ring	item	8,23,4
+B	Full Chainmail	item	30,37,15,4
+B	Full Dragonscale	item	43,27,37,15,4
+B	Full Leather	item	36,37,15,4
+B	Full Plate	item	26,37,15,4
+B	Full Ringmail	item	30,37,15,4
+B	Full Scale Armour	item	43,37,15,4
+B	Full Wyrmscale	item	43,37,15,4
+B	Full Wyvernscale	item	43,27,8,37,15,4
+B	Gale Crown	item	17,8,28,15,4
+B	Gargantuan Talisman	item	33,16,4
+B	Gavel	item	25,6,7,3,4
+B	Gemini Claw	item	8,48,44,6,7,3,4
+B	Gemstone Sword	item	24,6,7,3,4
+B	General's Brigandine	item	43,27,37,15,4
+B	General's Helmet	item	26,27,8,28,15,4
+B	Geodesic Ring	item	8,9,23,4
+B	Ghastly Eye Jewel	abyss_jewel	8,70,42,4
+B	Ghostflame Blade	item	8,24,6,7,3,4
+B	Giantslayer Helmet	item	26,27,8,28,15,4
+B	Gilded Axe	item	0,1,2,3,4
+B	Gilded Buckler	item	36,47,19,15,4
+B	Gilded Sallet	item	43,28,15,4
+B	Girded Tower Shield	item	26,54,19,15,4
+B	Gladiator Helmet	item	26,28,15,4
+B	Gladiator Plate	item	26,27,37,15,4
+B	Gladius	item	24,6,7,3,4
+B	Glass Shank	item	21,22,6,7,3,4
+B	Gloam Ring	item	8,52,23,4
+B	Glorious Leather	item	36,37,15,4
+B	Glorious Plate	item	26,27,37,15,4
+B	Gnarled Branch	item	71,46,1,2,3,4
+B	Goat's Horn	item	10,11,12,6,7,3,4
+B	Goathide Boots	item	36,20,15,4
+B	Goathide Buckler	item	36,47,19,15,4
+B	Goathide Gloves	item	36,14,15,4
+B	Goatman Talisman	item	33,16,4
+B	Gold Amulet	item	16,4
+B	Gold Ring	item	23,4
+B	Golden Blade	item	8,72,24,6,7,3,4
+B	Golden Buckler	item	36,47,19,15,4
+B	Golden Kris	item	21,6,7,3,4
+B	Golden Mask	item	17,28,15,4
+B	Golden Plate	item	26,37,15,4
+B	Goliath Gauntlets	item	26,14,15,4
+B	Goliath Greaves	item	26,20,15,4
+B	Goliath Talisman	item	33,16,4
+B	Gouger	item	44,6,7,3,4
+B	Graceful Sword	item	24,6,7,3,4
+B	Grand Ringmail	item	30,27,8,37,15,4
+B	Grappler	item	8,48,24,6,7,3,4
+B	Grasping Mail	item	73,8,37,15,4
+B	Great Crown	item	30,28,15,4
+B	Great Helmet	item	30,28,15,4
+B	Great Mallet	item	25,1,2,3,4
+B	Great Maw Talisman	item	33,16,4
+B	Great White Claw	item	44,6,7,3,4
+B	Greatwolf Talisman	item	16,4
+B	Greatwolf Talisman	item	33,16,4
+B	Grinning Fetish	item	5,5,6,7,3,4
+B	Gripped Gloves	item	8,34,74,36,14,15,4
+B	Grizzly Pelt	item	36,27,8,28,15,4
+B	Grove Bow	item	40,12,1,2,3,4
+B	Guarding Gauntlets	item	26,8,14,15,4
+B	Gut Ripper	item	44,6,7,3,4
+B	Gutting Knife	item	21,22,6,7,3,4
+B	Hammered Buckler	item	36,47,19,15,4
+B	Harbinger Bow	item	27,40,12,1,2,3,4
+B	Harlequin Mask	item	17,28,15,4
+B	Harmonic Spirit Shield	item	13,29,27,19,15,4
+B	Harpy Rapier	item	32,27,24,6,7,3,4
+B	Harpyskin Boots	item	36,27,8,20,15,4
+B	Harpyskin Gloves	item	36,27,8,14,15,4
+B	Haunted Bascinet	item	43,27,8,28,15,4
+B	Headman's Sword	item	24,1,2,3,4
+B	Headsman Axe	item	0,1,2,3,4
+B	Heat-attuned Tower Shield	item	26,54,8,9,19,15,4
+B	Heathen Wand	item	8,48,10,11,12,6,7,3,4
+B	Heavy Arrow Quiver	item	39,4
+B	Heavy Belt	item	58,4
+B	Heavy Belt	item	8,58,4
+B	Hedron Bow	item	8,9,40,12,1,2,3,4
+B	Helical Ring	item	8,9,23,4
+B	Hellion's Paw	item	44,6,7,3,4
+B	Hexclaw Talisman	item	33,16,4
+B	Highborn Bow	item	40,12,1,2,3,4
+B	Highborn Staff	item	46,1,2,3,4
+B	Highland Blade	item	24,1,2,3,4
+B	Hollowpoint Dagger	item	8,9,21,22,6,7,3,4
+B	Holy Chainmail	item	30,37,15,4
+B	Honed Cleaver	item	8,9,0,1,2,3,4
+B	Hook Sword	item	8,48,24,6,7,3,4
+B	Horned Sceptre	item	5,8,48,5,6,7,3,4
+B	Horned Talisman	item	33,16,4
+B	Hubris Circlet	item	13,27,28,15,4
+B	Hunter Hood	item	36,28,15,4
+B	Hussar Brigandine	item	43,37,15,4
+B	Hybrid Arachnid Talisman	item	33,16,4
+B	Hydrascale Boots	item	43,27,20,15,4
+B	Hydrascale Gauntlets	item	43,27,14,15,4
+B	Hypnotic Eye Jewel	abyss_jewel	8,75,42,4
+B	Imbued Wand	item	10,11,12,6,7,3,4
+B	Imp Crown	item	30,8,28,15,4
+B	Imp Dagger	item	21,6,7,3,4
+B	Impact Force Propagator	item	8,9,25,1,2,3,4
+B	Imperial Bow	item	27,40,12,1,2,3,4
+B	Imperial Buckler	item	36,47,27,19,15,4
+B	Imperial Claw	item	27,44,6,7,3,4
+B	Imperial Maul	item	27,25,1,2,3,4
+B	Imperial Skean	item	27,21,6,7,3,4
+B	Imperial Staff	item	27,46,1,2,3,4
+B	Infantry Brigandine	item	43,37,15,4
+B	Infernal Axe	item	27,0,6,7,3,4
+B	Infernal Blade	item	8,9,21,6,7,3,4
+B	Infernal Sword	item	27,24,1,2,3,4
+B	Infiltrator Boots	item	17,27,8,20,15,4
+B	Infiltrator Mitts	item	17,27,8,14,15,4
+B	Iolite Ring	item	8,34,76,23,4
+B	Iron Circlet	item	13,28,15,4
+B	Iron Gauntlets	item	26,14,15,4
+B	Iron Greaves	item	26,20,15,4
+B	Iron Hat	item	26,28,15,4
+B	Iron Mask	item	17,28,15,4
+B	Iron Ring	item	23,4
+B	Iron Sceptre	item	5,5,6,7,3,4
+B	Iron Staff	item	63,46,56,1,2,3,4
+B	Ironscale Boots	item	43,20,15,4
+B	Ironscale Gauntlets	item	43,14,15,4
+B	Ironwood Buckler	item	36,47,19,15,4
+B	Ivory Bow	item	40,12,1,2,3,4
+B	Ivory Spirit Shield	item	13,29,53,19,15,4
+B	Jade Amulet	item	16,4
+B	Jade Chopper	item	0,1,2,3,4
+B	Jade Hatchet	item	0,6,7,3,4
+B	Jagged Foil	item	32,24,6,7,3,4
+B	Jagged Maul	item	25,1,2,3,4
+B	Jasper Axe	item	0,6,7,3,4
+B	Jasper Chopper	item	0,1,2,3,4
+B	Jester Mask	item	17,27,8,28,15,4
+B	Jewelled Foil	item	32,27,24,6,7,3,4
+B	Jingling Spirit Shield	item	13,29,19,15,4
+B	Judgement Staff	item	63,27,46,56,1,2,3,4
+B	Karui Axe	item	0,6,7,3,4
+B	Karui Chopper	item	0,1,2,3,4
+B	Karui Maul	item	25,1,2,3,4
+B	Karui Sceptre	item	5,5,6,7,3,4
+B	Kinetic Wand	item	27,11,12,6,7,3,4
+B	Knight Helm	item	43,27,8,28,15,4
+B	Labrys	item	0,1,2,3,4
+B	Lacewood Spirit Shield	item	13,29,19,15,4
+B	Lacquered Buckler	item	36,47,19,15,4
+B	Lacquered Garb	item	17,37,15,4
+B	Lacquered Helmet	item	43,28,15,4
+B	Laminated Kite Shield	item	30,31,19,15,4
+B	Lapis Amulet	item	16,4
+B	Large Cluster Jewel	affliction_jewel	59,8,77,4
+B	Lathi	item	27,46,1,2,3,4
+B	Latticed Ringmail	item	30,37,15,4
+B	Layered Kite Shield	item	30,31,19,15,4
+B	Lead Sceptre	item	5,5,6,7,3,4
+B	Leather Belt	item	8,58,4
+B	Leather Belt	item	58,4
+B	Leather Cap	item	36,28,15,4
+B	Leather Hood	item	36,28,15,4
+B	Leatherscale Boots	item	43,20,15,4
+B	Legion Boots	item	30,27,20,15,4
+B	Legion Gloves	item	30,27,14,15,4
+B	Legion Hammer	item	27,25,6,7,3,4
+B	Legion Plate	item	26,27,8,37,15,4
+B	Legion Sword	item	27,24,6,7,3,4
+B	Leviathan Gauntlets	item	26,27,8,14,15,4
+B	Leviathan Greaves	item	26,27,8,20,15,4
+B	Leyline Gloves	item	13,8,14,15,4
+B	Lich's Circlet	item	13,27,8,28,15,4
+B	Light Brigandine	item	43,37,15,4
+B	Linden Kite Shield	item	30,31,19,15,4
+B	Lion Pelt	item	36,27,28,15,4
+B	Lion Sword	item	27,24,1,2,3,4
+B	Lithe Blade	item	8,48,24,1,2,3,4
+B	Lone Antler Talisman	item	33,16,4
+B	Long Bow	item	40,12,1,2,3,4
+B	Long Staff	item	46,1,2,3,4
+B	Longsword	item	24,1,2,3,4
+B	Longtooth Talisman	item	33,16,4
+B	Lordly Plate	item	26,37,15,4
+B	Loricated Ringmail	item	30,37,15,4
+B	Lunaris Circlet	item	13,28,15,4
+B	Lynx Talisman	item	33,16,4
+B	Maelström Staff	item	63,27,46,56,1,2,3,4
+B	Mage's Vestment	item	13,37,15,4
+B	Magistrate Crown	item	30,28,15,4
+B	Magma Hound Talisman	item	33,16,4
+B	Magmatic Tower Shield	item	26,54,8,9,19,15,4
+B	Mahogany Tower Shield	item	26,54,19,15,4
+B	Majestic Pelt	item	36,27,8,28,15,4
+B	Majestic Plate	item	26,37,15,4
+B	Malign Fangs	item	8,9,44,6,7,3,4
+B	Mallet	item	25,1,2,3,4
+B	Maltreatment Axe	item	8,9,0,6,7,3,4
+B	Mandible Talisman	item	33,16,4
+B	Manifold Ring	item	8,9,23,4
+B	Maple Round Shield	item	43,45,19,15,4
+B	Maraketh Bow	item	8,48,40,12,1,2,3,4
+B	Marble Amulet	item	8,34,78,16,4
+B	Marshall's Brigandine	item	43,27,8,37,15,4
+B	Martyr Boots	item	30,27,8,20,15,4
+B	Martyr Gloves	item	30,27,8,14,15,4
+B	Meatgrinder	item	27,25,1,2,3,4
+B	Mechalarm Belt	item	9,58,4
+B	Mechanical Belt	item	9,58,4
+B	Medium Cluster Jewel	affliction_jewel	59,8,79,4
+B	Mesh Boots	item	30,20,15,4
+B	Mesh Gloves	item	30,14,15,4
+B	Micro-Distillery Belt	item	9,58,4
+B	Midnight Blade	item	27,24,6,7,3,4
+B	Military Staff	item	63,46,56,1,2,3,4
+B	Mind Cage	item	13,27,28,15,4
+B	Mirrored Spiked Shield	item	17,18,27,19,15,4
+B	Monkey Paw Talisman	item	33,16,4
+B	Monkey Paw Talisman	item	33,16,4
+B	Monkey Paw Talisman	item	33,16,4
+B	Monkey Twins Talisman	item	33,16,4
+B	Moon Staff	item	8,48,46,1,2,3,4
+B	Moonlit Circlet	item	13,27,8,28,15,4
+B	Moonstone Ring	item	23,4
+B	Morning Star	item	8,48,25,1,2,3,4
+B	Mosaic Kite Shield	item	30,31,27,19,15,4
+B	Murder Boots	item	17,27,20,15,4
+B	Murder Mitts	item	17,27,14,15,4
+B	Murderous Eye Jewel	abyss_jewel	8,80,42,4
+B	Mycelium Core	jewel	59,8,4
+B	Nailed Fist	item	44,6,7,3,4
+B	Nameless Ring	item	8,23,4
+B	Necromancer Circlet	item	13,28,15,4
+B	Necromancer Silks	item	13,37,15,4
+B	Necrotic Armour	item	17,27,8,37,15,4
+B	Nexus Gloves	item	13,8,14,15,4
+B	Nightmare Bascinet	item	43,27,28,15,4
+B	Nightmare Mace	item	27,25,6,7,3,4
+B	Nightweave Robe	item	13,27,8,37,15,4
+B	Nightwind Slippers	item	13,8,20,15,4
+B	Noble Axe	item	0,1,2,3,4
+B	Noble Claw	item	44,6,7,3,4
+B	Noble Tricorne	item	36,28,15,4
+B	Nubuck Boots	item	36,20,15,4
+B	Nubuck Gloves	item	36,14,15,4
+B	Oak Buckler	item	36,47,19,15,4
+B	Occultist's Vestment	item	13,27,37,15,4
+B	Ochre Sceptre	item	5,5,6,7,3,4
+B	Octopus Talisman	item	33,16,4
+B	Oiled Coat	item	17,37,15,4
+B	Oiled Vest	item	17,37,15,4
+B	Omen Wand	item	10,11,12,6,7,3,4
+B	Onyx Amulet	item	16,4
+B	Onyx Amulet	item	8,16,4
+B	Opal Ring	item	8,23,4
+B	Opal Ring	item	8,34,81,23,4
+B	Opal Sceptre	item	5,5,6,7,3,4
+B	Opal Wand	item	27,10,11,12,6,7,3,4
+B	Organic Ring	item	8,23,4
+B	Ornate Mace	item	25,6,7,3,4
+B	Ornate Ringmail	item	30,37,15,4
+B	Ornate Spiked Shield	item	17,18,19,15,4
+B	Ornate Sword	item	24,1,2,3,4
+B	Oscillating Sceptre	item	8,9,5,6,7,3,4
+B	Padded Jacket	item	17,37,15,4
+B	Padded Vest	item	17,37,15,4
+B	Pagan Wand	item	8,48,10,11,12,6,7,3,4
+B	Painted Buckler	item	36,47,19,15,4
+B	Painted Tower Shield	item	26,54,19,15,4
+B	Paladin Boots	item	30,27,8,20,15,4
+B	Paladin Crown	item	30,27,8,28,15,4
+B	Paladin Gloves	item	30,27,8,14,15,4
+B	Paladin's Hauberk	item	30,27,8,37,15,4
+B	Paua Amulet	item	16,4
+B	Paua Ring	item	23,4
+B	Paua Ring	item	8,23,4
+B	Pearlescent Amulet	item	8,16,4
+B	Pecoraro	item	32,24,6,7,3,4
+B	Penetrating Arrow Quiver	item	50,39,4
+B	Penetrating Arrow Quiver	item	39,4
+B	Penitent Mask	item	43,8,28,15,4
+B	Penumbra Ring	item	8,23,4
+B	Pernach	item	27,25,6,7,3,4
+B	Petrified Club	item	25,6,7,3,4
+B	Phantom Boots	item	17,27,8,20,15,4
+B	Phantom Mace	item	25,6,7,3,4
+B	Phantom Mitts	item	17,27,8,14,15,4
+B	Pig-Faced Bascinet	item	43,27,28,15,4
+B	Piledriver	item	27,25,1,2,3,4
+B	Pine Buckler	item	36,47,19,15,4
+B	Pinnacle Tower Shield	item	26,54,27,19,15,4
+B	Pitbull Talisman	item	33,16,4
+B	Plague Mask	item	17,28,15,4
+B	Plagued Arachnid Talisman	item	33,16,4
+B	Plank Kite Shield	item	30,31,19,15,4
+B	Plate Vest	item	26,37,15,4
+B	Plated Gauntlets	item	26,14,15,4
+B	Plated Greaves	item	26,20,15,4
+B	Plated Maul	item	25,1,2,3,4
+B	Platinum Kris	item	27,21,6,7,3,4
+B	Platinum Sceptre	item	5,27,5,6,7,3,4
+B	Pneumatic Dagger	item	8,9,21,22,6,7,3,4
+B	Poignard	item	21,22,6,7,3,4
+B	Polar Buckler	item	36,47,8,9,19,15,4
+B	Poleaxe	item	0,1,2,3,4
+B	Polished Spiked Shield	item	17,18,19,15,4
+B	Potentiality Rod	item	8,9,46,56,1,2,3,4
+B	Praetor Crown	item	30,27,28,15,4
+B	Precursor Gauntlets	item	26,27,8,14,15,4
+B	Precursor Greaves	item	26,27,8,20,15,4
+B	Prehistoric Claw	item	44,6,7,3,4
+B	Preserving Gauntlets	item	26,8,14,15,4
+B	Pressurised Dagger	item	8,9,21,22,6,7,3,4
+B	Primal Arrow Quiver	item	39,4
+B	Primal Skull Talisman	item	33,16,4
+B	Prime Cleaver	item	8,9,0,1,2,3,4
+B	Primeval Rapier	item	32,24,6,7,3,4
+B	Primitive Staff	item	46,1,2,3,4
+B	Primordial Staff	item	46,1,2,3,4
+B	Prismatic Ring	item	23,4
+B	Prismatic Ring	item	8,23,4
+B	Profane Wand	item	8,48,10,11,12,6,7,3,4
+B	Prong Dagger	item	8,48,21,22,6,7,3,4
+B	Prophecy Wand	item	27,10,11,12,6,7,3,4
+B	Prophet Crown	item	30,27,28,15,4
+B	Psychotic Axe	item	8,9,0,6,7,3,4
+B	Quarterstaff	item	46,1,2,3,4
+B	Quartz Sceptre	item	5,5,6,7,3,4
+B	Quartz Wand	item	10,11,12,6,7,3,4
+B	Quilted Jacket	item	17,37,15,4
+B	Ranger Bow	item	40,12,1,2,3,4
+B	Ratcheting Ring	item	8,9,23,4
+B	Raven Mask	item	17,28,15,4
+B	Rawhide Boots	item	36,20,15,4
+B	Rawhide Gloves	item	36,14,15,4
+B	Rawhide Tower Shield	item	26,54,19,15,4
+B	Reaver Axe	item	0,6,7,3,4
+B	Reaver Helmet	item	26,28,15,4
+B	Reaver Sword	item	24,1,2,3,4
+B	Rebuking Blade	item	8,9,24,1,2,3,4
+B	Reciprocation Staff	item	8,9,46,1,2,3,4
+B	Recurve Bow	item	40,12,1,2,3,4
+B	Redwood Spiked Shield	item	17,18,19,15,4
+B	Reflex Bow	item	8,48,40,12,1,2,3,4
+B	Regicide Mask	item	17,28,15,4
+B	Reinforced Greaves	item	26,20,15,4
+B	Reinforced Kite Shield	item	30,31,19,15,4
+B	Reinforced Tower Shield	item	26,54,19,15,4
+B	Retch Talisman	item	33,16,4
+B	Rhex Talisman	item	33,16,4
+B	Rhoa Talisman	item	33,16,4
+B	Ring	item	8,23,4
+B	Ringmail Boots	item	30,20,15,4
+B	Ringmail Coat	item	30,37,15,4
+B	Ringmail Gloves	item	30,14,15,4
+B	Ritual Sceptre	item	5,5,6,7,3,4
+B	Riveted Boots	item	30,20,15,4
+B	Riveted Gloves	item	30,14,15,4
+B	Rock Breaker	item	25,6,7,3,4
+B	Rot Head Talisman	item	33,16,4
+B	Rotfeather Talisman	item	33,16,4
+B	Rotted Round Shield	item	43,45,19,15,4
+B	Royal Axe	item	27,0,6,7,3,4
+B	Royal Bow	item	40,12,1,2,3,4
+B	Royal Burgonet	item	26,27,28,15,4
+B	Royal Plate	item	26,27,8,37,15,4
+B	Royal Sceptre	item	5,5,6,7,3,4
+B	Royal Skean	item	21,6,7,3,4
+B	Royal Staff	item	46,1,2,3,4
+B	Ruby Ring	item	23,4
+B	Runic Crest	item	8,82,28,15,4
+B	Runic Crown	item	8,82,28,15,4
+B	Runic Gages	item	8,82,14,15,4
+B	Runic Gauntlets	item	8,82,14,15,4
+B	Runic Gloves	item	8,82,14,15,4
+B	Runic Greaves	item	8,82,20,15,4
+B	Runic Hatchet	item	8,48,0,6,7,3,4
+B	Runic Helm	item	8,82,28,15,4
+B	Runic Sabatons	item	8,82,20,15,4
+B	Runic Sollerets	item	8,82,20,15,4
+B	Rusted Coif	item	30,28,15,4
+B	Rusted Hatchet	item	0,6,7,3,4
+B	Rusted Spike	item	32,24,6,7,3,4
+B	Rusted Sword	item	24,6,7,3,4
+B	Rustic Sash	item	58,4
+B	Sabre	item	24,6,7,3,4
+B	Sacred Chainmail	item	30,27,8,37,15,4
+B	Sacrificial Garb	item	73,8,37,15,4
+B	Sadist Garb	item	17,27,37,15,4
+B	Sage Gloves	item	13,27,8,14,15,4
+B	Sage Slippers	item	13,27,8,20,15,4
+B	Sage Wand	item	10,11,12,6,7,3,4
+B	Sage's Robe	item	13,37,15,4
+B	Sai	item	8,48,21,22,6,7,3,4
+B	Saint's Hauberk	item	30,27,37,15,4
+B	Saintly Chainmail	item	30,27,37,15,4
+B	Sallet	item	43,28,15,4
+B	Sambar Sceptre	item	5,8,48,5,6,7,3,4
+B	Samite Gloves	item	13,14,15,4
+B	Samite Slippers	item	13,20,15,4
+B	Samnite Helmet	item	26,28,15,4
+B	Sand Spitter Talisman	item	33,16,4
+B	Sanguine Raiment	item	17,27,8,37,15,4
+B	Sapphire Ring	item	23,4
+B	Saqawine Talisman	item	33,16,4
+B	Satin Gloves	item	13,14,15,4
+B	Satin Slippers	item	13,20,15,4
+B	Savage Crab Talisman	item	33,16,4
+B	Savant's Robe	item	13,37,15,4
+B	Scale Doublet	item	43,37,15,4
+B	Scale Vest	item	43,37,15,4
+B	Scare Mask	item	17,28,15,4
+B	Scarlet Raiment	item	17,37,15,4
+B	Scarlet Round Shield	item	43,45,19,15,4
+B	Scholar Boots	item	13,20,15,4
+B	Scholar's Robe	item	13,37,15,4
+B	Scorpion Talisman	item	33,16,4
+B	Scrabbler Talisman	item	33,16,4
+B	Seaglass Amulet	item	8,34,83,16,4
+B	Searching Eye Jewel	abyss_jewel	8,84,42,4
+B	Secutor Helm	item	43,28,15,4
+B	Sekhem	item	5,5,6,7,3,4
+B	Sentinel Jacket	item	17,37,15,4
+B	Serpentine Staff	item	63,46,56,1,2,3,4
+B	Serpentscale Boots	item	43,20,15,4
+B	Serpentscale Gauntlets	item	43,14,15,4
+B	Serrated Arrow Quiver	item	39,4
+B	Serrated Arrow Quiver	item	50,39,4
+B	Serrated Foil	item	32,24,6,7,3,4
+B	Shabby Jerkin	item	36,37,15,4
+B	Shackled Boots	item	17,20,15,4
+B	Shadow Axe	item	0,1,2,3,4
+B	Shadow Fangs	item	8,9,44,6,7,3,4
+B	Shadow Sceptre	item	5,5,6,7,3,4
+B	Shadowed Ring	item	8,23,4
+B	Shadowed Ring	item	8,23,4
+B	Shadowed Ring	item	8,23,4
+B	Shagreen Boots	item	36,20,15,4
+B	Shagreen Gloves	item	36,14,15,4
+B	Shagreen Tower Shield	item	26,54,19,15,4
+B	Sharkskin Boots	item	36,20,15,4
+B	Sharkskin Gloves	item	36,14,15,4
+B	Sharkskin Tunic	item	36,37,15,4
+B	Sharktooth Arrow Quiver	item	50,39,4
+B	Sharktooth Arrow Quiver	item	39,4
+B	Sharktooth Claw	item	44,6,7,3,4
+B	Shield Crab Talisman	item	33,16,4
+B	Short Bow	item	40,12,1,2,3,4
+B	Siege Axe	item	0,6,7,3,4
+B	Siege Helmet	item	26,28,15,4
+B	Silk Gloves	item	13,14,15,4
+B	Silk Robe	item	13,37,15,4
+B	Silk Slippers	item	13,20,15,4
+B	Silken Garb	item	13,37,15,4
+B	Silken Hood	item	36,28,15,4
+B	Silken Vest	item	13,37,15,4
+B	Silken Wrap	item	13,37,15,4
+B	Simple Robe	item	13,37,15,4
+B	Simplex Amulet	item	8,9,16,4
+B	Sinner Tricorne	item	36,27,28,15,4
+B	Skean	item	21,6,7,3,4
+B	Skinning Knife	item	21,22,6,7,3,4
+B	Slaughter Knife	item	21,6,7,3,4
+B	Sledgehammer	item	25,1,2,3,4
+B	Sleek Coat	item	17,37,15,4
+B	Slink Boots	item	36,27,20,15,4
+B	Slink Gloves	item	36,27,14,15,4
+B	Small Cluster Jewel	affliction_jewel	59,8,85,4
+B	Smallsword	item	32,8,48,24,6,7,3,4
+B	Sniper Bow	item	40,12,1,2,3,4
+B	Solar Maul	item	8,48,25,1,2,3,4
+B	Solarine Bow	item	8,9,40,12,1,2,3,4
+B	Solaris Circlet	item	13,28,15,4
+B	Soldier Boots	item	30,20,15,4
+B	Soldier Gloves	item	30,14,15,4
+B	Soldier Helmet	item	30,28,15,4
+B	Soldier's Brigandine	item	43,37,15,4
+B	Somatic Wand	item	11,12,6,7,3,4
+B	Sorcerer Boots	item	13,27,20,15,4
+B	Sorcerer Gloves	item	13,27,14,15,4
+B	Sorrow Mask	item	43,8,28,15,4
+B	Sovereign Spiked Shield	item	17,18,19,15,4
+B	Sparkling Claw	item	44,6,7,3,4
+B	Spectral Axe	item	0,6,7,3,4
+B	Spectral Sword	item	24,1,2,3,4
+B	Spider Crab Talisman	item	33,16,4
+B	Spidersilk Robe	item	13,37,15,4
+B	Spike-Point Arrow Quiver	item	50,39,4
+B	Spike-Point Arrow Quiver	item	39,4
+B	Spiked Bundle	item	17,18,19,15,4
+B	Spiked Club	item	25,6,7,3,4
+B	Spiked Gloves	item	8,34,86,26,14,15,4
+B	Spiked Round Shield	item	43,45,19,15,4
+B	Spine Bow	item	27,40,12,1,2,3,4
+B	Spinefuse Talisman	item	33,16,4
+B	Spiny Maul	item	25,1,2,3,4
+B	Spiny Round Shield	item	43,45,27,19,15,4
+B	Spiraled Foil	item	32,27,24,6,7,3,4
+B	Spiraled Wand	item	10,11,12,6,7,3,4
+B	Splendid Round Shield	item	43,45,19,15,4
+B	Splintered Tower Shield	item	26,54,19,15,4
+B	Splitnewt Talisman	item	33,16,4
+B	Squid Talisman	item	33,16,4
+B	Stabilising Sceptre	item	8,9,5,6,7,3,4
+B	Stag Sceptre	item	5,8,48,5,6,7,3,4
+B	Stealth Boots	item	36,27,20,15,4
+B	Stealth Gloves	item	36,27,14,15,4
+B	Steel Circlet	item	13,28,15,4
+B	Steel Gauntlets	item	26,14,15,4
+B	Steel Greaves	item	26,20,15,4
+B	Steel Kite Shield	item	30,31,19,15,4
+B	Steel Ring	item	8,34,87,23,4
+B	Steelhead	item	25,1,2,3,4
+B	Steelscale Boots	item	43,20,15,4
+B	Steelscale Gauntlets	item	43,14,15,4
+B	Steelwood Bow	item	8,48,40,12,1,2,3,4
+B	Stiletto	item	21,22,6,7,3,4
+B	Stone Axe	item	0,1,2,3,4
+B	Stone Hammer	item	25,6,7,3,4
+B	Stormrider Boots	item	36,8,20,15,4
+B	Strapped Boots	item	17,20,15,4
+B	Strapped Leather	item	36,37,15,4
+B	Strapped Mitts	item	17,14,15,4
+B	Studded Belt	item	58,4
+B	Studded Round Shield	item	43,45,19,15,4
+B	Stygian Vise	item	8,58,4
+B	Subsuming Spirit Shield	item	13,29,8,9,19,15,4
+B	Sun Leather	item	36,37,15,4
+B	Sun Plate	item	26,37,15,4
+B	Sundering Axe	item	0,1,2,3,4
+B	Sunfire Circlet	item	13,27,8,28,15,4
+B	Supreme Leather	item	36,27,8,37,15,4
+B	Supreme Spiked Shield	item	17,18,27,19,15,4
+B	Synaptic Ring	item	8,23,4
+B	Syndicate's Garb	item	36,27,8,37,15,4
+B	Talon Axe	item	8,48,0,1,2,3,4
+B	Tarnished Spirit Shield	item	13,29,19,15,4
+B	Taurus Talisman	item	33,16,4
+B	Teak Round Shield	item	43,45,19,15,4
+B	Tempered Foil	item	32,24,6,7,3,4
+B	Tenderizer	item	25,6,7,3,4
+B	Tenebrous Ring	item	8,23,4
+B	Terror Claw	item	27,44,6,7,3,4
+B	Terror Maul	item	27,25,1,2,3,4
+B	Thicket Bow	item	40,12,1,2,3,4
+B	Thief's Garb	item	36,37,15,4
+B	Thorium Spirit Shield	item	13,29,19,15,4
+B	Thorn Rapier	item	32,24,6,7,3,4
+B	Three Hands Talisman	item	33,16,4
+B	Three Rat Talisman	item	33,16,4
+B	Thresher Claw	item	44,6,7,3,4
+B	Throat Stabber	item	44,6,7,3,4
+B	Thwarting Gauntlets	item	26,8,14,15,4
+B	Tiger Hook	item	8,48,24,6,7,3,4
+B	Tiger Sword	item	24,1,2,3,4
+B	Tiger Talisman	item	33,16,4
+B	Tiger's Paw	item	44,6,7,3,4
+B	Timber Axe	item	0,1,2,3,4
+B	Timeworn Claw	item	44,6,7,3,4
+B	Tinker Gloves	item	36,8,14,15,4
+B	Titan Gauntlets	item	26,27,14,15,4
+B	Titan Greaves	item	26,27,20,15,4
+B	Titan Plate	item	26,27,8,37,15,4
+B	Titanium Spirit Shield	item	13,29,27,19,15,4
+B	Tomahawk	item	0,6,7,3,4
+B	Topaz Ring	item	23,4
+B	Tornado Wand	item	27,10,11,12,6,7,3,4
+B	Torture Cage	item	13,28,15,4
+B	Torturer Garb	item	17,27,8,37,15,4
+B	Torturer's Mask	item	17,27,8,28,15,4
+B	Totemic Maul	item	25,1,2,3,4
+B	Transfer-attuned Spirit Shield	item	13,29,8,9,19,15,4
+B	Transformer Staff	item	8,9,46,1,2,3,4
+B	Trapper Boots	item	17,20,15,4
+B	Trapper Mitts	item	17,14,15,4
+B	Trapsetter Gloves	item	36,8,14,15,4
+B	Tribal Circlet	item	13,28,15,4
+B	Tribal Club	item	25,6,7,3,4
+B	Tribal Maul	item	25,1,2,3,4
+B	Tricorne	item	36,28,15,4
+B	Trisula	item	8,48,21,22,6,7,3,4
+B	Triumphant Lamellar	item	43,27,37,15,4
+B	Turquoise Amulet	item	16,4
+B	Twig Spirit Shield	item	13,29,19,15,4
+B	Twilight Blade	item	24,6,7,3,4
+B	Twilight Regalia	item	13,27,8,37,15,4
+B	Twin Claw	item	8,48,44,6,7,3,4
+B	Two-Handed Sword	item	24,1,2,3,4
+B	Two-Point Arrow Quiver	item	50,39,4
+B	Two-Point Arrow Quiver	item	39,4
+B	Two-Stone Ring	item	88,23,4
+B	Two-Stone Ring	item	88,23,4
+B	Two-Stone Ring	item	88,23,4
+B	Two-Toned Boots	item	8,34,89,43,20,15,4
+B	Two-Toned Boots	item	8,34,90,30,20,15,4
+B	Two-Toned Boots	item	8,34,91,17,20,15,4
+B	Tyrant's Sekhem	item	5,5,6,7,3,4
+B	Undying Flesh Talisman	item	33,16,4
+B	Unset Amulet	item	8,16,4
+B	Unset Ring	item	92,23,4
+B	Ursa Talisman	item	33,16,4
+B	Ursine Pelt	item	36,28,15,4
+B	Vaal Axe	item	27,0,1,2,3,4
+B	Vaal Blade	item	27,24,6,7,3,4
+B	Vaal Buckler	item	36,47,27,19,15,4
+B	Vaal Claw	item	27,44,6,7,3,4
+B	Vaal Gauntlets	item	26,27,14,15,4
+B	Vaal Greatsword	item	27,24,1,2,3,4
+B	Vaal Greaves	item	26,27,20,15,4
+B	Vaal Hatchet	item	27,0,6,7,3,4
+B	Vaal Mask	item	17,27,28,15,4
+B	Vaal Rapier	item	32,27,24,6,7,3,4
+B	Vaal Regalia	item	13,27,37,15,4
+B	Vaal Sceptre	item	5,27,5,6,7,3,4
+B	Vaal Spirit Shield	item	13,29,27,19,15,4
+B	Vanguard Belt	item	8,34,93,58,4
+B	Variscite Blade	item	24,6,7,3,4
+B	Varnished Coat	item	17,37,15,4
+B	Velour Boots	item	36,27,8,20,15,4
+B	Velour Gloves	item	36,27,8,14,15,4
+B	Velvet Gloves	item	13,14,15,4
+B	Velvet Slippers	item	13,20,15,4
+B	Vermillion Ring	item	8,34,94,23,4
+B	Vile Arrow Quiver	item	39,4
+B	Vile Staff	item	63,46,56,1,2,3,4
+B	Vine Circlet	item	13,28,15,4
+B	Viridian Jewel	jewel	59,61,65,8,95,4
+B	Visored Sallet	item	43,28,15,4
+B	Void Axe	item	27,0,1,2,3,4
+B	Void Fangs	item	8,9,44,6,7,3,4
+B	Void Sceptre	item	5,27,5,6,7,3,4
+B	Vulture Talisman	item	33,16,4
+B	Walnut Spirit Shield	item	13,29,19,15,4
+B	War Axe	item	0,6,7,3,4
+B	War Buckler	item	36,47,19,15,4
+B	War Hammer	item	25,6,7,3,4
+B	War Plate	item	26,37,15,4
+B	War Sword	item	24,6,7,3,4
+B	Warlock Boots	item	13,27,8,20,15,4
+B	Warlock Gloves	item	13,27,8,14,15,4
+B	Watcher Talisman	item	33,16,4
+B	Waxed Garb	item	17,37,15,4
+B	Wereclaw Talisman	item	33,16,4
+B	Whalebone Rapier	item	32,24,6,7,3,4
+B	Widowsilk Robe	item	13,27,37,15,4
+B	Wild Leather	item	36,37,15,4
+B	Windbreak Boots	item	36,8,20,15,4
+B	Winter Crown	item	17,8,28,15,4
+B	Wolf Alpha Talisman	item	33,16,4
+B	Wolf Pelt	item	36,28,15,4
+B	Woodful Staff	item	46,1,2,3,4
+B	Woodsplitter	item	0,1,2,3,4
+B	Wool Gloves	item	13,14,15,4
+B	Wool Shoes	item	13,20,15,4
+B	Wraith Axe	item	0,6,7,3,4
+B	Wraith Sword	item	24,1,2,3,4
+B	Wrapped Boots	item	17,20,15,4
+B	Wrapped Mitts	item	17,14,15,4
+B	Wrist Chopper	item	0,6,7,3,4
+B	Writhing Talisman	item	33,16,4
+B	Wyrm Mace	item	8,48,25,6,7,3,4
+B	Wyrmbone Rapier	item	32,24,6,7,3,4
+B	Wyrmscale Boots	item	43,20,15,4
+B	Wyrmscale Doublet	item	43,37,15,4
+B	Wyrmscale Gauntlets	item	43,14,15,4
+B	Wyvernscale Boots	item	43,27,8,20,15,4
+B	Wyvernscale Gauntlets	item	43,27,8,14,15,4
+B	Yew Spirit Shield	item	13,29,19,15,4
+B	Zealot Boots	item	30,20,15,4
+B	Zealot Gloves	item	30,14,15,4
+B	Zealot Helmet	item	30,28,15,4
+B	Zodiac Leather	item	36,27,37,15,4
+M	AbyssJewelChillEffect	s	abyss_jewel	of Chilling	70:0,4:500
+M	AbyssJewelLife	p	abyss_jewel	Hale	4:3000
+M	AbyssJewelLife	p	abyss_jewel	Healthy	4:3000
+M	AbyssJewelLife	p	abyss_jewel	Sanguine	4:1000
+M	AbyssJewelLife	p	abyss_jewel	Stalwart	4:500
+M	AbyssJewelMana	p	abyss_jewel	Beryl	4:1000
+M	AbyssJewelMana	p	abyss_jewel	Cobalt	4:1000
+M	AbyssJewelMana	p	abyss_jewel	Azure	4:1000
+M	AbyssJewelMana	p	abyss_jewel	Sapphire	4:500
+M	AbyssJewelShockEffect	s	abyss_jewel	of Shocking	70:0,4:500
+M	AbyssMinionAttacksBleedOnHitChance	s	abyss_jewel	of Bloodletting	70:400,41:400,4:0
+M	AbyssMinionIgniteOnHitChance	s	abyss_jewel	of Combustion	70:400,41:400,4:0
+M	AbyssMinionPoisonOnHitChance	s	abyss_jewel	of Venom	70:400,41:400,4:0
+M	AccuracyAndCritsForJewel	s	jewel	of Deadliness	60:0,4:150
+M	AddedChaosDamageWithBows	p	abyss_jewel	Tainted	40:1250,84:350,41:350,4:0
+M	AddedChaosDamageWithBows	p	abyss_jewel	Clouded	40:1250,84:350,41:350,4:0
+M	AddedChaosDamageWithBows	p	abyss_jewel	Darkened	40:1250,84:350,41:350,4:0
+M	AddedChaosDamageWithBows	p	abyss_jewel	Malignant	40:500,84:125,41:125,4:0
+M	AddedChaosDamageWithBows	p	abyss_jewel	Vile	40:250,84:60,41:60,4:0
+M	AddedChaosDamageWithClaws	p	abyss_jewel	Tainted	44:1000,80:250,41:250,4:0
+M	AddedChaosDamageWithClaws	p	abyss_jewel	Clouded	44:1000,80:250,41:250,4:0
+M	AddedChaosDamageWithClaws	p	abyss_jewel	Darkened	44:1000,80:250,41:250,4:0
+M	AddedChaosDamageWithClaws	p	abyss_jewel	Malignant	44:500,80:125,41:125,4:0
+M	AddedChaosDamageWithClaws	p	abyss_jewel	Vile	44:250,80:60,41:60,4:0
+M	AddedChaosDamageWithDaggers	p	abyss_jewel	Tainted	21:1000,80:250,41:250,4:0
+M	AddedChaosDamageWithDaggers	p	abyss_jewel	Clouded	21:1000,80:250,41:250,4:0
+M	AddedChaosDamageWithDaggers	p	abyss_jewel	Darkened	21:1000,80:250,41:250,4:0
+M	AddedChaosDamageWithDaggers	p	abyss_jewel	Malignant	21:500,80:125,41:125,4:0
+M	AddedChaosDamageWithDaggers	p	abyss_jewel	Vile	21:250,80:60,41:60,4:0
+M	AddedChaosSuffix	s	abyss_jewel	of Malevolence	80:750,84:750,41:750,4:0
+M	AddedChaosSuffix	s	abyss_jewel	of Malice	80:750,84:750,41:750,4:0
+M	AddedChaosSuffix	s	abyss_jewel	of Sin	80:375,84:375,41:375,4:0
+M	AddedColdDamageWithAxes	p	abyss_jewel	Frosted	0:2000,80:500,41:500,4:0
+M	AddedColdDamageWithAxes	p	abyss_jewel	Freezing	0:2000,80:500,41:500,4:0
+M	AddedColdDamageWithAxes	p	abyss_jewel	Frozen	0:2000,80:500,41:500,4:0
+M	AddedColdDamageWithAxes	p	abyss_jewel	Glaciated	0:2000,80:500,41:500,4:0
+M	AddedColdDamageWithAxes	p	abyss_jewel	Polar	0:1000,80:250,41:250,4:0
+M	AddedColdDamageWithAxes	p	abyss_jewel	Entombing	0:500,80:125,41:125,4:0
+M	AddedColdDamageWithBows	p	abyss_jewel	Frosted	40:2500,84:700,41:700,4:0
+M	AddedColdDamageWithBows	p	abyss_jewel	Freezing	40:2500,84:700,41:700,4:0
+M	AddedColdDamageWithBows	p	abyss_jewel	Frozen	40:2500,84:700,41:700,4:0
+M	AddedColdDamageWithBows	p	abyss_jewel	Glaciated	40:2500,84:700,41:700,4:0
+M	AddedColdDamageWithBows	p	abyss_jewel	Polar	40:1250,84:350,41:350,4:0
+M	AddedColdDamageWithBows	p	abyss_jewel	Entombing	40:500,84:175,41:175,4:0
+M	AddedColdDamageWithClaws	p	abyss_jewel	Frosted	44:2000,80:500,41:500,4:0
+M	AddedColdDamageWithClaws	p	abyss_jewel	Freezing	44:2000,80:500,41:500,4:0
+M	AddedColdDamageWithClaws	p	abyss_jewel	Frozen	44:2000,80:500,41:500,4:0
+M	AddedColdDamageWithClaws	p	abyss_jewel	Glaciated	44:2000,80:500,41:500,4:0
+M	AddedColdDamageWithClaws	p	abyss_jewel	Polar	44:1000,80:250,41:250,4:0
+M	AddedColdDamageWithClaws	p	abyss_jewel	Entombing	44:500,80:125,41:125,4:0
+M	AddedColdDamageWithDaggers	p	abyss_jewel	Frosted	21:2000,80:500,41:500,4:0
+M	AddedColdDamageWithDaggers	p	abyss_jewel	Freezing	21:2000,80:500,41:500,4:0
+M	AddedColdDamageWithDaggers	p	abyss_jewel	Frozen	21:2000,80:500,41:500,4:0
+M	AddedColdDamageWithDaggers	p	abyss_jewel	Glaciated	21:2000,80:500,41:500,4:0
+M	AddedColdDamageWithDaggers	p	abyss_jewel	Polar	21:1000,80:250,41:250,4:0
+M	AddedColdDamageWithDaggers	p	abyss_jewel	Entombing	21:500,80:125,41:125,4:0
+M	AddedColdDamageWithMaces	p	abyss_jewel	Frosted	25:2000,80:500,41:500,4:0
+M	AddedColdDamageWithMaces	p	abyss_jewel	Freezing	25:2000,80:500,41:500,4:0
+M	AddedColdDamageWithMaces	p	abyss_jewel	Frozen	25:2000,80:500,41:500,4:0
+M	AddedColdDamageWithMaces	p	abyss_jewel	Glaciated	25:2000,80:500,41:500,4:0
+M	AddedColdDamageWithMaces	p	abyss_jewel	Polar	25:1000,80:250,41:250,4:0
+M	AddedColdDamageWithMaces	p	abyss_jewel	Entombing	25:500,80:125,41:125,4:0
+M	AddedColdDamageWithStaves	p	abyss_jewel	Frosted	46:2000,80:500,41:500,4:0
+M	AddedColdDamageWithStaves	p	abyss_jewel	Freezing	46:2000,80:500,41:500,4:0
+M	AddedColdDamageWithStaves	p	abyss_jewel	Frozen	46:2000,80:500,41:500,4:0
+M	AddedColdDamageWithStaves	p	abyss_jewel	Glaciated	46:2000,80:500,41:500,4:0
+M	AddedColdDamageWithStaves	p	abyss_jewel	Polar	46:1000,80:250,41:250,4:0
+M	AddedColdDamageWithStaves	p	abyss_jewel	Entombing	46:500,80:125,41:125,4:0
+M	AddedColdDamageWithSwords	p	abyss_jewel	Frosted	24:2000,80:500,41:500,4:0
+M	AddedColdDamageWithSwords	p	abyss_jewel	Freezing	24:2000,80:500,41:500,4:0
+M	AddedColdDamageWithSwords	p	abyss_jewel	Frozen	24:2000,80:500,41:500,4:0
+M	AddedColdDamageWithSwords	p	abyss_jewel	Glaciated	24:2000,80:500,41:500,4:0
+M	AddedColdDamageWithSwords	p	abyss_jewel	Polar	24:1000,80:250,41:250,4:0
+M	AddedColdDamageWithSwords	p	abyss_jewel	Entombing	24:500,80:125,41:125,4:0
+M	AddedColdDamageWithWands	p	abyss_jewel	Frosted	11:2350,84:350,41:350,4:0
+M	AddedColdDamageWithWands	p	abyss_jewel	Freezing	11:2350,84:350,41:350,4:0
+M	AddedColdDamageWithWands	p	abyss_jewel	Frozen	11:2350,84:350,41:350,4:0
+M	AddedColdDamageWithWands	p	abyss_jewel	Glaciated	11:2350,84:350,41:350,4:0
+M	AddedColdDamageWithWands	p	abyss_jewel	Polar	11:1175,84:175,41:175,4:0
+M	AddedColdDamageWithWands	p	abyss_jewel	Entombing	11:553,84:87,41:87,4:0
+M	AddedColdSuffix	s	abyss_jewel	of Sleet	80:1000,84:1000,41:1000,4:0
+M	AddedColdSuffix	s	abyss_jewel	of Ice	80:1000,84:1000,41:1000,4:0
+M	AddedColdSuffix	s	abyss_jewel	of Rime	80:1000,84:1000,41:1000,4:0
+M	AddedColdSuffix	s	abyss_jewel	of Floe	80:500,84:500,41:500,4:0
+M	AddedColdSuffix	s	abyss_jewel	of Glaciation	80:300,84:300,41:300,4:0
+M	AddedFireDamageWithAxes	p	abyss_jewel	Heated	0:2000,80:500,41:500,4:0
+M	AddedFireDamageWithAxes	p	abyss_jewel	Flaming	0:2000,80:500,41:500,4:0
+M	AddedFireDamageWithAxes	p	abyss_jewel	Scorching	0:2000,80:500,41:500,4:0
+M	AddedFireDamageWithAxes	p	abyss_jewel	Incinerating	0:2000,80:500,41:500,4:0
+M	AddedFireDamageWithAxes	p	abyss_jewel	Blasting	0:1000,80:250,41:250,4:0
+M	AddedFireDamageWithAxes	p	abyss_jewel	Cremating	0:500,80:125,41:125,4:0
+M	AddedFireDamageWithClaws	p	abyss_jewel	Heated	44:2000,80:500,41:500,4:0
+M	AddedFireDamageWithClaws	p	abyss_jewel	Flaming	44:2000,80:500,41:500,4:0
+M	AddedFireDamageWithClaws	p	abyss_jewel	Scorching	44:2000,80:500,41:500,4:0
+M	AddedFireDamageWithClaws	p	abyss_jewel	Incinerating	44:2000,80:500,41:500,4:0
+M	AddedFireDamageWithClaws	p	abyss_jewel	Blasting	44:1000,80:250,41:250,4:0
+M	AddedFireDamageWithClaws	p	abyss_jewel	Cremating	44:500,80:125,41:125,4:0
+M	AddedFireDamageWithDaggers	p	abyss_jewel	Heated	21:2000,80:500,41:500,4:0
+M	AddedFireDamageWithDaggers	p	abyss_jewel	Flaming	21:2000,80:500,41:500,4:0
+M	AddedFireDamageWithDaggers	p	abyss_jewel	Scorching	21:2000,80:500,41:500,4:0
+M	AddedFireDamageWithDaggers	p	abyss_jewel	Incinerating	21:2000,80:500,41:500,4:0
+M	AddedFireDamageWithDaggers	p	abyss_jewel	Blasting	21:1000,80:250,41:250,4:0
+M	AddedFireDamageWithDaggers	p	abyss_jewel	Cremating	21:500,80:125,41:125,4:0
+M	AddedFireDamageWithMaces	p	abyss_jewel	Heated	25:2000,80:500,41:500,4:0
+M	AddedFireDamageWithMaces	p	abyss_jewel	Flaming	25:2000,80:500,41:500,4:0
+M	AddedFireDamageWithMaces	p	abyss_jewel	Scorching	25:2000,80:500,41:500,4:0
+M	AddedFireDamageWithMaces	p	abyss_jewel	Incinerating	25:2000,80:500,41:500,4:0
+M	AddedFireDamageWithMaces	p	abyss_jewel	Blasting	25:1000,80:250,41:250,4:0
+M	AddedFireDamageWithMaces	p	abyss_jewel	Cremating	25:500,80:125,41:125,4:0
+M	AddedFireDamageWithStaves	p	abyss_jewel	Heated	46:2000,80:500,41:500,4:0
+M	AddedFireDamageWithStaves	p	abyss_jewel	Flaming	46:2000,80:500,41:500,4:0
+M	AddedFireDamageWithStaves	p	abyss_jewel	Scorching	46:2000,80:500,41:500,4:0
+M	AddedFireDamageWithStaves	p	abyss_jewel	Incinerating	46:2000,80:500,41:500,4:0
+M	AddedFireDamageWithStaves	p	abyss_jewel	Blasting	46:1000,80:250,41:250,4:0
+M	AddedFireDamageWithStaves	p	abyss_jewel	Cremating	46:500,80:125,41:125,4:0
+M	AddedFireDamageWithSwords	p	abyss_jewel	Heated	24:2000,80:500,41:500,4:0
+M	AddedFireDamageWithSwords	p	abyss_jewel	Flaming	24:2000,80:500,41:500,4:0
+M	AddedFireDamageWithSwords	p	abyss_jewel	Scorching	24:2000,80:500,41:500,4:0
+M	AddedFireDamageWithSwords	p	abyss_jewel	Incinerating	24:2000,80:500,41:500,4:0
+M	AddedFireDamageWithSwords	p	abyss_jewel	Blasting	24:1000,80:250,41:250,4:0
+M	AddedFireDamageWithSwords	p	abyss_jewel	Cremating	24:500,80:125,41:125,4:0
+M	AddedFireDamageWithWands	p	abyss_jewel	Heated	11:2350,84:350,41:350,4:0
+M	AddedFireDamageWithWands	p	abyss_jewel	Flaming	11:2350,84:350,41:350,4:0
+M	AddedFireDamageWithWands	p	abyss_jewel	Scorching	11:2350,84:350,41:350,4:0
+M	AddedFireDamageWithWands	p	abyss_jewel	Incinerating	11:2350,84:350,41:350,4:0
+M	AddedFireDamageWithWands	p	abyss_jewel	Blasting	11:1175,84:175,41:175,4:0
+M	AddedFireDamageWithWands	p	abyss_jewel	Cremating	11:553,84:87,41:87,4:0
+M	AddedFireSuffix	s	abyss_jewel	of Coals	80:1000,84:1000,41:1000,4:0
+M	AddedFireSuffix	s	abyss_jewel	of Cinders	80:1000,84:1000,41:1000,4:0
+M	AddedFireSuffix	s	abyss_jewel	of Flames	80:1000,84:1000,41:1000,4:0
+M	AddedFireSuffix	s	abyss_jewel	of Immolation	80:500,84:500,41:500,4:0
+M	AddedFireSuffix	s	abyss_jewel	of Ashes	80:300,84:300,41:300,4:0
+M	AddedLightningDamageWithAxes	p	abyss_jewel	Humming	0:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithAxes	p	abyss_jewel	Sparking	0:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithAxes	p	abyss_jewel	Arcing	0:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithAxes	p	abyss_jewel	Shocking	0:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithAxes	p	abyss_jewel	Discharging	0:1000,80:250,41:250,4:0
+M	AddedLightningDamageWithAxes	p	abyss_jewel	Electrocuting	0:500,80:125,41:125,4:0
+M	AddedLightningDamageWithBows	p	abyss_jewel	Humming	40:2500,84:700,41:700,4:0
+M	AddedLightningDamageWithBows	p	abyss_jewel	Sparking	40:2500,84:700,41:700,4:0
+M	AddedLightningDamageWithBows	p	abyss_jewel	Arcing	40:2500,84:700,41:700,4:0
+M	AddedLightningDamageWithBows	p	abyss_jewel	Shocking	40:2500,84:700,41:700,4:0
+M	AddedLightningDamageWithBows	p	abyss_jewel	Discharging	40:1250,84:350,41:350,4:0
+M	AddedLightningDamageWithBows	p	abyss_jewel	Electrocuting	40:625,84:175,41:175,4:0
+M	AddedLightningDamageWithClaws	p	abyss_jewel	Humming	44:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithClaws	p	abyss_jewel	Sparking	44:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithClaws	p	abyss_jewel	Arcing	44:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithClaws	p	abyss_jewel	Shocking	44:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithClaws	p	abyss_jewel	Discharging	44:1000,80:250,41:250,4:0
+M	AddedLightningDamageWithClaws	p	abyss_jewel	Electrocuting	44:500,80:125,41:125,4:0
+M	AddedLightningDamageWithDaggers	p	abyss_jewel	Humming	21:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithDaggers	p	abyss_jewel	Sparking	21:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithDaggers	p	abyss_jewel	Arcing	21:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithDaggers	p	abyss_jewel	Shocking	21:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithDaggers	p	abyss_jewel	Discharging	21:1000,80:250,41:250,4:0
+M	AddedLightningDamageWithDaggers	p	abyss_jewel	Electrocuting	21:500,80:125,41:125,4:0
+M	AddedLightningDamageWithMaces	p	abyss_jewel	Humming	25:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithMaces	p	abyss_jewel	Sparking	25:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithMaces	p	abyss_jewel	Arcing	25:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithMaces	p	abyss_jewel	Shocking	25:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithMaces	p	abyss_jewel	Discharging	25:1000,80:250,41:250,4:0
+M	AddedLightningDamageWithMaces	p	abyss_jewel	Electrocuting	25:500,80:125,41:125,4:0
+M	AddedLightningDamageWithStaves	p	abyss_jewel	Humming	46:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithStaves	p	abyss_jewel	Sparking	46:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithStaves	p	abyss_jewel	Arcing	46:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithStaves	p	abyss_jewel	Shocking	46:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithStaves	p	abyss_jewel	Discharging	46:1000,80:250,41:250,4:0
+M	AddedLightningDamageWithStaves	p	abyss_jewel	Electrocuting	46:500,80:125,41:125,4:0
+M	AddedLightningDamageWithSwords	p	abyss_jewel	Humming	24:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithSwords	p	abyss_jewel	Sparking	24:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithSwords	p	abyss_jewel	Arcing	24:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithSwords	p	abyss_jewel	Shocking	24:2000,80:500,41:500,4:0
+M	AddedLightningDamageWithSwords	p	abyss_jewel	Discharging	24:1000,80:250,41:250,4:0
+M	AddedLightningDamageWithSwords	p	abyss_jewel	Electrocuting	24:500,80:125,41:125,4:0
+M	AddedLightningDamageWithWands	p	abyss_jewel	Humming	11:2350,84:350,41:350,4:0
+M	AddedLightningDamageWithWands	p	abyss_jewel	Sparking	11:2350,84:350,41:350,4:0
+M	AddedLightningDamageWithWands	p	abyss_jewel	Arcing	11:2350,84:350,41:350,4:0
+M	AddedLightningDamageWithWands	p	abyss_jewel	Shocking	11:2350,84:350,41:350,4:0
+M	AddedLightningDamageWithWands	p	abyss_jewel	Discharging	11:1175,84:175,41:175,4:0
+M	AddedLightningDamageWithWands	p	abyss_jewel	Electrocuting	11:553,84:87,41:87,4:0
+M	AddedLightningSuffix	s	abyss_jewel	of Static	80:1000,84:1000,41:1000,4:0
+M	AddedLightningSuffix	s	abyss_jewel	of Electricity	80:1000,84:1000,41:1000,4:0
+M	AddedLightningSuffix	s	abyss_jewel	of Voltage	80:1000,84:1000,41:1000,4:0
+M	AddedLightningSuffix	s	abyss_jewel	of Discharge	80:500,84:500,41:500,4:0
+M	AddedLightningSuffix	s	abyss_jewel	of Arcing	80:300,84:300,41:300,4:0
+M	AddedManaRegeneration	p	abyss_jewel	Energising	4:350
+M	AddedManaRegeneration	p	abyss_jewel	Inspirational	4:350
+M	AddedManaRegeneration	p	abyss_jewel	Resonating	4:350
+M	AddedPhysicalDamageWithAxes	p	abyss_jewel	Glinting	0:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithAxes	p	abyss_jewel	Gleaming	0:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithAxes	p	abyss_jewel	Tempered	0:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithAxes	p	abyss_jewel	Flaring	0:1000,80:250,41:250,4:0
+M	AddedPhysicalDamageWithAxes	p	abyss_jewel	Acuminate	0:500,80:125,41:125,4:0
+M	AddedPhysicalDamageWithClaws	p	abyss_jewel	Glinting	44:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithClaws	p	abyss_jewel	Gleaming	44:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithClaws	p	abyss_jewel	Tempered	44:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithClaws	p	abyss_jewel	Flaring	44:1000,80:250,41:250,4:0
+M	AddedPhysicalDamageWithClaws	p	abyss_jewel	Acuminate	44:500,80:125,41:125,4:0
+M	AddedPhysicalDamageWithDaggers	p	abyss_jewel	Glinting	21:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithDaggers	p	abyss_jewel	Gleaming	21:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithDaggers	p	abyss_jewel	Tempered	21:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithDaggers	p	abyss_jewel	Flaring	21:1000,80:250,41:250,4:0
+M	AddedPhysicalDamageWithDaggers	p	abyss_jewel	Acuminate	21:500,80:125,41:125,4:0
+M	AddedPhysicalDamageWithMaces	p	abyss_jewel	Glinting	25:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithMaces	p	abyss_jewel	Gleaming	25:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithMaces	p	abyss_jewel	Tempered	25:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithMaces	p	abyss_jewel	Flaring	25:1000,80:250,41:250,4:0
+M	AddedPhysicalDamageWithMaces	p	abyss_jewel	Acuminate	25:500,80:125,41:125,4:0
+M	AddedPhysicalDamageWithStaves	p	abyss_jewel	Glinting	46:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithStaves	p	abyss_jewel	Gleaming	46:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithStaves	p	abyss_jewel	Tempered	46:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithStaves	p	abyss_jewel	Flaring	46:1000,80:250,41:250,4:0
+M	AddedPhysicalDamageWithStaves	p	abyss_jewel	Acuminate	46:500,80:125,41:125,4:0
+M	AddedPhysicalDamageWithSwords	p	abyss_jewel	Glinting	24:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithSwords	p	abyss_jewel	Gleaming	24:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithSwords	p	abyss_jewel	Tempered	24:2000,80:500,41:500,4:0
+M	AddedPhysicalDamageWithSwords	p	abyss_jewel	Flaring	24:1000,80:250,41:250,4:0
+M	AddedPhysicalDamageWithSwords	p	abyss_jewel	Acuminate	24:500,80:125,41:125,4:0
+M	AddedPhysicalDamageWithWands	p	abyss_jewel	Glinting	11:2350,84:350,41:350,4:0
+M	AddedPhysicalDamageWithWands	p	abyss_jewel	Gleaming	11:2350,84:350,41:350,4:0
+M	AddedPhysicalDamageWithWands	p	abyss_jewel	Tempered	11:2350,84:350,41:350,4:0
+M	AddedPhysicalDamageWithWands	p	abyss_jewel	Flaring	11:1000,84:150,41:150,4:0
+M	AddedPhysicalDamageWithWands	p	abyss_jewel	Acuminate	11:500,84:75,41:75,4:0
+M	AddedPhysicalSuffix	s	abyss_jewel	of Weight	80:1000,84:1000,41:1000,4:0
+M	AddedPhysicalSuffix	s	abyss_jewel	of Impact	80:1000,84:1000,41:1000,4:0
+M	AddedPhysicalSuffix	s	abyss_jewel	of Collision	80:500,84:500,41:500,4:0
+M	AdditionalArrows	s	item	of Splintering	40:1000,4:0
+M	AdditionalArrows	s	item	of Splintering	39:250,4:0
+M	AdditionalArrows	s	item	of Many	40:100,4:0
+M	AdditionalBlock	s	item	of the Zealot	63:1000,46:500,4:0
+M	AdditionalBlock	s	item	of the Militant	63:1000,46:500,4:0
+M	AdditionalBlock	s	item	of the Radical	63:1000,46:500,4:0
+M	AdditionalBlock	s	item	of the Devotee	63:1000,46:500,4:0
+M	AdditionalBlock	s	item	of the Idealogue	63:1000,46:500,4:0
+M	AdditionalBlock	s	item	of the Sectarian	63:1000,46:500,4:0
+M	AdditionalSpellBlock	s	item	of the Mystic	63:500,46:1000,4:0
+M	AdditionalSpellBlock	s	item	of the Clairvoyant	63:500,46:1000,4:0
+M	AdditionalSpellBlock	s	item	of the Enigmatic	63:500,46:1000,4:0
+M	AdditionalSpellBlock	s	item	of the Enlightened	63:500,46:1000,4:0
+M	AdditionalSpellBlock	s	item	of the Seer	63:500,46:1000,4:0
+M	AdditionalSpellBlock	s	item	of the Oracle	63:500,46:1000,4:0
+M	AfflictionJewelSmallPassivesGrantArmour	p	affliction_jewel	Lacquered	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantArmour	p	affliction_jewel	Lacquered	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantArmour	p	affliction_jewel	Studded	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantArmour	p	affliction_jewel	Studded	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantArmour	p	affliction_jewel	Ribbed	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantArmour	p	affliction_jewel	Fortified	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantArmour	p	affliction_jewel	Ribbed	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantArmour	p	affliction_jewel	Plated	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantAttributes	s	affliction_jewel	of the Cloud	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantAttributes	s	affliction_jewel	of the Cloud	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantAttributes	s	affliction_jewel	of the Sky	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantAttributes	s	affliction_jewel	of the Sky	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantAttributes	s	affliction_jewel	of the Meteor	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantAttributes	s	affliction_jewel	of the Comet	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantAttributes	s	affliction_jewel	of the Heavens	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantAttributes	s	affliction_jewel	of the Meteor	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantChaosRes	s	affliction_jewel	of the Lost	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantChaosRes	s	affliction_jewel	of the Lost	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantChaosRes	s	affliction_jewel	of Banishment	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantChaosRes	s	affliction_jewel	of Banishment	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantChaosRes	s	affliction_jewel	of Eviction	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantChaosRes	s	affliction_jewel	of Expulsion	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantChaosRes	s	affliction_jewel	of Eviction	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantChaosRes	s	affliction_jewel	of Exile	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantColdRes	s	affliction_jewel	of the Inuit	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantColdRes	s	affliction_jewel	of the Inuit	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantColdRes	s	affliction_jewel	of the Seal	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantColdRes	s	affliction_jewel	of the Seal	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantColdRes	s	affliction_jewel	of the Penguin	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantColdRes	s	affliction_jewel	of the Yeti	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantColdRes	s	affliction_jewel	of the Penguin	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantColdRes	s	affliction_jewel	of the Walrus	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantDamage	p	affliction_jewel	Harmful	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantDamage	p	affliction_jewel	Harmful	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantDamage	p	affliction_jewel	Hazardous	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantDamage	p	affliction_jewel	Hazardous	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantDamage	p	affliction_jewel	Dangerous	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantDamage	p	affliction_jewel	Destructive	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantDamage	p	affliction_jewel	Dangerous	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantDamage	p	affliction_jewel	Deadly	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantDex	s	affliction_jewel	of the Mongoose	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantDex	s	affliction_jewel	of the Mongoose	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantDex	s	affliction_jewel	of the Lynx	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantDex	s	affliction_jewel	of the Lynx	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantDex	s	affliction_jewel	of the Fox	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantDex	s	affliction_jewel	of the Falcon	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantDex	s	affliction_jewel	of the Panther	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantDex	s	affliction_jewel	of the Fox	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantElementalRes	s	affliction_jewel	of the Crystal	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantElementalRes	s	affliction_jewel	of the Crystal	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantElementalRes	s	affliction_jewel	of the Prism	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantElementalRes	s	affliction_jewel	of the Prism	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantElementalRes	s	affliction_jewel	of the Kaleidoscope	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantElementalRes	s	affliction_jewel	of Variegation	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantElementalRes	s	affliction_jewel	of the Rainbow	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantElementalRes	s	affliction_jewel	of the Kaleidoscope	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantES	p	affliction_jewel	Shining	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantES	p	affliction_jewel	Shining	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantES	p	affliction_jewel	Glimmering	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantES	p	affliction_jewel	Glimmering	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantES	p	affliction_jewel	Glowing	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantES	p	affliction_jewel	Radiating	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantES	p	affliction_jewel	Glowing	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantES	p	affliction_jewel	Pulsing	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantEvasion	p	affliction_jewel	Agile	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantEvasion	p	affliction_jewel	Agile	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantEvasion	p	affliction_jewel	Dancer's	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantEvasion	p	affliction_jewel	Dancer's	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantEvasion	p	affliction_jewel	Acrobat's	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantEvasion	p	affliction_jewel	Fleet	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantEvasion	p	affliction_jewel	Blurred	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantEvasion	p	affliction_jewel	Acrobat's	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantFireRes	s	affliction_jewel	of the Whelpling	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantFireRes	s	affliction_jewel	of the Whelpling	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantFireRes	s	affliction_jewel	of the Salamander	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantFireRes	s	affliction_jewel	of the Salamander	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantFireRes	s	affliction_jewel	of the Drake	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantFireRes	s	affliction_jewel	of the Kiln	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantFireRes	s	affliction_jewel	of the Drake	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantFireRes	s	affliction_jewel	of the Furnace	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantInt	s	affliction_jewel	of the Pupil	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantInt	s	affliction_jewel	of the Pupil	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantInt	s	affliction_jewel	of the Student	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantInt	s	affliction_jewel	of the Student	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantInt	s	affliction_jewel	of the Prodigy	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantInt	s	affliction_jewel	of the Augur	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantInt	s	affliction_jewel	of the Philosopher	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantInt	s	affliction_jewel	of the Prodigy	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantLife	p	affliction_jewel	Hale	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantLife	p	affliction_jewel	Hale	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantLife	p	affliction_jewel	Healthy	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantLife	p	affliction_jewel	Healthy	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantLife	p	affliction_jewel	Sanguine	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantLife	p	affliction_jewel	Stalwart	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantLife	p	affliction_jewel	Sanguine	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantLife	p	affliction_jewel	Stout	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantLifeRegen	s	affliction_jewel	of the Newt	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantLifeRegen	s	affliction_jewel	of the Newt	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantLifeRegen	s	affliction_jewel	of the Lizard	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantLifeRegen	s	affliction_jewel	of the Lizard	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantLifeRegen	s	affliction_jewel	of the Flatworm	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantLifeRegen	s	affliction_jewel	of the Starfish	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantLifeRegen	s	affliction_jewel	of the Flatworm	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantLifeRegen	s	affliction_jewel	of the Hydra	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantLightningRes	s	affliction_jewel	of the Cloud	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantLightningRes	s	affliction_jewel	of the Cloud	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantLightningRes	s	affliction_jewel	of the Squall	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantLightningRes	s	affliction_jewel	of the Squall	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantLightningRes	s	affliction_jewel	of the Storm	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantLightningRes	s	affliction_jewel	of the Thunderhead	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantLightningRes	s	affliction_jewel	of the Tempest	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantLightningRes	s	affliction_jewel	of the Storm	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantMana	p	affliction_jewel	Beryl	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantMana	p	affliction_jewel	Beryl	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantMana	p	affliction_jewel	Cobalt	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantMana	p	affliction_jewel	Cobalt	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantMana	p	affliction_jewel	Azure	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantMana	p	affliction_jewel	Sapphire	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantMana	p	affliction_jewel	Cerulean	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantMana	p	affliction_jewel	Azure	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantManaRegen	s	affliction_jewel	of Excitement	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantManaRegen	s	affliction_jewel	of Excitement	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantManaRegen	s	affliction_jewel	of Joy	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantManaRegen	s	affliction_jewel	of Joy	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantManaRegen	s	affliction_jewel	of Elation	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantManaRegen	s	affliction_jewel	of Bliss	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantManaRegen	s	affliction_jewel	of Elation	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesGrantManaRegen	s	affliction_jewel	of Euphoria	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantStr	s	affliction_jewel	of the Brute	77:500,79:500,4:0
+M	AfflictionJewelSmallPassivesGrantStr	s	affliction_jewel	of the Brute	85:500,4:0
+M	AfflictionJewelSmallPassivesGrantStr	s	affliction_jewel	of the Wrestler	85:400,4:0
+M	AfflictionJewelSmallPassivesGrantStr	s	affliction_jewel	of the Wrestler	77:400,79:400,4:0
+M	AfflictionJewelSmallPassivesGrantStr	s	affliction_jewel	of the Bear	85:300,4:0
+M	AfflictionJewelSmallPassivesGrantStr	s	affliction_jewel	of the Lion	85:200,4:0
+M	AfflictionJewelSmallPassivesGrantStr	s	affliction_jewel	of the Gorilla	85:100,4:0
+M	AfflictionJewelSmallPassivesGrantStr	s	affliction_jewel	of the Bear	77:300,79:300,4:0
+M	AfflictionJewelSmallPassivesHaveIncreasedEffect	p	affliction_jewel	Potent	4:500
+M	AfflictionJewelSmallPassivesHaveIncreasedEffect	p	affliction_jewel	Powerful	4:300
+M	AllAttributes	s	item	of the Clouds	16:800,23:400,4:0
+M	AllAttributes	s	item	of the Sky	16:800,23:400,4:0
+M	AllAttributes	s	item	of the Meteor	16:800,23:400,4:0
+M	AllAttributes	s	item	of the Comet	16:800,23:400,4:0
+M	AllAttributes	s	item	of the Heavens	16:800,4:0
+M	AllAttributes	s	item	of the Galaxy	16:800,4:0
+M	AllAttributes	s	item	of the Universe	16:800,4:0
+M	AllAttributes	s	item	of the Infinite	16:800,4:0
+M	AllAttributes	s	item	of the Multiverse	16:800,4:0
+M	AllAttributesForJewel	s	jewel	of Adaption	4:300
+M	AllAttributesForJewel	s	abyss_jewel	of Adaption	4:250
+M	AllResistances	s	item	of the Crystal	19:1000,23:1000,16:1000,4:0
+M	AllResistances	s	item	of the Prism	19:1000,23:1000,16:1000,4:0
+M	AllResistances	s	item	of the Kaleidoscope	19:1000,23:1000,16:1000,4:0
+M	AllResistances	s	item	of Variegation	19:1000,23:1000,16:1000,4:0
+M	AllResistances	s	item	of the Rainbow	19:1000,23:1000,16:1000,4:0
+M	AllResistances	s	item	of the Span	19:1000,16:1000,4:0
+M	AllResistancesForJewel	s	abyss_jewel	of Resistance	4:200
+M	AllResistancesForJewel	s	jewel	of Resistance	4:300
+M	AreaDamageForJewel	s	jewel	of Blasting	4:500
+M	AttackAndCastSpeedForJewel	s	jewel	of Zeal	4:350
+M	AttackerTakesDamageNoRange	p	item	Thorny	37:1000,19:1000,58:1000,28:1000,4:0
+M	AttackerTakesDamageNoRange	p	item	Spiny	37:1000,19:1000,58:1000,28:1000,4:0
+M	AttackerTakesDamageNoRange	p	item	Barbed	37:1000,19:1000,4:0
+M	AttackerTakesDamageNoRange	p	item	Jagged	37:1000,19:1000,4:0
+M	AttacksBlindOnHitChance	s	abyss_jewel	of Blinding	84:800,80:800,41:800,4:0
+M	AttacksBlindOnHitChance	s	abyss_jewel	of Blinding	84:400,80:400,41:400,4:0
+M	AttackSpeedIfCriticalStrikeDealtRecently	s	abyss_jewel	of Opportunity	80:500,84:500,75:250,70:0,41:375,4:0
+M	AttackSpeedWhileDualWieldingForJewel	p	jewel	Harmonic	4:500
+M	AttackSpeedWithAShieldForJewel	p	jewel	Charging	65:500,4:400
+M	AttacksTauntOnHitChance	s	abyss_jewel	of Taunting	80:800,41:800,4:0
+M	AttacksTauntOnHitChance	s	abyss_jewel	of Taunting	80:400,41:400,4:0
+M	AvoidElementalStatusAilments	s	item	of Stoicism	19:1000,4:0
+M	AvoidElementalStatusAilments	s	item	of Resolve	19:1000,4:0
+M	AvoidElementalStatusAilments	s	item	of Fortitude	19:1000,4:0
+M	AvoidElementalStatusAilments	s	item	of Will	19:1000,4:0
+M	AvoidIgnite	s	abyss_jewel	of Nonflammability	4:300
+M	AvoidIgnite	s	abyss_jewel	of Fireproofing	4:150
+M	AvoidShockForJewel	s	abyss_jewel	of Insulating	4:300
+M	AvoidShockForJewel	s	abyss_jewel	of the Lightning Rod	4:150
+M	AvoidStun	s	abyss_jewel	of Balance	4:300
+M	AvoidStun	s	abyss_jewel	of Poise	4:150
+M	AxeAttackSpeedForJewel	p	jewel	Cleaving	0:500,65:500,4:0
+M	BeltFlaskLifeRecoveryRate	p	item	Restoring	58:500,4:0
+M	BeltFlaskLifeRecoveryRate	p	item	Recovering	58:500,4:0
+M	BeltFlaskLifeRecoveryRate	p	item	Renewing	58:500,4:0
+M	BeltFlaskLifeRecoveryRate	p	item	Refreshing	58:500,4:0
+M	BeltFlaskLifeRecoveryRate	p	item	Rejuvenating	58:500,4:0
+M	BeltFlaskLifeRecoveryRate	p	item	Regenerating	58:500,4:0
+M	BeltFlaskManaRecoveryRate	p	item	Affecting	58:500,4:0
+M	BeltFlaskManaRecoveryRate	p	item	Stirring	58:500,4:0
+M	BeltFlaskManaRecoveryRate	p	item	Heartening	58:500,4:0
+M	BeltFlaskManaRecoveryRate	p	item	Exciting	58:500,4:0
+M	BeltFlaskManaRecoveryRate	p	item	Galvanizing	58:500,4:0
+M	BeltFlaskManaRecoveryRate	p	item	Inspiring	58:500,4:0
+M	BeltIncreasedFlaskChargesGained	s	item	of Refilling	58:500,4:0
+M	BeltIncreasedFlaskChargesGained	s	item	of Restocking	58:500,4:0
+M	BeltIncreasedFlaskChargesGained	s	item	of Replenishing	58:500,4:0
+M	BeltIncreasedFlaskChargesGained	s	item	of Pouring	58:500,4:0
+M	BeltIncreasedFlaskChargesGained	s	item	of Brimming	58:500,4:0
+M	BeltIncreasedFlaskChargesGained	s	item	of Overflowing	58:500,4:0
+M	BeltIncreasedFlaskDuration	p	jewel	Prolonging	4:250
+M	BeltIncreasedFlaskDuration	s	item	of Sipping	58:500,4:0
+M	BeltIncreasedFlaskDuration	s	item	of Tasting	58:500,4:0
+M	BeltIncreasedFlaskDuration	s	item	of Savouring	58:500,4:0
+M	BeltIncreasedFlaskDuration	s	item	of Relishing	58:500,4:0
+M	BeltIncreasedFlaskDuration	s	item	of Reveling	58:500,4:0
+M	BeltReducedFlaskChargesUsed	s	item	of Sipping	58:1000,4:0
+M	BleedChanceAndDurationForJewel	s	jewel	of Bleeding	61:250,4:350
+M	BleedDamageForJewel	s	jewel	of Haemophilia	61:250,4:500
+M	BlockDualWieldingForJewel	p	jewel	Parrying	46:0,4:350
+M	BlockShieldForJewel	p	jewel	Shielding	4:350
+M	BlockStaffForJewel	p	jewel	Deflecting	46:350,60:350,4:0
+M	BowAttackSpeedForJewel	p	jewel	Volleying	40:500,60:0,4:500
+M	BurningDamageForJewel	s	jewel	of Combusting	4:500
+M	CastSpeedIfCriticalStrikeDealtRecently	s	abyss_jewel	of Abuse	80:250,84:250,75:500,70:0,41:375,4:0
+M	CastSpeedIfMinionKilledRecently	s	abyss_jewel	of Retaliation	70:500,41:500,4:0
+M	CastSpeedWhileDualWieldingForJewel	p	jewel	Resonant	65:0,4:500
+M	CastSpeedWithAShieldForJewel	p	jewel	Warding	65:0,4:500
+M	CastSpeedWithAStaffForJewel	p	jewel	Wright's	46:500,65:0,4:500
+M	ChanceToAvoidBleeding	s	abyss_jewel	of Stemming	4:300
+M	ChanceToAvoidBleeding	s	abyss_jewel	of the Tourniquet	4:150
+M	ChanceToAvoidFreezeAndChill	s	abyss_jewel	of Warming	4:300
+M	ChanceToAvoidFreezeAndChill	s	abyss_jewel	of Heating	4:150
+M	ChanceToAvoidPoison	s	abyss_jewel	of Tolerance	4:300
+M	ChanceToAvoidPoison	s	abyss_jewel	of Immunity	4:150
+M	ChanceToBlockIfDamagedRecently	s	abyss_jewel	of Guarding	80:500,84:250,75:250,70:250,41:375,4:0
+M	ChanceToFreeze	s	item	of Freezing	5:1000,11:1000,4:0
+M	ChanceToFreeze	s	item	of Freezing	46:1000,4:0
+M	ChanceToFreeze	s	item	of Bleakness	46:1000,4:0
+M	ChanceToFreeze	s	item	of Bleakness	5:1000,11:1000,4:0
+M	ChanceToFreeze	s	item	of the Hyperboreal	5:500,11:500,4:0
+M	ChanceToFreeze	s	item	of the Hyperboreal	46:500,4:0
+M	ChancetoGainPhasingOnKill	s	abyss_jewel	of Phasing	84:1000,75:1000,41:1000,4:0
+M	ChancetoGainPhasingOnKill	s	abyss_jewel	of Phasing	84:500,75:500,41:500,4:0
+M	ChanceToGainUnholyMightOnKillAbyss	s	abyss_jewel	of Unholy Might	80:1000,41:1000,4:0
+M	ChanceToGainUnholyMightOnKillAbyss	s	abyss_jewel	of Unholy Might	80:500,41:500,4:0
+M	ChanceToIgnite	s	item	of Ignition	46:1000,4:0
+M	ChanceToIgnite	s	item	of Ignition	5:1000,11:1000,4:0
+M	ChanceToIgnite	s	item	of Combustion	46:1000,4:0
+M	ChanceToIgnite	s	item	of Combustion	5:1000,11:1000,4:0
+M	ChanceToIgnite	s	item	of Conflagration	46:500,4:0
+M	ChanceToIgnite	s	item	of Conflagration	5:500,11:500,4:0
+M	ChanceToShock	s	item	of Shocking	5:1000,11:1000,4:0
+M	ChanceToShock	s	item	of Shocking	46:1000,4:0
+M	ChanceToShock	s	item	of Zapping	46:1000,4:0
+M	ChanceToShock	s	item	of Zapping	5:1000,11:1000,4:0
+M	ChanceToShock	s	item	of Electrocution	46:500,4:0
+M	ChanceToShock	s	item	of Electrocution	5:500,11:500,4:0
+M	ChanceToSuppressSpells	s	item	of Rebuttal	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,36:1000,17:500,43:500,73:300,4:0
+M	ChanceToSuppressSpells	s	item	of Rebuttal	3:0,39:0,23:0,16:0,58:0,19:0,37:0,36:1000,17:500,43:500,73:300,4:0
+M	ChanceToSuppressSpells	s	item	of Snuffing	3:0,39:0,23:0,16:0,58:0,19:0,37:0,36:1000,17:500,43:500,73:300,4:0
+M	ChanceToSuppressSpells	s	item	of Snuffing	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,36:1000,17:500,43:500,73:300,4:0
+M	ChanceToSuppressSpells	s	item	of Revoking	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,36:1000,17:500,43:500,73:300,4:0
+M	ChanceToSuppressSpells	s	item	of Revoking	3:0,39:0,23:0,16:0,58:0,19:0,37:0,36:1000,17:500,43:500,73:300,4:0
+M	ChanceToSuppressSpells	s	item	of Abjuration	3:0,39:0,23:0,16:0,58:0,19:0,37:0,36:1000,17:500,43:500,73:300,4:0
+M	ChanceToSuppressSpells	s	item	of Abjuration	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,36:1000,17:500,43:500,73:300,4:0
+M	ChanceToSuppressSpells	s	item	of Nullification	3:0,39:0,23:0,16:0,58:0,19:0,37:0,36:1000,17:500,43:500,73:300,4:0
+M	ChanceToSuppressSpells	s	item	of Nullification	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,36:1000,17:500,43:500,73:300,4:0
+M	ChaosDamage	p	item	Malicious	39:125,4:0
+M	ChaosDamageForJewel	p	jewel	Chaotic	4:200
+M	ChaosDamageOverTimeMultiplier	s	jewel	of Atrophy	61:300,4:0
+M	ChaosDamageOverTimeMultiplier	s	item	of Waning	46:400,4:0
+M	ChaosDamageOverTimeMultiplier	s	item	of Waning	11:400,21:400,4:0
+M	ChaosDamageOverTimeMultiplier	s	item	of Wasting	11:300,21:300,4:0
+M	ChaosDamageOverTimeMultiplier	s	item	of Wasting	46:300,4:0
+M	ChaosDamageOverTimeMultiplier	s	item	of Deteriorating	46:200,4:0
+M	ChaosDamageOverTimeMultiplier	s	item	of Deteriorating	11:200,21:200,4:0
+M	ChaosDamageOverTimeMultiplier	s	item	of Atrophying	11:100,21:100,4:0
+M	ChaosDamageOverTimeMultiplier	s	item	of Atrophying	46:100,4:0
+M	ChaosDamageOverTimeMultiplier	s	item	of Disintegrating	46:50,4:0
+M	ChaosDamageOverTimeMultiplier	s	item	of Disintegrating	11:50,21:50,4:0
+M	ChaosResistance	s	item	of the Lost	15:250,23:250,16:250,58:250,39:250,4:0
+M	ChaosResistance	s	item	of Banishment	15:250,23:250,16:250,58:250,39:250,4:0
+M	ChaosResistance	s	item	of Eviction	15:250,23:250,16:250,58:250,39:250,4:0
+M	ChaosResistance	s	item	of Expulsion	15:250,23:250,16:250,58:250,39:250,4:0
+M	ChaosResistance	s	item	of Exile	15:250,23:250,16:250,58:250,39:250,4:0
+M	ChaosResistance	s	item	of Bameth	15:250,23:250,16:250,58:250,39:250,4:0
+M	ChaosResistanceForJewel	s	jewel	of Order	4:100
+M	ChaosResistanceForJewel	s	abyss_jewel	of Order	4:100
+M	ChillEffectivenessOnSelf	s	jewel	of the Snowbreather	4:250
+M	ClawAttackSpeedForJewel	p	jewel	Ripping	44:500,60:0,4:500
+M	ColdCritChanceForJewel	p	jewel	Avalanching	60:200,4:250
+M	ColdCritMultiplierForJewel	p	jewel	Arctic	60:200,4:250
+M	ColdDamage	p	item	Frosted	23:500,16:500,14:500,4:0
+M	ColdDamage	p	item	Frosted	39:250,4:0
+M	ColdDamage	p	item	Chilled	39:250,4:0
+M	ColdDamage	p	item	Chilled	23:500,16:500,14:500,4:0
+M	ColdDamage	p	item	Icy	23:500,16:500,14:500,4:0
+M	ColdDamage	p	item	Icy	39:250,4:0
+M	ColdDamage	p	item	Frigid	23:500,16:500,14:500,4:0
+M	ColdDamage	p	item	Frigid	39:250,4:0
+M	ColdDamage	p	item	Freezing	39:250,4:0
+M	ColdDamage	p	item	Freezing	23:500,16:500,14:500,4:0
+M	ColdDamage	p	item	Frozen	23:500,16:500,14:500,4:0
+M	ColdDamage	p	item	Frozen	39:250,4:0
+M	ColdDamage	p	item	Glaciated	23:100,16:500,14:0,4:0
+M	ColdDamage	p	item	Glaciated	39:250,4:0
+M	ColdDamage	p	item	Polar	39:250,4:0
+M	ColdDamage	p	item	Polar	23:100,16:500,14:0,4:0
+M	ColdDamage	p	item	Entombing	39:125,4:0
+M	ColdDamage	p	item	Entombing	23:50,16:250,14:0,4:0
+M	ColdDamageForJewel	p	jewel	Chilling	60:400,4:500
+M	ColdDamageOverTimeMultiplier	s	jewel	of Gelidity	61:300,4:0
+M	ColdDamageOverTimeMultiplier	s	item	of the Inclement	22:0,11:300,5:300,21:300,4:0
+M	ColdDamageOverTimeMultiplier	s	item	of the Inclement	56:0,46:400,4:0
+M	ColdDamageOverTimeMultiplier	s	item	of the Bleak	22:0,11:220,5:220,21:220,4:0
+M	ColdDamageOverTimeMultiplier	s	item	of the Bleak	56:0,46:300,4:0
+M	ColdDamageOverTimeMultiplier	s	item	of the Boreal	56:0,46:200,4:0
+M	ColdDamageOverTimeMultiplier	s	item	of the Boreal	22:0,11:140,5:140,21:140,4:0
+M	ColdDamageOverTimeMultiplier	s	item	of the Gelid	22:0,11:70,5:70,21:70,4:0
+M	ColdDamageOverTimeMultiplier	s	item	of the Gelid	56:0,46:100,4:0
+M	ColdDamageOverTimeMultiplier	s	item	of Heartstopping	56:0,46:50,4:0
+M	ColdDamageOverTimeMultiplier	s	item	of Heartstopping	22:0,11:35,5:35,21:35,4:0
+M	ColdDamagePercentage	s	item	of Snow	11:0,5:0,23:500,16:500,4:0
+M	ColdDamagePercentage	s	item	of Sleet	11:0,5:0,23:500,16:500,4:0
+M	ColdDamagePercentage	s	item	of Ice	11:0,5:0,23:500,16:500,4:0
+M	ColdDamagePercentage	s	item	of Rime	11:0,5:0,23:500,16:500,4:0
+M	ColdDamagePercentage	s	item	of Floe	11:0,5:0,16:500,4:0
+M	ColdDamageWeaponPrefix	p	item	Bitter	29:500,11:500,5:500,4:0
+M	ColdDamageWeaponPrefix	p	item	Biting	29:500,11:500,5:500,4:0
+M	ColdDamageWeaponPrefix	p	item	Alpine	29:500,11:500,5:500,4:0
+M	ColdDamageWeaponPrefix	p	item	Snowy	29:500,11:500,5:500,4:0
+M	ColdDamageWeaponPrefix	p	item	Hailing	29:500,11:500,5:500,4:0
+M	ColdDamageWeaponPrefix	p	item	Crystalline	29:150,11:150,5:150,4:0
+M	ColdDamageWeaponPrefix	p	item	Cryomancer's	29:40,11:40,5:40,4:0
+M	ColdDamageWeaponPrefix	p	item	Tul's	29:12,11:12,5:12,4:0
+M	ColdGemCastSpeedForJewel	p	jewel	Cryomantic	65:0,4:500
+M	ColdLightningResistanceForJewel	s	jewel	of Shelter	61:450,4:250
+M	ColdLightningResistanceForJewel	s	abyss_jewel	of Shelter	4:250
+M	ColdResistance	s	item	of the Inuit	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	ColdResistance	s	item	of the Seal	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	ColdResistance	s	item	of the Penguin	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	ColdResistance	s	item	of the Yeti	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	ColdResistance	s	item	of the Walrus	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	ColdResistance	s	item	of the Polar Bear	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	ColdResistance	s	item	of the Ice	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	ColdResistance	s	item	of Haast	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	ColdResistanceForJewel	s	abyss_jewel	of the Beast	4:400
+M	ColdResistanceForJewel	s	jewel	of the Beast	60:300,4:500
+M	CritChanceForJewel	s	jewel	of Menace	4:250
+M	CritChanceForJewel	s	abyss_jewel	of Menace	70:0,4:900
+M	CriticalStrikeChance	s	item	of Needling	3:0,16:1000,4:0
+M	CriticalStrikeChance	s	item	of Stinging	3:0,16:1000,4:0
+M	CriticalStrikeChance	s	item	of Piercing	3:0,16:1000,4:0
+M	CriticalStrikeChance	s	item	of Rupturing	3:0,16:1000,4:0
+M	CriticalStrikeChance	s	item	of Penetrating	3:0,16:1000,4:0
+M	CriticalStrikeChance	s	item	of Incision	3:0,16:1000,4:0
+M	CriticalStrikeChanceIfNoCriticalStrikeDealtRecently	s	abyss_jewel	of Preparation	80:250,84:250,75:500,70:0,41:375,4:0
+M	CriticalStrikeChanceWithBows	s	item	of Needling	39:1000,4:0
+M	CriticalStrikeChanceWithBows	s	item	of Stinging	39:1000,4:0
+M	CriticalStrikeChanceWithBows	s	item	of Piercing	39:1000,4:0
+M	CriticalStrikeChanceWithBows	s	item	of Rupturing	39:1000,4:0
+M	CriticalStrikeChanceWithBows	s	item	of Penetrating	39:1000,4:0
+M	CriticalStrikeChanceWithBows	s	item	of Incision	39:1000,4:0
+M	CriticalStrikeChanceWithBows	s	item	of Rending	39:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Ire	3:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Ire	3:0,16:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Anger	3:0,16:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Anger	3:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Rage	3:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Rage	3:0,16:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Fury	3:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Fury	3:0,16:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Ferocity	3:0,16:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Ferocity	3:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Destruction	3:1000,4:0
+M	CriticalStrikeMultiplier	s	item	of Destruction	3:0,16:1000,4:0
+M	CriticalStrikeMultiplierIfEnemySlainRecently	s	abyss_jewel	of the Assassin	80:250,84:250,75:500,70:0,41:375,4:0
+M	CriticalStrikeMultiplierWithBows	s	item	of Ire	39:1000,4:0
+M	CriticalStrikeMultiplierWithBows	s	item	of Anger	39:1000,4:0
+M	CriticalStrikeMultiplierWithBows	s	item	of Rage	39:1000,4:0
+M	CriticalStrikeMultiplierWithBows	s	item	of Fury	39:1000,4:0
+M	CriticalStrikeMultiplierWithBows	s	item	of Ferocity	39:1000,4:0
+M	CriticalStrikeMultiplierWithBows	s	item	of Destruction	39:1000,4:0
+M	CritMultiplierForJewel	s	jewel	of Potency	4:250
+M	CritMultiplierForJewel	s	abyss_jewel	of Potency	70:0,4:900
+M	CurseEffectOnYouJewel	s	jewel	of Hexwarding	4:250
+M	DaggerAttackSpeedForJewel	p	jewel	Slicing	21:500,60:0,4:500
+M	DamageForJewel	s	jewel	of Wounding	4:350
+M	DamageIfEnemySlainRecently	s	abyss_jewel	of the Slayer	80:500,84:250,75:250,70:0,41:375,4:0
+M	DamageOverTimeForJewel	s	jewel	of Entropy	4:500
+M	DamageOverTimeWhileDualWielding	p	abyss_jewel	Degenerative	70:0,75:600,41:600,4:300
+M	DamageOverTimeWhileDualWielding	p	abyss_jewel	Deleterious	70:0,75:200,41:200,4:100
+M	DamageOverTimeWhileHoldingAShield	p	abyss_jewel	Degenerative	70:0,75:600,41:600,4:300
+M	DamageOverTimeWhileHoldingAShield	p	abyss_jewel	Deleterious	70:0,75:200,41:200,4:100
+M	DamageOverTimeWhileWieldingTwoHandedWeapon	p	abyss_jewel	Degenerative	70:0,75:900,41:900,4:450
+M	DamageOverTimeWhileWieldingTwoHandedWeapon	p	abyss_jewel	Deleterious	70:0,75:300,41:300,4:150
+M	DamagePenetratesElementalResistancesIfNoEnemySlainRecently	s	abyss_jewel	of the Inquisitor	80:250,84:250,75:500,70:0,41:375,4:0
+M	DamageTakenGainedAsLife	s	item	of Bandaging	23:500,4:0
+M	DamageTakenGainedAsLife	s	item	of Stitching	23:500,4:0
+M	DamageTakenGainedAsLife	s	item	of Suturing	23:500,4:0
+M	DamageTakenGainedAsLife	s	item	of Fleshbinding	23:500,4:0
+M	DamageWhileHoldingAShieldForJewel	p	jewel	Flanking	40:0,11:0,65:500,4:0
+M	DamageWithBowSkills	p	item	Acute	39:1000,4:0
+M	DamageWithBowSkills	p	item	Trenchant	39:1000,4:0
+M	DamageWithBowSkills	p	item	Perforating	39:1000,4:0
+M	DamageWithBowSkills	p	item	Incisive	39:1000,4:0
+M	DamageWithBowSkills	p	item	Lacerating	39:1000,4:0
+M	DamageWithBowSkills	p	item	Impaling	39:1000,4:0
+M	Dexterity	s	item	of the Mongoose	23:1000,16:1000,14:1000,39:1000,36:1000,17:500,43:500,73:333,40:1000,24:500,0:500,44:500,21:500,4:0
+M	Dexterity	s	item	of the Lynx	23:1000,16:1000,14:1000,39:1000,36:1000,17:500,43:500,73:333,40:1000,24:500,0:500,44:500,21:500,4:0
+M	Dexterity	s	item	of the Fox	23:1000,16:1000,14:1000,39:1000,36:1000,17:500,43:500,73:333,40:1000,24:500,0:500,44:500,21:500,4:0
+M	Dexterity	s	item	of the Falcon	23:1000,16:1000,14:1000,39:1000,36:1000,17:500,43:500,73:333,40:1000,24:500,0:500,44:500,21:500,4:0
+M	Dexterity	s	item	of the Panther	23:1000,16:1000,14:1000,39:1000,36:1000,17:500,43:500,73:333,40:1000,24:500,0:500,44:500,21:500,4:0
+M	Dexterity	s	item	of the Leopard	23:1000,16:1000,14:1000,39:1000,36:1000,17:500,43:500,73:333,40:1000,24:500,0:500,44:500,21:500,4:0
+M	Dexterity	s	item	of the Jaguar	23:1000,16:1000,14:1000,39:1000,36:1000,17:500,43:500,73:333,40:1000,24:500,0:500,44:500,21:500,4:0
+M	Dexterity	s	item	of the Phantom	23:1000,16:1000,14:1000,39:1000,36:1000,17:500,43:500,73:333,40:1000,24:500,0:500,44:500,21:500,4:0
+M	Dexterity	s	item	of the Wind	23:1000,16:1000,14:1000,39:1000,36:1000,17:500,43:500,73:333,40:1000,24:500,0:500,44:500,21:500,4:0
+M	Dexterity	s	item	of the Blur	14:1000,39:1000,4:0
+M	DexterityForJewel	s	jewel	of Dexterity	60:300,4:500
+M	DexterityForJewel	s	abyss_jewel	of Dexterity	4:500
+M	DexterityIntelligenceForJewel	s	jewel	of Cunning	61:450,4:250
+M	DexterityIntelligenceForJewel	s	abyss_jewel	of Cunning	4:500
+M	DualWieldingCritChanceForJewel	p	jewel	Technical	65:250,4:0
+M	DualWieldingCritMultiplierForJewel	p	jewel	Puncturing	65:250,4:0
+M	DualWieldingSpellBlockForJewel	p	jewel	Dissipating	4:350
+M	DualWieldingSpellDamageForJewel	p	jewel	Sorcerer's	65:0,4:500
+M	ElementalCritChanceForJewel	s	jewel	of the Apocalypse	4:100
+M	ElementalCritMultiplierForJewel	s	jewel	of the Elements	4:100
+M	EnergyShield	p	abyss_jewel	Shining	4:600
+M	EnergyShield	p	item	Shining	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	item	Glimmering	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	item	Glittering	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	item	Glowing	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	item	Radiating	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	item	Pulsing	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	abyss_jewel	Seething	4:600
+M	EnergyShield	p	item	Seething	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	item	Blazing	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	item	Scintillating	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	item	Incandescent	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	item	Resplendent	23:1000,16:1000,58:1000,4:0
+M	EnergyShield	p	abyss_jewel	Incandescent	4:600
+M	EnergyShield	p	item	Dazzling	23:0,16:1000,58:1000,4:0
+M	EnergyShield	p	abyss_jewel	Resplendent	4:300
+M	EnergyShieldDelay	s	item	of Enlivening	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,13:1000,17:500,30:500,73:300,4:0
+M	EnergyShieldDelay	s	item	of Zest	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,13:1000,17:500,30:500,73:300,4:0
+M	EnergyShieldDelay	s	item	of Galvanising	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,13:1000,17:500,30:500,73:300,4:0
+M	EnergyShieldDelay	s	item	of Vigour	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,13:1000,17:500,30:500,73:300,4:0
+M	EnergyShieldDelay	s	item	of Second Wind	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,13:1000,17:500,30:500,73:300,4:0
+M	EnergyShieldDelayForJewel	p	jewel	Serene	65:0,4:500
+M	EnergyShieldForJewel	p	jewel	Shimmering	65:0,4:500
+M	EnergyShieldGainPerTargetForJewel	s	jewel	of Focus	65:0,4:500
+M	EnergyShieldRechargeRateForJewel	p	jewel	Fevered	65:0,4:500
+M	EnergyShieldRegeneration	s	item	of Allaying	3:0,39:0,23:0,16:0,58:0,19:0,37:0,13:1000,17:500,30:500,73:300,4:0
+M	EnergyShieldRegeneration	s	item	of Diffusion	3:0,39:0,23:0,16:0,58:0,19:0,37:0,13:1000,17:500,30:500,73:300,4:0
+M	EnergyShieldRegeneration	s	item	of Dispersal	3:0,39:0,23:0,16:0,58:0,19:0,37:0,13:1000,17:500,30:500,73:300,4:0
+M	EnergyShieldRegeneration	s	item	of Buffering	3:0,39:0,23:0,16:0,58:0,19:0,37:0,13:1000,17:500,30:500,73:300,4:0
+M	EnergyShieldRegeneration	s	item	of Ardour	3:0,39:0,23:0,16:0,58:0,19:0,37:0,13:1000,17:500,30:500,73:300,4:0
+M	EvasionRating	p	item	Agile	23:1000,4:0
+M	EvasionRating	p	abyss_jewel	Agile	4:600
+M	EvasionRating	p	item	Dancer's	23:1000,4:0
+M	EvasionRating	p	item	Acrobat's	23:1000,4:0
+M	EvasionRating	p	abyss_jewel	Fleet	4:600
+M	EvasionRating	p	item	Fleet	23:1000,4:0
+M	EvasionRating	p	item	Blurred	23:1000,4:0
+M	EvasionRating	p	item	Phased	23:1000,4:0
+M	EvasionRating	p	abyss_jewel	Vaporous	4:600
+M	EvasionRating	p	abyss_jewel	Beclouded	4:300
+M	EvasionRating	p	item	Vaporous	23:1000,4:0
+M	EvasionRatingWhileMoving	s	abyss_jewel	of Maneuvering	80:250,84:500,75:250,70:250,41:375,4:0
+M	FasterAilmentDamageForJewel	p	jewel	Decrepifying	4:250
+M	FireColdResistanceForJewel	s	abyss_jewel	of the Hearth	4:250
+M	FireColdResistanceForJewel	s	jewel	of the Hearth	65:450,4:250
+M	FireCritChanceForJewel	p	jewel	Incinerating	61:200,4:250
+M	FireCritMultiplierForJewel	p	jewel	Infernal	61:200,4:250
+M	FireDamage	p	item	Heated	39:250,4:0
+M	FireDamage	p	item	Heated	23:500,16:500,14:500,4:0
+M	FireDamage	p	item	Smouldering	23:500,16:500,14:500,4:0
+M	FireDamage	p	item	Smouldering	39:250,4:0
+M	FireDamage	p	item	Smoking	39:250,4:0
+M	FireDamage	p	item	Smoking	23:500,16:500,14:500,4:0
+M	FireDamage	p	item	Burning	39:250,4:0
+M	FireDamage	p	item	Burning	23:500,16:500,14:500,4:0
+M	FireDamage	p	item	Flaming	23:500,16:500,14:500,4:0
+M	FireDamage	p	item	Flaming	39:250,4:0
+M	FireDamage	p	item	Scorching	23:500,16:500,14:500,4:0
+M	FireDamage	p	item	Scorching	39:250,4:0
+M	FireDamage	p	item	Incinerating	23:100,16:500,14:0,4:0
+M	FireDamage	p	item	Incinerating	39:250,4:0
+M	FireDamage	p	item	Blasting	23:100,16:500,14:0,4:0
+M	FireDamage	p	item	Blasting	39:250,4:0
+M	FireDamage	p	item	Cremating	23:50,16:250,14:0,4:0
+M	FireDamage	p	item	Cremating	39:125,4:0
+M	FireDamageForJewel	p	jewel	Flaming	61:400,4:500
+M	FireDamageOverTimeMultiplier	s	jewel	of Zealousness	4:300
+M	FireDamageOverTimeMultiplier	s	item	of the Earnest	46:400,4:0
+M	FireDamageOverTimeMultiplier	s	item	of the Earnest	11:300,5:300,4:0
+M	FireDamageOverTimeMultiplier	s	item	of the Fervid	11:220,5:220,4:0
+M	FireDamageOverTimeMultiplier	s	item	of the Fervid	46:300,4:0
+M	FireDamageOverTimeMultiplier	s	item	of the Ardent	11:140,5:140,4:0
+M	FireDamageOverTimeMultiplier	s	item	of the Ardent	46:200,4:0
+M	FireDamageOverTimeMultiplier	s	item	of the Zealous	11:70,5:70,4:0
+M	FireDamageOverTimeMultiplier	s	item	of the Zealous	46:100,4:0
+M	FireDamageOverTimeMultiplier	s	item	of the Fanatical	11:35,5:35,4:0
+M	FireDamageOverTimeMultiplier	s	item	of the Fanatical	46:50,4:0
+M	FireDamagePercentage	s	item	of Embers	11:0,5:0,23:500,16:500,4:0
+M	FireDamagePercentage	s	item	of Coals	11:0,5:0,23:500,16:500,4:0
+M	FireDamagePercentage	s	item	of Cinders	11:0,5:0,23:500,16:500,4:0
+M	FireDamagePercentage	s	item	of Flames	11:0,5:0,23:500,16:500,4:0
+M	FireDamagePercentage	s	item	of Immolation	11:0,5:0,16:500,4:0
+M	FireDamageWeaponPrefix	p	item	Searing	29:500,11:500,5:500,4:0
+M	FireDamageWeaponPrefix	p	item	Sizzling	29:500,11:500,5:500,4:0
+M	FireDamageWeaponPrefix	p	item	Blistering	29:500,11:500,5:500,4:0
+M	FireDamageWeaponPrefix	p	item	Cauterising	29:500,11:500,5:500,4:0
+M	FireDamageWeaponPrefix	p	item	Volcanic	29:500,11:500,5:500,4:0
+M	FireDamageWeaponPrefix	p	item	Magmatic	29:150,11:150,5:150,4:0
+M	FireDamageWeaponPrefix	p	item	Pyroclastic	29:40,11:40,5:40,4:0
+M	FireDamageWeaponPrefix	p	item	Xoph's	29:12,11:12,5:12,4:0
+M	FireDamageWithBowsJewel	p	abyss_jewel	Heated	40:2500,84:700,41:700,4:0
+M	FireDamageWithBowsJewel	p	abyss_jewel	Flaming	40:2500,84:700,41:700,4:0
+M	FireDamageWithBowsJewel	p	abyss_jewel	Scorching	40:2500,84:700,41:700,4:0
+M	FireDamageWithBowsJewel	p	abyss_jewel	Incinerating	40:2500,84:700,41:700,4:0
+M	FireDamageWithBowsJewel	p	abyss_jewel	Blasting	40:1250,84:350,41:350,4:0
+M	FireDamageWithBowsJewel	p	abyss_jewel	Cremating	40:500,84:175,41:175,4:0
+M	FireGemCastSpeedForJewel	p	jewel	Pyromantic	65:0,4:500
+M	FireLightningResistanceForJewel	s	abyss_jewel	of Insulation	4:250
+M	FireLightningResistanceForJewel	s	jewel	of Insulation	60:450,4:250
+M	FireResistance	s	item	of the Whelpling	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	FireResistance	s	item	of the Salamander	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	FireResistance	s	item	of the Drake	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	FireResistance	s	item	of the Kiln	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	FireResistance	s	item	of the Furnace	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	FireResistance	s	item	of the Volcano	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	FireResistance	s	item	of the Magma	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	FireResistance	s	item	of Tzteosh	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	FireResistanceForJewel	s	abyss_jewel	of the Dragon	4:400
+M	FireResistanceForJewel	s	jewel	of the Dragon	61:300,4:500
+M	FlaskEffect	p	item	Distilling	58:250,4:0
+M	FlaskEffect	p	item	Condensing	58:250,4:0
+M	FlaskEffect	p	item	Magnifying	58:250,4:0
+M	FlatEnergyShieldRegeneration	p	abyss_jewel	Captivating	80:250,84:250,75:500,70:500,41:500,4:0
+M	FlatEnergyShieldRegeneration	p	abyss_jewel	Beautiful	80:250,84:250,75:500,70:500,41:500,4:0
+M	FlatEnergyShieldRegeneration	p	abyss_jewel	Breathtaking	80:250,84:250,75:500,70:500,41:500,4:0
+M	FlatMinionLifeRegeneration	p	abyss_jewel	Fuelling	70:500,41:500,4:0
+M	FlatMinionLifeRegeneration	p	abyss_jewel	Lively	70:500,41:500,4:0
+M	FlatMinionLifeRegeneration	p	abyss_jewel	Exuberant	70:500,41:500,4:0
+M	FreezeChanceAndDurationForJewel	s	jewel	of Freezing	60:250,4:350
+M	GlobalChaosGemLevel	p	item	Provocateur's	16:200,4:0
+M	GlobalColdGemLevel	p	item	Rimedweller's	16:200,4:0
+M	GlobalCooldownRecovery	p	abyss_jewel	Facilitating	80:300,84:300,75:100,70:100,41:200,4:0
+M	GlobalCooldownRecovery	p	abyss_jewel	Expediting	80:300,84:300,75:100,70:100,41:200,4:0
+M	GlobalDamageOverTimeMultiplier	s	jewel	of Acrimony	4:300
+M	GlobalDamageOverTimeMultiplier	s	item	of Acrimony	40:300,6:300,16:300,4:0
+M	GlobalDamageOverTimeMultiplier	s	item	of Acrimony	40:0,1:300,4:0
+M	GlobalDamageOverTimeMultiplier	s	item	of Dispersion	40:300,6:300,16:300,4:0
+M	GlobalDamageOverTimeMultiplier	s	item	of Dispersion	40:0,1:300,4:0
+M	GlobalDamageOverTimeMultiplier	s	item	of Liquefaction	40:0,1:300,4:0
+M	GlobalDamageOverTimeMultiplier	s	item	of Liquefaction	40:300,6:300,16:300,4:0
+M	GlobalDamageOverTimeMultiplier	s	item	of Melting	40:0,1:300,4:0
+M	GlobalDamageOverTimeMultiplier	s	item	of Melting	40:300,6:300,16:300,4:0
+M	GlobalDamageOverTimeMultiplier	s	item	of Dissolution	40:0,1:300,4:0
+M	GlobalDamageOverTimeMultiplier	s	item	of Dissolution	40:300,6:300,16:300,4:0
+M	GlobalDamageOverTimeMultiplierWithAttacks	s	item	of Acrimony	39:300,4:0
+M	GlobalDamageOverTimeMultiplierWithAttacks	s	item	of Dispersion	39:300,4:0
+M	GlobalDamageOverTimeMultiplierWithAttacks	s	item	of Liquefaction	39:300,4:0
+M	GlobalDamageOverTimeMultiplierWithAttacks	s	item	of Melting	39:300,4:0
+M	GlobalDamageOverTimeMultiplierWithAttacks	s	item	of Dissolution	39:300,4:0
+M	GlobalEnergyShieldPercent	p	item	Protective	16:1000,4:0
+M	GlobalEnergyShieldPercent	p	item	Strong-Willed	16:1000,4:0
+M	GlobalEnergyShieldPercent	p	item	Resolute	16:1000,4:0
+M	GlobalEnergyShieldPercent	p	item	Fearless	16:1000,4:0
+M	GlobalEnergyShieldPercent	p	item	Dauntless	16:1000,4:0
+M	GlobalEnergyShieldPercent	p	item	Indomitable	16:1000,4:0
+M	GlobalEnergyShieldPercent	p	item	Unassailable	16:1000,4:0
+M	GlobalEvasionRatingPercent	p	item	Agile	16:1000,4:0
+M	GlobalEvasionRatingPercent	p	item	Dancer's	16:1000,4:0
+M	GlobalEvasionRatingPercent	p	item	Acrobat's	16:1000,4:0
+M	GlobalEvasionRatingPercent	p	item	Fleet	16:1000,4:0
+M	GlobalEvasionRatingPercent	p	item	Blurred	16:1000,4:0
+M	GlobalEvasionRatingPercent	p	item	Phased	16:1000,4:0
+M	GlobalEvasionRatingPercent	p	item	Vaporous	16:1000,4:0
+M	GlobalFireGemLevel	p	item	Vulcanist's	16:200,4:0
+M	GlobalIncreaseChaosSpellSkillGemLevel	p	item	Mad Lord's	22:0,11:200,21:200,29:200,4:0
+M	GlobalIncreaseChaosSpellSkillGemLevel	p	item	Mad Lord's	56:0,46:750,4:0
+M	GlobalIncreaseChaosSpellSkillGemLevel	p	item	Splintermind's	56:0,46:750,4:0
+M	GlobalIncreaseChaosSpellSkillGemLevel	p	item	Schismatist's	56:0,46:100,4:0
+M	GlobalIncreaseColdSpellSkillGemLevel	p	item	Frost Singer's	22:0,11:250,5:250,21:250,29:250,4:0
+M	GlobalIncreaseColdSpellSkillGemLevel	p	item	Frost Singer's	56:0,46:1000,4:0
+M	GlobalIncreaseColdSpellSkillGemLevel	p	item	Winter Beckoner's	56:0,46:1000,4:0
+M	GlobalIncreaseColdSpellSkillGemLevel	p	item	Ice Shaper's	56:0,46:125,4:0
+M	GlobalIncreaseFireSpellSkillGemLevel	p	item	Flame Shaper's	56:0,46:1000,4:0
+M	GlobalIncreaseFireSpellSkillGemLevel	p	item	Flame Shaper's	22:0,11:250,5:250,21:250,29:250,4:0
+M	GlobalIncreaseFireSpellSkillGemLevel	p	item	Lava Conjurer's	56:0,46:1000,4:0
+M	GlobalIncreaseFireSpellSkillGemLevel	p	item	Magmancer's	56:0,46:125,4:0
+M	GlobalIncreaseLightningSpellSkillGemLevel	p	item	Thunderhand's	56:0,46:1000,4:0
+M	GlobalIncreaseLightningSpellSkillGemLevel	p	item	Thunderhand's	22:0,11:250,5:250,21:250,29:250,4:0
+M	GlobalIncreaseLightningSpellSkillGemLevel	p	item	Tempest Master's	56:0,46:1000,4:0
+M	GlobalIncreaseLightningSpellSkillGemLevel	p	item	Typhoon Lord's	56:0,46:125,4:0
+M	GlobalIncreaseMinionSpellSkillGemLevel	p	item	Taskmaster's	28:250,4:0
+M	GlobalIncreaseMinionSpellSkillGemLevel	p	item	Martinet's	1:0,55:400,53:400,4:0
+M	GlobalIncreaseMinionSpellSkillGemLevel	p	item	Overseer's	28:25,4:0
+M	GlobalIncreasePhysicalSpellSkillGemLevel	p	item	Lithomancer's	22:0,11:200,5:200,21:200,29:200,4:0
+M	GlobalIncreasePhysicalSpellSkillGemLevel	p	item	Lithomancer's	56:0,46:750,4:0
+M	GlobalIncreasePhysicalSpellSkillGemLevel	p	item	Tecton's	56:0,46:750,4:0
+M	GlobalIncreasePhysicalSpellSkillGemLevel	p	item	Stone Singer's	56:0,46:100,4:0
+M	GlobalIncreaseSpellSkillGemLevel	p	item	Magister's	56:0,46:1000,4:0
+M	GlobalIncreaseSpellSkillGemLevel	p	item	Archon's	56:0,46:250,4:0
+M	GlobalIncreaseSpellSkillGemLevel	p	item	Magister's	22:0,11:50,5:50,21:50,4:0
+M	GlobalLightningGemLevel	p	item	Stormbrewer's	16:200,4:0
+M	GlobalPhysicalDamageReductionRatingPercent	p	item	Reinforced	16:1000,4:0
+M	GlobalPhysicalDamageReductionRatingPercent	p	item	Layered	16:1000,4:0
+M	GlobalPhysicalDamageReductionRatingPercent	p	item	Lobstered	16:1000,4:0
+M	GlobalPhysicalDamageReductionRatingPercent	p	item	Buttressed	16:1000,4:0
+M	GlobalPhysicalDamageReductionRatingPercent	p	item	Thickened	16:1000,4:0
+M	GlobalPhysicalDamageReductionRatingPercent	p	item	Girded	16:1000,4:0
+M	GlobalPhysicalDamageReductionRatingPercent	p	item	Impregnable	16:1000,4:0
+M	GlobalPhysicalGemLevel	p	item	Behemoth's	16:200,4:0
+M	GlobalSkillGemLevel	p	item	Exalter's	16:50,4:0
+M	IgniteChanceAndDurationForJewel	s	jewel	of Burning	61:250,4:350
+M	ImpaleChanceForJewel	s	jewel	of Impaling	61:250,4:350
+M	ImpaleEffect	p	abyss_jewel	Skewering	80:300,84:300,41:300,4:0
+M	ImpaleEffect	p	abyss_jewel	Lancing	80:300,84:300,41:300,4:0
+M	IncreasedAccuracy	s	abyss_jewel	of Steadiness	80:500,84:1000,41:750,4:0
+M	IncreasedAccuracy	s	item	of Steadiness	14:600,28:600,23:600,16:600,39:600,47:600,45:600,18:600,4:0
+M	IncreasedAccuracy	s	item	of Precision	14:1000,28:1000,23:1000,16:1000,39:1000,47:1000,45:1000,18:1000,4:0
+M	IncreasedAccuracy	s	item	of the Sniper	14:1000,28:1000,23:1000,16:1000,39:1000,47:1000,45:1000,18:1000,4:0
+M	IncreasedAccuracy	s	abyss_jewel	of the Marksman	80:500,84:1000,41:750,4:0
+M	IncreasedAccuracy	s	item	of the Marksman	14:1000,28:1000,23:1000,16:1000,39:1000,47:1000,45:1000,18:1000,4:0
+M	IncreasedAccuracy	s	item	of the Ranger	14:1000,28:1000,23:1000,16:1000,39:1000,47:1000,45:1000,18:1000,4:0
+M	IncreasedAccuracy	s	abyss_jewel	of the Ranger	80:500,84:1000,41:750,4:0
+M	IncreasedAccuracy	s	abyss_jewel	of the Deadeye	80:250,84:500,41:375,4:0
+M	IncreasedAccuracy	s	item	of Lioneye	14:1000,28:1000,39:1000,4:0
+M	IncreasedAccuracyPercentForJewel	s	jewel	of Precision	60:0,4:500
+M	IncreasedArmourForJewel	p	jewel	Armoured	61:0,4:500
+M	IncreasedArmourIfNoEnemySlainRecently	s	abyss_jewel	of the Guardian	80:500,84:250,75:250,70:0,41:375,4:0
+M	IncreasedAttackSpeed	s	item	of Skill	23:500,14:500,39:500,47:500,45:500,18:500,4:0
+M	IncreasedAttackSpeed	s	item	of Ease	14:500,39:500,47:500,45:500,18:500,4:0
+M	IncreasedAttackSpeed	s	item	of Ease	14:500,39:500,47:500,45:500,18:500,4:0
+M	IncreasedAttackSpeed	s	item	of Mastery	14:500,39:500,47:500,45:500,18:500,4:0
+M	IncreasedAttackSpeed	s	item	of Grandmastery	14:500,39:500,47:500,45:500,18:500,4:0
+M	IncreasedAttackSpeedForJewel	s	jewel	of Berserking	4:500
+M	IncreasedAttackSpeedForJewel	s	abyss_jewel	of Berserking	80:750,84:750,41:750,4:0
+M	IncreasedAxeDamageForJewel	p	jewel	Sinister	0:500,65:500,4:0
+M	IncreasedBowDamageForJewel	p	jewel	Fierce	40:500,60:0,4:500
+M	IncreasedCastSpeed	s	item	of Talent	56:0,46:1000,4:0
+M	IncreasedCastSpeed	s	item	of Talent	11:1000,46:0,22:0,21:1000,5:1000,23:800,16:800,4:0
+M	IncreasedCastSpeed	s	item	of Nimbleness	11:1000,46:0,5:1000,16:800,29:1000,31:1000,18:1000,14:500,4:0
+M	IncreasedCastSpeed	s	item	of Nimbleness	56:0,46:1000,4:0
+M	IncreasedCastSpeed	s	item	of Nimbleness	11:1000,46:0,22:0,21:1000,5:1000,23:800,16:800,4:0
+M	IncreasedCastSpeed	s	item	of Expertise	56:0,46:1000,4:0
+M	IncreasedCastSpeed	s	item	of Expertise	11:1000,46:0,22:0,21:1000,5:1000,23:800,16:800,4:0
+M	IncreasedCastSpeed	s	item	of Legerdemain	56:0,46:1000,4:0
+M	IncreasedCastSpeed	s	item	of Legerdemain	11:1000,46:0,22:0,21:1000,5:1000,16:800,4:0
+M	IncreasedCastSpeed	s	item	of Prestidigitation	11:1000,46:0,22:0,21:1000,5:1000,4:0
+M	IncreasedCastSpeed	s	item	of Prestidigitation	56:0,46:1000,4:0
+M	IncreasedCastSpeed	s	item	of Sortilege	11:1000,46:0,22:0,21:1000,5:1000,4:0
+M	IncreasedCastSpeed	s	item	of Sortilege	56:0,46:1000,4:0
+M	IncreasedCastSpeed	s	item	of Finesse	11:1000,46:0,22:0,21:1000,5:1000,4:0
+M	IncreasedCastSpeed	s	item	of Finesse	56:0,46:1000,4:0
+M	IncreasedCastSpeedForJewel	s	jewel	of Enchanting	65:0,4:500
+M	IncreasedCastSpeedForJewel	s	abyss_jewel	of Enchanting	75:750,70:750,41:750,4:0
+M	IncreasedClawDamageForJewel	p	jewel	Savage	44:500,60:0,4:500
+M	IncreasedDaggerDamageForJewel	p	jewel	Lethal	21:500,60:0,4:500
+M	IncreasedDualWieldlingDamageForJewel	p	jewel	Gladiator's	65:500,4:0
+M	IncreasedEvasionForJewel	p	jewel	Evasive	60:0,4:500
+M	IncreasedLife	p	item	Hale	3:0,4:1000
+M	IncreasedLife	p	item	Healthy	3:0,4:1000
+M	IncreasedLife	p	item	Sanguine	3:0,4:1000
+M	IncreasedLife	p	item	Stalwart	3:0,4:1000
+M	IncreasedLife	p	item	Stout	3:0,4:1000
+M	IncreasedLife	p	item	Robust	3:0,4:1000
+M	IncreasedLife	p	item	Rotund	3:0,4:1000
+M	IncreasedLife	p	item	Virile	3:0,4:1000
+M	IncreasedLife	p	item	Athlete's	3:0,23:0,4:1000
+M	IncreasedLife	p	item	Fecund	20:0,14:0,3:0,23:0,16:0,4:1000
+M	IncreasedLife	p	item	Vigorous	19:1000,37:1000,4:0
+M	IncreasedLife	p	item	Rapturous	37:1000,4:0
+M	IncreasedLife	p	item	Prime	37:1000,4:0
+M	IncreasedMaceDamageForJewel	p	jewel	Brutal	25:500,61:0,4:500
+M	IncreasedMana	p	item	Beryl	46:1000,4:0
+M	IncreasedMana	p	item	Beryl	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Beryl	5:1000,11:1000,44:1000,21:1000,4:0
+M	IncreasedMana	p	item	Cobalt	46:1000,4:0
+M	IncreasedMana	p	item	Cobalt	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Cobalt	5:1000,11:1000,44:1000,21:1000,4:0
+M	IncreasedMana	p	item	Azure	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Azure	5:1000,11:1000,44:1000,21:1000,4:0
+M	IncreasedMana	p	item	Azure	46:1000,4:0
+M	IncreasedMana	p	item	Sapphire	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Sapphire	46:1000,4:0
+M	IncreasedMana	p	item	Sapphire	5:1000,11:1000,44:1000,21:1000,4:0
+M	IncreasedMana	p	item	Cerulean	5:1000,11:1000,44:1000,21:1000,4:0
+M	IncreasedMana	p	item	Cerulean	46:1000,4:0
+M	IncreasedMana	p	item	Cerulean	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Aqua	5:1000,11:1000,44:1000,21:1000,4:0
+M	IncreasedMana	p	item	Aqua	46:1000,4:0
+M	IncreasedMana	p	item	Aqua	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Opalescent	46:1000,4:0
+M	IncreasedMana	p	item	Opalescent	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Opalescent	5:1000,11:1000,44:1000,21:1000,4:0
+M	IncreasedMana	p	item	Gentian	46:1000,4:0
+M	IncreasedMana	p	item	Gentian	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Gentian	5:1000,11:1000,44:1000,21:1000,4:0
+M	IncreasedMana	p	item	Chalybeous	46:1000,4:0
+M	IncreasedMana	p	item	Chalybeous	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Chalybeous	5:1000,11:1000,44:1000,21:1000,4:0
+M	IncreasedMana	p	item	Mazarine	5:800,11:800,44:800,21:800,4:0
+M	IncreasedMana	p	item	Mazarine	46:800,4:0
+M	IncreasedMana	p	item	Mazarine	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Blue	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,58:1000,4:0
+M	IncreasedMana	p	item	Blue	5:600,11:600,44:600,21:600,4:0
+M	IncreasedMana	p	item	Blue	46:600,4:0
+M	IncreasedMana	p	item	Zaffre	5:400,11:400,44:400,21:400,4:0
+M	IncreasedMana	p	item	Zaffre	23:1000,16:1000,13:1000,30:1000,17:1000,73:1000,4:0
+M	IncreasedMana	p	item	Zaffre	46:400,4:0
+M	IncreasedMana	p	item	Ultramarine	23:1000,16:1000,4:0
+M	IncreasedManaRegenForJewel	p	jewel	Energetic	65:250,4:500
+M	IncreasedOneHandedMeleeDamageForJewel	p	jewel	Soldier's	11:0,65:500,4:0
+M	IncreasedProjectileSpeedForJewel	s	jewel	of Soaring	60:300,4:500
+M	IncreasedStaffDamageForJewel	p	jewel	Judging	46:500,61:0,4:500
+M	IncreasedSwordDamageForJewel	p	jewel	Vicious	24:500,65:500,4:0
+M	IncreasedTwoHandedMeleeDamageForJewel	p	jewel	Champion's	40:0,11:0,65:500,4:0
+M	IncreasedWandDamageForJewel	p	jewel	Cruel	11:500,65:0,4:500
+M	IncreasedWeaponElementalDamagePercent	p	item	Catalysing	23:300,16:300,58:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Catalysing	6:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Catalysing	1:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Infusing	1:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Infusing	23:300,16:300,58:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Infusing	6:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Empowering	1:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Empowering	23:300,16:300,58:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Empowering	6:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Unleashed	23:300,16:300,58:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Unleashed	1:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Unleashed	6:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Overpowering	1:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Overpowering	6:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Overpowering	23:300,16:300,58:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Devastating	6:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Devastating	1:300,4:0
+M	IncreasedWeaponElementalDamagePercent	p	item	Devastating	16:300,58:300,4:0
+M	Intelligence	s	item	of the Pupil	23:1000,16:1000,28:1000,13:1000,30:500,17:500,73:500,11:333,21:1000,44:500,46:500,5:500,4:0
+M	Intelligence	s	item	of the Student	23:1000,16:1000,28:1000,13:1000,30:500,17:500,73:500,11:333,21:1000,44:500,46:500,5:500,4:0
+M	Intelligence	s	item	of the Prodigy	23:1000,16:1000,28:1000,13:1000,30:500,17:500,73:500,11:333,21:1000,44:500,46:500,5:500,4:0
+M	Intelligence	s	item	of the Augur	23:1000,16:1000,28:1000,13:1000,30:500,17:500,73:500,11:333,21:1000,44:500,46:500,5:500,4:0
+M	Intelligence	s	item	of the Philosopher	23:1000,16:1000,28:1000,13:1000,30:500,17:500,73:500,11:333,21:1000,44:500,46:500,5:500,4:0
+M	Intelligence	s	item	of the Sage	23:1000,16:1000,28:1000,13:1000,30:500,17:500,73:500,11:333,21:1000,44:500,46:500,5:500,4:0
+M	Intelligence	s	item	of the Savant	23:1000,16:1000,28:1000,13:1000,30:500,17:500,73:500,11:333,21:1000,44:500,46:500,5:500,4:0
+M	Intelligence	s	item	of the Virtuoso	23:1000,16:1000,28:1000,13:1000,30:500,17:500,73:500,11:333,21:1000,44:500,46:500,5:500,4:0
+M	Intelligence	s	item	of the Genius	23:1000,16:1000,28:1000,13:1000,30:500,17:500,73:500,11:333,21:1000,44:500,46:500,5:500,4:0
+M	Intelligence	s	item	of the Polymath	28:1000,4:0
+M	IntelligenceForJewel	s	jewel	of Intelligence	65:300,4:500
+M	IntelligenceForJewel	s	abyss_jewel	of Intelligence	4:500
+M	ItemFoundRarityIncrease	s	item	of Plunder	23:1000,16:1000,14:1000,20:1000,28:1000,4:0
+M	ItemFoundRarityIncrease	s	item	of Raiding	23:1000,16:1000,14:1000,20:1000,28:1000,4:0
+M	ItemFoundRarityIncrease	s	item	of Archaeology	23:1000,16:1000,28:1000,4:0
+M	ItemFoundRarityIncrease	s	item	of Excavation	23:1000,16:1000,28:1000,4:0
+M	ItemFoundRarityIncreasePrefix	p	item	Magpie's	23:1000,16:1000,14:1000,20:1000,28:1000,4:0
+M	ItemFoundRarityIncreasePrefix	p	item	Pirate's	23:1000,16:1000,14:1000,20:1000,28:1000,4:0
+M	ItemFoundRarityIncreasePrefix	p	item	Dragon's	23:1000,16:1000,28:1000,4:0
+M	ItemFoundRarityIncreasePrefix	p	item	Perandus'	23:1000,16:1000,4:0
+M	KnockbackChanceForJewel	s	jewel	of Fending	4:250
+M	LifeGainedFromEnemyDeath	s	item	of Success	3:500,23:500,16:500,14:500,39:500,4:0
+M	LifeGainedFromEnemyDeath	s	item	of Victory	3:500,23:500,16:500,14:500,39:500,4:0
+M	LifeGainedFromEnemyDeath	s	item	of Triumph	3:500,23:500,16:500,14:500,39:500,4:0
+M	LifeGainedFromEnemyDeath	s	item	of Conquest	3:500,23:500,16:500,14:500,39:500,4:0
+M	LifeGainedFromEnemyDeath	s	item	of Feat	3:500,23:500,16:500,14:500,39:500,4:0
+M	LifeGainedFromEnemyDeath	s	item	of Masterstroke	3:500,23:500,16:500,14:500,39:500,4:0
+M	LifeGainPerTarget	s	item	of Rejuvenation	16:1000,23:1000,14:1000,4:0
+M	LifeGainPerTarget	s	item	of Restoration	16:1000,4:0
+M	LifeGainPerTarget	s	item	of Regrowth	16:1000,4:0
+M	LifeGainPerTargetForJewel	s	jewel	of Rejuvenation	61:0,4:500
+M	LifeGainPerTargetLocal	s	item	of Rejuvenation	3:500,4:0
+M	LifeGainPerTargetLocal	s	item	of Restoration	3:500,4:0
+M	LifeGainPerTargetLocal	s	item	of Regrowth	3:500,4:0
+M	LifeGainPerTargetLocal	s	item	of Nourishment	3:500,4:0
+M	LifeGainPerTargetLocal	s	item	of Regenesis	3:500,4:0
+M	LifeGainPerTargetLocal	s	item	of Renewal	3:500,4:0
+M	LifeGainPerTargetLocal	s	item	of Recuperation	3:500,4:0
+M	LifeGainPerTargetLocal	s	item	of Revitalization	3:500,4:0
+M	LifeLeechLocalPermyriad	s	item	of the Remora	3:1000,4:0
+M	LifeLeechLocalPermyriad	s	item	of the Lamprey	12:0,3:500,4:0
+M	LifeLeechLocalPermyriad	s	item	of the Vampire	12:0,3:250,4:0
+M	LifeLeechPermyriad	s	item	of the Remora	23:1000,16:1000,14:1000,39:1000,4:0
+M	LifeLeechPermyriad	s	item	of the Lamprey	12:0,16:500,4:0
+M	LifeLeechPermyriad	s	item	of the Vampire	12:0,16:250,4:0
+M	LifeLeechPermyriadForJewel	s	jewel	of Hungering	61:0,4:500
+M	LifeRecoupForJewel	s	jewel	of Infusion	65:250,4:500
+M	LifeRegeneration	s	item	of the Newt	3:0,39:0,4:1000
+M	LifeRegeneration	p	abyss_jewel	Youthful	80:500,84:500,75:250,70:250,41:250,4:0
+M	LifeRegeneration	s	item	of the Lizard	3:0,39:0,4:1000
+M	LifeRegeneration	s	item	of the Flatworm	3:0,39:0,4:1000
+M	LifeRegeneration	s	item	of the Starfish	3:0,39:0,4:1000
+M	LifeRegeneration	p	abyss_jewel	Spirited	80:500,84:500,75:250,70:250,41:250,4:0
+M	LifeRegeneration	s	item	of the Hydra	3:0,39:0,4:1000
+M	LifeRegeneration	s	item	of the Troll	3:0,39:0,4:1000
+M	LifeRegeneration	s	item	of Ryslatha	3:0,39:0,4:1000
+M	LifeRegeneration	s	item	of the Phoenix	3:0,39:0,23:0,4:1000
+M	LifeRegeneration	s	item	of Recuperation	3:0,39:0,23:0,16:0,20:0,14:0,4:1000
+M	LifeRegeneration	p	abyss_jewel	Vivacious	80:500,84:500,75:250,70:250,41:250,4:0
+M	LifeRegeneration	s	item	of Life-giving	19:1000,37:1000,4:0
+M	LifeRegeneration	s	item	of Convalescence	37:1000,4:0
+M	LifeRegenerationRate	s	item	of Esprit	3:0,39:0,23:0,16:0,58:0,19:0,37:0,26:1000,30:500,43:500,73:300,4:0
+M	LifeRegenerationRate	s	item	of Perpetuity	3:0,39:0,23:0,16:0,58:0,19:0,37:0,26:1000,30:500,43:500,73:300,4:0
+M	LifeRegenerationRate	s	item	of Vivification	3:0,39:0,23:0,16:0,58:0,19:0,37:0,26:1000,30:500,43:500,73:300,4:0
+M	LifeRegenerationRate	s	item	of Youth	3:0,39:0,23:0,16:0,58:0,19:0,37:0,26:1000,30:500,43:500,73:300,4:0
+M	LifeRegenerationRate	s	item	of Everlasting	3:0,39:0,23:0,16:0,58:0,19:0,37:0,26:1000,30:500,43:500,73:300,4:0
+M	LifeRegenerationRateWhileMoving	s	abyss_jewel	of Vivaciousness	80:500,84:250,75:250,70:250,41:375,4:0
+M	LightningCritChanceForJewel	p	jewel	Thundering	65:200,4:250
+M	LightningCritMultiplierForJewel	p	jewel	Surging	65:200,4:250
+M	LightningDamage	p	item	Humming	23:500,16:500,14:500,4:0
+M	LightningDamage	p	item	Humming	39:250,4:0
+M	LightningDamage	p	item	Buzzing	39:250,4:0
+M	LightningDamage	p	item	Buzzing	23:500,16:500,14:500,4:0
+M	LightningDamage	p	item	Snapping	39:250,4:0
+M	LightningDamage	p	item	Snapping	23:500,16:500,14:500,4:0
+M	LightningDamage	p	item	Crackling	23:500,16:500,14:500,4:0
+M	LightningDamage	p	item	Crackling	39:250,4:0
+M	LightningDamage	p	item	Sparking	39:250,4:0
+M	LightningDamage	p	item	Sparking	23:500,16:500,14:500,4:0
+M	LightningDamage	p	item	Arcing	39:250,4:0
+M	LightningDamage	p	item	Arcing	23:500,16:500,14:500,4:0
+M	LightningDamage	p	item	Shocking	23:100,16:500,14:0,4:0
+M	LightningDamage	p	item	Shocking	39:250,4:0
+M	LightningDamage	p	item	Discharging	23:100,16:500,14:0,4:0
+M	LightningDamage	p	item	Discharging	39:250,4:0
+M	LightningDamage	p	item	Electrocuting	23:50,16:250,14:0,4:0
+M	LightningDamage	p	item	Electrocuting	39:125,4:0
+M	LightningDamageForJewel	p	jewel	Humming	65:400,4:500
+M	LightningDamagePercentage	s	item	of Sparks	11:0,5:0,23:500,16:500,4:0
+M	LightningDamagePercentage	s	item	of Static	11:0,5:0,23:500,16:500,4:0
+M	LightningDamagePercentage	s	item	of Electricity	11:0,5:0,23:500,16:500,4:0
+M	LightningDamagePercentage	s	item	of Voltage	11:0,5:0,23:500,16:500,4:0
+M	LightningDamagePercentage	s	item	of Discharge	11:0,5:0,16:500,4:0
+M	LightningDamageWeaponPrefix	p	item	Charged	29:500,11:500,5:500,4:0
+M	LightningDamageWeaponPrefix	p	item	Hissing	29:500,11:500,5:500,4:0
+M	LightningDamageWeaponPrefix	p	item	Bolting	29:500,11:500,5:500,4:0
+M	LightningDamageWeaponPrefix	p	item	Coursing	29:500,11:500,5:500,4:0
+M	LightningDamageWeaponPrefix	p	item	Striking	29:500,11:500,5:500,4:0
+M	LightningDamageWeaponPrefix	p	item	Smiting	29:150,11:150,5:150,4:0
+M	LightningDamageWeaponPrefix	p	item	Ionising	29:40,11:40,5:40,4:0
+M	LightningDamageWeaponPrefix	p	item	Esh's	29:12,11:12,5:12,4:0
+M	LightningGemCastSpeedForJewel	p	jewel	Electromantic	65:0,4:500
+M	LightningResistance	s	item	of the Cloud	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	LightningResistance	s	item	of the Squall	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	LightningResistance	s	item	of the Storm	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	LightningResistance	s	item	of the Thunderhead	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	LightningResistance	s	item	of the Tempest	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	LightningResistance	s	item	of the Maelstrom	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	LightningResistance	s	item	of the Lightning	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	LightningResistance	s	item	of Ephij	15:1000,23:1000,16:1000,58:1000,39:1000,4:0
+M	LightningResistanceForJewel	s	abyss_jewel	of Grounding	4:400
+M	LightningResistanceForJewel	s	jewel	of Grounding	65:300,4:500
+M	LightRadiusAndAccuracyPercent	s	item	of Shining	28:1000,23:1000,4:0
+M	LightRadiusAndAccuracyPercent	s	item	of Light	28:1000,23:1000,4:0
+M	LightRadiusAndAccuracyPercent	s	item	of Radiance	28:1000,23:1000,4:0
+M	LocalAccuracyRating	s	item	of Steadiness	3:1000,4:0
+M	LocalAccuracyRating	s	item	of Precision	3:1000,4:0
+M	LocalAccuracyRating	s	item	of the Sniper	3:1000,4:0
+M	LocalAccuracyRating	s	item	of the Marksman	3:1000,4:0
+M	LocalAccuracyRating	s	item	of the Ranger	3:1000,4:0
+M	LocalAccuracyRating	s	item	of Lioneye	40:1000,11:1000,3:0,4:0
+M	LocalArmourAndEnergyShield	p	item	Infixed	30:1000,4:0
+M	LocalArmourAndEnergyShield	p	item	Ingrained	30:1000,4:0
+M	LocalArmourAndEnergyShield	p	item	Instilled	30:1000,4:0
+M	LocalArmourAndEnergyShield	p	item	Infused	30:1000,4:0
+M	LocalArmourAndEnergyShield	p	item	Inculcated	30:1000,4:0
+M	LocalArmourAndEnergyShield	p	item	Interpolated	30:1000,4:0
+M	LocalArmourAndEnergyShield	p	item	Inspired	30:1000,4:0
+M	LocalArmourAndEnergyShield	p	item	Interpermeated	13:0,43:0,36:0,26:0,17:0,73:0,37:1000,19:1000,4:0
+M	LocalArmourAndEnergyShieldAndStunRecovery	p	item	Pixie's	30:1000,4:0
+M	LocalArmourAndEnergyShieldAndStunRecovery	p	item	Gremlin's	30:1000,4:0
+M	LocalArmourAndEnergyShieldAndStunRecovery	p	item	Boggart's	30:1000,4:0
+M	LocalArmourAndEnergyShieldAndStunRecovery	p	item	Naga's	30:1000,4:0
+M	LocalArmourAndEnergyShieldAndStunRecovery	p	item	Djinn's	30:1000,4:0
+M	LocalArmourAndEnergyShieldAndStunRecovery	p	item	Seraphim's	30:1000,4:0
+M	LocalArmourAndEvasion	p	item	Scrapper's	43:1000,4:0
+M	LocalArmourAndEvasion	p	item	Brawler's	43:1000,4:0
+M	LocalArmourAndEvasion	p	item	Fencer's	43:1000,4:0
+M	LocalArmourAndEvasion	p	item	Gladiator's	43:1000,4:0
+M	LocalArmourAndEvasion	p	item	Duelist's	43:1000,4:0
+M	LocalArmourAndEvasion	p	item	Hero's	43:1000,4:0
+M	LocalArmourAndEvasion	p	item	Legend's	43:1000,4:0
+M	LocalArmourAndEvasion	p	item	Victor's	13:0,30:0,36:0,26:0,17:0,73:0,37:1000,19:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShield	p	item	Shadowy	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShield	p	item	Ethereal	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShield	p	item	Unworldly	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShield	p	item	Ephemeral	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShield	p	item	Evanescent	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShield	p	item	Unreal	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShield	p	item	Incorporeal	13:0,30:0,36:0,26:0,43:0,17:0,37:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShieldAndStunRecovery	p	item	Mosquito's	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShieldAndStunRecovery	p	item	Moth's	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShieldAndStunRecovery	p	item	Butterfly's	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShieldAndStunRecovery	p	item	Wasp's	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShieldAndStunRecovery	p	item	Dragonfly's	73:1000,4:0
+M	LocalArmourAndEvasionAndEnergyShieldAndStunRecovery	p	item	Hummingbird's	73:1000,4:0
+M	LocalArmourAndEvasionAndStunRecovery	p	item	Beetle's	43:1000,4:0
+M	LocalArmourAndEvasionAndStunRecovery	p	item	Crab's	43:1000,4:0
+M	LocalArmourAndEvasionAndStunRecovery	p	item	Armadillo's	43:1000,4:0
+M	LocalArmourAndEvasionAndStunRecovery	p	item	Rhino's	43:1000,4:0
+M	LocalArmourAndEvasionAndStunRecovery	p	item	Elephant's	43:1000,4:0
+M	LocalArmourAndEvasionAndStunRecovery	p	item	Mammoth's	43:1000,4:0
+M	LocalAttributeRequirements	s	item	of the Worthy	3:1000,37:850,28:650,19:750,14:450,20:550,4:0
+M	LocalAttributeRequirements	s	item	of the Apt	3:1000,37:850,28:650,19:750,14:450,20:550,4:0
+M	LocalBaseArmourAndEnergyShield	p	item	Blessed	30:1000,73:166,4:0
+M	LocalBaseArmourAndEnergyShield	p	item	Anointed	30:1000,73:166,4:0
+M	LocalBaseArmourAndEnergyShield	p	item	Sanctified	30:1000,73:166,4:0
+M	LocalBaseArmourAndEnergyShield	p	item	Hallowed	30:1000,73:166,4:0
+M	LocalBaseArmourAndEnergyShield	p	item	Beatified	20:0,14:0,30:1000,73:166,4:0
+M	LocalBaseArmourAndEnergyShield	p	item	Consecrated	20:0,14:0,28:0,30:1000,73:166,4:0
+M	LocalBaseArmourAndEnergyShield	p	item	Saintly	20:0,14:0,28:0,30:1000,73:166,4:0
+M	LocalBaseArmourAndEnergyShield	p	item	Godly	19:0,20:0,14:0,28:0,30:1000,73:166,4:0
+M	LocalBaseArmourAndEvasionRating	p	item	Supple	43:1000,73:166,4:0
+M	LocalBaseArmourAndEvasionRating	p	item	Pliant	43:1000,73:166,4:0
+M	LocalBaseArmourAndEvasionRating	p	item	Flexible	43:1000,73:166,4:0
+M	LocalBaseArmourAndEvasionRating	p	item	Durable	43:1000,73:166,4:0
+M	LocalBaseArmourAndEvasionRating	p	item	Sturdy	20:0,14:0,43:1000,73:166,4:0
+M	LocalBaseArmourAndEvasionRating	p	item	Resilient	20:0,14:0,28:0,43:1000,73:166,4:0
+M	LocalBaseArmourAndEvasionRating	p	item	Adaptable	20:0,14:0,28:0,43:1000,73:166,4:0
+M	LocalBaseArmourAndEvasionRating	p	item	Versatile	19:0,20:0,14:0,28:0,43:1000,73:166,4:0
+M	LocalBaseArmourAndLife	p	item	Oyster's	26:1000,43:500,30:500,73:333,4:0
+M	LocalBaseArmourAndLife	p	item	Urchin's	26:1000,43:500,30:500,73:333,4:0
+M	LocalBaseArmourAndLife	p	item	Nautilus's	20:0,14:0,26:1000,43:500,30:500,73:333,4:0
+M	LocalBaseArmourAndLife	p	item	Crocodile's	19:0,20:0,14:0,28:0,26:500,43:250,30:250,73:166,4:0
+M	LocalBaseEnergyShieldAndLife	p	item	Monk's	13:1000,30:500,17:500,73:333,4:0
+M	LocalBaseEnergyShieldAndLife	p	item	Prior's	13:1000,30:500,17:500,73:333,4:0
+M	LocalBaseEnergyShieldAndLife	p	item	Abbot's	20:0,14:0,13:1000,30:500,17:500,73:333,4:0
+M	LocalBaseEnergyShieldAndLife	p	item	Exarch's	19:0,20:0,14:0,28:0,13:500,30:250,17:250,73:166,4:0
+M	LocalBaseEnergyShieldAndMana	p	item	Acolyte's	13:1000,30:500,17:500,73:333,4:0
+M	LocalBaseEnergyShieldAndMana	p	item	Deacon's	13:1000,30:500,17:500,73:333,4:0
+M	LocalBaseEnergyShieldAndMana	p	item	Priest's	20:0,14:0,13:1000,30:500,17:500,73:333,4:0
+M	LocalBaseEnergyShieldAndMana	p	item	Bishop's	19:0,20:0,14:0,28:0,13:500,30:250,17:250,73:166,4:0
+M	LocalBaseEvasionRatingAndEnergyShield	p	item	Will-o-wisp's	17:1000,73:166,4:0
+M	LocalBaseEvasionRatingAndEnergyShield	p	item	Nymph's	17:1000,73:166,4:0
+M	LocalBaseEvasionRatingAndEnergyShield	p	item	Sylph's	17:1000,73:166,4:0
+M	LocalBaseEvasionRatingAndEnergyShield	p	item	Cherub's	17:1000,73:166,4:0
+M	LocalBaseEvasionRatingAndEnergyShield	p	item	Spirit's	20:0,14:0,17:1000,73:166,4:0
+M	LocalBaseEvasionRatingAndEnergyShield	p	item	Eidolon's	20:0,14:0,28:0,17:1000,73:166,4:0
+M	LocalBaseEvasionRatingAndEnergyShield	p	item	Apparition's	20:0,14:0,28:0,17:1000,73:166,4:0
+M	LocalBaseEvasionRatingAndEnergyShield	p	item	Phantasm's	19:0,20:0,14:0,28:0,17:1000,73:166,4:0
+M	LocalBaseEvasionRatingAndLife	p	item	Flea's	36:1000,43:500,17:500,73:333,4:0
+M	LocalBaseEvasionRatingAndLife	p	item	Fawn's	36:1000,43:500,17:500,73:333,4:0
+M	LocalBaseEvasionRatingAndLife	p	item	Ram's	20:0,14:0,36:1000,43:500,17:500,73:333,4:0
+M	LocalBaseEvasionRatingAndLife	p	item	Ibex's	19:0,20:0,14:0,28:0,36:500,43:250,17:250,73:166,4:0
+M	LocalBaseWardAndLife	p	item	Annest's	82:1000,4:0
+M	LocalBaseWardAndLife	p	item	Owen's	82:1000,4:0
+M	LocalBaseWardAndLife	p	item	Gwayne's	20:0,14:0,82:1000,4:0
+M	LocalBaseWardAndLife	p	item	Cadigan's	19:0,20:0,14:0,28:0,82:500,4:0
+M	LocalChaosDamage	p	item	Malicious	1:0,32:600,24:600,0:600,5:400,25:250,11:250,44:600,21:600,4:0
+M	LocalChaosDamageTwoHand	p	item	Malicious	6:0,40:700,24:600,0:600,25:250,46:300,4:0
+M	LocalColdDamage	p	item	Frosted	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalColdDamage	p	item	Chilled	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalColdDamage	p	item	Icy	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalColdDamage	p	item	Frigid	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalColdDamage	p	item	Freezing	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalColdDamage	p	item	Frozen	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalColdDamage	p	item	Glaciated	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalColdDamage	p	item	Polar	1:0,32:1600,24:960,0:960,5:640,25:400,11:400,44:960,21:960,4:0
+M	LocalColdDamage	p	item	Entombing	1:0,32:700,24:420,0:420,5:280,25:175,11:175,44:420,21:420,4:0
+M	LocalColdDamage	p	item	Crystalising	1:0,32:180,24:108,0:108,5:72,25:45,11:45,44:108,21:108,4:0
+M	LocalColdDamageTwoHand	p	item	Frosted	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalColdDamageTwoHand	p	item	Chilled	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalColdDamageTwoHand	p	item	Icy	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalColdDamageTwoHand	p	item	Frigid	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalColdDamageTwoHand	p	item	Freezing	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalColdDamageTwoHand	p	item	Frozen	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalColdDamageTwoHand	p	item	Glaciated	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalColdDamageTwoHand	p	item	Polar	6:0,40:1120,24:960,0:960,25:400,46:480,4:0
+M	LocalColdDamageTwoHand	p	item	Entombing	6:0,40:490,24:420,0:420,25:175,46:210,4:0
+M	LocalColdDamageTwoHand	p	item	Crystalising	6:0,40:126,24:108,0:108,25:45,46:54,4:0
+M	LocalCriticalStrikeChance	s	item	of Needling	3:1000,4:0
+M	LocalCriticalStrikeChance	s	item	of Stinging	3:1000,4:0
+M	LocalCriticalStrikeChance	s	item	of Piercing	3:1000,4:0
+M	LocalCriticalStrikeChance	s	item	of Puncturing	3:1000,4:0
+M	LocalCriticalStrikeChance	s	item	of Penetrating	3:1000,4:0
+M	LocalCriticalStrikeChance	s	item	of Incision	3:1000,4:0
+M	LocalEnergyShield	p	item	Shining	13:1000,73:166,4:0
+M	LocalEnergyShield	p	item	Glimmering	13:1000,73:166,4:0
+M	LocalEnergyShield	p	item	Glittering	13:1000,73:166,4:0
+M	LocalEnergyShield	p	item	Glowing	13:1000,73:166,4:0
+M	LocalEnergyShield	p	item	Radiating	13:1000,73:166,4:0
+M	LocalEnergyShield	p	item	Pulsing	13:1000,73:166,4:0
+M	LocalEnergyShield	p	item	Seething	13:1000,73:166,4:0
+M	LocalEnergyShield	p	item	Blazing	14:0,20:0,13:1000,73:166,4:0
+M	LocalEnergyShield	p	item	Scintillating	28:0,14:0,20:0,13:1000,73:166,4:0
+M	LocalEnergyShield	p	item	Incandescent	28:0,14:0,20:0,13:1000,73:166,4:0
+M	LocalEnergyShield	p	item	Resplendent	19:0,28:0,14:0,20:0,13:1000,73:166,4:0
+M	LocalEnergyShieldAndStunRecoveryPercent	p	item	Pixie's	13:1000,4:0
+M	LocalEnergyShieldAndStunRecoveryPercent	p	item	Gremlin's	13:1000,4:0
+M	LocalEnergyShieldAndStunRecoveryPercent	p	item	Boggart's	13:1000,4:0
+M	LocalEnergyShieldAndStunRecoveryPercent	p	item	Naga's	13:1000,4:0
+M	LocalEnergyShieldAndStunRecoveryPercent	p	item	Djinn's	13:1000,4:0
+M	LocalEnergyShieldAndStunRecoveryPercent	p	item	Seraphim's	13:1000,4:0
+M	LocalEnergyShieldPercent	p	item	Protective	13:1000,4:0
+M	LocalEnergyShieldPercent	p	item	Strong-Willed	13:1000,4:0
+M	LocalEnergyShieldPercent	p	item	Resolute	13:1000,4:0
+M	LocalEnergyShieldPercent	p	item	Fearless	13:1000,4:0
+M	LocalEnergyShieldPercent	p	item	Dauntless	13:1000,4:0
+M	LocalEnergyShieldPercent	p	item	Indomitable	13:1000,4:0
+M	LocalEnergyShieldPercent	p	item	Unassailable	13:1000,4:0
+M	LocalEnergyShieldPercent	p	item	Unfaltering	26:0,43:0,30:0,36:0,17:0,73:0,37:1000,19:1000,4:0
+M	LocalEvasionAndEnergyShield	p	item	Shadowy	17:1000,4:0
+M	LocalEvasionAndEnergyShield	p	item	Ethereal	17:1000,4:0
+M	LocalEvasionAndEnergyShield	p	item	Unworldly	17:1000,4:0
+M	LocalEvasionAndEnergyShield	p	item	Ephemeral	17:1000,4:0
+M	LocalEvasionAndEnergyShield	p	item	Evanescent	17:1000,4:0
+M	LocalEvasionAndEnergyShield	p	item	Unreal	17:1000,4:0
+M	LocalEvasionAndEnergyShield	p	item	Illusory	17:1000,4:0
+M	LocalEvasionAndEnergyShield	p	item	Incorporeal	13:0,30:0,36:0,26:0,43:0,73:0,37:1000,19:1000,4:0
+M	LocalEvasionAndEnergyShieldAndStunRecovery	p	item	Mosquito's	17:1000,4:0
+M	LocalEvasionAndEnergyShieldAndStunRecovery	p	item	Moth's	17:1000,4:0
+M	LocalEvasionAndEnergyShieldAndStunRecovery	p	item	Butterfly's	17:1000,4:0
+M	LocalEvasionAndEnergyShieldAndStunRecovery	p	item	Wasp's	17:1000,4:0
+M	LocalEvasionAndEnergyShieldAndStunRecovery	p	item	Dragonfly's	17:1000,4:0
+M	LocalEvasionAndEnergyShieldAndStunRecovery	p	item	Hummingbird's	17:1000,4:0
+M	LocalEvasionRating	p	item	Agile	36:1000,73:166,4:0
+M	LocalEvasionRating	p	item	Dancer's	36:1000,73:166,4:0
+M	LocalEvasionRating	p	item	Acrobat's	36:1000,73:166,4:0
+M	LocalEvasionRating	p	item	Fleet	36:1000,73:166,4:0
+M	LocalEvasionRating	p	item	Blurred	36:1000,73:166,4:0
+M	LocalEvasionRating	p	item	Phased	36:1000,73:166,4:0
+M	LocalEvasionRating	p	item	Vaporous	36:1000,73:166,4:0
+M	LocalEvasionRating	p	item	Elusory	14:0,20:0,36:1000,73:166,4:0
+M	LocalEvasionRating	p	item	Adroit	28:0,14:0,20:0,36:1000,73:166,4:0
+M	LocalEvasionRating	p	item	Lissome	28:0,14:0,20:0,36:1000,73:166,4:0
+M	LocalEvasionRating	p	item	Fugitive	19:0,28:0,14:0,20:0,36:1000,73:166,4:0
+M	LocalEvasionRatingAndStunRecoveryIncreasePercent	p	item	Mosquito's	36:1000,4:0
+M	LocalEvasionRatingAndStunRecoveryIncreasePercent	p	item	Moth's	36:1000,4:0
+M	LocalEvasionRatingAndStunRecoveryIncreasePercent	p	item	Butterfly's	36:1000,4:0
+M	LocalEvasionRatingAndStunRecoveryIncreasePercent	p	item	Wasp's	36:1000,4:0
+M	LocalEvasionRatingAndStunRecoveryIncreasePercent	p	item	Dragonfly's	36:1000,4:0
+M	LocalEvasionRatingAndStunRecoveryIncreasePercent	p	item	Hummingbird's	36:1000,4:0
+M	LocalEvasionRatingIncreasePercent	p	item	Shade's	36:1000,4:0
+M	LocalEvasionRatingIncreasePercent	p	item	Ghost's	36:1000,4:0
+M	LocalEvasionRatingIncreasePercent	p	item	Spectre's	36:1000,4:0
+M	LocalEvasionRatingIncreasePercent	p	item	Wraith's	36:1000,4:0
+M	LocalEvasionRatingIncreasePercent	p	item	Phantasm's	36:1000,4:0
+M	LocalEvasionRatingIncreasePercent	p	item	Nightmare's	36:1000,4:0
+M	LocalEvasionRatingIncreasePercent	p	item	Mirage's	36:1000,4:0
+M	LocalEvasionRatingIncreasePercent	p	item	Illusion's	13:0,43:0,30:0,26:0,17:0,73:0,37:1000,19:1000,4:0
+M	LocalFireDamage	p	item	Heated	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalFireDamage	p	item	Smouldering	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalFireDamage	p	item	Smoking	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalFireDamage	p	item	Burning	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalFireDamage	p	item	Flaming	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalFireDamage	p	item	Scorching	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalFireDamage	p	item	Incinerating	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalFireDamage	p	item	Blasting	1:0,32:1600,24:960,0:960,5:640,25:400,11:400,44:960,21:960,4:0
+M	LocalFireDamage	p	item	Cremating	1:0,32:700,24:420,0:420,5:280,25:175,11:175,44:420,21:420,4:0
+M	LocalFireDamage	p	item	Carbonising	1:0,32:180,24:108,0:108,5:72,25:45,11:45,44:108,21:108,4:0
+M	LocalFireDamageTwoHand	p	item	Heated	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalFireDamageTwoHand	p	item	Smouldering	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalFireDamageTwoHand	p	item	Smoking	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalFireDamageTwoHand	p	item	Burning	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalFireDamageTwoHand	p	item	Flaming	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalFireDamageTwoHand	p	item	Scorching	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalFireDamageTwoHand	p	item	Incinerating	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalFireDamageTwoHand	p	item	Blasting	6:0,40:1120,24:960,0:960,25:400,46:480,4:0
+M	LocalFireDamageTwoHand	p	item	Cremating	6:0,40:490,24:420,0:420,25:175,46:210,4:0
+M	LocalFireDamageTwoHand	p	item	Carbonising	6:0,40:126,24:108,0:108,25:45,46:54,4:0
+M	LocalIncreasedAttackSpeed	s	item	of Skill	3:1000,4:0
+M	LocalIncreasedAttackSpeed	s	item	of Ease	3:1000,4:0
+M	LocalIncreasedAttackSpeed	s	item	of Ease	3:1000,4:0
+M	LocalIncreasedAttackSpeed	s	item	of Mastery	3:1000,4:0
+M	LocalIncreasedAttackSpeed	s	item	of Renown	12:500,3:1000,4:0
+M	LocalIncreasedAttackSpeed	s	item	of Acclaim	12:500,3:1000,4:0
+M	LocalIncreasedAttackSpeed	s	item	of Fame	12:0,3:1000,4:0
+M	LocalIncreasedAttackSpeed	s	item	of Infamy	12:0,3:1000,4:0
+M	LocalIncreasedAttackSpeed	s	item	of Celebration	12:0,3:1000,4:0
+M	LocalIncreasedBlockPercentage	p	item	Steadfast	54:1000,45:1000,31:1000,47:1000,18:500,29:500,4:0
+M	LocalIncreasedBlockPercentage	p	item	Unrelenting	54:1000,45:1000,31:1000,47:1000,18:500,29:500,4:0
+M	LocalIncreasedBlockPercentage	p	item	Adamant	54:1000,45:1000,31:1000,47:1000,18:500,29:500,4:0
+M	LocalIncreasedBlockPercentage	p	item	Warded	54:1000,45:1000,31:1000,47:1000,18:500,29:500,4:0
+M	LocalIncreasedBlockPercentage	p	item	Unwavering	54:1000,45:1000,31:1000,47:1000,18:500,29:500,4:0
+M	LocalIncreasedBlockPercentage	p	item	Enduring	54:1000,45:1000,31:1000,47:1000,18:500,29:500,4:0
+M	LocalIncreasedBlockPercentage	p	item	Unyielding	54:1000,45:1000,31:1000,47:1000,18:500,29:500,4:0
+M	LocalIncreasedPhysicalDamagePercentAndAccuracyRating	p	item	Squire's	3:1000,4:0
+M	LocalIncreasedPhysicalDamagePercentAndAccuracyRating	p	item	Journeyman's	3:1000,4:0
+M	LocalIncreasedPhysicalDamagePercentAndAccuracyRating	p	item	Reaver's	3:1000,4:0
+M	LocalIncreasedPhysicalDamagePercentAndAccuracyRating	p	item	Mercenary's	3:400,4:0
+M	LocalIncreasedPhysicalDamagePercentAndAccuracyRating	p	item	Champion's	3:200,4:0
+M	LocalIncreasedPhysicalDamagePercentAndAccuracyRating	p	item	Conqueror's	3:100,4:0
+M	LocalIncreasedPhysicalDamagePercentAndAccuracyRating	p	item	Emperor's	3:50,4:0
+M	LocalIncreasedPhysicalDamagePercentAndAccuracyRating	p	item	Dictator's	3:25,4:0
+M	LocalIncreaseSocketedBowGemLevel	p	item	Fletcher's	40:1000,4:0
+M	LocalIncreaseSocketedBowGemLevel	p	item	Sharpshooter's	40:1000,4:0
+M	LocalIncreaseSocketedChaosGemLevel	p	item	Nihilist's	56:1000,22:1000,4:0
+M	LocalIncreaseSocketedChaosGemLevel	p	item	Anarchist's	56:1000,22:1000,4:0
+M	LocalIncreaseSocketedColdGemLevel	p	item	Frost Weaver's	56:1000,22:1000,4:0
+M	LocalIncreaseSocketedColdGemLevel	p	item	Winterbringer's	56:1000,22:1000,4:0
+M	LocalIncreaseSocketedFireGemLevel	p	item	Flame Spinner's	56:1000,22:1000,4:0
+M	LocalIncreaseSocketedFireGemLevel	p	item	Lava Caller's	56:1000,22:1000,4:0
+M	LocalIncreaseSocketedGemLevel	p	item	Exemplary	92:1000,4:0
+M	LocalIncreaseSocketedGemLevel	p	item	Quintessential	92:1000,4:0
+M	LocalIncreaseSocketedGemLevel	p	item	Paragon's	56:1000,22:1000,46:0,11:0,21:0,5:0,3:1000,4:0
+M	LocalIncreaseSocketedGemLevel	p	item	Flawless	92:250,4:0
+M	LocalIncreaseSocketedLightningGemLevel	p	item	Thunder Lord's	56:1000,22:1000,4:0
+M	LocalIncreaseSocketedLightningGemLevel	p	item	Tempest King's	56:1000,22:1000,4:0
+M	LocalIncreaseSocketedMeleeGemLevel	p	item	Combatant's	40:0,11:0,29:0,19:1000,3:1000,4:0
+M	LocalIncreaseSocketedMeleeGemLevel	p	item	Weaponmaster's	40:0,11:0,29:0,19:1000,3:1000,4:0
+M	LocalLightningDamage	p	item	Humming	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalLightningDamage	p	item	Buzzing	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalLightningDamage	p	item	Snapping	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalLightningDamage	p	item	Crackling	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalLightningDamage	p	item	Sparking	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalLightningDamage	p	item	Arcing	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalLightningDamage	p	item	Shocking	1:0,32:2000,24:1200,0:1200,5:800,25:500,11:500,44:1200,21:1200,4:0
+M	LocalLightningDamage	p	item	Discharging	1:0,32:1600,24:960,0:960,5:640,25:400,11:400,44:960,21:960,4:0
+M	LocalLightningDamage	p	item	Electrocuting	1:0,32:700,24:420,0:420,5:280,25:175,11:175,44:420,21:420,4:0
+M	LocalLightningDamage	p	item	Vapourising	1:0,32:180,24:108,0:108,5:72,25:45,11:45,44:108,21:108,4:0
+M	LocalLightningDamageTwoHand	p	item	Humming	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalLightningDamageTwoHand	p	item	Buzzing	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalLightningDamageTwoHand	p	item	Snapping	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalLightningDamageTwoHand	p	item	Crackling	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalLightningDamageTwoHand	p	item	Sparking	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalLightningDamageTwoHand	p	item	Arcing	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalLightningDamageTwoHand	p	item	Shocking	6:0,40:1400,24:1200,0:1200,25:500,46:600,4:0
+M	LocalLightningDamageTwoHand	p	item	Discharging	6:0,40:1120,24:960,0:960,25:400,46:480,4:0
+M	LocalLightningDamageTwoHand	p	item	Electrocuting	6:0,40:490,24:420,0:420,25:175,46:210,4:0
+M	LocalLightningDamageTwoHand	p	item	Vapourising	6:0,40:126,24:108,0:108,25:45,46:54,4:0
+M	LocalLightRadiusAndAccuracyPercent	s	item	of Shining	3:500,4:0
+M	LocalLightRadiusAndAccuracyPercent	s	item	of Light	3:500,4:0
+M	LocalLightRadiusAndAccuracyPercent	s	item	of Radiance	3:500,4:0
+M	LocalPhysicalDamage	p	item	Glinting	6:1000,4:0
+M	LocalPhysicalDamage	p	item	Burnished	6:1000,4:0
+M	LocalPhysicalDamage	p	item	Polished	6:1000,4:0
+M	LocalPhysicalDamage	p	item	Honed	6:1000,4:0
+M	LocalPhysicalDamage	p	item	Gleaming	6:1000,4:0
+M	LocalPhysicalDamage	p	item	Annealed	6:800,4:0
+M	LocalPhysicalDamage	p	item	Razor-sharp	6:600,4:0
+M	LocalPhysicalDamage	p	item	Tempered	6:400,4:0
+M	LocalPhysicalDamage	p	item	Flaring	6:200,4:0
+M	LocalPhysicalDamagePercent	p	item	Heavy	3:1000,4:0
+M	LocalPhysicalDamagePercent	p	item	Serrated	3:1000,4:0
+M	LocalPhysicalDamagePercent	p	item	Wicked	3:1000,4:0
+M	LocalPhysicalDamagePercent	p	item	Vicious	3:400,4:0
+M	LocalPhysicalDamagePercent	p	item	Bloodthirsty	3:200,4:0
+M	LocalPhysicalDamagePercent	p	item	Cruel	3:100,4:0
+M	LocalPhysicalDamagePercent	p	item	Tyrannical	3:50,4:0
+M	LocalPhysicalDamagePercent	p	item	Merciless	3:25,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Lacquered	26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Studded	26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Ribbed	26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Fortified	26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Plated	26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Carapaced	26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Encased	26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Enveloped	14:0,20:0,26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Abating	28:0,14:0,20:0,26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Unmoving	28:0,14:0,20:0,26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRating	p	item	Impervious	19:0,28:0,14:0,20:0,26:1000,73:166,4:0
+M	LocalPhysicalDamageReductionRatingAndStunRecoveryPercent	p	item	Beetle's	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingAndStunRecoveryPercent	p	item	Crab's	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingAndStunRecoveryPercent	p	item	Armadillo's	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingAndStunRecoveryPercent	p	item	Rhino's	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingAndStunRecoveryPercent	p	item	Elephant's	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingAndStunRecoveryPercent	p	item	Mammoth's	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingPercent	p	item	Reinforced	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingPercent	p	item	Layered	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingPercent	p	item	Lobstered	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingPercent	p	item	Buttressed	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingPercent	p	item	Thickened	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingPercent	p	item	Girded	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingPercent	p	item	Impregnable	26:1000,4:0
+M	LocalPhysicalDamageReductionRatingPercent	p	item	Impenetrable	13:0,43:0,30:0,36:0,17:0,73:0,37:1000,19:1000,4:0
+M	LocalPhysicalDamageTwoHanded	p	item	Glinting	1:1000,4:0
+M	LocalPhysicalDamageTwoHanded	p	item	Burnished	1:1000,4:0
+M	LocalPhysicalDamageTwoHanded	p	item	Polished	1:1000,4:0
+M	LocalPhysicalDamageTwoHanded	p	item	Honed	1:1000,4:0
+M	LocalPhysicalDamageTwoHanded	p	item	Gleaming	1:1000,4:0
+M	LocalPhysicalDamageTwoHanded	p	item	Annealed	1:800,4:0
+M	LocalPhysicalDamageTwoHanded	p	item	Razor-sharp	1:600,4:0
+M	LocalPhysicalDamageTwoHanded	p	item	Tempered	1:400,4:0
+M	LocalPhysicalDamageTwoHanded	p	item	Flaring	1:200,4:0
+M	LocalWard	p	item	Farrier's	82:1000,4:0
+M	LocalWard	p	item	Brownsmith's	82:1000,4:0
+M	LocalWard	p	item	Coppersmith's	82:1000,4:0
+M	LocalWard	p	item	Blacksmith's	82:1000,4:0
+M	LocalWard	p	item	Silversmith's	82:1000,4:0
+M	LocalWard	p	item	Goldsmith's	82:1000,4:0
+M	LocalWard	p	item	Whitesmith's	82:1000,4:0
+M	LocalWard	p	item	Engraver's	14:0,20:0,82:1000,4:0
+M	LocalWard	p	item	Runesmith's	28:0,14:0,20:0,82:1000,4:0
+M	LocalWard	p	item	Runemaster's	28:0,14:0,20:0,82:1000,4:0
+M	LocalWard	p	item	Artificer's	19:0,28:0,14:0,20:0,82:1000,4:0
+M	LocalWardAndStunRecoveryPercent	p	item	Improved	82:1000,4:0
+M	LocalWardAndStunRecoveryPercent	p	item	Enhanced	82:1000,4:0
+M	LocalWardAndStunRecoveryPercent	p	item	Bolstered	82:1000,4:0
+M	LocalWardAndStunRecoveryPercent	p	item	Elegant	82:1000,4:0
+M	LocalWardAndStunRecoveryPercent	p	item	Exquisite	82:1000,4:0
+M	LocalWardAndStunRecoveryPercent	p	item	Masterwork	82:1000,4:0
+M	LocalWardPercent	p	item	Chiseled	82:1000,4:0
+M	LocalWardPercent	p	item	Etched	82:1000,4:0
+M	LocalWardPercent	p	item	Engraved	82:1000,4:0
+M	LocalWardPercent	p	item	Embedded	82:1000,4:0
+M	LocalWardPercent	p	item	Inscribed	82:1000,4:0
+M	LocalWardPercent	p	item	Lettered	82:1000,4:0
+M	LocalWardPercent	p	item	Runed	82:1000,4:0
+M	LocalWardPercent	p	item	Calligraphic	28:0,14:0,20:0,82:1000,4:0
+M	MaceAttackSpeedForJewel	p	jewel	Beating	25:500,61:0,4:500
+M	ManaCostEfficiencyForJewel	s	jewel	of Efficiency	65:300,4:500
+M	ManaGainedFromEnemyDeath	s	item	of Absorption	3:500,23:500,16:500,14:500,39:500,4:0
+M	ManaGainedFromEnemyDeath	s	item	of Osmosis	3:500,23:500,16:500,14:500,39:500,4:0
+M	ManaGainedFromEnemyDeath	s	item	of Consumption	3:500,23:500,16:500,14:500,39:500,4:0
+M	ManaGainedFromEnemyDeath	s	item	of Diffusion	3:500,23:500,16:500,14:500,39:500,4:0
+M	ManaGainedFromEnemyDeath	s	item	of Permeation	3:500,23:500,16:500,14:500,39:500,4:0
+M	ManaGainedFromEnemyDeath	s	item	of Retention	3:500,23:500,16:500,14:500,39:500,4:0
+M	ManaGainPerTargetForJewel	s	jewel	of Absorption	60:0,4:500
+M	ManaLeechLocalPermyriad	s	item	of Thirst	3:1000,4:0
+M	ManaLeechPermyriad	s	item	of Thirst	23:1000,16:1000,14:1000,39:1000,4:0
+M	ManaLeechPermyriad	s	item	of Parching	16:1000,4:0
+M	ManaLeechPermyriadForJewel	s	jewel	of Thirsting	60:0,4:500
+M	ManaRegeneration	s	item	of Excitement	23:1000,16:1000,29:1000,5:1000,11:1000,44:1000,21:1000,31:1000,18:1000,4:0
+M	ManaRegeneration	s	item	of Excitement	46:1000,4:0
+M	ManaRegeneration	s	item	of Joy	46:1000,4:0
+M	ManaRegeneration	s	item	of Joy	23:1000,16:1000,29:1000,5:1000,11:1000,44:1000,21:1000,31:1000,18:1000,4:0
+M	ManaRegeneration	s	item	of Elation	23:1000,16:1000,29:1000,5:1000,11:1000,44:1000,21:1000,31:1000,18:1000,4:0
+M	ManaRegeneration	s	item	of Elation	46:1000,4:0
+M	ManaRegeneration	s	item	of Bliss	23:1000,16:1000,29:1000,5:1000,11:1000,44:1000,21:1000,31:1000,18:1000,4:0
+M	ManaRegeneration	s	item	of Bliss	46:1000,4:0
+M	ManaRegeneration	s	item	of Euphoria	23:1000,16:1000,29:1000,5:1000,11:1000,44:1000,21:1000,31:1000,18:1000,4:0
+M	ManaRegeneration	s	item	of Euphoria	46:1000,4:0
+M	ManaRegeneration	s	item	of Nirvana	23:1000,16:1000,29:1000,5:1000,11:1000,44:1000,21:1000,31:1000,18:1000,4:0
+M	ManaRegeneration	s	item	of Nirvana	46:1000,4:0
+M	ManaRegenerationRateWhileMoving	s	abyss_jewel	of Praxis	80:250,84:250,75:500,70:250,41:375,4:0
+M	ManaReservationEfficiency	p	jewel	Cerebral	4:250
+M	MaximumChaosResistance	s	item	of Regularity	19:125,4:0
+M	MaximumChaosResistance	s	item	of Concord	19:125,4:0
+M	MaximumChaosResistance	s	item	of Harmony	19:125,4:0
+M	MaximumColdResist	s	item	of Furs	19:250,4:0
+M	MaximumColdResist	s	item	of the Tundra	19:250,4:0
+M	MaximumColdResist	s	item	of the Mammoth	19:250,4:0
+M	MaximumColdResistanceForJewel	s	jewel	of the Kraken	60:60,4:100
+M	MaximumFireResist	s	item	of the Bushfire	19:250,4:0
+M	MaximumFireResist	s	item	of the Molten Core	19:250,4:0
+M	MaximumFireResist	s	item	of the Solar Storm	19:250,4:0
+M	MaximumFireResistanceForJewel	s	jewel	of the Phoenix	61:60,4:100
+M	MaximumLightningResistance	s	item	of Impedance	19:250,4:0
+M	MaximumLightningResistance	s	item	of Shockproofing	19:250,4:0
+M	MaximumLightningResistance	s	item	of the Lightning Rod	19:250,4:0
+M	MaximumLightningResistanceForJewel	s	jewel	of the Leviathan	65:60,4:100
+M	MaximumResistances	s	item	of the Sempiternal	19:125,4:0
+M	MaximumResistances	s	item	of the Deathless	19:125,4:0
+M	MeleeCritChanceForJewel	s	jewel	of Weight	40:0,11:0,65:250,4:0
+M	MeleeCritMultiplierForJewel	s	jewel	of Demolishing	40:0,11:0,65:250,4:0
+M	MeleeDamageForJewel	s	jewel	of Combat	40:0,11:0,65:500,4:0
+M	MineDamageForJewel	p	jewel	Sabotage	61:500,4:0
+M	MineLaySpeedForJewel	p	jewel	Arming	61:250,4:0
+M	MinionAddedChaosDamage	p	abyss_jewel	Tainted	70:700,41:700,4:0
+M	MinionAddedChaosDamage	p	abyss_jewel	Clouded	70:700,41:700,4:0
+M	MinionAddedChaosDamage	p	abyss_jewel	Darkened	70:700,41:700,4:0
+M	MinionAddedChaosDamage	p	abyss_jewel	Malignant	70:700,41:700,4:0
+M	MinionAddedChaosDamage	p	abyss_jewel	Vile	70:350,41:350,4:0
+M	MinionAddedChaosDamage	p	abyss_jewel	Malicious	70:175,41:175,4:0
+M	MinionAddedColdDamage	p	abyss_jewel	Frosted	70:700,41:700,4:0
+M	MinionAddedColdDamage	p	abyss_jewel	Freezing	70:700,41:700,4:0
+M	MinionAddedColdDamage	p	abyss_jewel	Frozen	70:700,41:700,4:0
+M	MinionAddedColdDamage	p	abyss_jewel	Glaciated	70:700,41:700,4:0
+M	MinionAddedColdDamage	p	abyss_jewel	Polar	70:350,41:350,4:0
+M	MinionAddedColdDamage	p	abyss_jewel	Entombing	70:175,41:175,4:0
+M	MinionAddedFireDamage	p	abyss_jewel	Heated	70:700,41:700,4:0
+M	MinionAddedFireDamage	p	abyss_jewel	Flaming	70:700,41:700,4:0
+M	MinionAddedFireDamage	p	abyss_jewel	Scorching	70:700,41:700,4:0
+M	MinionAddedFireDamage	p	abyss_jewel	Incinerating	70:700,41:700,4:0
+M	MinionAddedFireDamage	p	abyss_jewel	Blasting	70:350,41:350,4:0
+M	MinionAddedFireDamage	p	abyss_jewel	Cremating	70:175,41:175,4:0
+M	MinionAddedLightningDamage	p	abyss_jewel	Humming	70:700,41:700,4:0
+M	MinionAddedLightningDamage	p	abyss_jewel	Sparking	70:700,41:700,4:0
+M	MinionAddedLightningDamage	p	abyss_jewel	Arcing	70:700,41:700,4:0
+M	MinionAddedLightningDamage	p	abyss_jewel	Shocking	70:700,41:700,4:0
+M	MinionAddedLightningDamage	p	abyss_jewel	Discharging	70:350,41:350,4:0
+M	MinionAddedLightningDamage	p	abyss_jewel	Electrocuting	70:175,41:175,4:0
+M	MinionAddedPhysicalDamage	p	abyss_jewel	Glinting	70:700,41:700,4:0
+M	MinionAddedPhysicalDamage	p	abyss_jewel	Gleaming	70:700,41:700,4:0
+M	MinionAddedPhysicalDamage	p	abyss_jewel	Annealed	70:700,41:700,4:0
+M	MinionAddedPhysicalDamage	p	abyss_jewel	Razor-sharp	70:700,41:700,4:0
+M	MinionAddedPhysicalDamage	p	abyss_jewel	Tempered	70:350,41:350,4:0
+M	MinionAddedPhysicalDamage	p	abyss_jewel	Flaring	70:175,41:175,4:0
+M	MinionAttackAndCastSpeed	s	abyss_jewel	of Training	70:800,41:800,4:0
+M	MinionAttacksBlindOnHitChance	s	abyss_jewel	of Stifling	70:800,41:800,4:0
+M	MinionAttacksBlindOnHitChance	s	abyss_jewel	of Stifling	70:400,41:400,4:0
+M	MinionAttackSpeedAndCastSpeed	s	item	of Motivation	1:0,55:2000,52:2000,4:0
+M	MinionAttackSpeedAndCastSpeed	s	item	of Coercion	1:0,55:2000,52:2000,4:0
+M	MinionAttackSpeedAndCastSpeed	s	item	of Incitation	1:0,55:2000,52:2000,4:0
+M	MinionAttackSpeedAndCastSpeed	s	item	of Agitation	1:0,55:2000,52:2000,4:0
+M	MinionAttackSpeedAndCastSpeed	s	item	of Instigation	1:0,55:2000,4:0
+M	MinionAttackSpeedAndCastSpeed	s	item	of Provocation	1:0,55:1000,4:0
+M	MinionAttackSpeedAndCastSpeed	s	item	of Infuriation	1:0,55:500,4:0
+M	MinionAttacksTauntOnHitChance	s	abyss_jewel	of Distraction	70:800,41:800,4:0
+M	MinionAttacksTauntOnHitChance	s	abyss_jewel	of Distraction	70:400,41:400,4:0
+M	MinionChaosResistance	s	abyss_jewel	of Righteousness	70:800,41:800,4:0
+M	MinionCriticalStrikeChanceIncrease	s	item	of Luck	1:0,55:2000,53:2000,4:0
+M	MinionCriticalStrikeChanceIncrease	s	item	of Fortune	1:0,55:2000,53:2000,4:0
+M	MinionCriticalStrikeChanceIncrease	s	item	of Providence	1:0,55:2000,53:2000,4:0
+M	MinionCriticalStrikeChanceIncrease	s	item	of Serendipity	1:0,55:2000,53:2000,4:0
+M	MinionCriticalStrikeChanceIncrease	s	item	of Determinism	1:0,55:2000,53:2000,4:0
+M	MinionCriticalStrikeChanceIncrease	s	item	of Destiny	1:0,55:2000,53:2000,4:0
+M	MinionCriticalStrikeMultiplier	s	item	of the Foray	1:0,55:2000,4:0
+M	MinionCriticalStrikeMultiplier	s	item	of the Horde	1:0,55:2000,4:0
+M	MinionCriticalStrikeMultiplier	s	item	of the Throng	1:0,55:2000,4:0
+M	MinionCriticalStrikeMultiplier	s	item	of the Swarm	1:0,55:2000,4:0
+M	MinionCriticalStrikeMultiplier	s	item	of the Invasion	1:0,55:2000,4:0
+M	MinionCriticalStrikeMultiplier	s	item	of the Legion	1:0,55:2000,4:0
+M	MinionDamage	p	item	Baroness's	52:600,4:0
+M	MinionDamage	p	item	Viscountess's	52:600,4:0
+M	MinionDamage	p	item	Marchioness's	52:600,4:0
+M	MinionDamage	p	item	Countess's	52:600,4:0
+M	MinionDamage	p	item	Duchess's	52:600,4:0
+M	MinionDamageForJewel	p	jewel	Leadership	65:0,4:500
+M	MinionDamageIfMinionSkillUsedRecently	s	abyss_jewel	of Authority	70:500,41:500,4:0
+M	MinionDamageOnWeapon	p	item	Baroness's	1:0,55:3000,53:3000,4:0
+M	MinionDamageOnWeapon	p	item	Viscountess's	1:0,55:3000,53:3000,4:0
+M	MinionDamageOnWeapon	p	item	Marchioness's	1:0,55:3000,53:3000,4:0
+M	MinionDamageOnWeapon	p	item	Countess's	1:0,55:1200,53:1200,4:0
+M	MinionDamageOnWeapon	p	item	Duchess's	1:0,55:600,53:600,4:0
+M	MinionDamageOnWeapon	p	item	Princess's	1:0,55:300,53:300,4:0
+M	MinionDamageOnWeapon	p	item	Queen's	1:0,55:160,53:160,4:0
+M	MinionDamageOnWeapon	p	item	Empress's	1:0,55:80,53:80,4:0
+M	MinionDamageOnWeaponAndMana	p	item	Baron's	1:0,55:2000,4:0
+M	MinionDamageOnWeaponAndMana	p	item	Viscount's	1:0,55:2000,4:0
+M	MinionDamageOnWeaponAndMana	p	item	Marquess's	1:0,55:2000,4:0
+M	MinionDamageOnWeaponAndMana	p	item	Count's	1:0,55:1600,4:0
+M	MinionDamageOnWeaponAndMana	p	item	Duke's	1:0,55:800,4:0
+M	MinionDamageOnWeaponAndMana	p	item	Prince's	1:0,55:400,4:0
+M	MinionDamageOnWeaponAndMana	p	item	King's	1:0,55:200,4:0
+M	MinionElementalResistance	s	item	of Adjustment	53:2000,52:2000,4:0
+M	MinionElementalResistance	s	item	of Acclimatisation	53:2000,52:2000,4:0
+M	MinionElementalResistance	s	item	of Adaptation	53:2000,52:2000,4:0
+M	MinionElementalResistance	s	item	of Evolution	53:2000,52:2000,4:0
+M	MinionElementalResistance	s	item	of Metamorphosis	53:2000,52:2000,4:0
+M	MinionElementalResistancesForJewel	s	abyss_jewel	of Acclimatisation	70:800,41:800,4:0
+M	MinionElementalResistancesForJewel	s	jewel	of Resilience	65:0,4:350
+M	MinionGrantsConvocation	s	item	of the Convocation	53:1000,55:1000,4:0
+M	MinionLife	s	item	of the Administrator	1:0,53:2000,52:2000,4:0
+M	MinionLife	s	item	of the Rector	1:0,53:2000,52:2000,4:0
+M	MinionLife	s	item	of the Overseer	1:0,53:2000,52:2000,4:0
+M	MinionLife	s	item	of the Taskmaster	1:0,53:2000,52:2000,4:0
+M	MinionLife	s	item	of the Slavedriver	1:0,53:2000,4:0
+M	MinionLife	s	item	of the Despot	1:0,53:2000,4:0
+M	MinionLifeForJewel	s	abyss_jewel	of Fortitude	70:800,41:800,4:0
+M	MinionLifeForJewel	p	jewel	Master's	65:0,4:350
+M	MinionLifeLeech	s	abyss_jewel	of Vampirism	70:800,41:800,4:0
+M	MinionLifeRegeneration	s	abyss_jewel	of Longevity	70:800,41:800,4:0
+M	MinionMaxElementalResistance	s	item	of Impermeability	53:500,4:0
+M	MinionMaxElementalResistance	s	item	of Countervailing	53:500,4:0
+M	MinionMaxElementalResistance	s	item	of Imperviousness	53:500,4:0
+M	MinionMovementSpeed	s	abyss_jewel	of Orchestration	70:800,41:800,4:0
+M	MinionMovementSpeed	s	item	of Coordination	1:0,52:2000,4:0
+M	MinionMovementSpeed	s	item	of Collaboration	1:0,52:2000,4:0
+M	MinionMovementSpeed	s	item	of Integration	1:0,52:2000,4:0
+M	MinionMovementSpeed	s	item	of Orchestration	1:0,52:2000,4:0
+M	MinionMovementSpeed	s	item	of Harmony	1:0,52:2000,4:0
+M	MinionPhysicalDamageReduction	s	item	of the Guard	53:500,4:0
+M	MinionPhysicalDamageReduction	s	item	of the Brigade	53:500,4:0
+M	MinionPhysicalDamageReduction	s	item	of the Phalanx	53:500,4:0
+M	MinionSpellsHinderOnHitChance	s	abyss_jewel	of Delaying	70:800,41:800,4:0
+M	MinionSpellsHinderOnHitChance	s	abyss_jewel	of Delaying	70:400,41:400,4:0
+M	MovementSpeedIfEnemySlainRecently	s	abyss_jewel	of the Raider	80:250,84:500,75:250,70:0,41:375,4:0
+M	MovementSpeedIfNotDamagedRecently	s	abyss_jewel	of Momentum	80:250,84:500,75:250,70:250,41:375,4:0
+M	MovementVelocity	p	item	Runner's	20:1000,4:0
+M	MovementVelocity	p	item	Sprinter's	20:1000,4:0
+M	MovementVelocity	p	item	Sprinter's	20:1000,4:0
+M	MovementVelocity	p	item	Stallion's	20:1000,4:0
+M	MovementVelocity	p	item	Gazelle's	20:1000,4:0
+M	MovementVelocity	p	item	Cheetah's	20:1000,4:0
+M	MovementVelocity	p	item	Hellion's	20:1000,4:0
+M	OneHandCritMultiplierForJewel	p	jewel	Piercing	11:0,65:250,4:0
+M	OneHandedCritChanceForJewel	p	jewel	Harming	11:0,65:250,4:0
+M	OneHandedMeleeAttackSpeedForJewel	p	jewel	Bandit's	11:0,65:500,4:0
+M	PercentDamageGoesToMana	p	abyss_jewel	Spurring	80:100,84:100,75:300,70:300,41:200,4:0
+M	PercentDamageGoesToMana	p	abyss_jewel	Motivating	80:100,84:100,75:300,70:300,41:200,4:0
+M	PercentIncreasedLifeForJewel	p	jewel	Vivid	61:350,4:500
+M	PercentIncreasedManaForJewel	p	jewel	Enlightened	61:500,4:250
+M	PhysicalDamage	p	item	Glinting	23:1000,16:1000,14:1000,4:0
+M	PhysicalDamage	p	item	Glinting	39:500,4:0
+M	PhysicalDamage	p	item	Burnished	39:500,4:0
+M	PhysicalDamage	p	item	Burnished	23:1000,16:1000,14:1000,4:0
+M	PhysicalDamage	p	item	Polished	39:500,4:0
+M	PhysicalDamage	p	item	Polished	23:1000,16:1000,14:1000,4:0
+M	PhysicalDamage	p	item	Honed	23:1000,16:1000,14:1000,4:0
+M	PhysicalDamage	p	item	Honed	39:500,4:0
+M	PhysicalDamage	p	item	Gleaming	39:500,4:0
+M	PhysicalDamage	p	item	Gleaming	23:1000,16:1000,14:0,4:0
+M	PhysicalDamage	p	item	Annealed	39:500,4:0
+M	PhysicalDamage	p	item	Annealed	23:1000,16:1000,14:0,4:0
+M	PhysicalDamage	p	item	Razor-sharp	39:500,4:0
+M	PhysicalDamage	p	item	Razor-sharp	23:0,16:1000,14:0,4:0
+M	PhysicalDamage	p	item	Tempered	39:500,4:0
+M	PhysicalDamage	p	item	Tempered	23:0,16:1000,14:0,4:0
+M	PhysicalDamage	p	item	Flaring	39:500,4:0
+M	PhysicalDamage	p	item	Flaring	23:0,16:1000,14:0,4:0
+M	PhysicalDamageAddedAsExtraFireIfCriticalStrikeDealtRecently	s	abyss_jewel	of the Inferno	80:300,84:150,75:150,70:0,41:225,4:0
+M	PhysicalDamageForJewel	p	jewel	Sharpened	4:500
+M	PhysicalDamageOverTimeMultiplier	s	jewel	of Exsanguinating	4:300
+M	PhysicalDamageOverTimeMultiplier	s	item	of Seeping	11:300,4:0
+M	PhysicalDamageOverTimeMultiplier	s	item	of Seeping	46:400,4:0
+M	PhysicalDamageOverTimeMultiplier	s	item	of Spilling	11:220,4:0
+M	PhysicalDamageOverTimeMultiplier	s	item	of Spilling	46:300,4:0
+M	PhysicalDamageOverTimeMultiplier	s	item	of Phlebotomising	46:200,4:0
+M	PhysicalDamageOverTimeMultiplier	s	item	of Phlebotomising	11:140,4:0
+M	PhysicalDamageOverTimeMultiplier	s	item	of Hemorrhaging	46:100,4:0
+M	PhysicalDamageOverTimeMultiplier	s	item	of Hemorrhaging	11:70,4:0
+M	PhysicalDamageOverTimeMultiplier	s	item	of Exsanguinating	11:35,4:0
+M	PhysicalDamageOverTimeMultiplier	s	item	of Exsanguinating	46:50,4:0
+M	PhysicalDamageReductionRating	p	item	Lacquered	58:1000,4:0
+M	PhysicalDamageReductionRating	p	abyss_jewel	Lacquered	4:600
+M	PhysicalDamageReductionRating	p	item	Studded	58:1000,4:0
+M	PhysicalDamageReductionRating	p	item	Ribbed	58:1000,4:0
+M	PhysicalDamageReductionRating	p	abyss_jewel	Fortified	4:600
+M	PhysicalDamageReductionRating	p	item	Fortified	58:1000,4:0
+M	PhysicalDamageReductionRating	p	item	Plated	58:1000,4:0
+M	PhysicalDamageReductionRating	p	item	Carapaced	58:1000,4:0
+M	PhysicalDamageReductionRating	p	abyss_jewel	Carapaced	4:600
+M	PhysicalDamageReductionRating	p	abyss_jewel	Encased	4:300
+M	PhysicalDamageReductionRating	p	item	Encased	58:1000,4:0
+M	PhysicalDamageReductionRating	p	item	Enveloped	58:1000,4:0
+M	PhysicalDamageWithBowsJewel	p	abyss_jewel	Glinting	40:2500,84:700,41:700,4:0
+M	PhysicalDamageWithBowsJewel	p	abyss_jewel	Gleaming	40:2500,84:700,41:700,4:0
+M	PhysicalDamageWithBowsJewel	p	abyss_jewel	Tempered	40:2500,84:700,41:700,4:0
+M	PhysicalDamageWithBowsJewel	p	abyss_jewel	Flaring	40:1000,84:250,41:250,4:0
+M	PhysicalDamageWithBowsJewel	p	abyss_jewel	Acuminate	40:500,84:125,41:125,4:0
+M	PoisonChanceAndDurationForJewel	s	jewel	of Poisoning	60:250,4:350
+M	PoisonDamageForJewel	s	jewel	of Venom	60:250,4:500
+M	ProjectileDamageForJewel	s	jewel	of Archery	60:400,4:500
+M	ProjectileSpeed	s	item	of Darting	12:1000,39:1000,4:0
+M	ProjectileSpeed	s	item	of Flight	12:1000,39:1000,4:0
+M	ProjectileSpeed	s	item	of Propulsion	12:1000,39:1000,4:0
+M	ProjectileSpeed	s	item	of the Zephyr	12:1000,39:1000,4:0
+M	ProjectileSpeed	s	item	of the Gale	12:1000,39:1000,4:0
+M	ReducedBleedDuration	s	jewel	of Stemming	4:250
+M	ReducedExtraDamageFromCrits	s	item	of Dulling	54:1000,45:1000,31:1000,4:0
+M	ReducedExtraDamageFromCrits	s	item	of Deadening	54:1000,45:1000,31:1000,4:0
+M	ReducedExtraDamageFromCrits	s	item	of Interference	54:1000,45:1000,31:1000,4:0
+M	ReducedExtraDamageFromCrits	s	item	of Obstruction	54:1000,45:1000,31:1000,4:0
+M	ReducedIgniteDurationOnSelf	s	jewel	of the Flameruler	4:250
+M	ReducedPhysicalDamageTaken	s	item	of the Watchman	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,26:1000,30:500,43:500,73:300,4:0
+M	ReducedPhysicalDamageTaken	s	item	of the Sentry	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,26:1000,30:500,43:500,73:300,4:0
+M	ReducedPhysicalDamageTaken	s	item	of the Keeper	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,26:1000,30:500,43:500,73:300,4:0
+M	ReducedPhysicalDamageTaken	s	item	of the Protector	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,26:1000,30:500,43:500,73:300,4:0
+M	ReducedPhysicalDamageTaken	s	item	of the Conservator	3:0,39:0,23:0,16:0,58:0,14:0,20:0,28:0,26:1000,30:500,43:500,73:300,4:0
+M	ReducedPoisonDuration	s	jewel	of Neutralisation	4:250
+M	ReducedShockEffectOnSelf	s	jewel	of the Stormdweller	4:250
+M	ShieldSpellBlockForJewel	p	jewel	Thwarting	4:350
+M	ShieldSpellDamageForJewel	p	jewel	Battlemage's	40:0,46:0,65:0,4:500
+M	ShockChanceAndDurationForJewel	s	jewel	of Shocking	65:250,4:350
+M	SpellAddedChaosDamageWhileDualWielding	p	abyss_jewel	Tainted	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileDualWielding	p	abyss_jewel	Clouded	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileDualWielding	p	abyss_jewel	Darkened	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileDualWielding	p	abyss_jewel	Malignant	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileDualWielding	p	abyss_jewel	Vile	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedChaosDamageWhileDualWielding	p	abyss_jewel	Malicious	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedChaosDamageWhileHoldingAShield	p	abyss_jewel	Tainted	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileHoldingAShield	p	abyss_jewel	Clouded	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileHoldingAShield	p	abyss_jewel	Darkened	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileHoldingAShield	p	abyss_jewel	Malignant	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileHoldingAShield	p	abyss_jewel	Vile	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedChaosDamageWhileHoldingAShield	p	abyss_jewel	Malicious	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedChaosDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Tainted	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Clouded	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Darkened	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Malignant	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedChaosDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Vile	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedChaosDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Malicious	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedChaosSuffix	s	abyss_jewel	of Dishonour	75:700,41:700,4:0
+M	SpellAddedChaosSuffix	s	abyss_jewel	of Harm	75:700,41:700,4:0
+M	SpellAddedChaosSuffix	s	abyss_jewel	of Malevolence	75:700,41:700,4:0
+M	SpellAddedChaosSuffix	s	abyss_jewel	of Malice	75:350,41:350,4:0
+M	SpellAddedChaosSuffix	s	abyss_jewel	of Sin	75:175,41:175,4:0
+M	SpellAddedColdDamage	p	item	Frosted	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedColdDamage	p	item	Chilled	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedColdDamage	p	item	Icy	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedColdDamage	p	item	Frigid	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedColdDamage	p	item	Freezing	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedColdDamage	p	item	Frozen	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedColdDamage	p	item	Glaciated	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedColdDamage	p	item	Polar	22:0,11:250,5:250,21:250,4:0
+M	SpellAddedColdDamage	p	item	Entombing	22:0,11:50,5:50,21:50,4:0
+M	SpellAddedColdDamageTwoHand	p	item	Frosted	56:0,46:800,4:0
+M	SpellAddedColdDamageTwoHand	p	item	Chilled	56:0,46:800,4:0
+M	SpellAddedColdDamageTwoHand	p	item	Icy	56:0,46:800,4:0
+M	SpellAddedColdDamageTwoHand	p	item	Frigid	56:0,46:800,4:0
+M	SpellAddedColdDamageTwoHand	p	item	Freezing	56:0,46:800,4:0
+M	SpellAddedColdDamageTwoHand	p	item	Frozen	56:0,46:800,4:0
+M	SpellAddedColdDamageTwoHand	p	item	Glaciated	56:0,46:800,4:0
+M	SpellAddedColdDamageTwoHand	p	item	Polar	56:0,46:250,4:0
+M	SpellAddedColdDamageTwoHand	p	item	Entombing	56:0,46:60,4:0
+M	SpellAddedColdDamageWhileDualWielding	p	abyss_jewel	Frosted	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileDualWielding	p	abyss_jewel	Freezing	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileDualWielding	p	abyss_jewel	Frozen	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileDualWielding	p	abyss_jewel	Glaciated	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileDualWielding	p	abyss_jewel	Polar	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedColdDamageWhileDualWielding	p	abyss_jewel	Entombing	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedColdDamageWhileHoldingAShield	p	abyss_jewel	Frosted	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileHoldingAShield	p	abyss_jewel	Freezing	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileHoldingAShield	p	abyss_jewel	Frozen	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileHoldingAShield	p	abyss_jewel	Glaciated	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileHoldingAShield	p	abyss_jewel	Polar	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedColdDamageWhileHoldingAShield	p	abyss_jewel	Entombing	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedColdDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Frosted	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Freezing	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Frozen	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Glaciated	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedColdDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Polar	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedColdDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Entombing	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedColdSuffix	s	abyss_jewel	of Sleet	75:700,41:700,4:0
+M	SpellAddedColdSuffix	s	abyss_jewel	of Ice	75:700,41:700,4:0
+M	SpellAddedColdSuffix	s	abyss_jewel	of Rime	75:700,41:700,4:0
+M	SpellAddedColdSuffix	s	abyss_jewel	of Floe	75:350,41:350,4:0
+M	SpellAddedColdSuffix	s	abyss_jewel	of Glaciation	75:175,41:175,4:0
+M	SpellAddedFireDamage	p	item	Heated	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedFireDamage	p	item	Smouldering	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedFireDamage	p	item	Smoking	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedFireDamage	p	item	Burning	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedFireDamage	p	item	Flaming	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedFireDamage	p	item	Scorching	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedFireDamage	p	item	Incinerating	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedFireDamage	p	item	Blasting	22:0,11:250,5:250,21:250,4:0
+M	SpellAddedFireDamage	p	item	Cremating	22:0,11:50,5:50,21:50,4:0
+M	SpellAddedFireDamageTwoHand	p	item	Heated	56:0,46:800,4:0
+M	SpellAddedFireDamageTwoHand	p	item	Smouldering	56:0,46:800,4:0
+M	SpellAddedFireDamageTwoHand	p	item	Smoking	56:0,46:800,4:0
+M	SpellAddedFireDamageTwoHand	p	item	Burning	56:0,46:800,4:0
+M	SpellAddedFireDamageTwoHand	p	item	Flaming	56:0,46:800,4:0
+M	SpellAddedFireDamageTwoHand	p	item	Scorching	56:0,46:800,4:0
+M	SpellAddedFireDamageTwoHand	p	item	Incinerating	56:0,46:800,4:0
+M	SpellAddedFireDamageTwoHand	p	item	Blasting	56:0,46:250,4:0
+M	SpellAddedFireDamageTwoHand	p	item	Cremating	56:0,46:60,4:0
+M	SpellAddedFireDamageWhileDualWielding	p	abyss_jewel	Heated	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileDualWielding	p	abyss_jewel	Flaming	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileDualWielding	p	abyss_jewel	Scorching	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileDualWielding	p	abyss_jewel	Incinerating	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileDualWielding	p	abyss_jewel	Blasting	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedFireDamageWhileDualWielding	p	abyss_jewel	Cremating	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedFireDamageWhileHoldingAShield	p	abyss_jewel	Heated	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileHoldingAShield	p	abyss_jewel	Flaming	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileHoldingAShield	p	abyss_jewel	Scorching	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileHoldingAShield	p	abyss_jewel	Incinerating	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileHoldingAShield	p	abyss_jewel	Blasting	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedFireDamageWhileHoldingAShield	p	abyss_jewel	Cremating	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedFireDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Heated	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Flaming	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Scorching	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Incinerating	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedFireDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Blasting	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedFireDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Cremating	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedFireSuffix	s	abyss_jewel	of Coals	75:700,41:700,4:0
+M	SpellAddedFireSuffix	s	abyss_jewel	of Cinders	75:700,41:700,4:0
+M	SpellAddedFireSuffix	s	abyss_jewel	of Flames	75:700,41:700,4:0
+M	SpellAddedFireSuffix	s	abyss_jewel	of Immolation	75:350,41:350,4:0
+M	SpellAddedFireSuffix	s	abyss_jewel	of Ashes	75:175,41:175,4:0
+M	SpellAddedLightningDamage	p	item	Humming	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedLightningDamage	p	item	Buzzing	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedLightningDamage	p	item	Snapping	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedLightningDamage	p	item	Crackling	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedLightningDamage	p	item	Sparking	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedLightningDamage	p	item	Arcing	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedLightningDamage	p	item	Shocking	22:0,11:800,5:800,21:800,4:0
+M	SpellAddedLightningDamage	p	item	Discharging	22:0,11:250,5:250,21:250,4:0
+M	SpellAddedLightningDamage	p	item	Electrocuting	22:0,11:60,5:60,21:60,4:0
+M	SpellAddedLightningDamageTwoHand	p	item	Humming	56:0,46:800,4:0
+M	SpellAddedLightningDamageTwoHand	p	item	Buzzing	56:0,46:800,4:0
+M	SpellAddedLightningDamageTwoHand	p	item	Snapping	56:0,46:800,4:0
+M	SpellAddedLightningDamageTwoHand	p	item	Crackling	56:0,46:800,4:0
+M	SpellAddedLightningDamageTwoHand	p	item	Sparking	56:0,46:800,4:0
+M	SpellAddedLightningDamageTwoHand	p	item	Arcing	56:0,46:800,4:0
+M	SpellAddedLightningDamageTwoHand	p	item	Shocking	56:0,46:800,4:0
+M	SpellAddedLightningDamageTwoHand	p	item	Discharging	56:0,46:250,4:0
+M	SpellAddedLightningDamageTwoHand	p	item	Electrocuting	56:0,46:60,4:0
+M	SpellAddedLightningDamageWhileDualWielding	p	abyss_jewel	Humming	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileDualWielding	p	abyss_jewel	Sparking	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileDualWielding	p	abyss_jewel	Arcing	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileDualWielding	p	abyss_jewel	Shocking	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileDualWielding	p	abyss_jewel	Discharging	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedLightningDamageWhileDualWielding	p	abyss_jewel	Electrocuting	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedLightningDamageWhileHoldingAShield	p	abyss_jewel	Humming	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileHoldingAShield	p	abyss_jewel	Sparking	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileHoldingAShield	p	abyss_jewel	Arcing	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileHoldingAShield	p	abyss_jewel	Shocking	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileHoldingAShield	p	abyss_jewel	Discharging	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedLightningDamageWhileHoldingAShield	p	abyss_jewel	Electrocuting	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedLightningDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Humming	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Sparking	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Arcing	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Shocking	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedLightningDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Discharging	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedLightningDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Electrocuting	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedLightningSuffix	s	abyss_jewel	of Static	75:700,41:700,4:0
+M	SpellAddedLightningSuffix	s	abyss_jewel	of Electricity	75:700,41:700,4:0
+M	SpellAddedLightningSuffix	s	abyss_jewel	of Voltage	75:700,41:700,4:0
+M	SpellAddedLightningSuffix	s	abyss_jewel	of Discharge	75:350,41:350,4:0
+M	SpellAddedLightningSuffix	s	abyss_jewel	of Arcing	75:175,41:175,4:0
+M	SpellAddedPhysicalDamageWhileDualWielding	p	abyss_jewel	Glinting	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileDualWielding	p	abyss_jewel	Gleaming	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileDualWielding	p	abyss_jewel	Annealed	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileDualWielding	p	abyss_jewel	Razor-sharp	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileDualWielding	p	abyss_jewel	Tempered	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedPhysicalDamageWhileDualWielding	p	abyss_jewel	Flaring	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedPhysicalDamageWhileHoldingAShield	p	abyss_jewel	Glinting	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileHoldingAShield	p	abyss_jewel	Gleaming	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileHoldingAShield	p	abyss_jewel	Annealed	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileHoldingAShield	p	abyss_jewel	Razor-sharp	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileHoldingAShield	p	abyss_jewel	Tempered	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedPhysicalDamageWhileHoldingAShield	p	abyss_jewel	Flaring	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedPhysicalDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Glinting	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Gleaming	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Annealed	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Razor-sharp	80:0,84:0,70:0,75:250,41:250,4:0
+M	SpellAddedPhysicalDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Tempered	80:0,84:0,70:0,75:125,41:125,4:0
+M	SpellAddedPhysicalDamageWhileWieldingTwoHandedWeapon	p	abyss_jewel	Flaring	80:0,84:0,70:0,75:62,41:62,4:0
+M	SpellAddedPhysicalSuffix	s	abyss_jewel	of Heft	75:700,41:700,4:0
+M	SpellAddedPhysicalSuffix	s	abyss_jewel	of Force	75:700,41:700,4:0
+M	SpellAddedPhysicalSuffix	s	abyss_jewel	of Weight	75:700,41:700,4:0
+M	SpellAddedPhysicalSuffix	s	abyss_jewel	of Impact	75:350,41:350,4:0
+M	SpellAddedPhysicalSuffix	s	abyss_jewel	of Collision	75:175,41:175,4:0
+M	SpellBlockChanceIfHitRecently	s	abyss_jewel	of Instinct	80:250,84:250,75:500,70:250,41:375,4:0
+M	SpellBlockChanceIfHitRecently	s	abyss_jewel	of Readiness	80:250,84:500,75:250,70:250,41:375,4:0
+M	SpellBlockPercentage	p	item	Mystic	54:500,45:500,31:500,47:500,18:1000,29:1000,4:0
+M	SpellBlockPercentage	p	item	Clairvoyant	54:500,45:500,31:500,47:500,18:1000,29:1000,4:0
+M	SpellBlockPercentage	p	item	Enigmatic	54:500,45:500,31:500,47:500,18:1000,29:1000,4:0
+M	SpellBlockPercentage	p	item	Enlightened	54:500,45:500,31:500,47:500,18:1000,29:1000,4:0
+M	SpellBlockPercentage	p	item	Seer's	54:500,45:500,31:500,47:500,18:1000,29:1000,4:0
+M	SpellBlockPercentage	p	item	Oracle's	54:500,45:500,31:500,47:500,18:1000,29:1000,4:0
+M	SpellCritChanceForJewel	s	jewel	of Annihilation	65:0,4:250
+M	SpellCriticalStrikeChance	s	item	of Menace	22:0,29:1000,31:1000,18:1000,11:1000,5:1000,21:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Menace	56:0,46:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Havoc	56:0,46:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Havoc	22:0,29:1000,31:1000,18:1000,11:1000,5:1000,21:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Disaster	56:0,46:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Disaster	22:0,29:1000,31:1000,18:1000,11:1000,5:1000,21:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Calamity	22:0,29:1000,31:1000,18:1000,11:1000,5:1000,21:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Calamity	56:0,46:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Ruin	56:0,46:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Ruin	22:0,29:1000,31:1000,18:1000,11:1000,5:1000,21:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Unmaking	22:0,29:1000,31:1000,18:1000,11:1000,5:1000,21:1000,4:0
+M	SpellCriticalStrikeChance	s	item	of Unmaking	56:0,46:1000,4:0
+M	SpellCritMultiplierForJewel	s	jewel	of Unmaking	65:0,4:250
+M	SpellDamage	p	item	Chanter's	16:1000,4:0
+M	SpellDamage	p	item	Mage's	16:1000,4:0
+M	SpellDamage	p	item	Sorcerer's	16:1000,4:0
+M	SpellDamage	p	item	Thaumaturgist's	16:1000,4:0
+M	SpellDamage	p	item	Wizard's	16:1000,4:0
+M	SpellDamageForJewel	s	jewel	of Mysticism	65:0,4:500
+M	SpellsHinderOnHitChance	s	abyss_jewel	of Hindering	75:800,41:800,4:0
+M	SpellsHinderOnHitChance	s	abyss_jewel	of Hindering	75:400,41:400,4:0
+M	StaffAttackSpeedForJewel	p	jewel	Blunt	46:500,61:0,4:500
+M	StaffSpellBlockForJewel	p	jewel	Halting	46:350,60:350,4:0
+M	StaffSpellDamageForJewel	p	jewel	Wizard's	46:500,65:0,4:500
+M	Strength	s	item	of the Brute	23:1000,16:1000,58:1000,26:1000,43:500,30:500,73:333,24:500,25:1000,5:500,46:500,0:500,4:0
+M	Strength	s	item	of the Wrestler	23:1000,16:1000,58:1000,26:1000,43:500,30:500,73:333,24:500,25:1000,5:500,46:500,0:500,4:0
+M	Strength	s	item	of the Bear	23:1000,16:1000,58:1000,26:1000,43:500,30:500,73:333,24:500,25:1000,5:500,46:500,0:500,4:0
+M	Strength	s	item	of the Lion	23:1000,16:1000,58:1000,26:1000,43:500,30:500,73:333,24:500,25:1000,5:500,46:500,0:500,4:0
+M	Strength	s	item	of the Gorilla	23:1000,16:1000,58:1000,26:1000,43:500,30:500,73:333,24:500,25:1000,5:500,46:500,0:500,4:0
+M	Strength	s	item	of the Goliath	23:1000,16:1000,58:1000,26:1000,43:500,30:500,73:333,24:500,25:1000,5:500,46:500,0:500,4:0
+M	Strength	s	item	of the Leviathan	23:1000,16:1000,58:1000,26:1000,43:500,30:500,73:333,24:500,25:1000,5:500,46:500,0:500,4:0
+M	Strength	s	item	of the Titan	23:1000,16:1000,58:1000,26:1000,43:500,30:500,73:333,24:500,25:1000,5:500,46:500,0:500,4:0
+M	Strength	s	item	of the Gods	23:1000,16:1000,58:1000,26:1000,43:500,30:500,73:333,24:500,25:1000,5:500,46:500,0:500,4:0
+M	Strength	s	item	of the Godslayer	58:1000,4:0
+M	StrengthDexterityForJewel	s	jewel	of Athletics	65:450,4:250
+M	StrengthDexterityForJewel	s	abyss_jewel	of Athletics	4:500
+M	StrengthForJewel	s	jewel	of Strength	61:300,4:500
+M	StrengthForJewel	s	abyss_jewel	of Strength	4:500
+M	StrengthIntelligenceForJewel	s	abyss_jewel	of Spirit	4:500
+M	StrengthIntelligenceForJewel	s	jewel	of Spirit	60:450,4:250
+M	StunDurationForJewel	s	jewel	of Stunning	61:200,4:400
+M	StunDurationIncreasePercent	s	item	of Impact	25:1000,56:1000,24:1000,0:1000,58:1000,39:1000,40:1000,4:0
+M	StunDurationIncreasePercent	s	item	of Dazing	25:1000,56:1000,24:1000,0:1000,58:1000,39:1000,40:1000,4:0
+M	StunDurationIncreasePercent	s	item	of Stunning	25:1000,56:1000,24:1000,0:1000,58:1000,39:1000,40:1000,4:0
+M	StunDurationIncreasePercent	s	item	of Slamming	25:1000,56:1000,24:1000,0:1000,58:1000,39:1000,40:1000,4:0
+M	StunDurationIncreasePercent	s	item	of Staggering	25:1000,56:1000,24:1000,0:1000,58:1000,39:1000,40:1000,4:0
+M	StunRecovery	s	item	of Thick Skin	14:0,15:1000,58:1000,4:0
+M	StunRecovery	s	item	of Stone Skin	14:0,15:1000,58:1000,4:0
+M	StunRecovery	s	item	of Iron Skin	14:0,15:1000,58:1000,4:0
+M	StunRecovery	s	item	of Steel Skin	14:0,15:1000,58:1000,4:0
+M	StunRecovery	s	item	of Adamantite Skin	14:0,15:1000,58:1000,4:0
+M	StunRecovery	s	item	of Corundum Skin	14:0,15:1000,58:1000,4:0
+M	StunRecoveryForJewel	s	jewel	of Recovery	61:200,4:400
+M	StunThresholdReduction	s	item	of the Pugilist	25:1000,56:1000,24:1000,0:1000,58:1000,4:0
+M	StunThresholdReduction	s	item	of the Brawler	25:1000,56:1000,24:1000,0:1000,58:1000,4:0
+M	StunThresholdReduction	s	item	of the Boxer	25:1000,56:1000,24:1000,0:1000,58:1000,4:0
+M	StunThresholdReduction	s	item	of the Combatant	25:1000,56:1000,24:1000,0:1000,58:1000,4:0
+M	StunThresholdReduction	s	item	of the Gladiator	25:1000,56:1000,24:1000,0:1000,58:1000,4:0
+M	SwordAttackSpeedForJewel	p	jewel	Fencing	24:500,65:500,4:0
+M	TotemDamageForJewel	p	jewel	Shaman's	61:250,4:350
+M	TotemElementalResistancesForJewel	s	jewel	of Runes	61:250,4:350
+M	TotemLifeForJewel	p	jewel	Carved	61:250,4:350
+M	TrapDamageForJewel	p	jewel	Trapping	61:500,4:0
+M	TrapThrowSpeedForJewel	p	jewel	Honed	61:250,4:0
+M	TwoHandColdDamageWeaponPrefix	p	item	Bitter	56:0,46:500,4:0
+M	TwoHandColdDamageWeaponPrefix	p	item	Biting	56:0,46:500,4:0
+M	TwoHandColdDamageWeaponPrefix	p	item	Alpine	56:0,46:500,4:0
+M	TwoHandColdDamageWeaponPrefix	p	item	Snowy	56:0,46:500,4:0
+M	TwoHandColdDamageWeaponPrefix	p	item	Hailing	56:0,46:500,4:0
+M	TwoHandColdDamageWeaponPrefix	p	item	Crystalline	56:0,46:150,4:0
+M	TwoHandColdDamageWeaponPrefix	p	item	Cryomancer's	56:0,46:40,4:0
+M	TwoHandColdDamageWeaponPrefix	p	item	Tul's	56:0,46:13,4:0
+M	TwoHandCritMultiplierForJewel	p	jewel	Rupturing	40:0,65:250,4:0
+M	TwoHandedCritChanceForJewel	p	jewel	Sundering	40:0,65:250,4:0
+M	TwoHandedMeleeAttackSpeedForJewel	p	jewel	Warrior's	40:0,65:500,4:0
+M	TwoHandFireDamageWeaponPrefix	p	item	Searing	56:0,46:500,4:0
+M	TwoHandFireDamageWeaponPrefix	p	item	Sizzling	56:0,46:500,4:0
+M	TwoHandFireDamageWeaponPrefix	p	item	Blistering	56:0,46:500,4:0
+M	TwoHandFireDamageWeaponPrefix	p	item	Cauterising	56:0,46:500,4:0
+M	TwoHandFireDamageWeaponPrefix	p	item	Volcanic	56:0,46:500,4:0
+M	TwoHandFireDamageWeaponPrefix	p	item	Magmatic	56:0,46:150,4:0
+M	TwoHandFireDamageWeaponPrefix	p	item	Pyroclastic	56:0,46:40,4:0
+M	TwoHandFireDamageWeaponPrefix	p	item	Xoph's	56:0,46:13,4:0
+M	TwoHandLightningDamageWeaponPrefix	p	item	Charged	56:0,46:500,4:0
+M	TwoHandLightningDamageWeaponPrefix	p	item	Hissing	56:0,46:500,4:0
+M	TwoHandLightningDamageWeaponPrefix	p	item	Bolting	56:0,46:500,4:0
+M	TwoHandLightningDamageWeaponPrefix	p	item	Coursing	56:0,46:500,4:0
+M	TwoHandLightningDamageWeaponPrefix	p	item	Striking	56:0,46:500,4:0
+M	TwoHandLightningDamageWeaponPrefix	p	item	Smiting	56:0,46:150,4:0
+M	TwoHandLightningDamageWeaponPrefix	p	item	Ionising	56:0,46:40,4:0
+M	TwoHandLightningDamageWeaponPrefix	p	item	Esh's	56:0,46:13,4:0
+M	TwoHandWeaponSpellDamage	p	item	Apprentice's	56:0,46:1500,4:0
+M	TwoHandWeaponSpellDamage	p	item	Adept's	56:0,46:1500,4:0
+M	TwoHandWeaponSpellDamage	p	item	Scholar's	56:0,46:1500,4:0
+M	TwoHandWeaponSpellDamage	p	item	Professor's	56:0,46:1500,4:0
+M	TwoHandWeaponSpellDamage	p	item	Occultist's	56:0,46:1500,4:0
+M	TwoHandWeaponSpellDamage	p	item	Incanter's	56:0,46:500,4:0
+M	TwoHandWeaponSpellDamage	p	item	Glyphic	56:0,46:150,4:0
+M	TwoHandWeaponSpellDamage	p	item	Runic	56:0,46:40,4:0
+M	TwoHandWeaponSpellDamageAndMana	p	item	Caster's	56:0,46:1500,4:0
+M	TwoHandWeaponSpellDamageAndMana	p	item	Conjuror's	56:0,46:1500,4:0
+M	TwoHandWeaponSpellDamageAndMana	p	item	Wizard's	56:0,46:1500,4:0
+M	TwoHandWeaponSpellDamageAndMana	p	item	Warlock's	56:0,46:600,4:0
+M	TwoHandWeaponSpellDamageAndMana	p	item	Mage's	56:0,46:300,4:0
+M	TwoHandWeaponSpellDamageAndMana	p	item	Archmage's	56:0,46:150,4:0
+M	TwoHandWeaponSpellDamageAndMana	p	item	Lich's	56:0,46:75,4:0
+M	WandAttackSpeedForJewel	p	jewel	Jinxing	11:500,65:0,4:500
+M	WardDelayRecovery	s	item	of Artifice	82:1000,4:0
+M	WardDelayRecovery	s	item	of Etching	82:1000,4:0
+M	WardDelayRecovery	s	item	of Engraving	82:1000,4:0
+M	WardDelayRecovery	s	item	of Inscription	82:1000,4:0
+M	WardDelayRecovery	s	item	of Runes	82:1000,4:0
+M	WeaponSpellDamage	p	item	Apprentice's	22:0,29:1500,11:1500,5:1500,21:1500,4:0
+M	WeaponSpellDamage	p	item	Adept's	22:0,29:1500,11:1500,5:1500,21:1500,4:0
+M	WeaponSpellDamage	p	item	Scholar's	22:0,29:1500,11:1500,5:1500,21:1500,4:0
+M	WeaponSpellDamage	p	item	Professor's	22:0,29:1500,11:1500,5:1500,21:1500,4:0
+M	WeaponSpellDamage	p	item	Occultist's	22:0,29:1500,11:1500,5:1500,21:1500,4:0
+M	WeaponSpellDamage	p	item	Incanter's	22:0,29:500,11:500,5:500,21:500,4:0
+M	WeaponSpellDamage	p	item	Glyphic	22:0,29:150,11:150,5:150,21:150,4:0
+M	WeaponSpellDamage	p	item	Runic	22:0,29:40,11:40,5:40,21:40,4:0
+M	WeaponSpellDamageAndMana	p	item	Caster's	22:0,11:1000,5:750,21:750,4:0
+M	WeaponSpellDamageAndMana	p	item	Conjuror's	22:0,11:1000,5:750,21:750,4:0
+M	WeaponSpellDamageAndMana	p	item	Wizard's	22:0,11:1000,5:750,21:750,4:0
+M	WeaponSpellDamageAndMana	p	item	Warlock's	22:0,11:800,5:600,21:600,4:0
+M	WeaponSpellDamageAndMana	p	item	Mage's	22:0,11:400,5:300,21:300,4:0
+M	WeaponSpellDamageAndMana	p	item	Archmage's	22:0,11:200,5:150,21:150,4:0
+M	WeaponSpellDamageAndMana	p	item	Lich's	22:0,11:100,5:75,21:75,4:0

@@ -1,0 +1,53 @@
+bin/
+obj/
+.vs/
+.idea/
+*.user
+TestResults/
+
+# --- Personal data guard: screenshots, logs and reports stay on this PC ---
+
+# Test frames: a new screenshot is NOT picked up by `git add .`.
+# Check it by eye first (no chat, nicknames, desktop, paths), then add it on purpose: git add -f <file>
+tests/**/TestData/frames/*.png
+tests/**/TestData/frames/*.jpg
+tests/**/TestData/frames/*.bmp
+!tests/**/TestData/frames/open-zoom-*.png
+!tests/**/TestData/frames/closed-synthetic-*.png
+
+# Screenshots and captures anywhere else
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.gif
+*.mp4
+!src/**/*.png
+!tests/**/TestData/frames/open-zoom-*.png
+!tests/**/TestData/frames/closed-synthetic-*.png
+Screenshots/
+screenshots/
+# README pictures: taken from a QA run on scrubbed data (no account, character, chat or paths), checked by eye
+!docs/screenshots/
+!docs/screenshots/**/*.png
+frames/
+!tests/**/TestData/frames/
+
+# Overlay runtime output (normally in %APPDATA%, but copies end up next to the code)
+FreshExile-report-*.zip
+overlay.log
+overlay.log.old
+crash.log
+state.json
+!tests/**/TestData/**/state.json
+
+# Raw game logs: only trimmed copies under TestData go into the repo
+Client.txt
+LatestClient.txt
+KakaoClient.txt
+
+# Git backups
+*.bundle
+
+# Release archive for GitHub Releases (tools/publish.ps1 builds it; uploaded by hand, never committed)
+release/

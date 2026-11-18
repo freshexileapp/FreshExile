@@ -1,0 +1,381 @@
+2026/11/13 22:26:59 5996921 1186a803 [DEBUG Client 31444] Generating level 1 area "1_1_1" with seed 2648055580
+2026/11/13 22:27:01 5998031 cffb06be [INFO Client 31444] : You have entered The Twilight Strand.
+2026/11/13 22:28:30 6087500 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 2
+2026/11/13 22:28:54 6111375 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 22:28:56 6113203 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 22:29:17 6134468 1186a803 [DEBUG Client 31444] Generating level 2 area "1_1_2" with seed 3249076914
+2026/11/13 22:29:18 6135718 cffb06be [INFO Client 31444] : You have entered The Coast.
+2026/11/13 22:33:28 6385484 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 3
+2026/11/13 22:37:59 6656468 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 22:38:00 6657265 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 22:39:09 6726187 1186a803 [DEBUG Client 31444] Generating level 2 area "1_1_2" with seed 3249076914
+2026/11/13 22:39:10 6727312 cffb06be [INFO Client 31444] : You have entered The Coast.
+2026/11/13 22:39:21 6738578 1186a803 [DEBUG Client 31444] Generating level 3 area "1_1_2a" with seed 2801378557
+2026/11/13 22:39:22 6739406 cffb06be [INFO Client 31444] : You have entered The Tidal Island.
+2026/11/13 22:40:59 6836484 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 4
+2026/11/13 22:42:24 6920984 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 22:42:25 6922015 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 22:47:49 7246578 1186a803 [DEBUG Client 31444] Generating level 2 area "1_1_2" with seed 3249076914
+2026/11/13 22:47:50 7247687 cffb06be [INFO Client 31444] : You have entered The Coast.
+2026/11/13 22:47:58 7255015 1186a803 [DEBUG Client 31444] Generating level 4 area "1_1_3" with seed 2876252715
+2026/11/13 22:47:58 7255812 cffb06be [INFO Client 31444] : You have entered The Mud Flats.
+2026/11/13 22:48:52 7309593 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 5
+2026/11/13 22:51:47 7483890 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 6
+2026/11/13 22:52:01 7498015 1186a803 [DEBUG Client 31444] Generating level 5 area "1_1_4_1" with seed 1668497
+2026/11/13 22:52:01 7498671 cffb06be [INFO Client 31444] : You have entered The Submerged Passage.
+2026/11/13 22:52:09 7506265 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 22:52:10 7507203 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 22:53:47 7603781 1186a803 [DEBUG Client 31444] Generating level 5 area "1_1_4_1" with seed 1668497
+2026/11/13 22:53:47 7604515 cffb06be [INFO Client 31444] : You have entered The Submerged Passage.
+2026/11/13 22:55:31 7708687 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 7
+2026/11/13 22:57:07 7804546 1186a803 [DEBUG Client 31444] Generating level 6 area "1_1_5" with seed 2682164894
+2026/11/13 22:57:08 7805578 cffb06be [INFO Client 31444] : You have entered The Ledge.
+2026/11/13 22:57:44 7841546 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 22:57:45 7842390 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 22:59:39 7956156 1186a803 [DEBUG Client 31444] Generating level 6 area "1_1_5" with seed 2682164894
+2026/11/13 22:59:40 7957296 cffb06be [INFO Client 31444] : You have entered The Ledge.
+2026/11/13 23:00:03 7980453 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 8
+2026/11/13 23:03:31 8188171 1186a803 [DEBUG Client 31444] Generating level 7 area "1_1_6" with seed 949712542
+2026/11/13 23:03:32 8189171 cffb06be [INFO Client 31444] : You have entered The Climb.
+2026/11/13 23:04:00 8217296 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 23:04:01 8218406 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 23:05:32 8308640 1186a803 [DEBUG Client 31444] Generating level 7 area "1_1_6" with seed 949712542
+2026/11/13 23:05:33 8309687 cffb06be [INFO Client 31444] : You have entered The Climb.
+2026/11/13 23:05:39 8316171 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 9
+2026/11/13 23:07:16 8412906 1186a803 [DEBUG Client 31444] Generating level 8 area "1_1_7_1" with seed 1755148653
+2026/11/13 23:07:17 8413671 cffb06be [INFO Client 31444] : You have entered The Lower Prison.
+2026/11/13 23:09:29 8545984 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 10
+2026/11/13 23:10:10 8586593 1186a803 [DEBUG Client 31444] Generating level 9 area "1_1_7_2" with seed 734443838
+2026/11/13 23:10:10 8587500 cffb06be [INFO Client 31444] : You have entered The Upper Prison.
+2026/11/13 23:12:09 8705703 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 23:12:09 8706437 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 23:13:54 8810687 1186a803 [DEBUG Client 31444] Generating level 9 area "1_1_7_2" with seed 734443838
+2026/11/13 23:13:55 8811625 cffb06be [INFO Client 31444] : You have entered The Upper Prison.
+2026/11/13 23:16:00 8936968 1186a803 [DEBUG Client 31444] Generating level 10 area "1_1_8" with seed 45769556
+2026/11/13 23:16:01 8937921 cffb06be [INFO Client 31444] : You have entered Prisoner's Gate.
+2026/11/13 23:16:08 8944625 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 23:16:09 8945609 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 23:17:34 9031078 1186a803 [DEBUG Client 31444] Generating level 10 area "1_1_8" with seed 45769556
+2026/11/13 23:17:35 9032046 cffb06be [INFO Client 31444] : You have entered Prisoner's Gate.
+2026/11/13 23:17:40 9037296 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 23:17:41 9038234 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 23:18:07 9064156 1186a803 [DEBUG Client 31444] Generating level 10 area "1_1_8" with seed 45769556
+2026/11/13 23:18:08 9065062 cffb06be [INFO Client 31444] : You have entered Prisoner's Gate.
+2026/11/13 23:18:41 9098156 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 11
+2026/11/13 23:21:17 9254265 1186a803 [DEBUG Client 31444] Generating level 11 area "1_1_9" with seed 1365586473
+2026/11/13 23:21:18 9255156 cffb06be [INFO Client 31444] : You have entered The Ship Graveyard.
+2026/11/13 23:21:51 9287812 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 12
+2026/11/13 23:22:12 9309093 1186a803 [DEBUG Client 31444] Generating level 12 area "1_1_9a" with seed 136951136
+2026/11/13 23:22:13 9310031 cffb06be [INFO Client 31444] : You have entered The Ship Graveyard Cave.
+2026/11/13 23:24:32 9448750 1186a803 [DEBUG Client 31444] Generating level 11 area "1_1_9" with seed 1365586473
+2026/11/13 23:24:33 9449718 cffb06be [INFO Client 31444] : You have entered The Ship Graveyard.
+2026/11/13 23:25:44 9520421 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 23:25:44 9521234 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 23:28:01 9658125 1186a803 [DEBUG Client 31444] Generating level 11 area "1_1_9" with seed 1365586473
+2026/11/13 23:28:02 9659093 cffb06be [INFO Client 31444] : You have entered The Ship Graveyard.
+2026/11/13 23:28:24 9680812 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 13
+2026/11/13 23:28:56 9713015 1186a803 [DEBUG Client 31444] Generating level 12 area "1_1_11_1" with seed 2571879281
+2026/11/13 23:28:57 9713750 cffb06be [INFO Client 31444] : You have entered The Cavern of Wrath.
+2026/11/13 23:31:17 9853453 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 14
+2026/11/13 23:32:35 9931484 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_11_2" with seed 2976289134
+2026/11/13 23:32:35 9932187 cffb06be [INFO Client 31444] : You have entered The Cavern of Anger.
+2026/11/13 23:33:53 10009921 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 15
+2026/11/13 23:37:27 10223703 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 23:37:28 10224468 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 23:41:27 10464000 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_11_2" with seed 2976289134
+2026/11/13 23:41:28 10464937 cffb06be [INFO Client 31444] : You have entered The Cavern of Anger.
+2026/11/13 23:41:40 10476421 1186a803 [DEBUG Client 31444] Generating level 13 area "1_2_1" with seed 1999320620
+2026/11/13 23:41:40 10477250 cffb06be [INFO Client 31444] : You have entered The Southern Forest.
+2026/11/13 23:42:29 10525843 1186a803 [DEBUG Client 31444] Generating level 23 area "1_2_town" with seed 1
+2026/11/13 23:42:30 10526750 cffb06be [INFO Client 31444] : You have entered The Forest Encampment.
+2026/11/13 23:42:45 10542031 1186a803 [DEBUG Client 31444] Generating level 14 area "1_2_2" with seed 4239710304
+2026/11/13 23:42:46 10542921 cffb06be [INFO Client 31444] : You have entered The Old Fields.
+2026/11/13 23:45:03 10679296 1186a803 [DEBUG Client 31444] Generating level 15 area "1_2_3" with seed 507023058
+2026/11/13 23:45:03 10680187 cffb06be [INFO Client 31444] : You have entered The Crossroads.
+2026/11/13 23:45:25 10701453 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 16
+2026/11/13 23:45:55 10731890 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 23:45:56 10732734 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 23:47:05 10802031 1186a803 [DEBUG Client 31444] Generating level 2 area "1_1_2" with seed 2445189801
+2026/11/13 23:47:06 10803234 cffb06be [INFO Client 31444] : You have entered The Coast.
+2026/11/13 23:47:16 10812890 1186a803 [DEBUG Client 31444] Generating level 4 area "1_1_3" with seed 3206356631
+2026/11/13 23:47:17 10813640 cffb06be [INFO Client 31444] : You have entered The Mud Flats.
+2026/11/13 23:47:21 10817343 1186a803 [DEBUG Client 31444] Generating level 2 area "1_1_2" with seed 2445189801
+2026/11/13 23:47:22 10818406 cffb06be [INFO Client 31444] : You have entered The Coast.
+2026/11/13 23:47:34 10830812 1186a803 [DEBUG Client 31444] Generating level 6 area "1_1_5" with seed 2529631585
+2026/11/13 23:47:35 10831921 cffb06be [INFO Client 31444] : You have entered The Ledge.
+2026/11/13 23:47:39 10835390 1186a803 [DEBUG Client 31444] Generating level 5 area "1_1_4_1" with seed 135172369
+2026/11/13 23:47:39 10836015 cffb06be [INFO Client 31444] : You have entered The Submerged Passage.
+2026/11/13 23:48:14 10870703 1186a803 [DEBUG Client 31444] Generating level 6 area "1_1_4_0" with seed 444101908
+2026/11/13 23:48:15 10871328 cffb06be [INFO Client 31444] : You have entered The Flooded Depths.
+2026/11/13 23:49:32 10948640 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 23:49:33 10949625 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 23:50:04 10980484 1186a803 [DEBUG Client 31444] Generating level 15 area "1_2_3" with seed 507023058
+2026/11/13 23:50:05 10981531 cffb06be [INFO Client 31444] : You have entered The Crossroads.
+2026/11/13 23:50:14 10990812 1186a803 [DEBUG Client 31444] Generating level 16 area "1_2_15" with seed 4132364941
+2026/11/13 23:50:15 10992015 cffb06be [INFO Client 31444] : You have entered The Fellshrine Ruins.
+2026/11/13 23:51:48 11084375 1186a803 [DEBUG Client 31444] Generating level 17 area "1_2_5_1" with seed 357966527
+2026/11/13 23:51:48 11085046 cffb06be [INFO Client 31444] : You have entered The Crypt Level 1.
+2026/11/13 23:53:27 11183250 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 17
+2026/11/13 23:54:46 11262765 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 23:54:47 11263734 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 23:54:53 11270171 1186a803 [DEBUG Client 31444] Generating level 15 area "1_2_3" with seed 507023058
+2026/11/13 23:54:55 11271343 cffb06be [INFO Client 31444] : You have entered The Crossroads.
+2026/11/13 23:55:48 11324562 1186a803 [DEBUG Client 31444] Generating level 16 area "1_2_4" with seed 1070176150
+2026/11/13 23:55:49 11325625 cffb06be [INFO Client 31444] : You have entered The Broken Bridge.
+2026/11/13 23:56:57 11393531 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/13 23:56:58 11394546 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/13 23:57:09 11405781 1186a803 [DEBUG Client 31444] Generating level 15 area "1_2_3" with seed 507023058
+2026/11/13 23:57:10 11406875 cffb06be [INFO Client 31444] : You have entered The Crossroads.
+2026/11/13 23:57:36 11432828 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 18
+2026/11/13 23:58:03 11459546 1186a803 [DEBUG Client 31444] Generating level 15 area "1_2_6_1" with seed 1307105604
+2026/11/13 23:58:04 11460250 cffb06be [INFO Client 31444] : You have entered The Chamber of Sins Level 1.
+2026/11/14 00:00:49 11625359 1186a803 [DEBUG Client 31444] Generating level 16 area "1_2_6_2" with seed 3483185027
+2026/11/14 00:00:49 11626062 cffb06be [INFO Client 31444] : You have entered The Chamber of Sins Level 2.
+2026/11/14 00:01:54 11690718 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 19
+2026/11/14 00:04:49 11865718 1186a803 [DEBUG Client 31444] Generating level 13 area "1_1_town" with seed 1
+2026/11/14 00:04:50 11866765 cffb06be [INFO Client 31444] : You have entered Lioneye's Watch.
+2026/11/14 00:05:02 11878546 1186a803 [DEBUG Client 31444] Generating level 23 area "1_2_town" with seed 1
+2026/11/14 00:05:03 11879640 cffb06be [INFO Client 31444] : You have entered The Forest Encampment.
+2026/11/14 00:07:11 12008109 1186a803 [DEBUG Client 31444] Generating level 15 area "1_2_7" with seed 244647470
+2026/11/14 00:07:13 12009437 cffb06be [INFO Client 31444] : You have entered The Riverways.
+2026/11/14 00:08:33 12089718 1186a803 [DEBUG Client 31444] Generating level 17 area "1_2_9" with seed 1743155850
+2026/11/14 00:08:34 12090843 cffb06be [INFO Client 31444] : You have entered The Western Forest.
+2026/11/14 00:09:47 12164000 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 20
+2026/11/14 00:11:08 12244265 1186a803 [DEBUG Client 31444] Generating level 18 area "1_2_10" with seed 990356261
+2026/11/14 00:11:08 12245031 cffb06be [INFO Client 31444] : You have entered The Weaver's Chambers.
+2026/11/14 00:14:08 12424859 1186a803 [DEBUG Client 31444] Generating level 23 area "1_2_town" with seed 1
+2026/11/14 00:14:09 12425968 cffb06be [INFO Client 31444] : You have entered The Forest Encampment.
+2026/11/14 00:15:26 12502593 1186a803 [DEBUG Client 31444] Generating level 15 area "1_2_7" with seed 244647470
+2026/11/14 00:15:27 12503890 cffb06be [INFO Client 31444] : You have entered The Riverways.
+2026/11/14 00:15:39 12515843 1186a803 [DEBUG Client 31444] Generating level 19 area "1_2_12" with seed 3302419417
+2026/11/14 00:15:40 12516687 cffb06be [INFO Client 31444] : You have entered The Wetlands.
+2026/11/14 00:16:08 12544781 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 21
+2026/11/14 00:16:37 12573921 1186a803 [DEBUG Client 31444] Generating level 17 area "1_2_9" with seed 1743155850
+2026/11/14 00:16:38 12575046 cffb06be [INFO Client 31444] : You have entered The Western Forest.
+2026/11/14 00:17:15 12611656 1186a803 [DEBUG Client 31444] Generating level 23 area "1_2_town" with seed 1
+2026/11/14 00:17:16 12612640 cffb06be [INFO Client 31444] : You have entered The Forest Encampment.
+2026/11/14 00:17:27 12623375 1186a803 [DEBUG Client 31444] Generating level 19 area "1_2_12" with seed 3302419417
+2026/11/14 00:17:28 12624359 cffb06be [INFO Client 31444] : You have entered The Wetlands.
+2026/11/14 00:17:32 12628796 1186a803 [DEBUG Client 31444] Generating level 20 area "1_2_11" with seed 621579626
+2026/11/14 00:17:33 12629609 cffb06be [INFO Client 31444] : You have entered The Vaal Ruins.
+2026/11/14 00:19:41 12758046 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 22
+2026/11/14 00:20:34 12810921 1186a803 [DEBUG Client 31444] Generating level 21 area "1_2_8" with seed 3345816284
+2026/11/14 00:20:36 12812187 cffb06be [INFO Client 31444] : You have entered The Northern Forest.
+2026/11/14 00:21:31 12867859 1186a803 [DEBUG Client 31444] Generating level 22 area "1_2_14_2" with seed 1096904253
+2026/11/14 00:21:32 12868812 cffb06be [INFO Client 31444] : You have entered The Caverns.
+2026/11/14 00:23:05 12962062 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 23
+2026/11/14 00:24:39 13055484 1186a803 [DEBUG Client 31444] Generating level 23 area "1_2_14_3" with seed 3279562556
+2026/11/14 00:24:40 13056312 cffb06be [INFO Client 31444] : You have entered The Ancient Pyramid.
+2026/11/14 00:26:59 13195531 1186a803 [DEBUG Client 31444] Generating level 23 area "1_2_town" with seed 1
+2026/11/14 00:27:00 13196562 cffb06be [INFO Client 31444] : You have entered The Forest Encampment.
+2026/11/14 00:28:49 13305703 1186a803 [DEBUG Client 31444] Generating level 23 area "1_2_14_3" with seed 3279562556
+2026/11/14 00:28:50 13306562 cffb06be [INFO Client 31444] : You have entered The Ancient Pyramid.
+2026/11/14 00:29:49 13365296 1186a803 [DEBUG Client 31444] Generating level 23 area "1_2_town" with seed 1
+2026/11/14 00:29:50 13366265 cffb06be [INFO Client 31444] : You have entered The Forest Encampment.
+2026/11/14 00:29:57 13373125 1186a803 [DEBUG Client 31444] Generating level 23 area "1_2_14_3" with seed 3279562556
+2026/11/14 00:29:57 13373984 cffb06be [INFO Client 31444] : You have entered The Ancient Pyramid.
+2026/11/14 00:30:40 13416656 1186a803 [DEBUG Client 31444] Generating level 23 area "1_3_1" with seed 1802170315
+2026/11/14 00:30:41 13417515 cffb06be [INFO Client 31444] : You have entered The City of Sarn.
+2026/11/14 00:30:54 13430640 cffb06be [INFO Client 31444] : TestRanger (Ranger) is now level 24
+2026/11/14 00:32:52 13548359 1186a803 [DEBUG Client 31444] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 00:32:53 13549609 cffb06be [INFO Client 31444] : You have entered The Sarn Encampment.
+2026/11/14 01:22:06 16502875 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 01:22:10 16506468 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 01:24:15 16631718 1186a803 [DEBUG Client 39036] Generating level 24 area "1_3_2" with seed 3183479256
+2026/11/14 01:24:16 16632828 cffb06be [INFO Client 39036] : You have entered The Slums.
+2026/11/14 01:25:42 16718921 cffb06be [INFO Client 39036] : TestRanger (Ranger) is now level 25
+2026/11/14 01:26:09 16745750 1186a803 [DEBUG Client 39036] Generating level 25 area "1_3_3_1" with seed 2205560308
+2026/11/14 01:26:10 16746562 cffb06be [INFO Client 39036] : You have entered The Crematorium.
+2026/11/14 01:30:19 16995437 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 01:30:21 16997468 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 01:32:07 17103218 1186a803 [DEBUG Client 39036] Generating level 23 area "1_2_town" with seed 1
+2026/11/14 01:32:08 17104296 cffb06be [INFO Client 39036] : You have entered The Forest Encampment.
+2026/11/14 01:32:59 17155921 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 01:33:01 17157140 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 01:33:30 17186312 1186a803 [DEBUG Client 39036] Generating level 24 area "1_3_2" with seed 3183479256
+2026/11/14 01:33:31 17187406 cffb06be [INFO Client 39036] : You have entered The Slums.
+2026/11/14 01:33:47 17203328 1186a803 [DEBUG Client 39036] Generating level 26 area "1_3_10_1" with seed 1550134212
+2026/11/14 01:33:48 17204390 cffb06be [INFO Client 39036] : You have entered The Sewers.
+2026/11/14 01:35:33 17309812 cffb06be [INFO Client 39036] : TestRanger (Ranger) is now level 26
+2026/11/14 01:37:01 17397671 1186a803 [DEBUG Client 39036] Generating level 26 area "1_3_5" with seed 3494098826
+2026/11/14 01:37:02 17398718 cffb06be [INFO Client 39036] : You have entered The Marketplace.
+2026/11/14 01:39:12 17528828 1186a803 [DEBUG Client 39036] Generating level 27 area "1_3_6" with seed 4223594066
+2026/11/14 01:39:13 17529609 cffb06be [INFO Client 39036] : You have entered The Catacombs.
+2026/11/14 01:39:27 17543281 cffb06be [INFO Client 39036] : TestRanger (Ranger) is now level 27
+2026/11/14 01:41:48 17684921 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 01:41:50 17686390 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 01:47:59 18055062 1186a803 [DEBUG Client 39036] Generating level 26 area "1_3_5" with seed 3494098826
+2026/11/14 01:48:00 18056250 cffb06be [INFO Client 39036] : You have entered The Marketplace.
+2026/11/14 01:48:12 18068296 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 01:48:13 18069890 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 01:48:21 18077781 1186a803 [DEBUG Client 39036] Generating level 27 area "1_3_6" with seed 4223594066
+2026/11/14 01:48:22 18078687 cffb06be [INFO Client 39036] : You have entered The Catacombs.
+2026/11/14 01:49:21 18137078 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 01:49:22 18138859 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 01:49:29 18145828 1186a803 [DEBUG Client 39036] Generating level 26 area "1_3_5" with seed 3494098826
+2026/11/14 01:49:30 18146781 cffb06be [INFO Client 39036] : You have entered The Marketplace.
+2026/11/14 01:50:10 18186250 1186a803 [DEBUG Client 39036] Generating level 27 area "1_3_7" with seed 181677749
+2026/11/14 01:50:11 18187484 cffb06be [INFO Client 39036] : You have entered The Battlefront.
+2026/11/14 01:52:45 18341281 cffb06be [INFO Client 39036] : TestRanger (Ranger) is now level 28
+2026/11/14 01:53:25 18381703 1186a803 [DEBUG Client 39036] Generating level 29 area "1_3_9" with seed 2251209787
+2026/11/14 01:53:26 18383015 cffb06be [INFO Client 39036] : You have entered The Docks.
+2026/11/14 01:55:09 18485625 cffb06be [INFO Client 39036] : TestRanger (Ranger) is now level 29
+2026/11/14 01:56:53 18589140 1186a803 [DEBUG Client 39036] Generating level 27 area "1_3_7" with seed 181677749
+2026/11/14 01:56:54 18590359 cffb06be [INFO Client 39036] : You have entered The Battlefront.
+2026/11/14 01:57:30 18626390 1186a803 [DEBUG Client 39036] Generating level 27 area "1_3_8_1" with seed 3691733191
+2026/11/14 01:57:31 18627203 cffb06be [INFO Client 39036] : You have entered The Solaris Temple Level 1.
+2026/11/14 02:01:25 18861218 1186a803 [DEBUG Client 39036] Generating level 28 area "1_3_8_2" with seed 464468779
+2026/11/14 02:01:26 18862343 cffb06be [INFO Client 39036] : You have entered The Solaris Temple Level 2.
+2026/11/14 02:02:09 18905906 cffb06be [INFO Client 39036] : TestRanger (Ranger) is now level 30
+2026/11/14 02:05:58 19134515 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:06:00 19136156 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:06:56 19192468 1186a803 [DEBUG Client 39036] Generating level 60 area "HideoutTemplarLab" with seed 1
+2026/11/14 02:06:57 19193640 cffb06be [INFO Client 39036] : You have entered Cartographer's Hideout.
+2026/11/14 02:07:30 19226781 1186a803 [DEBUG Client 39036] Generating level 26 area "1_3_10_1" with seed 3076329672
+2026/11/14 02:07:31 19227906 cffb06be [INFO Client 39036] : You have entered The Sewers.
+2026/11/14 02:07:55 19251546 1186a803 [DEBUG Client 39036] Generating level 29 area "1_3_13" with seed 1777369645
+2026/11/14 02:07:56 19252843 cffb06be [INFO Client 39036] : You have entered The Ebony Barracks.
+2026/11/14 02:10:26 19402734 1186a803 [DEBUG Client 39036] Generating level 29 area "1_3_14_1" with seed 3621022709
+2026/11/14 02:10:27 19403656 cffb06be [INFO Client 39036] : You have entered The Lunaris Temple Level 1.
+2026/11/14 02:11:29 19465390 cffb06be [INFO Client 39036] : TestRanger (Ranger) is now level 31
+2026/11/14 02:12:42 19538781 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:12:44 19540265 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:14:53 19669562 1186a803 [DEBUG Client 39036] Generating level 29 area "1_3_13" with seed 1777369645
+2026/11/14 02:14:54 19670781 cffb06be [INFO Client 39036] : You have entered The Ebony Barracks.
+2026/11/14 02:15:05 19681734 1186a803 [DEBUG Client 39036] Generating level 30 area "1_3_15" with seed 1704804267
+2026/11/14 02:15:07 19683234 cffb06be [INFO Client 39036] : You have entered The Imperial Gardens.
+2026/11/14 02:18:32 19888343 1186a803 [DEBUG Client 39036] Generating level 30 area "1_3_17_1" with seed 2614294850
+2026/11/14 02:18:33 19889250 cffb06be [INFO Client 39036] : You have entered The Library.
+2026/11/14 02:20:47 20023203 cffb06be [INFO Client 39036] : TestRanger (Ranger) is now level 32
+2026/11/14 02:22:05 20101093 1186a803 [DEBUG Client 39036] Generating level 31 area "1_3_17_2" with seed 2602605488
+2026/11/14 02:22:05 20101921 cffb06be [INFO Client 39036] : You have entered The Archives.
+2026/11/14 02:24:40 20256875 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:24:42 20258484 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:24:49 20265046 1186a803 [DEBUG Client 39036] Generating level 30 area "1_3_17_1" with seed 2614294850
+2026/11/14 02:24:49 20265875 cffb06be [INFO Client 39036] : You have entered The Library.
+2026/11/14 02:25:33 20309796 1186a803 [DEBUG Client 39036] Generating level 31 area "1_3_17_2" with seed 2602605488
+2026/11/14 02:25:34 20310687 cffb06be [INFO Client 39036] : You have entered The Archives.
+2026/11/14 02:27:54 20450718 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:27:56 20452437 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:28:04 20460156 1186a803 [DEBUG Client 39036] Generating level 30 area "1_3_17_1" with seed 2614294850
+2026/11/14 02:28:05 20461093 cffb06be [INFO Client 39036] : You have entered The Library.
+2026/11/14 02:28:37 20493140 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:28:38 20494625 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:30:19 20595093 1186a803 [DEBUG Client 39036] Generating level 30 area "1_3_17_1" with seed 2614294850
+2026/11/14 02:30:19 20595890 cffb06be [INFO Client 39036] : You have entered The Library.
+2026/11/14 02:30:36 20612515 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:30:38 20614093 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:30:56 20632484 1186a803 [DEBUG Client 39036] Generating level 30 area "1_3_17_1" with seed 2614294850
+2026/11/14 02:30:57 20633406 cffb06be [INFO Client 39036] : You have entered The Library.
+2026/11/14 02:31:25 20661250 1186a803 [DEBUG Client 39036] Generating level 15 area "1_2_6_1" with seed 1531058118
+2026/11/14 02:31:26 20662015 cffb06be [INFO Client 39036] : You have entered The Chamber of Sins Level 1.
+2026/11/14 02:33:21 20777015 1186a803 [DEBUG Client 39036] Generating level 16 area "1_2_6_2" with seed 191683335
+2026/11/14 02:33:21 20777781 cffb06be [INFO Client 39036] : You have entered The Chamber of Sins Level 2.
+2026/11/14 02:34:45 20861343 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:34:47 20863031 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:34:56 20872812 1186a803 [DEBUG Client 39036] Generating level 33 area "Labyrinth_Airlock" with seed 480932901
+2026/11/14 02:34:57 20873671 cffb06be [INFO Client 39036] : You have entered Aspirants' Plaza.
+2026/11/14 02:35:08 20884375 1186a803 [DEBUG Client 39036] Generating level 33 area "1_Labyrinth_OH_straight" with seed 4206174502
+2026/11/14 02:35:09 20885453 cffb06be [INFO Client 39036] : You have entered Estate Path.
+2026/11/14 02:35:44 20920781 1186a803 [DEBUG Client 39036] Generating level 33 area "1_Labyrinth_boss_1" with seed 2162409511
+2026/11/14 02:35:45 20921562 cffb06be [INFO Client 39036] : You have entered Aspirant's Trial.
+2026/11/14 02:36:49 20985843 1186a803 [DEBUG Client 39036] Generating level 33 area "1_Labyrinth_C_branch_bottleneck_2" with seed 2376485215
+2026/11/14 02:36:50 20986593 cffb06be [INFO Client 39036] : You have entered Sepulchre Halls.
+2026/11/14 02:37:27 21023734 1186a803 [DEBUG Client 39036] Generating level 33 area "1_Labyrinth_boss_2" with seed 2298847147
+2026/11/14 02:37:28 21024500 cffb06be [INFO Client 39036] : You have entered Aspirant's Trial.
+2026/11/14 02:38:47 21103281 1186a803 [DEBUG Client 39036] Generating level 33 area "1_Labyrinth_EH_block_branch" with seed 448036630
+2026/11/14 02:38:48 21104265 cffb06be [INFO Client 39036] : You have entered Mansion Halls.
+2026/11/14 02:39:09 21125156 cffb06be [INFO Client 39036] : TestRanger (Ranger) is now level 33
+2026/11/14 02:40:16 21192171 1186a803 [DEBUG Client 39036] Generating level 33 area "1_Labyrinth_RT_straight" with seed 2175745414
+2026/11/14 02:40:17 21193140 cffb06be [INFO Client 39036] : You have entered Basilica Passage.
+2026/11/14 02:40:52 21228359 1186a803 [DEBUG Client 39036] Generating level 33 area "1_Labyrinth_OH_quad_#" with seed 4100222447
+2026/11/14 02:40:53 21229500 cffb06be [INFO Client 39036] : You have entered Estate Crossing.
+2026/11/14 02:41:42 21278906 1186a803 [DEBUG Client 39036] Generating level 33 area "1_Labyrinth_boss_2_end" with seed 485532144
+2026/11/14 02:41:43 21279781 cffb06be [INFO Client 39036] : You have entered Aspirant's Trial.
+2026/11/14 02:43:44 21400437 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:43:45 21401906 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:43:56 21412843 1186a803 [DEBUG Client 39036] Generating level 30 area "1_3_15" with seed 1634548914
+2026/11/14 02:43:58 21414281 cffb06be [INFO Client 39036] : You have entered The Imperial Gardens.
+2026/11/14 02:44:20 21436593 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:44:22 21438109 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:44:51 21467656 1186a803 [DEBUG Client 39036] Generating level 30 area "1_3_15" with seed 1634548914
+2026/11/14 02:44:53 21469015 cffb06be [INFO Client 39036] : You have entered The Imperial Gardens.
+2026/11/14 02:45:02 21478859 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:45:04 21480281 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:45:12 21488625 1186a803 [DEBUG Client 39036] Generating level 29 area "1_3_14_1" with seed 1668282738
+2026/11/14 02:45:13 21489656 cffb06be [INFO Client 39036] : You have entered The Lunaris Temple Level 1.
+2026/11/14 02:45:23 21499750 1186a803 [DEBUG Client 39036] Generating level 30 area "1_3_14_2" with seed 2965495139
+2026/11/14 02:45:25 21501031 cffb06be [INFO Client 39036] : You have entered The Lunaris Temple Level 2.
+2026/11/14 02:49:48 21764031 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_town" with seed 1
+2026/11/14 02:49:49 21765656 cffb06be [INFO Client 39036] : You have entered The Sarn Encampment.
+2026/11/14 02:51:53 21889046 1186a803 [DEBUG Client 39036] Generating level 30 area "1_3_15" with seed 1634548914
+2026/11/14 02:51:54 21890453 cffb06be [INFO Client 39036] : You have entered The Imperial Gardens.
+2026/11/14 02:52:10 21906750 1186a803 [DEBUG Client 39036] Generating level 32 area "1_3_18_1" with seed 138570836
+2026/11/14 02:52:11 21907750 cffb06be [INFO Client 39036] : You have entered The Sceptre of God.
+2026/11/14 02:53:35 21991312 cffb06be [INFO Client 39036] : TestRanger (Pathfinder) is now level 34
+2026/11/14 02:55:11 22087937 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_18_2" with seed 894601644
+2026/11/14 02:55:13 22089125 cffb06be [INFO Client 39036] : You have entered The Upper Sceptre of God.
+2026/11/14 02:55:15 22091593 1186a803 [DEBUG Client 39036] Generating level 32 area "1_3_18_1" with seed 138570836
+2026/11/14 02:55:16 22092421 cffb06be [INFO Client 39036] : You have entered The Sceptre of God.
+2026/11/14 02:55:43 22119562 1186a803 [DEBUG Client 39036] Generating level 33 area "1_3_18_2" with seed 894601644
+2026/11/14 02:55:44 22120640 cffb06be [INFO Client 39036] : You have entered The Upper Sceptre of God.
+2026/11/14 03:00:06 22382203 1186a803 [DEBUG Client 39036] Generating level 33 area "1_4_1" with seed 3738244778
+2026/11/14 03:00:07 22383937 cffb06be [INFO Client 39036] : You have entered The Aqueduct.
+2026/11/14 03:02:20 22516578 1186a803 [DEBUG Client 39036] Generating level 40 area "1_4_town" with seed 1
+2026/11/14 03:02:22 22518109 cffb06be [INFO Client 39036] : You have entered Highgate.
+2026/11/14 03:03:18 22574765 1186a803 [DEBUG Client 39036] Generating level 34 area "1_4_2" with seed 3662984828
+2026/11/14 03:03:19 22575718 cffb06be [INFO Client 39036] : You have entered The Dried Lake.
+2026/11/14 03:04:01 22617593 cffb06be [INFO Client 39036] : TestRanger (Pathfinder) is now level 35
+2026/11/14 03:06:19 22754937 1186a803 [DEBUG Client 39036] Generating level 40 area "1_4_town" with seed 1
+2026/11/14 03:06:20 22756250 cffb06be [INFO Client 39036] : You have entered Highgate.
+2026/11/14 03:07:06 22802859 1186a803 [DEBUG Client 39036] Generating level 34 area "1_4_3_1" with seed 43467395
+2026/11/14 03:07:07 22803703 cffb06be [INFO Client 39036] : You have entered The Mines Level 1.
+2026/11/14 03:09:11 22927265 1186a803 [DEBUG Client 39036] Generating level 35 area "1_4_3_2" with seed 785716590
+2026/11/14 03:09:12 22928125 cffb06be [INFO Client 39036] : You have entered The Mines Level 2.
+2026/11/14 03:09:36 22951906 cffb06be [INFO Client 39036] : TestRanger (Pathfinder) is now level 36
+2026/11/14 03:12:24 23120734 1186a803 [DEBUG Client 39036] Generating level 36 area "1_4_3_3" with seed 972485962
+2026/11/14 03:12:25 23121625 cffb06be [INFO Client 39036] : You have entered The Crystal Veins.
+2026/11/14 14:21:46 7781203 1186a803 [DEBUG Client 32664] Generating level 40 area "1_4_town" with seed 1
+2026/11/14 14:21:50 7785312 cffb06be [INFO Client 32664] : You have entered Highgate.
+2026/11/14 14:38:31 8786265 1186a803 [DEBUG Client 32664] Generating level 34 area "1_4_3_1" with seed 1251176953
+2026/11/14 14:38:32 8787812 cffb06be [INFO Client 32664] : You have entered The Mines Level 1.
+2026/11/14 14:39:50 8865140 1186a803 [DEBUG Client 32664] Generating level 35 area "1_4_3_2" with seed 621515468
+2026/11/14 14:39:50 8865906 cffb06be [INFO Client 32664] : You have entered The Mines Level 2.
+2026/11/14 14:43:40 9095718 cffb06be [INFO Client 32664] : TestRanger (Pathfinder) is now level 37
+2026/11/14 14:46:00 9235421 1186a803 [DEBUG Client 32664] Generating level 36 area "1_4_3_3" with seed 1752271430
+2026/11/14 14:46:01 9236281 cffb06be [INFO Client 32664] : You have entered The Crystal Veins.
+2026/11/14 14:50:02 9477765 1186a803 [DEBUG Client 32664] Generating level 40 area "1_4_town" with seed 1
+2026/11/14 14:50:04 9479171 cffb06be [INFO Client 32664] : You have entered Highgate.
+2026/11/14 14:52:49 9644703 1186a803 [DEBUG Client 32664] Generating level 36 area "1_4_3_3" with seed 1752271430
+2026/11/14 14:52:50 9645656 cffb06be [INFO Client 32664] : You have entered The Crystal Veins.
+2026/11/14 15:12:17 10812640 1186a803 [DEBUG Client 32664] Generating level 40 area "1_4_town" with seed 1
+2026/11/14 15:12:19 10814500 cffb06be [INFO Client 32664] : You have entered Highgate.
+2026/11/14 15:29:49 11864859 1186a803 [DEBUG Client 32664] Generating level 36 area "1_4_3_3" with seed 2715594569
+2026/11/14 15:29:50 11865750 cffb06be [INFO Client 32664] : You have entered The Crystal Veins.
+2026/11/14 16:35:25 15800171 1186a803 [DEBUG Client 32664] Generating level 37 area "1_4_4_1" with seed 2102087160
+2026/11/14 16:35:26 15801875 cffb06be [INFO Client 32664] : You have entered Kaom's Dream.
+2026/11/14 16:40:02 16077390 cffb06be [INFO Client 32664] : TestRanger (Pathfinder) is now level 38
+2026/11/14 16:41:05 16140078 1186a803 [DEBUG Client 32664] Generating level 38 area "1_4_4_3" with seed 2217182512
+2026/11/14 16:41:06 16141375 cffb06be [INFO Client 32664] : You have entered Kaom's Stronghold.
+2026/11/14 14:21:46 7781203 1186a803 [DEBUG Client 32664] Generating level 40 area "1_4_town" with seed 1
+2026/11/14 14:21:50 7785312 cffb06be [INFO Client 32664] : You have entered Highgate.
+2026/11/14 14:38:31 8786265 1186a803 [DEBUG Client 32664] Generating level 34 area "1_4_3_1" with seed 1251176953
+2026/11/14 14:38:32 8787812 cffb06be [INFO Client 32664] : You have entered The Mines Level 1.
+2026/11/14 14:39:50 8865140 1186a803 [DEBUG Client 32664] Generating level 35 area "1_4_3_2" with seed 621515468
+2026/11/14 14:39:50 8865906 cffb06be [INFO Client 32664] : You have entered The Mines Level 2.
+2026/11/14 14:43:40 9095718 cffb06be [INFO Client 32664] : TestRanger (Pathfinder) is now level 37
+2026/11/14 14:46:00 9235421 1186a803 [DEBUG Client 32664] Generating level 36 area "1_4_3_3" with seed 1752271430
+2026/11/14 14:46:01 9236281 cffb06be [INFO Client 32664] : You have entered The Crystal Veins.
+2026/11/14 14:50:02 9477765 1186a803 [DEBUG Client 32664] Generating level 40 area "1_4_town" with seed 1
+2026/11/14 14:50:04 9479171 cffb06be [INFO Client 32664] : You have entered Highgate.
+2026/11/14 14:52:49 9644703 1186a803 [DEBUG Client 32664] Generating level 36 area "1_4_3_3" with seed 1752271430
+2026/11/14 14:52:50 9645656 cffb06be [INFO Client 32664] : You have entered The Crystal Veins.
+2026/11/14 15:12:17 10812640 1186a803 [DEBUG Client 32664] Generating level 40 area "1_4_town" with seed 1
+2026/11/14 15:12:19 10814500 cffb06be [INFO Client 32664] : You have entered Highgate.
+2026/11/14 15:29:49 11864859 1186a803 [DEBUG Client 32664] Generating level 36 area "1_4_3_3" with seed 2715594569
+2026/11/14 15:29:50 11865750 cffb06be [INFO Client 32664] : You have entered The Crystal Veins.
+2026/11/14 16:35:25 15800171 1186a803 [DEBUG Client 32664] Generating level 37 area "1_4_4_1" with seed 2102087160
+2026/11/14 16:35:26 15801875 cffb06be [INFO Client 32664] : You have entered Kaom's Dream.
+2026/11/14 16:40:02 16077390 cffb06be [INFO Client 32664] : TestRanger (Pathfinder) is now level 38
+2026/11/14 16:41:05 16140078 1186a803 [DEBUG Client 32664] Generating level 38 area "1_4_4_3" with seed 2217182512
+2026/11/14 16:41:06 16141375 cffb06be [INFO Client 32664] : You have entered Kaom's Stronghold.
