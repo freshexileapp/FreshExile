@@ -26,6 +26,10 @@ public sealed partial class MainViewModel
 
     public string? AlignStatus { get => _alignStatus; set => Set(ref _alignStatus, value); }
 
+    /// <summary>The path is not found on the open tree: the status is a hint to act on, shown in the accent colour.</summary>
+    bool _alignWarning;
+    public bool AlignWarning { get => _alignWarning; set => Set(ref _alignWarning, value); }
+
     /// <summary>
     /// The path on the game's tree seen by screenshots and screen recordings. Off on every start: while it is on the overlay
     /// sees its own white lines and notices nodes just taken in game worse.

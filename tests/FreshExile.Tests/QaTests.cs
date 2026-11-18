@@ -110,13 +110,27 @@ public class FrameRegressionTests
         Assert.InRange(start.Y * a.Scale + a.OffsetY, 483 - 10, 483 + 10);
     }
 
+    [Fact]
+    public void The_games_zoom_steps_are_tried_with_the_remembered_ones_and_scale_with_the_screen()
+    {
+        // nothing remembered (a recalibration cleared it): the game's steps are still there, 0.244 among them
+        var at1080 = TreeDetector.ZoomsToTry([], 1080);
+        Assert.Contains(at1080, z => Math.Abs(z - 0.244) < 0.001);
+        // a remembered zoom comes first; a near-duplicate of a game step is not tried twice
+        var mixed = TreeDetector.ZoomsToTry([0.1079], 1080);
+        Assert.Equal(0.1079, mixed[0]);
+        Assert.Equal(at1080.Count, mixed.Count);
+        // 1440 px of height: every step a third larger
+        Assert.Contains(TreeDetector.ZoomsToTry([], 1440), z => Math.Abs(z - 0.244 * 1440 / 1080) < 0.001);
+    }
+
     [TreeFact]
     public void Closed_frames_never_look_like_a_fresh_characters_tree()
     {
         var tree = Tree();
         var aligner = new TreeAligner(TreeAligner.BuildStructureTemplate(tree, tree.ClassStart(Ranger)!.Id), structure: true);
-        var known = Load().frames.Where(f => f.open).Select(f => f.scale!.Value).ToList();
-        // no title check here: the structure score alone must say no
+        // every zoom the app tries (the frames' ones and the game's steps); no title check: the structure score alone must say no
+        var known = TreeDetector.ZoomsToTry(Load().frames.Where(f => f.open).Select(f => f.scale!.Value), 1080);
         foreach (var f in Load().frames.Where(f => !f.open))
         {
             var (bytes, w, h) = Pixels(f.file);

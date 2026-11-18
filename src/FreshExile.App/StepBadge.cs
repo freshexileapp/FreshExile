@@ -18,7 +18,8 @@ public sealed class StepBadge : FrameworkElement
     static readonly Pen Ring = FrozenPen(Colors.White, 1);
 
     /// <summary>"Take this one next" / "this one" — stands out on both our dark tree and the gold in-game art.</summary>
-    public static readonly Color FocusColor = Color.FromRgb(0x3D, 0xD6, 0xFF);
+    // the app's accent (Theme.xaml "Accent", the logo's flame): the next point to spend
+    public static readonly Color FocusColor = Color.FromRgb(0xF0, 0xA9, 0x45);
     static readonly Brush FocusFill = Frozen(FocusColor);
     static readonly Pen FocusRing = FrozenPen(Color.FromRgb(0x0B, 0x0B, 0x0C), 1);
     static readonly Brush FocusInk = Frozen(Color.FromRgb(0x0B, 0x0B, 0x0C));

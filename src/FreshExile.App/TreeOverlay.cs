@@ -267,13 +267,15 @@ public sealed class TreeOverlayController : IDisposable
         }
 
         var state = _vm.State;
-        var known = state.TreeScaleHeight == h ? state.TreeScales.ToArray() : [];
+        // the remembered zooms (this screen height) and the game's own steps: a new zoom is found without a sweep
+        var known = TreeDetector.ZoomsToTry(state.TreeScaleHeight == h ? state.TreeScales : [], h);
 
         var patch = state.TreeHeaderPatch;
         var v = TreeDetector.Evaluate(aligner!, bytes, w, h, known, patch, _open, DateTime.UtcNow >= _nextCalibration,
             () => _ = _ui.BeginInvoke(() =>
             {
-                _vm.AlignStatus = Loc.T("подбираю масштаб…");
+                // the hint "path not found, zoom out" stays: the sweep repeats every few seconds and would hide it
+                if (!_vm.AlignWarning) _vm.AlignStatus = Loc.T("подбираю масштаб…");
                 // the sweep takes ~2 s: the path of the old zoom would sit off the nodes all that time
                 HidePath();
             }), _open ? _shownScale : null);
@@ -281,7 +283,7 @@ public sealed class TreeOverlayController : IDisposable
         _lastTitle = v.TitleSeen;
         if (v.SweepRan)
         {
-            _nextCalibration = DateTime.UtcNow.AddSeconds(known.Length == 0 ? 3 : 2);
+            _nextCalibration = DateTime.UtcNow.AddSeconds(known.Count == 0 ? 3 : 2);
             Log.Write($"sweep: {(v.NewScale ? Fmt(v.Align) : "no better fit")} (known best {v.KnownScore:F2})");
         }
         var r = v.Align;
@@ -385,7 +387,11 @@ public sealed class TreeOverlayController : IDisposable
         if (!_open || _overlay is not { IsVisible: true }) return;
         Log.Write("path lost, title still on screen -> path hidden, overlay kept");
         _overlay.Hide();
-        _vm.AlignStatus = Loc.T("Путь не виден: отдали дерево или сдвинь к взятым узлам");
+        // said where the eye is, in the accent colour: an empty tree looks like the overlay does not work
+        _vm.AlignStatus = _aligner is { IsStructure: true }
+            ? Loc.T("Путь не найден: отдали дерево колесом мыши или сдвинь к портрету класса")
+            : Loc.T("Путь не найден: отдали дерево колесом мыши или сдвинь к взятым узлам");
+        _vm.AlignWarning = true;
     }
 
     DateTime _lastLog;
@@ -447,16 +453,27 @@ public sealed class TreeOverlayController : IDisposable
             _overlay.Show();
             _header.Show();
         }
-        _overlay!.SetView(r);
+        // each frame's fit lands a pixel or two either way: the path would shiver. It moves only for a real pan or zoom
+        if (_shownView is not { } v || Math.Abs(r.OffsetX - v.OffsetX) > 2.5 || Math.Abs(r.OffsetY - v.OffsetY) > 2.5
+            || Math.Abs(r.Scale / v.Scale - 1) > 0.004 || !_overlay!.IsVisible)
+        {
+            _overlay!.SetView(r);
+            _shownView = r;
+        }
         if (!_overlay.IsVisible) _overlay.Show();
-        _vm.AlignStatus = Loc.T($"совмещено {r.Score:P0}");
+        // in steps of 5 %: a number changing every frame reads as trouble
+        _vm.AlignStatus = Loc.T($"совмещено {Math.Round(r.Score * 20) * 5:0} %");
+        _vm.AlignWarning = false;
     }
+
+    AlignResult? _shownView;
 
     void Close()
     {
         if (!_open) return;
         Log.Write("tree closed -> overlay hidden");
         _open = false;
+        _shownView = null;
         _misses = 0;
         _overlay?.Hide();
         _header?.Hide();

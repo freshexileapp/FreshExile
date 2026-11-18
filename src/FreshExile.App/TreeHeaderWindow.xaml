@@ -31,7 +31,21 @@
                 <TextBlock Margin="7,0,0,0" FontSize="12.5" VerticalAlignment="Center">
                     <Run Text="{l:T 'Взять'}"/> <Run Text="{Binding PointsToTake, Mode=OneWay}" FontWeight="SemiBold"/>
                 </TextBlock>
-                <TextBlock Text="{Binding AlignStatus}" Foreground="{StaticResource Text3}" FontSize="11.5" Margin="14,0,6,0" VerticalAlignment="Center"/>
+                <!-- the status; "path not found, zoom out" in the accent colour and bold, so an empty tree does not read as broken -->
+                <!-- a steady width: the header is sized to its content and would twitch with every new status -->
+                <TextBlock Text="{Binding AlignStatus}" FontSize="11.5" Margin="14,0,6,0" VerticalAlignment="Center" MinWidth="110">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Foreground" Value="{StaticResource Text3}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding AlignWarning}" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource Accent}"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
             </StackPanel>
 
             <Button Style="{StaticResource IconButton}" Width="26" Height="26" Content="&#xE72C;" FontSize="11"
@@ -69,10 +83,10 @@
                         <DataTemplate.Triggers>
                             <!-- the first point to spend: the same colour as its ring on the tree -->
                             <DataTrigger Binding="{Binding IsNext}" Value="True">
-                                <Setter TargetName="row" Property="Background" Value="#1A3DD6FF"/>
+                                <Setter TargetName="row" Property="Background" Value="#1AF0A945"/>
                             </DataTrigger>
                             <Trigger SourceName="row" Property="IsMouseOver" Value="True">
-                                <Setter TargetName="row" Property="Background" Value="#333DD6FF"/>
+                                <Setter TargetName="row" Property="Background" Value="#33F0A945"/>
                             </Trigger>
                         </DataTemplate.Triggers>
                     </DataTemplate>

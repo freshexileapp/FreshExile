@@ -28,6 +28,22 @@ public static class TreeDetector
     /// On a closer zoom the links and icons are thicker and a right fit drops to about 0.28; game frames stay under 0.1.
     public const double StructureOpenScore = 0.2, StructureKeepScore = 0.12, StructureSureScore = 0.4;
 
+    /// <summary>
+    /// The game's own zoom steps of the passive tree at 1080 px of screen height (seen on real frames and calibrations);
+    /// they scale with the height. Tried with the remembered ones, so a zoom change needs no sweep and a recalibration
+    /// does not lose them.
+    /// </summary>
+    static readonly double[] GameZooms1080 = [0.0593, 0.0718, 0.1078, 0.1755, 0.2440, 0.3120, 0.3220, 0.3823, 0.4441];
+
+    /// <summary>The remembered zooms first, then the game's steps for this screen height (near-duplicates dropped).</summary>
+    public static IReadOnlyList<double> ZoomsToTry(IEnumerable<double> remembered, int height)
+    {
+        var list = new List<double>();
+        foreach (var z in remembered.Concat(GameZooms1080.Select(z => z * height / 1080.0)))
+            if (!list.Any(k => Math.Abs(k - z) / z < 0.008)) list.Add(z);
+        return list;
+    }
+
     /// <summary>Mean grey difference of the "Skills" title strip that still counts as the same title.</summary>
     public const double TitleDiff = 14;
 

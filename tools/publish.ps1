@@ -27,17 +27,18 @@ if ((Get-Content $csproj -Raw) -notmatch "<Version>$([regex]::Escape($Version))<
 }
 
 # one commit on "public": the current tree, the previous public release as its parent
+# (refs/heads/public spelled out: the remote is called "public" too)
 $env:GIT_AUTHOR_NAME = 'FreshExile'
 $env:GIT_AUTHOR_EMAIL = '358479879+freshexileapp@users.noreply.github.com'
 $env:GIT_COMMITTER_NAME = $env:GIT_AUTHOR_NAME
 $env:GIT_COMMITTER_EMAIL = $env:GIT_AUTHOR_EMAIL
 $tree = git rev-parse 'HEAD^{tree}'
-if ((git rev-parse 'public^{tree}') -eq $tree) {
+if ((git rev-parse 'refs/heads/public^{tree}') -eq $tree) {
     Write-Host 'public already has this tree: no new commit'
 } else {
-    $commit = git commit-tree $tree -p public -m "Fresh Exile $Version"
+    $commit = git commit-tree $tree -p refs/heads/public -m "Fresh Exile $Version"
     git update-ref refs/heads/public $commit
-    Write-Host "public: $(git log -1 --format='%h %an <%ae> %s' public)"
+    Write-Host "public: $(git log -1 --format='%h %an <%ae> %s' refs/heads/public)"
 }
 
 # the archive: one self-contained, compressed exe (no .NET to install) and the license
@@ -53,4 +54,4 @@ Remove-Item $zip -ErrorAction SilentlyContinue
 Compress-Archive -Path (Join-Path $pub 'FreshExile.exe'), (Join-Path $pub 'LICENSE.txt') -DestinationPath $zip
 Write-Host "archive: $zip ($([math]::Round((Get-Item $zip).Length / 1MB, 1)) MB)"
 
-if ($Push) { git push public public:main }
+if ($Push) { git push public refs/heads/public:main }

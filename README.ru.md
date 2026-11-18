@@ -53,6 +53,8 @@
   Масштаб подбирается сам и запоминается для каждого зума.
 - **Кластерные самоцветы** встраиваются в дерево так же, как их рисуют Path of Building и игра, и путь идёт через их нотабли.
 
+<p align="center"><img src="docs/screenshots/ingame-tree-late.png" alt="Act 5: весь путь от старта класса"></p>
+
 <p align="center">
   <img src="docs/screenshots/ru/tree-window.png" width="640" alt="Окно дерева с путём этапа">
   <img src="docs/screenshots/ru/tree-clusters.png" width="300" alt="Кластеры на дереве">

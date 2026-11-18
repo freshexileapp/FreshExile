@@ -156,7 +156,8 @@ public sealed class TreeAligner
         foreach (var n in tree.Nodes.Values)
             if (n.Kind == NodeKind.ClassStart) taken.Add(n.Id);
         var found = new HashSet<int>();
-        var inPlan = new HashSet<int>(plan.Order);
+        // the plan's nodes next to a class start: their own link runs under the portrait and is never read
+        var byStart = new HashSet<int>(plan.Order.Where(id => tree.Nodes[id].Links.Any(l => tree.Nodes.TryGetValue(l, out var s) && s.Kind == NodeKind.ClassStart)));
         var pts = new List<(double X, double Y)>();
         bool changed;
         do
@@ -168,9 +169,9 @@ public sealed class TreeAligner
                 foreach (var e in edges)
                 {
                     var other = e.A == id ? e.B : e.A;
-                    // a link is gold only when both its ends are taken: one to a plan node not seen yet counts too —
-                    // the first node by the class start has its own link lost under the portrait
-                    var otherPlan = inPlan.Contains(other) && !found.Contains(other);
+                    // a link is gold only when both its ends are taken: so the first node by the class start, whose own
+                    // link is lost under the portrait, is seen taken through its link to the next one
+                    var otherPlan = byStart.Contains(other) && !found.Contains(other);
                     if (!taken.Contains(other) && !found.Contains(other) && !otherPlan) continue;
                     pts.Clear();
                     AddEdgePoints(tree, e, pts);

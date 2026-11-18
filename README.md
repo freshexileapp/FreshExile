@@ -53,6 +53,8 @@ and the link swaps, and folds back when you leave.
 - **Cluster jewels** are grown into the tree the way Path of Building and the game draw them, so the path goes through
   their notables too.
 
+<p align="center"><img src="docs/screenshots/ingame-tree-late.png" alt="Act 5: the whole path from the class start"></p>
+
 <p align="center">
   <img src="docs/screenshots/en/tree-window.png" width="640" alt="Tree window with the stage path">
   <img src="docs/screenshots/en/tree-clusters.png" width="300" alt="Cluster jewels on the tree">
