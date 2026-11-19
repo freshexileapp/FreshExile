@@ -15,6 +15,7 @@ public partial class TreeWindow : Window
     public TreeWindow(MainViewModel vm)
     {
         InitializeComponent();
+        UiScale.Attach(this, sizeNow: false);
         DataContext = _vm = vm;
         Placement.Restore(this, vm.State.Tree, defaultRight: false);
 

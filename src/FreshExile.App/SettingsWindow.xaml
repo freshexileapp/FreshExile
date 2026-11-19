@@ -111,6 +111,26 @@
                                         Command="{Binding RestartCommand}"/>
                             </StackPanel>
 
+                            <TextBlock Text="{l:T 'МАСШТАБ ИНТЕРФЕЙСА'}" Style="{StaticResource Caption}" Margin="0,20,0,8"/>
+                            <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="3" Width="360" HorizontalAlignment="Left">
+                                <ItemsControl ItemsSource="{Binding ScaleOptions}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate><UniformGrid Rows="1"/></ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <RadioButton Style="{StaticResource Segment}" GroupName="uiscale" Content="{Binding Label}" FontSize="11.5"
+                                                         IsChecked="{Binding IsChecked}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                            <TextBlock Style="{StaticResource Hint}" Margin="2,6,0,0"
+                                       Text="{l:T 'Для 1440p и 4K, если в Windows стоит масштаб 100 % и всё мелкое. Наложение на дерево в игре не меняется.'}"/>
+
+                            <TextBlock Style="{StaticResource Hint}" Margin="2,8,0,0" Foreground="{StaticResource Accent}"
+                                       Text="{l:T 'Это язык программы. Сама игра пока должна быть на английском: отслеживание зон и уровней и прайс-чек читают английские тексты игры.'}"/>
+
                             <TextBlock Text="{l:T 'ЛОГ ИГРЫ · CLIENT.TXT'}" Style="{StaticResource Caption}" Margin="0,24,0,8"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -167,6 +187,38 @@
                             </UniformGrid>
                             <TextBlock Text="{Binding BuildError}" TextWrapping="Wrap" FontSize="12" Margin="2,8,0,0"
                                        Visibility="{Binding HasBuildError, Converter={StaticResource Vis}}"/>
+
+                            <StackPanel Visibility="{Binding HasRecentBuilds, Converter={StaticResource Vis}}">
+                                <TextBlock Text="{l:T 'НЕДАВНИЕ БИЛДЫ'}" Style="{StaticResource Caption}" Margin="0,24,0,6"/>
+                                <ItemsControl ItemsSource="{Binding RecentBuilds}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12,7,6,7" Margin="0,0,0,6">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding Title}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Text="{Binding Details}" FontSize="11" Foreground="{StaticResource Text3}" TextTrimming="CharacterEllipsis"/>
+                                                    </StackPanel>
+                                                    <Button Grid.Column="1" Style="{StaticResource GhostButton}" Content="{l:T 'Открыть'}" Padding="12,5" Margin="8,0,4,0"
+                                                            Command="{Binding DataContext.OpenRecentCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}"/>
+                                                    <Button Grid.Column="2" Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="9" VerticalAlignment="Center"
+                                                            ToolTip="{l:T 'Убрать из списка'}"
+                                                            Command="{Binding DataContext.RemoveRecentCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                            CommandParameter="{Binding}"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <TextBlock Style="{StaticResource Hint}" Margin="2,0,0,0"
+                                           Text="{l:T 'Хранится сам билд, не только ссылка: откроется, даже если ссылка уже не работает, и с того этапа, где ты остановился.'}"/>
+                            </StackPanel>
 
                             <TextBlock Text="{l:T 'ПЕРЕКЛЮЧЕНИЕ ЭТАПОВ'}" Style="{StaticResource Caption}" Margin="0,24,0,6"/>
                             <TextBlock Style="{StaticResource Hint}" Margin="2,0,0,10"

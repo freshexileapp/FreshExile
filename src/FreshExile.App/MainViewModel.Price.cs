@@ -13,6 +13,7 @@ public sealed partial class MainViewModel
 
     TradeApi TradeApi => _tradeApi ??= new TradeApi(_http) { Log = Log.Write };
     NinjaUniques? _ninjaUniques;
+    NinjaExchange? _ninjaExchange;
 
     PriceSettings CurrentPriceSettings() => new()
     {
@@ -26,6 +27,8 @@ public sealed partial class MainViewModel
     /// <param name="pick">Lines to tick from the start (a PoB unique's version line, opened from the gear tab).</param>
     public async Task<(PriceCheckViewModel? Vm, string? Error)> PreparePriceCheckAsync(string? text, IReadOnlyCollection<string>? pick = null)
     {
+        if (GameItem.IsOtherLanguage(text))
+            return (null, Loc.T("Прайс-чек пока понимает только английский клиент игры. Переключи язык игры на English."));
         var item = GameItem.Parse(text);
         if (item == null)
             return (null, Loc.T($"Наведи мышь на предмет в игре и нажми {KeyText(HotkeyActions.Price)}. Можно и так: Ctrl+C на предмете, потом сочетание вне игры."));
@@ -58,7 +61,12 @@ public sealed partial class MainViewModel
                 if (f.Searchable && pick.Contains(f.Label, StringComparer.OrdinalIgnoreCase)) { f.Enabled = true; f.Shown = true; }
         NinjaPrice? ninja;
         using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3)))
-            ninja = await (_ninjaUniques ??= new NinjaUniques(_http)).PriceAsync(item, trade.League, cts.Token);
+            ninja = trade.ExchangeId(item) is { } exchangeId
+                // currency and the like: the in-game exchange's rate is the price, the trade's few bulk sellers are not
+                ? await (_ninjaExchange ??= new NinjaExchange(_http)).ChaosAsync(exchangeId, trade.League, cts.Token) is double chaos
+                    ? new NinjaPrice(chaos, _divineChaos is double r and > 0 ? chaos / r : 0, 0) { Market = true }
+                    : null
+                : await (_ninjaUniques ??= new NinjaUniques(_http)).PriceAsync(item, trade.League, cts.Token);
         var vm = new PriceCheckViewModel(check, TradeApi, trade, CurrentPriceSettings, () => State.PriceCollapse, _divineChaos, ninja, LoadArtAsync)
         {
             TopMods = CurrentTopMods(),

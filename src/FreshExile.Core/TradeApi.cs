@@ -610,7 +610,58 @@ public static class NinjaRates
 }
 
 /// <summary>A unique's price on poe.ninja: an answer without spending a single trade request.</summary>
-public sealed record NinjaPrice(double Chaos, double Divine, int Links);
+public sealed record NinjaPrice(double Chaos, double Divine, int Links)
+{
+    /// <summary>The rate of the in-game currency exchange (poe.ninja's exchange overview), not a unique's listed price.</summary>
+    public bool Market { get; init; }
+}
+
+/// <summary>
+/// The in-game currency exchange's rates as poe.ninja collects them, by the trade site's exchange ids
+/// ("eldritch-exalted-orb" → 3.65 chaos): the real market for currency and the like, which the trade site does not show —
+/// its bulk sellers are a handful and often ask far more. One fetch per list and league, kept an hour.
+/// </summary>
+public sealed class NinjaExchange(HttpClient http)
+{
+    const string Url = "https://poe.ninja/poe1/api/economy/exchange/current/overview";
+    static readonly string[] Types =
+        ["Currency", "Fragment", "Oil", "Essence", "DivinationCard", "DeliriumOrb", "Fossil", "Resonator", "Omen", "Tattoo", "Runegraft", "Artifact", "AllflameEmber"];
+
+    readonly Dictionary<string, (DateTime At, Dictionary<string, double> Chaos)> _cache = new();
+
+    public async Task<double?> ChaosAsync(string exchangeId, string league, CancellationToken ct = default)
+    {
+        if (!_cache.TryGetValue(league, out var c) || DateTime.UtcNow - c.At > TimeSpan.FromHours(1))
+        {
+            var all = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
+            var lists = await Task.WhenAll(Types.Select(async t =>
+            {
+                try { return await http.GetStringAsync($"{Url}?league={Uri.EscapeDataString(league)}&type={t}", ct); }
+                catch (Exception) when (!ct.IsCancellationRequested) { return null; }
+            }));
+            foreach (var json in lists)
+                if (json != null) Read(json, all);
+            if (all.Count == 0) return null;
+            _cache[league] = c = (DateTime.UtcNow, all);
+        }
+        return c.Chaos.TryGetValue(exchangeId, out var v) ? v : null;
+    }
+
+    /// <summary>lines[] = {id: "eldritch-exalted-orb", primaryValue: 3.65} — the price in chaos.</summary>
+    public static void Read(string json, Dictionary<string, double> into)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            if (!doc.RootElement.TryGetProperty("lines", out var lines) || lines.ValueKind != JsonValueKind.Array) return;
+            foreach (var l in lines.EnumerateArray())
+                if (l.TryGetProperty("id", out var id) && id.GetString() is { Length: > 0 } i
+                    && l.TryGetProperty("primaryValue", out var v) && v.ValueKind == JsonValueKind.Number && v.GetDouble() > 0)
+                    into.TryAdd(i, v.GetDouble());
+        }
+        catch (JsonException) { /* a list that did not come whole: the others still price */ }
+    }
+}
 
 /// <summary>poe.ninja unique prices, one list per kind kept in memory for an hour.</summary>
 public sealed class NinjaUniques(HttpClient http)

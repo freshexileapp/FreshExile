@@ -190,6 +190,18 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
     /// <summary>The listed item's own art, filled in once downloaded.</summary>
     public ImageSource? Icon { get => _icon; set => Set(ref _icon, value); }
 
+    ImageSource? _currencyIcon;
+    /// <summary>The price's currency as the game draws it; once in, it stands for the word.</summary>
+    public ImageSource? CurrencyIcon
+    {
+        get => _currencyIcon;
+        set { if (Set(ref _currencyIcon, value)) { Raise(nameof(CurrencyText)); Raise(nameof(HasCurrencyIcon)); } }
+    }
+    public bool HasCurrencyIcon => _currencyIcon != null;
+    /// <summary>"divine/шт" without a picture; with one only "/шт" (or nothing) stays beside it.</summary>
+    public string CurrencyText => _currencyIcon == null ? Currency : l.Stackable ? Loc.T("/шт") : "";
+    public string CurrencyId => l.Currency;
+
     /// <summary>The price of one piece (a stack's price is per piece already; the exchange's ratio is divided out).</summary>
     public string Price { get; } = Amount(l.Amount);
     public string Currency { get; } = CurrencyName(l.Currency) + (l.Stackable ? Loc.T("/шт") : "");
@@ -334,6 +346,20 @@ public sealed class PriceCheckViewModel : Observable
     public string Title => Item.Title;
     public string? BaseLine => Item.Name.Length > 0 && Item.BaseType != Item.Name ? Item.BaseType : null;
     public bool HasBaseLine => BaseLine != null;
+
+    /// <summary>"свободно: 1 префикс · 2 суффикса" — room for a craft or an exalt; null when the copy does not tell.</summary>
+    public string? AffixLine => Item.Affixes() is var (p, s, max)
+        ? (p >= max && s >= max ? Loc.T("аффиксы заполнены")
+            : Loc.T("свободно: ") + string.Join(" · ", new[]
+            {
+                p < max ? Loc.T($"префиксов {max - p}") : null,
+                s < max ? Loc.T($"суффиксов {max - s}") : null,
+            }.Where(x => x != null)))
+        : null;
+    public bool HasAffixLine => AffixLine != null;
+    public string? AffixTip => Item.Affixes() is var (p, s, max)
+        ? Loc.T($"Префиксы {p}/{max}, суффиксы {s}/{max}. Скрафченные и фрактурные моды тоже занимают место.")
+        : null;
     public string League => _trade.League;
     public string? RateText => _divineChaos is double d ? $"1 div ≈ {Math.Round(d)}c" : null;
     public bool HasRate => _divineChaos != null;
@@ -346,11 +372,15 @@ public sealed class PriceCheckViewModel : Observable
 
     /// <summary>poe.ninja for a unique: "poe.ninja 44c" with no trade request spent.</summary>
     public string? NinjaText => _ninja is { } n
-        ? "poe.ninja " + (n.Divine >= 1
+        ? (n.Market ? Loc.T("рынок ") : "poe.ninja ") + (n.Divine >= 1
             ? n.Divine.ToString("0.#", CultureInfo.InvariantCulture) + " div"
-            : Math.Round(n.Chaos, n.Chaos < 10 ? 1 : 0).ToString(CultureInfo.InvariantCulture) + "c")
+            : Math.Round(n.Chaos, n.Chaos < 1 ? 2 : n.Chaos < 10 ? 1 : 0).ToString(CultureInfo.InvariantCulture) + "c")
+          + (n.Market ? Loc.T("/шт") : "")
         : null;
     public bool HasNinja => _ninja != null;
+    public string NinjaTip => _ninja is { Market: true }
+        ? Loc.T("Курс внутриигрового обмена валюты (poe.ninja): по нему и продают. Продавцов на трейде мало, и они часто просят больше")
+        : Loc.T("Цена уника на poe.ninja: без запроса к трейду");
 
     string? _lowest;
     /// <summary>The cheapest offer found: the answer at a glance.</summary>
@@ -532,13 +562,20 @@ public sealed class PriceCheckViewModel : Observable
         string[] have = want switch { "chaos" => ["divine"], "divine" => ["chaos"], _ => ["chaos", "divine"] };
         _exchange = await _api.ExchangeAsync(_trade.League, want, have);
         var collapse = _collapse();
+        var art = _trade.ExchangeImage(want);
         foreach (var l in _exchange.Offers.Select(o => new ListingVm(o, _divineChaos)).OrderBy(r => r.UnitChaos).Take(MaxShown))
         {
             if (collapse && l.Account.Length > 0 && !_accounts.Add(l.Account)) continue;
             Listings.Add(l);
+            // the exchange sends no item: the row shows what is bought, from the site's own picture of it
+            if (_art != null && art != null) _ = LoadArtAsync(l, art);
+            LoadCurrencyArt(l);
         }
         if (Listings.Count > 0) LowestText = Loc.T($"от {Listings[0].Price} {Listings[0].Currency}");
-        Status = Listings.Count == 0 ? Loc.T("На обмене никто не продаёт") : Loc.T($"Обмен: продавцов {_exchange.Total}");
+        Status = Listings.Count == 0 ? Loc.T("На трейде никто не продаёт — смотри рыночный курс") : Loc.T($"Обмен на трейде: продавцов {_exchange.Total}");
+        // the trade's few bulk sellers often ask far above the in-game exchange: said plainly, not left to a guess
+        if (Listings.Count > 0 && _ninja is { Market: true } m && Listings[0].UnitChaos > m.Chaos * 1.5)
+            Status += Loc.T($" · на трейде в {Listings[0].UnitChaos / m.Chaos:0.#} раза дороже рынка");
     }
 
     public async Task SearchAsync()
@@ -642,6 +679,7 @@ public sealed class PriceCheckViewModel : Observable
             row.PropertyChanged += OnRowChanged;
             Listings.Add(row);
             if (_art != null && l.Icon is { } url) _ = LoadArtAsync(row, url);
+            LoadCurrencyArt(row);
         }
         // stacks sell whole: the cheapest piece is not always on the first (cheapest stack) line
         if (Listings.Count > 0 && Listings.MinBy(r => r.UnitChaos) is { } low) LowestText = Loc.T($"от {low.Price} {low.Currency}");
@@ -674,6 +712,17 @@ public sealed class PriceCheckViewModel : Observable
     {
         try { row.Icon = await _art!(url); }
         catch (Exception) { /* no picture: the row stays without one */ }
+    }
+
+    void LoadCurrencyArt(ListingVm row)
+    {
+        if (_art != null && _trade.ExchangeImage(row.CurrencyId) is { } url) _ = LoadCurrencyArtAsync(row, url);
+    }
+
+    async Task LoadCurrencyArtAsync(ListingVm row, string url)
+    {
+        try { row.CurrencyIcon = await _art!(url); }
+        catch (Exception) { /* the word stays */ }
     }
 
     /// <summary>A reminder under the results while a "!" line is still left out of the search.</summary>

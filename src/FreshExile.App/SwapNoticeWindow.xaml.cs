@@ -13,6 +13,7 @@ public partial class SwapNoticeWindow : Window
     public SwapNoticeWindow(MainViewModel vm)
     {
         InitializeComponent();
+        UiScale.Attach(this);
         DataContext = vm;
         WindowStartupLocation = WindowStartupLocation.Manual;
         SourceInitialized += (_, _) =>

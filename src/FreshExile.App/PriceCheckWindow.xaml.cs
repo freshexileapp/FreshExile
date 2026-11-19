@@ -12,6 +12,7 @@ public partial class PriceCheckWindow : Window
     public PriceCheckWindow()
     {
         InitializeComponent();
+        UiScale.Attach(this);
         WindowStartupLocation = WindowStartupLocation.Manual;
         SourceInitialized += (_, _) => Native.SetToolWindow(this);
         PreviewKeyDown += (_, e) => { if (e.Key == Key.Escape) { e.Handled = true; CloseAndReturn(); } };

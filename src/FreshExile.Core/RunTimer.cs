@@ -49,6 +49,17 @@ public sealed class RunTimer
         }
     }
 
+    /// <summary>
+    /// The timer rebuilt from the log's tail at start: when the act or the map began, not when the overlay opened. Only
+    /// while the game is running (the log's last line within ten minutes): after a long break the old times would lie.
+    /// </summary>
+    public void Replay(IEnumerable<AreaGenerated> areas, DateTime? lastLine, DateTime now)
+    {
+        if (lastLine is not { } last || Math.Abs((now - last).TotalMinutes) > 10) return;
+        foreach (var a in areas)
+            if (a.At is { } at) OnArea(a, at);
+    }
+
     public TimeSpan Elapsed(DateTime now) => Current switch
     {
         Kind.Act => Clamp(now - _actStart),

@@ -15,9 +15,15 @@ public sealed class AppState
     /// <summary>Interface language, "ru" or "en"; null until the first start picks it from Windows.</summary>
     public string? Language { get; set; }
 
+    /// <summary>The interface's own zoom on top of Windows' scaling: 1 = as designed (Settings → General).</summary>
+    public double UiScale { get; set; } = 1.0;
+
     public string BuildInput { get; set; } = "";
     public string? BuildXml { get; set; }
     public string? BuildId { get; set; }
+
+    /// <summary>Builds loaded before, newest first (the current one among them): the build itself is kept, not just its link.</summary>
+    public List<RecentBuild> RecentBuilds { get; set; } = new();
 
     /// <summary>Trade league to search in; empty = the current softcore league from the trade site.</summary>
     public string? TradeLeague { get; set; }
@@ -190,4 +196,18 @@ public static class TreeRepository
             return PassiveTree.Load(fs);
         }, ct);
     }
+}
+
+/// <summary>A build in the recent list: its PoB XML (a chain of saved stages exists nowhere else), where it came from, how far it went.</summary>
+public sealed class RecentBuild
+{
+    public string Id { get; set; } = "";
+    /// <summary>"Ranger · Pathfinder, ур. 92".</summary>
+    public string Title { get; set; } = "";
+    /// <summary>The link it was loaded from; empty for a pasted code.</summary>
+    public string Input { get; set; } = "";
+    public string Xml { get; set; } = "";
+    public int StageIndex { get; set; }
+    public int Stages { get; set; }
+    public DateTime At { get; set; }
 }

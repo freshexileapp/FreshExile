@@ -29,6 +29,12 @@ public sealed record AreaGenerated(string AreaId, int AreaLevel) : LogEvent
 
 public sealed record ZoneEntered(string Name) : LogEvent;
 
+/// <summary>
+/// The areas of the log's tail read at start, oldest first, and the time of its last line: the act / map timer is
+/// rebuilt from them instead of starting at the moment the overlay was opened. Only for the timer — nothing else replays.
+/// </summary>
+public sealed record AreaHistory(IReadOnlyList<AreaGenerated> Areas, DateTime? LastLine) : LogEvent;
+
 public sealed record LevelUp(string Character, string Class, int Level) : LogEvent;
 
 public static partial class ClientLogParser
@@ -114,7 +120,7 @@ public static partial class ClientLogParser
         return null;
     }
 
-    static DateTime? LineTime(string line) =>
+    internal static DateTime? LineTime(string line) =>
         line.Length >= 19 && DateTime.TryParseExact(line[..19], "yyyy/MM/dd HH:mm:ss",
             System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal, out var t)
             ? t : null;
@@ -144,16 +150,20 @@ public sealed class ClientLogWatcher(string path) : IDisposable
         {
             var start = Math.Max(0, fs.Length - InitialTail);
             AreaGenerated? area = null; ZoneEntered? zone = null; LevelUp? level = null;
+            var areas = new List<AreaGenerated>();
+            string? last = null;
             foreach (var line in ReadFrom(fs, start, skipFirst: start > 0))
             {
+                if (line.Length > 0) last = line;
                 switch (ClientLogParser.ParseLine(line))
                 {
-                    case AreaGenerated a: area = a; break;
+                    case AreaGenerated a: area = a; areas.Add(a); break;
                     case ZoneEntered z: zone = z; break;
                     case LevelUp l: level = l; break;
                 }
             }
             _pos = fs.Length;
+            Event?.Invoke(new AreaHistory(areas, last == null ? null : ClientLogParser.LineTime(last)));
             if (level != null) Event?.Invoke(level);
             if (area != null) Event?.Invoke(area);
             if (zone != null) Event?.Invoke(zone);

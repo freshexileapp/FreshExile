@@ -16,6 +16,13 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         DataContext = _vm = vm;
+        // the panel keeps the size the user gave it; a change of the scale grows it (the mini line keeps its own width)
+        UiScale.Attach(this, sizeNow: false, follow: false);
+        UiScale.Changed += r =>
+        {
+            if (_vm.IsCompact) Width = MiniWidth * UiScale.Factor;
+            else UiScale.Resize(this, r);
+        };
 
         Placement.Restore(this, vm.State.Main, defaultRight: true);
         // saved right away: the overlay is often killed with the game rather than closed
@@ -324,10 +331,11 @@ public partial class MainWindow : Window
         if (_vm.State.Compact && _vm.HasBuild) SetCompact(true);
     }
 
+    const double MiniWidth = 300;
+
     void SetCompact(bool compact)
     {
         if (compact == _vm.IsCompact) return;
-        const double MiniWidth = 300;
         var state = _vm.State;
         _switching = true;
         if (compact)
@@ -339,10 +347,10 @@ public partial class MainWindow : Window
             MinWidth = 0;
             ResizeMode = ResizeMode.NoResize;
             SizeToContent = SizeToContent.Height;
-            Width = MiniWidth;
+            Width = MiniWidth * UiScale.Factor;
             // each mode has its own spot; the first time the mini keeps the full panel's right edge
             var mini = state.MainMini;
-            Left = mini != null && Placement.OnScreen(mini.Left, mini.Top) ? mini.Left : full.Left + full.Width - MiniWidth;
+            Left = mini != null && Placement.OnScreen(mini.Left, mini.Top) ? mini.Left : full.Left + full.Width - MiniWidth * UiScale.Factor;
             Top = mini != null && Placement.OnScreen(mini.Left, mini.Top) ? mini.Top : full.Top;
         }
         else
@@ -350,21 +358,21 @@ public partial class MainWindow : Window
             if (IsLoaded) state.MainMini = Placement.Capture(this);
             SizeToContent = SizeToContent.Manual;
             _vm.IsCompact = false;
-            MinHeight = 180;
-            MinWidth = 320;
+            MinHeight = 180 * UiScale.Factor;
+            MinWidth = 320 * UiScale.Factor;
             ResizeMode = ResizeMode.CanResizeWithGrip;
             var full = state.Main;
             if (full != null && Placement.OnScreen(full.Left, full.Top))
             {
                 Left = full.Left;
                 Top = full.Top;
-                Width = Math.Max(full.Width, 320);
-                Height = Math.Max(full.Height, 400);
+                Width = Math.Max(full.Width, 320 * UiScale.Factor);
+                Height = Math.Max(full.Height, 400 * UiScale.Factor);
             }
             else
             {
-                Width = 380;
-                Height = 740;
+                Width = 380 * UiScale.Factor;
+                Height = 740 * UiScale.Factor;
             }
         }
         _switching = false;

@@ -72,6 +72,10 @@ public sealed partial class TradeLink
     }
 
     readonly Dictionary<string, string> _exchange = new(StringComparer.OrdinalIgnoreCase);
+    readonly Dictionary<string, string> _exchangeArt = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>The picture of an exchange id ("divine", "eldritch-exalted-orb") on GGG's CDN; null when the site has none.</summary>
+    public string? ExchangeImage(string id) => _exchangeArt.GetValueOrDefault(id);
 
     /// <summary>
     /// The bulk exchange's id of an item it trades ("Eldritch Exalted Orb" → "eldritch-exalted-orb"): currency, fragments,
@@ -91,9 +95,15 @@ public sealed partial class TradeLink
         {
             if (!g.TryGetProperty("entries", out var entries) || entries.ValueKind != JsonValueKind.Array) continue;
             foreach (var e in entries.EnumerateArray())
+            {
                 if (e.TryGetProperty("id", out var id) && id.GetString() is { Length: > 0 } i
                     && e.TryGetProperty("text", out var t) && t.GetString() is { Length: > 0 } text)
                     _exchange.TryAdd(text, i);
+                // "/gen/image/…/CurrencyModValues.png": the site's own path, served by GGG's CDN
+                if (e.TryGetProperty("id", out var iid) && iid.GetString() is { Length: > 0 } ii
+                    && e.TryGetProperty("image", out var img) && img.GetString() is { Length: > 0 } path)
+                    _exchangeArt.TryAdd(ii, path.StartsWith("https://", StringComparison.Ordinal) ? path : "https://web.poecdn.com" + (path.StartsWith('/') ? path : "/" + path));
+            }
         }
     }
 

@@ -16,6 +16,7 @@ public partial class SettingsWindow : Window
     public SettingsWindow(MainViewModel vm)
     {
         InitializeComponent();
+        UiScale.Attach(this);
         DataContext = _vm = vm;
         PreviewKeyDown += OnPreviewKeyDown;
         // a capture left running would keep the hotkeys off

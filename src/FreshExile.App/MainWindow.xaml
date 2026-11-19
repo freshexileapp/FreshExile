@@ -52,12 +52,6 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Style="{StaticResource IconButton}" ToolTip="{Binding TipTree}" Click="OpenTree_Click"
-                            Visibility="{Binding HasBuild, Converter={StaticResource Vis}}">
-                        <Path Width="16" Height="16" StrokeThickness="1.4"
-                              Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
-                              Data="M4.6,7.2 L11.4,4.6 M4.6,8.8 L11.4,11.4 M1,8 A2,2 0 1 1 5,8 A2,2 0 1 1 1,8 M11,4 A2,2 0 1 1 15,4 A2,2 0 1 1 11,4 M11,12 A2,2 0 1 1 15,12 A2,2 0 1 1 11,12"/>
-                    </Button>
                     <Button Style="{StaticResource IconButton}" Content="&#xE713;" ToolTip="{l:T 'Настройки'}" Click="Settings_Click"/>
                     <!-- X folds into the mini tracker; the app itself closes from the footer -->
                     <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="10" ToolTip="{l:T 'Свернуть в мини'}" Click="Collapse_Click"/>

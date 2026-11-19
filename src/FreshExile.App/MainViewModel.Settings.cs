@@ -64,6 +64,19 @@ public sealed partial class MainViewModel
     public bool IsLangEn { get => State.Language == Loc.En; set { if (value) SetLanguage(Loc.En); } }
     public bool LanguagePending => (State.Language == Loc.En ? Loc.En : Loc.Ru) != Loc.Lang;
 
+    /// <summary>The scale choices of Settings → General: "90 %" … "150 %", the current one checked.</summary>
+    public IReadOnlyList<ScaleOption> ScaleOptions => _scaleOptions ??= UiScale.Steps.Select(s => new ScaleOption(this, s)).ToList();
+    IReadOnlyList<ScaleOption>? _scaleOptions;
+
+    public void SetUiScale(double factor)
+    {
+        if (Math.Abs(State.UiScale - factor) < 0.001) return;
+        State.UiScale = factor;
+        UiScale.Set(factor);
+        foreach (var o in ScaleOptions) o.Refresh();
+        Save();
+    }
+
     void SetLanguage(string lang)
     {
         if (State.Language == lang) return;
@@ -269,7 +282,6 @@ public sealed partial class MainViewModel
     public string KeyMain => KeyText(HotkeyActions.Main);
     public string KeyTree => KeyText(HotkeyActions.Tree);
     public string KeyThrough => KeyText(HotkeyActions.Through);
-    public string TipTree => Loc.T($"Дерево · {KeyTree}");
     public string TipPrev => Loc.T($"Предыдущий этап · {KeyText(HotkeyActions.Prev)}");
     public string TipNext => Loc.T($"Следующий этап · {KeyText(HotkeyActions.Next)}");
     public string TipThrough => Loc.T($"Сквозной режим: клики уходят в игру · {KeyThrough}");
@@ -277,9 +289,21 @@ public sealed partial class MainViewModel
 
     void RaiseKeys()
     {
-        foreach (var n in new[] { nameof(KeyMain), nameof(KeyTree), nameof(KeyThrough), nameof(TipTree), nameof(TipPrev), nameof(TipNext), nameof(TipThrough), nameof(TipHideTree), "PriceHint" })
+        foreach (var n in new[] { nameof(KeyMain), nameof(KeyTree), nameof(KeyThrough), nameof(TipPrev), nameof(TipNext), nameof(TipThrough), nameof(TipHideTree), "PriceHint" })
             Raise(n);
     }
 
     #endregion
+}
+
+/// <summary>One choice of the interface scale: its label and whether it is the one in use.</summary>
+public sealed class ScaleOption(MainViewModel vm, double factor) : Observable
+{
+    public string Label { get; } = $"{Math.Round(factor * 100)} %";
+    public bool IsChecked
+    {
+        get => Math.Abs(vm.State.UiScale - factor) < 0.001;
+        set { if (value) vm.SetUiScale(factor); }
+    }
+    public void Refresh() => Raise(nameof(IsChecked));
 }

@@ -12,6 +12,7 @@ public partial class TreeHeaderWindow : Window
     public TreeHeaderWindow(MainViewModel vm)
     {
         InitializeComponent();
+        UiScale.Attach(this);
         DataContext = _vm = vm;
         WindowStartupLocation = WindowStartupLocation.Manual;
         Left = SystemParameters.WorkArea.Left + 16;

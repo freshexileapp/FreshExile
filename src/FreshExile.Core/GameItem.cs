@@ -18,6 +18,12 @@ public sealed record GameMod(string Text, ModKind Kind)
     /// <summary>"38-42": the roll range of the first number, advanced copy only.</summary>
     public string? Range { get; init; }
 
+    /// <summary>
+    /// Which modifier of the advanced copy the line belongs to (its "{ … }" header, counted from 1): a hybrid affix gives
+    /// two lines with one number. Null in a plain copy.
+    /// </summary>
+    public int? Affix { get; init; }
+
     /// <summary>The first number of the line ("+40 to Dexterity" → 40); "Adds 5 to 10" averages both, as the trade site does.</summary>
     public double? Value => GameItem.ValueOf(Text);
 }
@@ -69,6 +75,36 @@ public sealed partial record GameItem
     const string Rule = "--------";
 
     /// <summary>null when the text is not an item copied from the game.</summary>
+    /// <summary>
+    /// Item text copied from a game client in another language: the game's "--------" rules are there, the English
+    /// "Rarity:" line is not ("Редкость:", "Seltenheit:"…). The price check reads the English client only, for now.
+    /// </summary>
+    public static bool IsOtherLanguage(string? text)
+    {
+        if (string.IsNullOrWhiteSpace(text) || !text.Contains(Rule, StringComparison.Ordinal)) return false;
+        var lines = text.Replace("\r", "").Split('\n').Select(l => l.Trim()).Take(4).ToList();
+        return !lines.Any(l => l.StartsWith("Rarity:", StringComparison.Ordinal) || l.StartsWith("Item Class:", StringComparison.Ordinal));
+    }
+
+    /// <summary>
+    /// Prefixes and suffixes the item has and can have: rare 3 + 3 (a jewel 2 + 2), magic 1 + 1, counted by the advanced
+    /// copy's modifier headers (crafted and fractured ones take a place too). Null when it cannot be told: a plain copy,
+    /// a unique or normal item, a cluster jewel (its notables follow other rules).
+    /// </summary>
+    public (int Prefixes, int Suffixes, int Max)? Affixes()
+    {
+        if (Rarity is not (ItemRarity.Rare or ItemRarity.Magic) || Unidentified) return null;
+        if (BaseType.Contains("Cluster Jewel", StringComparison.Ordinal)) return null;
+        var explicitMods = Mods.Where(m => m.Kind is ModKind.Explicit or ModKind.Crafted or ModKind.Fractured).ToList();
+        // a plain copy does not say which side a line is on
+        if (explicitMods.Count == 0 ? !Mods.Any(m => m.Affix != null) : explicitMods.Any(m => m.Affix == null || m.Prefix == null)) return null;
+        var jewel = ItemClass is "Jewels" or "Abyss Jewels" || BaseType.EndsWith(" Jewel", StringComparison.Ordinal) || BaseType.EndsWith(" Eye Jewel", StringComparison.Ordinal);
+        var max = Rarity == ItemRarity.Magic ? 1 : jewel ? 2 : 3;
+        var prefixes = explicitMods.Where(m => m.Prefix == true).Select(m => m.Affix).Distinct().Count();
+        var suffixes = explicitMods.Where(m => m.Prefix == false).Select(m => m.Affix).Distinct().Count();
+        return (prefixes, suffixes, max);
+    }
+
     public static GameItem? Parse(string? text)
     {
         if (string.IsNullOrWhiteSpace(text)) return null;
@@ -233,11 +269,13 @@ public sealed partial record GameItem
         int? tier = null;
         string? name = null;
         bool? prefix = null;
+        var affix = mods.Select(m => m.Affix ?? 0).DefaultIfEmpty(0).Max();
         foreach (var raw in sec)
         {
             if (raw.StartsWith('{'))
             {
                 var hdr = raw;
+                affix++;
                 var n = AffixNameRx().Match(hdr);
                 name = n.Success ? n.Groups[1].Value : null;
                 prefix = hdr.Contains("Prefix Modifier", StringComparison.Ordinal) ? true
@@ -267,6 +305,7 @@ public sealed partial record GameItem
                 Name = kind is ModKind.Implicit or ModKind.Enchant ? null : name,
                 Prefix = kind is ModKind.Implicit or ModKind.Enchant ? null : prefix,
                 Range = range.Success ? $"{range.Groups[2].Value}-{range.Groups[3].Value}" : null,
+                Affix = affix,
             });
         }
     }

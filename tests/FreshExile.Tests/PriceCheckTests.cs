@@ -386,6 +386,93 @@ public class PriceCheckTests
     }
 
     [Fact]
+    public void The_in_game_exchange_rate_comes_from_poe_ninja_by_the_trade_id()
+    {
+        // poe.ninja's exchange overview of 2026-11-19: primaryValue is chaos per piece
+        const string json = """
+            {"core":{"primary":"chaos"},"lines":[
+              {"id":"eldritch-exalted-orb","primaryValue":3.65,"volumePrimaryValue":2750},
+              {"id":"accelerating-catalyst","primaryValue":0.1914},
+              {"id":"broken","primaryValue":null}]}
+            """;
+        var rates = new Dictionary<string, double>();
+        NinjaExchange.Read(json, rates);
+        Assert.Equal(3.65, rates["eldritch-exalted-orb"]);
+        Assert.Equal(0.1914, rates["accelerating-catalyst"]);
+        Assert.False(rates.ContainsKey("broken"));
+        NinjaExchange.Read("not json", rates); // a list that did not come whole costs nothing
+    }
+
+    [Fact]
+    public void An_item_copied_from_a_client_in_another_language_is_told_apart()
+    {
+        const string ru = "Класс предметов: Кольца\nРедкость: Редкий\nУзел Судьбы\nАметистовое кольцо\n--------\nТребуется Уровень: 30";
+        const string en = "Item Class: Rings\nRarity: Rare\nDoom Knot\nAmethyst Ring\n--------\nRequires Level: 30";
+        Assert.True(GameItem.IsOtherLanguage(ru));
+        Assert.False(GameItem.IsOtherLanguage(en));
+        Assert.False(GameItem.IsOtherLanguage("just some text"));
+        Assert.Null(GameItem.Parse(ru));
+    }
+
+    [Fact]
+    public void The_exchange_pictures_come_from_the_sites_static_data()
+    {
+        const string staticJson = """
+            {"result":[{"id":"Currency","entries":[{"id":"divine","text":"Divine Orb","image":"/gen/image/abc/CurrencyModValues.png"}]}]}
+            """;
+        var link = TradeLink.FromData("Covens", null, null, staticJson);
+        Assert.Equal("https://web.poecdn.com/gen/image/abc/CurrencyModValues.png", link.ExchangeImage("divine"));
+        Assert.Null(link.ExchangeImage("chaos"));
+    }
+
+    [Fact]
+    public void Open_prefixes_and_suffixes_are_counted_by_the_advanced_copys_headers()
+    {
+        const string ring = """
+            Item Class: Rings
+            Rarity: Rare
+            Doom Knot
+            Amethyst Ring
+            --------
+            Item Level: 80
+            --------
+            { Implicit Modifier — Chaos, Resistance }
+            +20(17-23)% to Chaos Resistance (implicit)
+            --------
+            { Prefix Modifier "Hale" (Tier: 8) — Life }
+            +30(25-39) to maximum Life
+            { Prefix Modifier "Dictator's" (Tier: 4) — Damage, Physical, Attack }
+            40(35-44)% increased Physical Damage
+            +60(47-72) to Accuracy Rating
+            { Suffix Modifier "of the Lightning" (Tier: 3) — Elemental, Lightning, Resistance }
+            +40(36-41)% to Lightning Resistance
+            { Master Crafted Suffix Modifier "of Craft" (Rank: 1) — Attribute }
+            +15(15-17) to Strength (crafted)
+            """;
+        // a hybrid prefix (two lines) is one prefix; the implicit and the crafted line count as they should
+        Assert.Equal((2, 2, 3), GameItem.Parse(ring)!.Affixes());
+
+        const string jewel = """
+            Item Class: Abyss Jewels
+            Rarity: Rare
+            Foul Scalpel
+            Murderous Eye Jewel
+            --------
+            Item Level: 82
+            --------
+            { Prefix Modifier "Hale" (Tier: 4) — Life }
+            +33(30-34) to maximum Life
+            { Suffix Modifier "of the Insulator" (Tier: 1) — Elemental, Fire, Lightning, Resistance }
+            +12(10-12)% to Fire and Lightning Resistances
+            """;
+        Assert.Equal((1, 1, 2), GameItem.Parse(jewel)!.Affixes());
+
+        // a plain copy cannot tell the sides; a unique has no free affixes to speak of
+        Assert.Null(GameItem.Parse("Item Class: Rings\nRarity: Rare\nDoom Knot\nAmethyst Ring\n--------\nItem Level: 80\n--------\n+30 to maximum Life")!.Affixes());
+        Assert.Null(GameItem.Parse(PlainUnique)!.Affixes());
+    }
+
+    [Fact]
     public void Currency_is_found_on_the_exchange_by_its_name()
     {
         const string staticJson = """

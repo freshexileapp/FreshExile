@@ -136,7 +136,10 @@ public sealed partial class MainViewModel : Observable
         {
             try { ApplyBuild(BuildParser.Parse(_s.BuildXml)); }
             catch (PobFormatException) { _s.BuildXml = null; }
+            // the build loaded before the list existed joins it; the list shows the others
+            if (Build != null && !_s.RecentBuilds.Any(r => r.Id == _s.BuildId)) RememberBuild();
         }
+        RefreshRecent();
         if (string.IsNullOrEmpty(_s.ClientLogPath) && ClientLogParser.AutoDetect() is { } found)
         {
             _s.ClientLogPath = found;
@@ -229,6 +232,7 @@ public sealed partial class MainViewModel : Observable
             if (build.Stages.Count == 0) throw new PobFormatException(Loc.T("В билде нет ни деревьев, ни наборов гемов"));
 
             var same = build.Id == _s.BuildId;
+            KeepStageOfCurrent();
             _s.BuildXml = xml;
             _s.BuildId = build.Id;
             _s.BuildInput = BuildInput.Trim();
@@ -237,6 +241,7 @@ public sealed partial class MainViewModel : Observable
             ApplyBuild(build);
             _tab = Tab.Gems;
             RaisePages();
+            RememberBuild();
             Toast(Loc.T($"Билд загружен · {build.Stages.Count} этапов"));
             Save();
         }
@@ -281,6 +286,7 @@ public sealed partial class MainViewModel : Observable
             ApplyBuild(build);
             _tab = Tab.Gems;
             RaisePages();
+            RememberBuild();
             Toast(outcome == PobStages.Outcome.Started ? Loc.T($"Новый билд из снимков · этап «{title}»") : Loc.T($"Сохранён этап {build.Stages.Count} · «{title}»"));
             Save();
         }
@@ -731,6 +737,13 @@ public sealed partial class MainViewModel : Observable
 
     void OnLog(LogEvent e)
     {
+        // the tail read at start: only the act / map timer replays it
+        if (e is AreaHistory h)
+        {
+            _runTimer.Replay(h.Areas, h.LastLine, DateTime.Now);
+            RaiseRunTimer();
+            return;
+        }
         // before the name is filled in below: it is what the event is compared with
         // tracking off: the log still tells the level (the price check's "wear it now"), nothing acts on it
         // on the first stage too, when the old character left "bought" marks or a synced profile behind

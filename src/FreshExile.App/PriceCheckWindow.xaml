@@ -23,6 +23,8 @@
                                TextTrimming="CharacterEllipsis" Margin="0,2,0,0"/>
                     <TextBlock Text="{Binding BaseLine}" Foreground="{StaticResource Text2}" FontSize="12"
                                Visibility="{Binding HasBaseLine, Converter={StaticResource Vis}}"/>
+                    <TextBlock Text="{Binding AffixLine}" Foreground="{StaticResource Text3}" FontSize="11.5" Margin="0,1,0,0"
+                               ToolTip="{Binding AffixTip}" Visibility="{Binding HasAffixLine, Converter={StaticResource Vis}}"/>
                 </StackPanel>
                 <StackPanel Grid.Column="1" VerticalAlignment="Top">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
@@ -33,7 +35,7 @@
                             <TextBlock Text="{Binding LowestText}" FontSize="13" FontWeight="SemiBold" Foreground="#0B0B0C"/>
                         </Border>
                         <Border Background="{StaticResource Surface}" CornerRadius="6" Padding="8,3" Margin="0,0,6,0" VerticalAlignment="Center"
-                                Visibility="{Binding HasNinja, Converter={StaticResource Vis}}" ToolTip="{l:T 'Цена уника на poe.ninja: без запроса к трейду'}">
+                                Visibility="{Binding HasNinja, Converter={StaticResource Vis}}" ToolTip="{Binding NinjaTip}">
                             <TextBlock Text="{Binding NinjaText}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" Foreground="{StaticResource Text2}"/>
                         </Border>
                         <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="10" ToolTip="{l:T 'Закрыть · Esc'}" Click="Close_Click"/>
@@ -227,10 +229,12 @@
                                         </Grid.ColumnDefinitions>
                                         <Image Source="{Binding Icon}" Width="30" Height="30" Stretch="Uniform" VerticalAlignment="Center"
                                                RenderOptions.BitmapScalingMode="HighQuality"/>
-                                        <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="6,0,0,0">
-                                            <Run Text="{Binding Price, Mode=OneWay}" FontFamily="{StaticResource MonoFont}" FontSize="13.5" FontWeight="SemiBold"/>
-                                            <Run Text="{Binding Currency, Mode=OneWay}" FontSize="11.5" Foreground="{StaticResource Text2}"/>
-                                        </TextBlock>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="6,0,0,0">
+                                            <TextBlock Text="{Binding Price}" FontFamily="{StaticResource MonoFont}" FontSize="13.5" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                            <Image Source="{Binding CurrencyIcon}" Width="20" Height="20" Margin="3,0,0,0" VerticalAlignment="Center" ToolTip="{Binding Currency}"
+                                                   RenderOptions.BitmapScalingMode="HighQuality" Visibility="{Binding HasCurrencyIcon, Converter={StaticResource Vis}}"/>
+                                            <TextBlock Text="{Binding CurrencyText}" FontSize="11.5" Foreground="{StaticResource Text2}" Margin="3,0,0,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
                                         <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="0,0,8,0">
                                             <TextBlock Text="{Binding Account}" FontSize="12" Foreground="{StaticResource Text2}" TextTrimming="CharacterEllipsis"/>
                                             <TextBlock Text="{Binding Extra}" FontSize="11" Foreground="{StaticResource Text3}" TextTrimming="CharacterEllipsis"/>

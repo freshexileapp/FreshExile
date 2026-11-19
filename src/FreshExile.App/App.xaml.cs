@@ -74,6 +74,7 @@ public partial class App : Application
         var state = StateStore.Load();
         state.Language ??= Loc.FromSystem();
         Loc.Use(state.Language);
+        UiScale.Set(state.UiScale);
 
         var vm = new MainViewModel(state, http);
         vmRef = vm;

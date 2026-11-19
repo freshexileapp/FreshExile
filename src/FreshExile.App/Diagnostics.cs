@@ -81,6 +81,8 @@ public static class Report
         copy.Account = copy.Account.Length > 0 ? "(set)" : "";
         copy.Character = copy.Character.Length > 0 ? "(set)" : "";
         copy.ClientLogPath = Privacy.ShortPath(copy.ClientLogPath);
+        // the recent builds' XML stays home: the titles tell enough, the current build is in BuildXml
+        foreach (var r in copy.RecentBuilds) r.Xml = "";
         Write(zip, "state.json", Clean(JsonSerializer.Serialize(copy, new JsonSerializerOptions { WriteIndented = true })));
         Write(zip, "about.txt", About() + $"Frames: {(includeFrames ? "attached" : "not attached")}{Environment.NewLine}");
         return path;

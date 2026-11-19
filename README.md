@@ -41,7 +41,9 @@ and what your gear should look like. One hotkey prices any item under the mouse.
 
 ### Mini tracker
 One line while you run maps or acts: stage, act or map timer, next / previous. In town it unfolds into the shopping list
-and the link swaps, and folds back when you leave.
+and the link swaps, and folds back when you leave. The act timer runs from the act's first zone (a trip back to an older
+town counts to the current act); the map timer stops in the hideout and runs on if you go back into the same map.
+Both survive a restart of the overlay while the game is running.
 
 <p align="center"><img src="docs/screenshots/ingame-mini.png" alt="Mini tracker in game"></p>
 
@@ -105,6 +107,7 @@ and the link swaps, and folds back when you leave.
 2. Run `FreshExile.exe`. Windows 10 / 11, 64-bit.
 3. Paste a pobb.in / pastebin link or a PoB code and press **Load build**.
 4. Set the game to **Windowed Fullscreen**.
+5. Play with the game in **English**: for now the log tracking and the price check read the game's English texts only.
 
 The game's log is found automatically from the running game; otherwise point to it in *Settings → General*.
 

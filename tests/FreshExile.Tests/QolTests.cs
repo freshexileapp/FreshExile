@@ -163,6 +163,51 @@ public class RunTimerTests
     }
 
     [Fact]
+    public void A_restart_of_the_overlay_keeps_the_act_and_map_time_from_the_logs_tail()
+    {
+        AreaGenerated At(string id, double min, long seed = 1) => new(id, 10) { Seed = seed, At = T0.AddMinutes(min) };
+        var now = T0.AddMinutes(50);
+
+        // the act began 40 minutes ago; the overlay opened just now
+        var t = new RunTimer();
+        t.Replay([At("1_3_1", 10), At("1_3_town", 30), At("1_3_2", 45)], T0.AddMinutes(49), now);
+        Assert.Equal("акт 40:00", t.Text(now));
+
+        // a map entered 20 minutes ago, through a portal twice since
+        var m = new RunTimer();
+        m.Replay([At("HideoutX", 25), At("MapWorldsStrand", 30, 7), At("HideoutX", 35), At("MapWorldsStrand", 36, 7)], T0.AddMinutes(49), now);
+        Assert.Equal("карта 20:00", m.Text(now));
+
+        // the game closed two hours ago: old times would lie, nothing is replayed
+        var old = new RunTimer();
+        old.Replay([At("1_3_1", 10)], T0.AddMinutes(10), T0.AddMinutes(130));
+        Assert.Equal(RunTimer.Kind.None, old.Current);
+    }
+
+    [Fact]
+    public void The_logs_tail_is_handed_over_whole_for_the_timer()
+    {
+        var path = Path.Combine(Path.GetTempPath(), $"fe-log-{Guid.NewGuid():N}.txt");
+        File.WriteAllLines(path,
+        [
+            "2026/11/15 01:00:00 1 a [DEBUG Client 1] Generating level 20 area \"1_3_1\" with seed 5",
+            "2026/11/15 01:20:00 1 a [DEBUG Client 1] Generating level 20 area \"1_3_town\" with seed 6",
+            "2026/11/15 01:21:00 1 a [INFO Client 1] : You have entered The Sarn Encampment.",
+        ]);
+        try
+        {
+            var events = new List<LogEvent>();
+            using var w = new ClientLogWatcher(path);
+            w.Event += events.Add;
+            w.Start();
+            var h = Assert.IsType<AreaHistory>(events[0]);
+            Assert.Equal(["1_3_1", "1_3_town"], h.Areas.Select(a => a.AreaId));
+            Assert.Equal(new DateTime(2026, 11, 15, 1, 21, 0), h.LastLine);
+        }
+        finally { File.Delete(path); }
+    }
+
+    [Fact]
     public void Act_time_runs_through_its_town_and_restarts_in_the_next_act()
     {
         var t = new RunTimer();
