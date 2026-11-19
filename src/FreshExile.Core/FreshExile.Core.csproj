@@ -13,6 +13,8 @@
     <EmbeddedResource Include="Data/ClusterSkills.tsv" LogicalName="ClusterSkills.tsv" />
     <!-- how far each proxy group turns a cluster's ring: PoB's Data/ClusterJewels.lua orbitOffsets -->
     <EmbeddedResource Include="Data/ClusterOrbitOffsets.tsv" LogicalName="ClusterOrbitOffsets.tsv" />
+    <!-- the icons of cluster small passives (the export has only the notables'): tools/update-cluster-icons.ps1 -->
+    <EmbeddedResource Include="Data/ClusterIcons.tsv" LogicalName="ClusterIcons.tsv" />
     <!-- bases and their prefixes / suffixes from RePoE: tools/update-mod-tiers.ps1 -->
     <EmbeddedResource Include="Data/ModTiers.tsv" LogicalName="ModTiers.tsv" />
     <!-- mod lines of the influences (eldritch implicits, Shaper / Elder / conqueror explicits): tools/update-influence-mods.ps1 -->

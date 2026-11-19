@@ -18,6 +18,13 @@ public sealed record CompareRow(string Label, string Ours, string Theirs, int Be
     /// <summary>How many tiers the mod has on each base ("T3 из 9"); null when the tier table does not know it.</summary>
     public int? OursTierCount { get; init; }
     public int? TheirsTierCount { get; init; }
+    /// <summary>The line is fractured on our item / on theirs: it can never be rerolled away.</summary>
+    public bool OursFractured { get; init; }
+    public bool TheirsFractured { get; init; }
+    /// <summary>A total or a defence (not one mod line): such rows lead the list.</summary>
+    public bool Total { get; init; }
+    /// <summary>A line only the offer has.</summary>
+    public bool OnlyTheirs { get; init; }
 }
 
 /// <summary>
@@ -53,6 +60,9 @@ public static partial class PriceCompare
                 TheirsTier = best?.Tier,
                 OursTierCount = ourCount,
                 TheirsTierCount = best == null ? null : CountOf(best, their),
+                OursFractured = f.ModKind == ModKind.Fractured,
+                TheirsFractured = lines.Any(l => l.Kind == ModKind.Fractured),
+                Total = !mod,
             });
         }
 
@@ -66,6 +76,8 @@ public static partial class PriceCompare
                 TheirsTop = top.IsTop(l.Text, check.Category, l.Tier, CountOf(l, their)),
                 TheirsTier = l.Tier,
                 TheirsTierCount = CountOf(l, their),
+                TheirsFractured = l.Kind == ModKind.Fractured,
+                OnlyTheirs = true,
             });
         }
         return rows;

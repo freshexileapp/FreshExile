@@ -37,6 +37,8 @@ public sealed class PassiveNode
     public bool IsClusterNode { get; init; }
     /// <summary>The three Blight oils that anoint this notable ("ClearOil", "AmberOil", "CrimsonOil"); empty for the rest.</summary>
     public string[] Recipe { get; init; } = [];
+    /// <summary>The node's art in the export's sprite sheets ("Art/2DArt/SkillIcons/passives/AreaDmgNode.png"); empty when unknown.</summary>
+    public string Icon { get; init; } = "";
 
     public bool IsKey => Kind is NodeKind.Notable or NodeKind.Keystone or NodeKind.Jewel or NodeKind.Mastery;
 }
@@ -107,6 +109,7 @@ public sealed partial class PassiveTree
                 Kind = kind,
                 Stats = Strings(n, "stats"),
                 Recipe = Strings(n, "recipe"),
+                Icon = Str(n, "icon") ?? "",
                 Ascendancy = Str(n, "ascendancyName"),
                 IsAscendancyStart = Bool(n, "isAscendancyStart"),
                 ClassStartIndex = classStart,
@@ -147,6 +150,7 @@ public sealed partial class PassiveTree
 
         tree.SkillsPerOrbit = perOrbit;
         tree.OrbitRadii = radii;
+        tree.Sprites = ReadSprites(r);
         tree.BuildEdges(radii);
         return tree;
     }

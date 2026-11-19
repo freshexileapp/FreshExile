@@ -51,7 +51,12 @@ and the link swaps, and folds back when you leave.
 - **On the game's tree**: open the tree in game (`P`) and the path lies right on its nodes, clicks go through to the game.
   The scale is found by itself and remembered for each zoom level.
 - **Cluster jewels** are grown into the tree the way Path of Building and the game draw them, so the path goes through
-  their notables too.
+  their notables too. Until the jewel is socketed the game shows none of its passives: the overlay draws them in the
+  game's own art.
+- **Which jewel goes where**: every socket on the path gets a card with the stage's jewel for it — a cluster with its
+  notables, or a plain jewel; settings can show every mod.
+
+<p align="center"><img src="docs/screenshots/ingame-clusters.png" alt="Cluster jewels on the game's tree: their passives drawn in and a card at each socket"></p>
 
 <p align="center"><img src="docs/screenshots/ingame-tree-late.png" alt="Act 5: the whole path from the class start"></p>
 
@@ -102,6 +107,9 @@ and the link swaps, and folds back when you leave.
 4. Set the game to **Windowed Fullscreen**.
 
 The game's log is found automatically from the running game; otherwise point to it in *Settings → General*.
+
+From 0.3.9 on the app updates itself: a new release is downloaded in the background and takes the exe's place when you
+close the app (*Settings → About*).
 
 ## Hotkeys
 

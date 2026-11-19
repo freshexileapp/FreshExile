@@ -12,6 +12,11 @@ public sealed partial class PassiveTree
 
     Dictionary<string, string[]>? _recipes;
 
+    readonly Dictionary<int, PobItem> _clusters = new();
+
+    /// <summary>The cluster jewels grown into this tree, by the socket they sit in.</summary>
+    public IReadOnlyDictionary<int, PobItem> Clusters => _clusters;
+
     /// <summary>
     /// The oils of an anointment, "Allocates Toxic Strikes" → ClearOil, AmberOil, CrimsonOil (the export's own recipe);
     /// null for a notable no oil can anoint.
@@ -33,7 +38,7 @@ public sealed partial class PassiveTree
         var clusters = jewels.Where(j => ClusterJewel.IsCluster(j.Item)).GroupBy(j => j.Socket).ToDictionary(g => g.Key, g => g.First().Item);
         if (clusters.Count == 0) return this;
 
-        var t = new PassiveTree { SkillsPerOrbit = SkillsPerOrbit, OrbitRadii = OrbitRadii, _clusterNotables = _clusterNotables };
+        var t = new PassiveTree { SkillsPerOrbit = SkillsPerOrbit, OrbitRadii = OrbitRadii, _clusterNotables = _clusterNotables, Sprites = Sprites };
         foreach (var (id, n) in Nodes) t.Nodes[id] = n;
         foreach (var (g, list) in MasteriesByGroup) t.MasteriesByGroup[g] = list;
 
@@ -45,6 +50,7 @@ public sealed partial class PassiveTree
             var socketId = queue.Dequeue();
             if (!done.Add(socketId) || !t.Nodes.TryGetValue(socketId, out var socket)) continue;
             if (ClusterGraph.Build(clusters[socketId], socket, t) is not { } sub) continue;
+            t._clusters[socketId] = clusters[socketId];
 
             var radius = sub.Orbit < OrbitRadii.Length ? OrbitRadii[sub.Orbit] : 0;
             var count = sub.Orbit < SkillsPerOrbit.Length ? SkillsPerOrbit[sub.Orbit] : 12;
@@ -60,6 +66,12 @@ public sealed partial class PassiveTree
                     Id = c.Id, Name = c.Name, Kind = c.Kind, Stats = c.Stats, Group = sub.Group, Orbit = sub.Orbit, OrbitIndex = c.OrbitIndex,
                     ExpansionSize = old?.ExpansionSize, ExpansionIndex = old?.ExpansionIndex ?? 0, ExpansionParent = old?.ExpansionParent,
                     ExpansionProxy = old?.ExpansionProxy, IsClusterNode = true,
+                    Icon = c.Kind switch
+                    {
+                        NodeKind.Notable => ClusterNotable(c.Name)?.Icon ?? "",
+                        NodeKind.Normal => ClusterGraph.SmallIcon(c.Stats),
+                        _ => old?.Icon ?? "",
+                    },
                     GroupX = sub.CenterX, GroupY = sub.CenterY,
                     X = sub.CenterX + radius * Math.Sin(a), Y = sub.CenterY - radius * Math.Cos(a),
                     Drawable = true,
@@ -97,5 +109,6 @@ public sealed partial class PassiveTree
         X = n.X, Y = n.Y, GroupX = n.GroupX, GroupY = n.GroupY, Drawable = n.Drawable, Out = outs, Links = links.Distinct().ToArray(),
         MasteryEffects = n.MasteryEffects, ExpansionSize = n.ExpansionSize, ExpansionIndex = n.ExpansionIndex,
         ExpansionParent = n.ExpansionParent, ExpansionProxy = n.ExpansionProxy, IsClusterNode = n.IsClusterNode,
+        Recipe = n.Recipe, Icon = n.Icon,
     };
 }

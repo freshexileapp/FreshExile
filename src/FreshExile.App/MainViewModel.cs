@@ -131,6 +131,7 @@ public sealed partial class MainViewModel : Observable
     public void Start()
     {
         StartRunClock();
+        StartUpdates();
         if (!string.IsNullOrEmpty(_s.BuildXml))
         {
             try { ApplyBuild(BuildParser.Parse(_s.BuildXml)); }
@@ -175,6 +176,12 @@ public sealed partial class MainViewModel : Observable
         Tree = _baseTree.WithClusters(jewels);
     }
     public PlanResult? Plan { get; private set; }
+
+    /// <summary>The current stage's jewels by the socket they go in.</summary>
+    public IReadOnlyDictionary<int, PobItem> StageJewels =>
+        Build != null && CurrentStage is { } stage
+            ? Build.JewelsFor(stage).GroupBy(j => j.Socket).ToDictionary(g => g.Key, g => g.First().Item)
+            : new Dictionary<int, PobItem>();
     public ObservableCollection<StagePip> Stages { get; } = new();
     public ObservableCollection<GroupVm> Groups { get; } = new();
     public ObservableCollection<KeyNodeVm> KeyNodes { get; } = new();

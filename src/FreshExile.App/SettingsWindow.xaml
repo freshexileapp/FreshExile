@@ -228,6 +228,9 @@
                             </CheckBox>
                             <TextBlock Style="{StaticResource Hint}" Margin="33,0,0,4"
                                        Text="{l:T 'Для видео, если путь съезжает. Пока включено, программа хуже замечает только что взятые узлы. Сбрасывается при перезапуске.'}"/>
+                            <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding ClusterCardFull}" Margin="-7,6,0,0">
+                                <TextBlock Text="{l:T 'Карточка джевела: все моды, а не только ноталки'}" FontSize="12.5" TextWrapping="Wrap"/>
+                            </CheckBox>
                             <TextBlock Text="{Binding ScaleInfo}" Foreground="{StaticResource Text2}" FontSize="11.5" Margin="2,10,0,0" TextWrapping="Wrap"/>
                             <Button Style="{StaticResource GhostButton}" Content="{l:T 'Откалибровать масштаб заново'}" Command="{Binding RecalibrateCommand}" Margin="0,8,0,0"
                                     HorizontalAlignment="Left" Padding="14,7" IsEnabled="{Binding Tracking}"/>
@@ -372,7 +375,21 @@
 
                         <!-- about: the bug report and what the program may touch -->
                         <StackPanel Visibility="{Binding IsSetAbout, Converter={StaticResource Vis}}">
-                            <TextBlock Text="{l:T 'ОТЧЁТ ОБ ОШИБКЕ'}" Style="{StaticResource Caption}" Margin="0,4,0,8"/>
+                            <TextBlock Text="{l:T 'ОБНОВЛЕНИЯ'}" Style="{StaticResource Caption}" Margin="0,4,0,8"/>
+                            <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding AutoUpdate}" Margin="-7,0,0,0">
+                                <TextBlock Text="{l:T 'Обновляться автоматически'}" FontSize="12.5" TextWrapping="Wrap"/>
+                            </CheckBox>
+                            <TextBlock Style="{StaticResource Hint}" Margin="33,0,0,6"
+                                       Text="{l:T 'Новая версия скачивается с GitHub и встаёт на место exe при выходе из программы. Настройки и билд сохраняются.'}"/>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Style="{StaticResource GhostButton}" Content="{l:T 'Проверить сейчас'}" Command="{Binding CheckUpdateCommand}" Padding="14,7"/>
+                                <Button Style="{StaticResource GhostButton}" Content="{l:T 'Перезапустить'}" Command="{Binding RestartCommand}" Padding="14,7" Margin="8,0,0,0"
+                                        Visibility="{Binding UpdateReady, Converter={StaticResource Vis}}"/>
+                                <Button Style="{StaticResource GhostButton}" Content="{l:T 'Страница релиза'}" Command="{Binding OpenReleaseCommand}" Padding="14,7" Margin="8,0,0,0"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding UpdateStatus}" Foreground="{StaticResource Text2}" FontSize="11.5" Margin="2,6,0,0" TextWrapping="Wrap"/>
+
+                            <TextBlock Text="{l:T 'ОТЧЁТ ОБ ОШИБКЕ'}" Style="{StaticResource Caption}" Margin="0,24,0,8"/>
                             <Button Style="{StaticResource GhostButton}" Content="{l:T 'Сохранить отчёт на рабочий стол'}" Click="Report_Click"
                                     HorizontalAlignment="Left" Padding="14,7"/>
                             <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding ReportWithFrames}" Margin="-7,8,0,0">

@@ -16,14 +16,36 @@ public partial class App : Application
     protected override void OnExit(ExitEventArgs e)
     {
         base.OnExit(e);
+        if (Updater.ApplyPending()) Log.Write("update: installed on exit");
         if (RestartOnExit && Environment.ProcessPath is { } exe)
             System.Diagnostics.Process.Start(exe);
         Environment.Exit(e.ApplicationExitCode);
     }
 
+    async Task UpdateNowAsync(HttpClient http)
+    {
+        try
+        {
+            Updater.CleanUp();
+            var latest = await UpdateCheck.LatestAsync(http);
+            if (latest == null || !UpdateCheck.IsNewer(latest, Updater.Current))
+                Log.Write($"update: {Updater.Current} is the latest");
+            else if (await Updater.DownloadAsync(latest) is { } error)
+                Log.Write($"update: {latest.Version} not installed: {error}");
+        }
+        catch (Exception ex) { Log.Write("update: " + ex.Message); }
+        finally { Shutdown(); }
+    }
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        // a version downloaded before a crash (no clean exit to install it): put it in place and start it instead
+        if (Updater.ApplyPending() && Environment.ProcessPath is { } self)
+        {
+            System.Diagnostics.Process.Start(self, e.Args);
+            Environment.Exit(0);
+        }
         MainViewModel? vmRef = null;
         CrashGuard.Install(this, () => vmRef);
 
@@ -39,6 +61,15 @@ public partial class App : Application
 
         var http = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
         http.DefaultRequestHeaders.UserAgent.ParseAdd("FreshExile/0.1");
+        TreeArt.Init(http);
+
+        // "FreshExile.exe --update": install the latest release without opening the overlay (scripts, testing the updater)
+        if (e.Args.Contains("--update"))
+        {
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            _ = UpdateNowAsync(http);
+            return;
+        }
 
         var state = StateStore.Load();
         state.Language ??= Loc.FromSystem();

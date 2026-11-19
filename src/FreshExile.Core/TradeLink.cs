@@ -62,12 +62,39 @@ public sealed partial class TradeLink
     static string Dir => Path.Combine(StateStore.Dir, "trade");
 
     /// <summary>From data already in hand (tests, a cache read elsewhere).</summary>
-    public static TradeLink FromData(string league, string? statsJson, string? itemsJson = null)
+    public static TradeLink FromData(string league, string? statsJson, string? itemsJson = null, string? staticJson = null)
     {
         var link = new TradeLink(league);
         if (statsJson != null) link.ReadStats(statsJson);
         if (itemsJson != null) link.ReadGems(itemsJson);
+        if (staticJson != null) link.ReadStatic(staticJson);
         return link;
+    }
+
+    readonly Dictionary<string, string> _exchange = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// The bulk exchange's id of an item it trades ("Eldritch Exalted Orb" → "eldritch-exalted-orb"): currency, fragments,
+    /// essences, cards, oils…; null for anything sold one by one.
+    /// </summary>
+    public string? ExchangeId(GameItem item) =>
+        item.BaseType.Length > 0 && _exchange.TryGetValue(item.BaseType, out var b) ? b
+        : item.Name.Length > 0 && _exchange.TryGetValue(item.Name, out var n) ? n
+        : null;
+
+    /// <summary>/api/trade/data/static: result[] = {id: "Currency", entries: [{id, text}]}.</summary>
+    void ReadStatic(string json)
+    {
+        using var doc = JsonDocument.Parse(json);
+        if (!doc.RootElement.TryGetProperty("result", out var groups) || groups.ValueKind != JsonValueKind.Array) return;
+        foreach (var g in groups.EnumerateArray())
+        {
+            if (!g.TryGetProperty("entries", out var entries) || entries.ValueKind != JsonValueKind.Array) continue;
+            foreach (var e in entries.EnumerateArray())
+                if (e.TryGetProperty("id", out var id) && id.GetString() is { Length: > 0 } i
+                    && e.TryGetProperty("text", out var t) && t.GetString() is { Length: > 0 } text)
+                    _exchange.TryAdd(text, i);
+        }
     }
 
     /// <summary>League list and stat list from the trade site, cached for a day.</summary>
@@ -80,6 +107,8 @@ public sealed partial class TradeLink
         catch (Exception) { /* uniques still work by name without the stat list */ }
         try { link.ReadGems(await Cached(http, "items.json", "/api/trade/data/items", ct)); }
         catch (Exception) { /* plain gems still work by name */ }
+        try { link.ReadStatic(await Cached(http, "static.json", "/api/trade/data/static", ct)); }
+        catch (Exception) { /* currency is then searched like any item */ }
         return link;
     }
 

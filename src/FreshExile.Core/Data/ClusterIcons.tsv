@@ -1,0 +1,59 @@
+#% increased maximum Life	Art/2DArt/SkillIcons/passives/IncreasedMaximumLifeNode.png
+#% increased maximum Energy Shield	Art/2DArt/SkillIcons/passives/EnergyShieldNode.png
+#% increased maximum Mana	Art/2DArt/SkillIcons/passives/MaxManaNode.png
+#% increased Armour	Art/2DArt/SkillIcons/passives/ArmourNode.png
+#% increased Evasion Rating	Art/2DArt/SkillIcons/passives/EvasionNode.png
++#% Chance to Block Attack Damage	Art/2DArt/SkillIcons/passives/BlockAttackDmgNode.png
+#% Chance to Block Spell Damage	Art/2DArt/SkillIcons/passives/BlockSpellDmgNode.png
++#% to Fire Resistance	Art/2DArt/SkillIcons/passives/FireResistNode.png
++#% to Cold Resistance	Art/2DArt/SkillIcons/passives/ColdResistNode.png
++#% to Lightning Resistance	Art/2DArt/SkillIcons/passives/LightningResistNode.png
++#% to Chaos Resistance	Art/2DArt/SkillIcons/passives/ChaosResistNode.png
++#% chance to Suppress Spell Damage	Art/2DArt/SkillIcons/passives/DodgeAtksNode.png
++# to Strength	Art/2DArt/SkillIcons/passives/plusstrength.png
++# to Dexterity	Art/2DArt/SkillIcons/passives/plusdexterity.png
++# to Intelligence	Art/2DArt/SkillIcons/passives/plusintelligence.png
+#% increased Mana Reservation Efficiency of Skills	Art/2DArt/SkillIcons/passives/AuraEffectNode.png
+#% increased Effect of your Curses	Art/2DArt/SkillIcons/passives/CurseEffectNode.png
+#% increased Burning Damage	Art/2DArt/SkillIcons/passives/FireDamageOverTimeNode.png
+#% increased Chaos Damage over Time	Art/2DArt/SkillIcons/passives/ChaosDamageOverTimeNode.png
+#% increased Physical Damage over Time	Art/2DArt/SkillIcons/passives/PhysicalDamageOverTimeNode.png
+#% increased Cold Damage over Time	Art/2DArt/SkillIcons/passives/ColdDamageOverTimeNode.png
+#% increased Damage over Time	Art/2DArt/SkillIcons/passives/DamageOverTimeNode.png
+#% increased effect of Non-Curse Auras from your Skills	Art/2DArt/SkillIcons/passives/AuraEffectNode.png
+#% increased Damage while affected by a Herald	Art/2DArt/SkillIcons/passives/DmgHeraldSkillsNode.png
+Minions deal #% increased Damage while you are affected by a Herald	Art/2DArt/SkillIcons/passives/MinionDmgHeraldSkillsNode.png
+Exerted Attacks deal #% increased Damage	Art/2DArt/SkillIcons/passives/IncreasedWarcryNode.png
+#% increased Critical Strike Chance	Art/2DArt/SkillIcons/passives/IncreaseCritChanceNode.png
+Minions have #% increased maximum Life	Art/2DArt/SkillIcons/passives/IncreaseMinionLifeNode.png
+#% increased Area Damage	Art/2DArt/SkillIcons/passives/AreaDmgNode.png
+#% increased Projectile Damage	Art/2DArt/SkillIcons/passives/ProjectileDmgNode.png
+#% increased Trap Damage	Art/2DArt/SkillIcons/passives/TrapAndMineDmgNode.png
+#% increased Mine Damage	Art/2DArt/SkillIcons/passives/TrapAndMineDmgNode.png
+#% increased Totem Damage	Art/2DArt/SkillIcons/passives/TotemDmgNode.png
+#% increased Brand Damage	Art/2DArt/SkillIcons/passives/BrandDmgNode.png
+Channelling Skills deal #% increased Damage	Art/2DArt/SkillIcons/passives/DmgWhenChannelSkillsNode.png
+#% increased Flask Effect Duration	Art/2DArt/SkillIcons/passives/FlaskDurationnode.png
+#% increased Life Recovery from Flasks	Art/2DArt/SkillIcons/passives/LifeManaFlasksrecoverynode.png
+#% increased Mana Recovery from Flasks	Art/2DArt/SkillIcons/passives/LifeManaFlasksrecoverynode.png
+Axe Attacks deal #% increased Damage with Hits and Ailments	Art/2DArt/SkillIcons/passives/NodeAxeandSwordDamage.png
+Sword Attacks deal #% increased Damage with Hits and Ailments	Art/2DArt/SkillIcons/passives/NodeAxeandSwordDamage.png
+Staff Attacks deal #% increased Damage with Hits and Ailments	Art/2DArt/SkillIcons/passives/NodeMaceandStaffDamage.png
+Mace or Sceptre Attacks deal #% increased Damage with Hits and Ailments	Art/2DArt/SkillIcons/passives/NodeMaceandStaffDamage.png
+Claw Attacks deal #% increased Damage with Hits and Ailments	Art/2DArt/SkillIcons/passives/NodeDaggerandClawDamage.png
+Dagger Attacks deal #% increased Damage with Hits and Ailments	Art/2DArt/SkillIcons/passives/NodeDaggerandClawDamage.png
+#% increased Damage with Bows	Art/2DArt/SkillIcons/passives/NodeBowDamage.png
+#% increased Damage Over Time with Bow Skills	Art/2DArt/SkillIcons/passives/NodeBowDamage.png
+Wand Attacks deal #% increased Damage with Hits and Ailments	Art/2DArt/SkillIcons/passives/NodeWandDamage.png
+#% increased Damage with Two Handed Weapons	Art/2DArt/SkillIcons/passives/NodeTwoHandedMeleeDamage.png
+#% increased Attack Damage while Dual Wielding	Art/2DArt/SkillIcons/passives/NodeDualWieldingDamage.png
+#% increased Attack Damage while holding a Shield	Art/2DArt/SkillIcons/passives/NodeHoldingShieldDamage.png
+#% increased Attack Damage	Art/2DArt/SkillIcons/passives/IncreasedAttackDamageNode.png
+#% increased Spell Damage	Art/2DArt/SkillIcons/passives/IncreasedSpellDamageNode.png
+#% increased Elemental Damage	Art/2DArt/SkillIcons/passives/ElementalDamagenode.png
+#% increased Physical Damage	Art/2DArt/SkillIcons/passives/PhysicalDamagenode2.png
+#% increased Fire Damage	Art/2DArt/SkillIcons/passives/FireDamagenode.png
+#% increased Lightning Damage	Art/2DArt/SkillIcons/passives/LightningDamagenode.png
+#% increased Cold Damage	Art/2DArt/SkillIcons/passives/ColdDamagenode.png
+#% increased Chaos Damage	Art/2DArt/SkillIcons/passives/ChaosDamagenode.png
+Minions deal #% increased Damage	Art/2DArt/SkillIcons/passives/IncreasedMinionDamageNode.png

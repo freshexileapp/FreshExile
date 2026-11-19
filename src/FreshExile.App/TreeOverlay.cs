@@ -175,10 +175,11 @@ public sealed class TreeOverlayController : IDisposable
         _restoreOthers = restoreOthers;
         vm.AlignNodesChanged += RebuildAligner;
         vm.RecalibrateRequested += () => _nextCalibration = DateTime.MinValue;
-        vm.PlanChanged += () => _overlay?.Canvas.SetData(_vm.Tree, _vm.Plan);
+        vm.PlanChanged += () => _overlay?.Canvas.SetData(_vm.Tree, _vm.Plan, _vm.StageJewels);
         vm.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == nameof(MainViewModel.HighlightNodeId) && _overlay != null) _overlay.Canvas.Highlight = _vm.HighlightNodeId;
+            if (e.PropertyName == nameof(MainViewModel.ClusterCardFull) && _overlay != null) _overlay.Canvas.ClusterCardFull = _vm.ClusterCardFull;
         };
     }
 
@@ -448,8 +449,9 @@ public sealed class TreeOverlayController : IDisposable
             _hideOthers();
             _overlay ??= new OverlayWindow { InCapture = _vm.TreeOverlayInCapture };
             _header ??= new TreeHeaderWindow(_vm);
-            _overlay.Canvas.SetData(_vm.Tree, _vm.Plan);
+            _overlay.Canvas.SetData(_vm.Tree, _vm.Plan, _vm.StageJewels);
             _overlay.Canvas.Highlight = _vm.HighlightNodeId;
+            _overlay.Canvas.ClusterCardFull = _vm.ClusterCardFull;
             _overlay.Show();
             _header.Show();
         }

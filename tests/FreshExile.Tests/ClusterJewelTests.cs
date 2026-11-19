@@ -96,6 +96,32 @@ public class ClusterJewelTests
         }
     }
 
+    [TreeFact]
+    public void A_grown_cluster_carries_the_games_art_for_the_overlay()
+    {
+        using var f = File.OpenRead(TreeRepository.CachePath);
+        var tree = PassiveTree.Load(f);
+        var s = tree.Nodes.Values.First(n => n.ExpansionSize == 2 && n.ExpansionParent == null && n.Drawable);
+        var grown = tree.WithClusters([(s.Id, LargeChaos())]);
+        Assert.Equal("Large Cluster Jewel", grown.Clusters[s.Id].BaseType);
+        var ring = grown.Nodes.Values.Where(n => n.IsClusterNode && n.Group == grown.Nodes[s.ExpansionProxy!.Value].Group).ToList();
+        // every notable and small passive has an icon the export's sheets hold, at the size the game draws it
+        var normal = grown.Sprites["normalActive"];
+        var notable = grown.Sprites["notableActive"];
+        Assert.All(ring.Where(n => n.Kind == NodeKind.Normal), n => Assert.True(normal.Coords.ContainsKey(n.Icon), n.Icon));
+        Assert.All(ring.Where(n => n.Kind == NodeKind.Notable), n => Assert.True(notable.Coords.ContainsKey(n.Icon), n.Icon));
+        Assert.True(grown.Sprites["frame"].Coords.ContainsKey("PSSkillFrame"));
+        Assert.True(normal.Zoom > 0 && normal.Url.StartsWith("https://", StringComparison.Ordinal));
+    }
+
+    [Fact]
+    public void A_small_cluster_passive_finds_its_icon_by_what_it_grants_whatever_the_numbers()
+    {
+        Assert.Equal("Art/2DArt/SkillIcons/passives/AreaDmgNode.png", ClusterGraph.SmallIcon(["12% increased Area Damage"]));
+        Assert.Equal("", ClusterGraph.SmallIcon([]));
+        Assert.Equal("", ClusterGraph.SmallIcon(["Nothing like this"]));
+    }
+
     [Fact]
     public void A_crafted_implicit_is_an_enchant_as_pob_writes_anointments_and_cluster_bases()
     {

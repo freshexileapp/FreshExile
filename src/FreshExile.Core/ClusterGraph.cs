@@ -20,6 +20,29 @@ public static partial class ClusterGraph
         ["Large Cluster Jewel"] = new(2, 12, [0, 4, 6, 8, 10, 2, 7, 5, 9, 3, 11, 1], [6, 4, 8, 10, 2], [4, 8, 6]),
     };
 
+    /// <summary>A small passive's stat with its numbers as # → its icon (Data/ClusterIcons.tsv, from PoB).</summary>
+    static readonly Lazy<Dictionary<string, string>> Icons = new(() =>
+    {
+        var map = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        using var s = typeof(ClusterGraph).Assembly.GetManifestResourceStream("ClusterIcons.tsv");
+        if (s == null) return map;
+        using var r = new StreamReader(s);
+        while (r.ReadLine() is { } line)
+            if (line.Split('\t') is [var stat, var icon]) map.TryAdd(stat, icon);
+        return map;
+    });
+
+    /// <summary>
+    /// The icon the game gives a cluster's small passives, found by what they grant ("10% increased Area Damage");
+    /// empty for passives that grant nothing or a stat no enchant has.
+    /// </summary>
+    public static string SmallIcon(IEnumerable<string> stats)
+    {
+        foreach (var stat in stats)
+            if (Icons.Value.TryGetValue(NumberRx().Replace(stat, "#"), out var icon)) return icon;
+        return "";
+    }
+
     /// <summary>Proxy node → the ring's turn per cluster size (Data/ClusterOrbitOffsets.tsv, from PoB).</summary>
     static readonly Lazy<Dictionary<int, int[]>> Offsets = new(() =>
     {
@@ -132,6 +155,7 @@ public static partial class ClusterGraph
         _ => index * to / from,
     };
 
+    [GeneratedRegex(@"[\d.]+")] private static partial Regex NumberRx();
     [GeneratedRegex(@"^Adds (\d+) Passive Skills?$", RegexOptions.IgnoreCase)] private static partial Regex AddsRx();
     [GeneratedRegex(@"^(\d+) Added Passive Skills? (?:are|is an?) Jewel Sockets?$", RegexOptions.IgnoreCase)] private static partial Regex SocketsRx();
     [GeneratedRegex(@"^Adds (\d+) Small Passive Skills? which grant nothing$", RegexOptions.IgnoreCase)] private static partial Regex NothingRx();

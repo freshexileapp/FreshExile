@@ -94,6 +94,12 @@ public sealed class AppState
     /// <summary>Draw the plan right on the in-game tree when it is open.</summary>
     public bool TreeOverlay { get; set; } = true;
 
+    /// <summary>The card of a cluster jewel on the in-game tree lists every mod, not only the jewel and its notables.</summary>
+    public bool ClusterCardFull { get; set; }
+
+    /// <summary>Check GitHub for a newer release and put it in place of the exe (the next start runs it).</summary>
+    public bool AutoUpdate { get; set; } = true;
+
     /// <summary>Legacy single calibrated zoom; migrated into TreeScales.</summary>
     public double? TreeScale { get; set; }
 

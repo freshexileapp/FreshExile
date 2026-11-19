@@ -95,7 +95,7 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
 
     /// <summary>"Сравнить": our item against this offer, line by line, unfolded under the row.</summary>
     // only whether there is something to read: the item itself is read on the press, not when the row appears
-    public bool CanCompare => check != null && l.ItemJson != null;
+    public bool CanCompare => check != null && l.ItemJson != null && !l.Stackable;
 
     bool _comparing;
     public bool IsComparing
@@ -108,12 +108,32 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
         }
     }
 
-    /// <summary>A comparison line: the star for a mod that sells on its own, tiers as "T1" where known.</summary>
+    /// <summary>
+    /// A comparison line: the star for a mod that sells on its own, tiers as "T1" where known, the chip gold on a fractured
+    /// line ("F" when its tier is unknown); <see cref="Heading"/> opens a group ("моды", "только у них").
+    /// </summary>
     public sealed record Row(string Label, string Ours, string Theirs, Brush Brush, bool Top, string? OursTier, string? TheirsTier)
     {
-        public bool HasOursTier => OursTier != null;
-        public bool HasTheirsTier => TheirsTier != null;
+        public bool OursFractured { get; init; }
+        public bool TheirsFractured { get; init; }
+        public string? Heading { get; init; }
+        public bool HasHeading => Heading != null;
+        public string? OursChip => OursTier ?? (OursFractured ? "F" : null);
+        public string? TheirsChip => TheirsTier ?? (TheirsFractured ? "F" : null);
+        public bool HasOursTier => OursChip != null;
+        public bool HasTheirsTier => TheirsChip != null;
+        public Brush OursChipFill => OursFractured ? FracturedFill : ChipFill;
+        public Brush TheirsChipFill => TheirsFractured ? FracturedFill : ChipFill;
+        public Brush OursChipText => OursFractured ? FracturedText : ChipText;
+        public Brush TheirsChipText => TheirsFractured ? FracturedText : ChipText;
+        public string? OursChipTip => OursFractured ? Loc.T("Фрактурный — не перекрафтится") : null;
+        public string? TheirsChipTip => TheirsFractured ? Loc.T("Фрактурный — не перекрафтится") : null;
     }
+
+    static readonly Brush ChipFill = Frozen(0x2A, 0x2A, 0x30);
+    static readonly Brush ChipText = Frozen(0xA1, 0xA1, 0xAA);
+    static readonly Brush FracturedFill = Frozen(0x4A, 0x40, 0x26);
+    static readonly Brush FracturedText = Frozen(0xE2, 0xC9, 0x8A);
 
     List<Row>? _rows;
     public IReadOnlyList<Row> CompareRows => _rows ?? [];
@@ -136,11 +156,31 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
         _behind = rows.Count(r => r.Better < 0);
         _ourTop = rows.Count(r => r.OursTop);
         _theirTop = rows.Count(r => r.TheirsTop);
-        // the lines that sell first, then the rest in the order of the filters
-        return rows.OrderByDescending(r => r.Top)
-            .Select(r => new Row(r.Label, r.Ours, r.Theirs, r.Better > 0 ? Ahead : r.Better < 0 ? Behind : Same, r.Top,
-                TierText(r.OursTier, r.OursTierCount), TierText(r.TheirsTier, r.TheirsTierCount)))
-            .ToList();
+        // totals and defences first, then the mod lines (those that sell on their own first, then in the order of the
+        // filters), then what only the offer has — each group under its own small heading
+        var groups = new[]
+        {
+            (Heading: (string?)null, Rows: rows.Where(r => r.Total && !r.OnlyTheirs)),
+            (Heading: Loc.T("моды"), Rows: rows.Where(r => !r.Total && !r.OnlyTheirs).OrderByDescending(r => r.Top)),
+            (Heading: Loc.T("только у них"), Rows: rows.Where(r => r.OnlyTheirs).OrderByDescending(r => r.Top)),
+        };
+        var result = new List<Row>();
+        foreach (var (heading, list) in groups)
+        {
+            var first = true;
+            foreach (var r in list)
+            {
+                result.Add(new Row(r.Label, r.Ours, r.Theirs, r.Better > 0 ? Ahead : r.Better < 0 ? Behind : Same, r.Top,
+                    TierText(r.OursTier, r.OursTierCount), TierText(r.TheirsTier, r.TheirsTierCount))
+                {
+                    OursFractured = r.OursFractured, TheirsFractured = r.TheirsFractured,
+                    // the first group needs no heading when it is the only one, nor when it leads the list
+                    Heading = first && heading != null && result.Count > 0 ? heading : null,
+                });
+                first = false;
+            }
+        }
+        return result;
     }
 
     /// <summary>"T3/9" when the tier table knows the mod, "T3" when not.</summary>
@@ -150,17 +190,26 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
     /// <summary>The listed item's own art, filled in once downloaded.</summary>
     public ImageSource? Icon { get => _icon; set => Set(ref _icon, value); }
 
-    public string Price { get; } = l.Amount.ToString("0.##", CultureInfo.InvariantCulture);
-    public string Currency { get; } = CurrencyName(l.Currency);
+    /// <summary>The price of one piece (a stack's price is per piece already; the exchange's ratio is divided out).</summary>
+    public string Price { get; } = Amount(l.Amount);
+    public string Currency { get; } = CurrencyName(l.Currency) + (l.Stackable ? Loc.T("/шт") : "");
     public string Account { get; } = l.Account;
     public string Age { get; } = AgeText(l.Indexed);
     public string Extra { get; } = string.Join("  ·  ", new[]
     {
-        l.ItemLevel > 0 ? $"ilvl {l.ItemLevel}" : null,
+        // "4 шт за 1 divine": the exchange's offer as the seller set it
+        l.Ratio is var (get, pay) ? Loc.T($"{Amount(get)} шт за {Amount(pay)} {CurrencyName(l.Currency)}") : null,
+        l.Stackable ? Loc.T($"в наличии {l.Stock}") : null,
+        l.ItemLevel > 0 && !l.Stackable ? $"ilvl {l.ItemLevel}" : null,
         l.Sockets,
         l.Corrupted ? Loc.T("коррапт") : null,
         l.Currency == "divine" && divineChaos is double d ? $"≈ {Math.Round(l.Amount * d)}c" : null,
     }.Where(x => !string.IsNullOrEmpty(x)));
+
+    /// <summary>The price in chaos for ranking offers in different currencies; the listed amount when no rate is known.</summary>
+    public double UnitChaos { get; } = l.Currency == "divine" && divineChaos is double r ? l.Amount * r : l.Amount;
+
+    static string Amount(double v) => v.ToString(v < 1 ? "0.###" : "0.##", CultureInfo.InvariantCulture);
 
     public static string CurrencyName(string id) => id switch
     {
@@ -471,6 +520,27 @@ public sealed class PriceCheckViewModel : Observable
     public bool HasMore => _result != null && _fetched < Math.Min(_result.ItemIds.Count, MaxShown);
     public bool HasListings => Listings.Count > 0;
 
+    /// <summary>The bulk exchange's id of the checked item: currency and the like are priced there, not by the item search.</summary>
+    string? ExchangeId => _trade.ExchangeId(Item);
+    public bool IsExchange => ExchangeId != null;
+    TradeExchangeResult? _exchange;
+
+    async Task ExchangeSearchAsync(string want)
+    {
+        _exchange = null;
+        // paid in chaos or divine; a chaos or divine itself in the other one
+        string[] have = want switch { "chaos" => ["divine"], "divine" => ["chaos"], _ => ["chaos", "divine"] };
+        _exchange = await _api.ExchangeAsync(_trade.League, want, have);
+        var collapse = _collapse();
+        foreach (var l in _exchange.Offers.Select(o => new ListingVm(o, _divineChaos)).OrderBy(r => r.UnitChaos).Take(MaxShown))
+        {
+            if (collapse && l.Account.Length > 0 && !_accounts.Add(l.Account)) continue;
+            Listings.Add(l);
+        }
+        if (Listings.Count > 0) LowestText = Loc.T($"от {Listings[0].Price} {Listings[0].Currency}");
+        Status = Listings.Count == 0 ? Loc.T("На обмене никто не продаёт") : Loc.T($"Обмен: продавцов {_exchange.Total}");
+    }
+
     public async Task SearchAsync()
     {
         if (!CanRequest) return;
@@ -479,6 +549,16 @@ public sealed class PriceCheckViewModel : Observable
         Status = Loc.T("Ищу…");
         try
         {
+            if (ExchangeId is { } want)
+            {
+                _result = null;
+                _accounts.Clear();
+                Listings.Clear();
+                Compared = null;
+                LowestText = null;
+                await ExchangeSearchAsync(want);
+                return;
+            }
             _result = null;
             _fetched = 0;
             _accounts.Clear();
@@ -563,7 +643,8 @@ public sealed class PriceCheckViewModel : Observable
             Listings.Add(row);
             if (_art != null && l.Icon is { } url) _ = LoadArtAsync(row, url);
         }
-        if (Listings.Count > 0) LowestText = Loc.T($"от {Listings[0].Price} {Listings[0].Currency}");
+        // stacks sell whole: the cheapest piece is not always on the first (cheapest stack) line
+        if (Listings.Count > 0 && Listings.MinBy(r => r.UnitChaos) is { } low) LowestText = Loc.T($"от {low.Price} {low.Currency}");
         if (_result.Total > 0) Status = Loc.T($"Найдено: {_result.Total}") + (_widened != null ? Loc.T(" (с мгновенным выкупом — 0, показаны «лично»)") : "") + HintNote;
     }
 
@@ -606,6 +687,13 @@ public sealed class PriceCheckViewModel : Observable
 
     void OpenTrade()
     {
+        if (ExchangeId is { } want)
+        {
+            Open(_exchange is { Id.Length: > 0 } x
+                ? $"https://www.pathofexile.com/trade/exchange/{Uri.EscapeDataString(_trade.League)}/{x.Id}"
+                : $"https://www.pathofexile.com/trade/exchange/{Uri.EscapeDataString(_trade.League)}");
+            return;
+        }
         string url = _result is { Id.Length: > 0 } r
             ? $"https://www.pathofexile.com/trade/search/{Uri.EscapeDataString(_trade.League)}/{r.Id}"
             : _trade.SearchUrl(_check.Query(_trade, _widened ?? _settings()));

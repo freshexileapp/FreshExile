@@ -34,6 +34,18 @@ public sealed partial class MainViewModel
     /// The path on the game's tree seen by screenshots and screen recordings. Off on every start: while it is on the overlay
     /// sees its own white lines and notices nodes just taken in game worse.
     /// </summary>
+    public bool ClusterCardFull
+    {
+        get => State.ClusterCardFull;
+        set
+        {
+            if (State.ClusterCardFull == value) return;
+            State.ClusterCardFull = value;
+            Raise();
+            Save();
+        }
+    }
+
     bool _overlayInCapture;
     public bool TreeOverlayInCapture { get => _overlayInCapture; set => Set(ref _overlayInCapture, value); }
 

@@ -329,6 +329,76 @@ public class PriceCheckTests
     }
 
     [Fact]
+    public void A_fractured_line_described_in_place_keeps_every_line_on_its_own_stat()
+    {
+        // the site's answer of 2026-11-19: mods as objects with their own hash and tier; the fractured one sits among the
+        // explicit ones but hashes.explicit leaves it out — counting by index gave each line the next one's stat
+        const string item = """
+            {"baseType":"Murderous Eye Jewel","ilvl":85,"explicitMods":[
+              {"description":"4 to 6 Added Physical Damage with Dagger Attacks","flags":{"fractured":true},"domain":"fractured","hash":"stat.fractured.stat_1298238534","mods":[{"name":"Tempered","tier":"P3"}]},
+              {"description":"Adds 1 to 29 Lightning Damage to Attacks","domain":"explicit","hash":"stat.explicit.stat_1754445556","mods":[{"name":"of Voltage","tier":"S3"}]},
+              {"description":"+11% to Fire and Lightning Resistances","domain":"explicit","hash":"stat.explicit.stat_3441501978","mods":[{"name":"of Insulation","tier":"S1"}]}],
+             "extended":{"hashes":{"explicit":[["explicit.stat_1754445556",[0]],["explicit.stat_3441501978",[1]]],"fractured":[["fractured.stat_1298238534",[0]]]}}}
+            """;
+        var offer = TradeApi.ReadOffer(item, 85, false, null);
+        Assert.Equal(3, offer.Lines.Count);
+        var frac = offer.Lines[0];
+        Assert.Equal((ModKind.Fractured, "fractured.stat_1298238534", (int?)3, (bool?)true), (frac.Kind, frac.StatId, frac.Tier, frac.Prefix));
+        Assert.Equal(("explicit.stat_3441501978", (int?)1), (offer.Lines[2].StatId, offer.Lines[2].Tier));
+        Assert.Equal(11, offer.Stats["explicit.stat_3441501978"]);
+        Assert.Equal(ModKind.Fractured, offer.Item!.Mods.First(m => m.Text.StartsWith("4 to 6")).Kind);
+    }
+
+    [Fact]
+    public void A_stacks_price_is_per_piece_and_its_size_is_the_stock()
+    {
+        // "10 divine" on a stack of 6 Eldritch Exalted Orbs is 10 divine each (the exchange lists the same offer as 10:1, stock 6)
+        const string json = """
+            {"result":[{"id":"s1","listing":{"account":{"name":"s"},"price":{"amount":10,"currency":"divine"}},
+              "item":{"ilvl":0,"stackSize":6,"maxStackSize":20,"typeLine":"Eldritch Exalted Orb"}},
+             {"id":"s2","listing":{"account":{"name":"t"},"price":{"amount":3,"currency":"chaos"}},"item":{"ilvl":80}}]}
+            """;
+        using var doc = JsonDocument.Parse(json);
+        var l = TradeApi.ReadListings(doc.RootElement);
+        Assert.Equal((10.0, 6, true), (l[0].Amount, l[0].Stock, l[0].Stackable));
+        Assert.Equal((3.0, 1, false), (l[1].Amount, l[1].Stock, l[1].Stackable));
+    }
+
+    [Fact]
+    public void The_bulk_exchange_gives_price_per_piece_stock_and_the_sellers_ratio()
+    {
+        // the site's answer of 2026-11-19 (accounts shortened)
+        const string json = """
+            {"id":"Q1","complexity":null,"total":3,"result":{
+              "a":{"id":"a","item":null,"listing":{"indexed":"2026-11-19T07:25:27+00:00","account":{"name":"One#1"},
+                "offers":[{"exchange":{"currency":"divine","amount":1},"item":{"currency":"eldritch-exalted-orb","amount":1,"stock":5}}]}},
+              "b":{"id":"b","item":null,"listing":{"indexed":"2026-11-19T06:37:05+00:00","account":{"name":"Two#2"},
+                "offers":[{"exchange":{"currency":"divine","amount":10},"item":{"currency":"eldritch-exalted-orb","amount":1,"stock":6}}]}},
+              "c":{"id":"c","item":null,"listing":{"account":{"name":"Three#3"},
+                "offers":[{"exchange":{"currency":"chaos","amount":150},"item":{"currency":"eldritch-exalted-orb","amount":4,"stock":40}}]}}}}
+            """;
+        using var doc = JsonDocument.Parse(json);
+        var r = TradeApi.ReadExchange(doc.RootElement);
+        Assert.Equal(("Q1", 3, 3), (r.Id, r.Total, r.Offers.Count));
+        Assert.Equal((1.0, "divine", 5, (ValueTuple<double, double>?)null), (r.Offers[0].Amount, r.Offers[0].Currency, r.Offers[0].Stock, r.Offers[0].Ratio));
+        Assert.Equal((10.0, 6), (r.Offers[1].Amount, r.Offers[1].Stock));
+        Assert.Equal((37.5, "chaos", 40, (ValueTuple<double, double>?)(4.0, 150.0)), (r.Offers[2].Amount, r.Offers[2].Currency, r.Offers[2].Stock, r.Offers[2].Ratio));
+    }
+
+    [Fact]
+    public void Currency_is_found_on_the_exchange_by_its_name()
+    {
+        const string staticJson = """
+            {"result":[{"id":"Currency","label":"Currency","entries":[{"id":"chaos","text":"Chaos Orb"},{"id":"eldritch-exalted-orb","text":"Eldritch Exalted Orb"}]},
+                       {"id":"Cards","entries":[{"id":"the-doctor","text":"The Doctor"}]}]}
+            """;
+        var link = TradeLink.FromData("Covens", null, null, staticJson);
+        Assert.Equal("eldritch-exalted-orb", link.ExchangeId(new GameItem { BaseType = "Eldritch Exalted Orb" }));
+        Assert.Equal("the-doctor", link.ExchangeId(new GameItem { BaseType = "The Doctor" }));
+        Assert.Null(link.ExchangeId(new GameItem { BaseType = "Murderous Eye Jewel", Name = "Foul Scalpel" }));
+    }
+
+    [Fact]
     public void Odd_entries_in_the_item_never_cost_the_offer()
     {
         // an object where a mod line was expected (the site's answer of 2026-11-18): the offer still comes, indexes stay in step

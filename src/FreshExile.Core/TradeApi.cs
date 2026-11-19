@@ -29,6 +29,18 @@ public sealed record TradeListing(string Id, double Amount, string Currency, str
     /// <summary>The fetch's "item" object as it came: read only when the player asks for the comparison.</summary>
     public string? ItemJson { get; init; }
 
+    /// <summary>
+    /// How many the seller has at this price: the stack's size on the item search (its price is per piece, the way the
+    /// game and the bulk exchange read it), the stock on the exchange. 1 for an item that does not stack.
+    /// </summary>
+    public int Stock { get; init; } = 1;
+
+    /// <summary>The item stacks (currency, fragments…): nothing to compare line by line.</summary>
+    public bool Stackable { get; init; }
+
+    /// <summary>An exchange offer that is not one for one: "4 for 1 divine" — what the seller asks, as a whole.</summary>
+    public (double Get, double Pay)? Ratio { get; init; }
+
     OfferDetails? _offer;
 
     /// <summary>The offered item as far as the fetch tells it: quality, defences, mod lines. Read on first use; null when unreadable.</summary>
@@ -57,6 +69,9 @@ public sealed record OfferDetails(GameItem? Item, IReadOnlyDictionary<string, do
 }
 
 public sealed record TradeSearchResult(string Id, IReadOnlyList<string> ItemIds, int Total);
+
+/// <summary>A bulk exchange search: its id (for the site's own page), the offers, how many the site counts.</summary>
+public sealed record TradeExchangeResult(string Id, IReadOnlyList<TradeListing> Offers, int Total);
 
 /// <summary>
 /// Rate limits as the trade site announces them in its headers ("X-Rate-Limit-Ip: 8:10:60,15:60:300" = 8 per 10 s, ban 60 s…).
@@ -198,6 +213,72 @@ public sealed class TradeApi(HttpClient http)
         return new TradeSearchResult(id, ids, total);
     }
 
+    /// <summary>
+    /// The bulk exchange — where currency, fragments, essences, cards… are sold: who sells <paramref name="want"/> for any
+    /// of <paramref name="have"/>, every offer in one answer with its price per piece and stock.
+    /// </summary>
+    public async Task<TradeExchangeResult> ExchangeAsync(string league, string want, IReadOnlyList<string> have, CancellationToken ct = default)
+    {
+        var url = $"{Site}/api/trade/exchange/{Uri.EscapeDataString(league)}";
+        var query = new JsonObject
+        {
+            ["query"] = new JsonObject
+            {
+                ["status"] = new JsonObject { ["option"] = "online" },
+                ["have"] = new JsonArray(have.Select(h => (JsonNode)JsonValue.Create(h)!).ToArray()),
+                ["want"] = new JsonArray(JsonValue.Create(want)),
+            },
+            ["sort"] = new JsonObject { ["have"] = "asc" },
+            ["engine"] = "new",
+        };
+        using var body = new StringContent(query.ToJsonString(), Encoding.UTF8, "application/json");
+        using var doc = await SendAsync(_search, () => new HttpRequestMessage(HttpMethod.Post, url) { Content = body }, ct);
+        return ReadExchange(doc.RootElement);
+    }
+
+    /// <summary>
+    /// The exchange's answer: result = {id: {listing: {account, indexed, offers: [{exchange: {currency, amount},
+    /// item: {amount, stock}}]}}} — pay "exchange.amount" of a currency for "item.amount" of the wanted thing.
+    /// </summary>
+    public static TradeExchangeResult ReadExchange(JsonElement root)
+    {
+        var id = root.TryGetProperty("id", out var i) ? i.GetString() ?? "" : "";
+        var offers = new List<TradeListing>();
+        if (root.TryGetProperty("result", out var res))
+        {
+            var entries = res.ValueKind switch
+            {
+                JsonValueKind.Object => res.EnumerateObject().Select(p => p.Value).ToList(),
+                JsonValueKind.Array => res.EnumerateArray().ToList(),
+                _ => [],
+            };
+            foreach (var e in entries)
+            {
+                if (e.ValueKind != JsonValueKind.Object || !e.TryGetProperty("listing", out var l) || l.ValueKind != JsonValueKind.Object) continue;
+                var account = l.TryGetProperty("account", out var acc) && acc.ValueKind == JsonValueKind.Object && acc.TryGetProperty("name", out var n) ? n.GetString() ?? "" : "";
+                DateTime? indexed = l.TryGetProperty("indexed", out var ix) && ix.ValueKind == JsonValueKind.String
+                    && DateTime.TryParse(ix.GetString(), CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var d) ? d : null;
+                if (!l.TryGetProperty("offers", out var os) || os.ValueKind != JsonValueKind.Array) continue;
+                foreach (var o in os.EnumerateArray())
+                {
+                    if (!o.TryGetProperty("exchange", out var ex) || !o.TryGetProperty("item", out var it)) continue;
+                    var currency = ex.TryGetProperty("currency", out var c) ? c.GetString() ?? "" : "";
+                    var pay = ex.TryGetProperty("amount", out var pa) && pa.ValueKind == JsonValueKind.Number ? pa.GetDouble() : 0;
+                    var get = it.TryGetProperty("amount", out var ga) && ga.ValueKind == JsonValueKind.Number ? ga.GetDouble() : 0;
+                    var stock = it.TryGetProperty("stock", out var st) && st.ValueKind == JsonValueKind.Number ? st.GetInt32() : 0;
+                    if (pay <= 0 || get <= 0 || currency.Length == 0) continue;
+                    var oid = e.TryGetProperty("id", out var eid) ? eid.GetString() ?? "" : "";
+                    offers.Add(new TradeListing(oid, pay / get, currency, account, indexed, 0, null, false)
+                    {
+                        Stock = Math.Max(1, stock), Stackable = true, Ratio = get != 1 || pay != Math.Round(pay) ? (get, pay) : null,
+                    });
+                }
+            }
+        }
+        var total = root.TryGetProperty("total", out var t) && t.ValueKind == JsonValueKind.Number ? t.GetInt32() : offers.Count;
+        return new TradeExchangeResult(id, offers, total);
+    }
+
     /// <summary>Up to ten offers per call, as the site allows.</summary>
     public async Task<IReadOnlyList<TradeListing>> FetchAsync(string searchId, IEnumerable<string> itemIds, CancellationToken ct = default)
     {
@@ -231,8 +312,15 @@ public sealed class TradeApi(HttpClient http)
             string? sockets = null, icon = null;
             var corrupted = false;
             string? itemJson = null;
+            int stack = 1;
+            var stackable = false;
             if (e.TryGetProperty("item", out var item) && item.ValueKind == JsonValueKind.Object)
             {
+                if (item.TryGetProperty("stackSize", out var ss) && ss.ValueKind == JsonValueKind.Number)
+                {
+                    stackable = true;
+                    stack = Math.Max(1, ss.GetInt32());
+                }
                 if (item.TryGetProperty("ilvl", out var lv) && lv.ValueKind == JsonValueKind.Number) ilvl = lv.GetInt32();
                 if (item.TryGetProperty("icon", out var ic) && ic.GetString() is { } u && u.StartsWith("https://", StringComparison.Ordinal)) icon = u;
                 corrupted = item.TryGetProperty("corrupted", out var co) && co.ValueKind == JsonValueKind.True;
@@ -240,7 +328,8 @@ public sealed class TradeApi(HttpClient http)
                 // kept as it came: the comparison reads it on the player's press, the search never depends on it
                 itemJson = item.GetRawText();
             }
-            list.Add(new TradeListing(id, amount, currency, account, indexed, ilvl, sockets, corrupted) { Icon = icon, ItemJson = itemJson });
+            list.Add(new TradeListing(id, amount, currency, account, indexed, ilvl, sockets, corrupted)
+                { Icon = icon, ItemJson = itemJson, Stock = stack, Stackable = stackable });
         }
         return list;
     }
@@ -273,17 +362,19 @@ public sealed class TradeApi(HttpClient http)
     static (GameItem, Dictionary<string, double>, List<OfferLine>) ReadItem(JsonElement item, int ilvl, bool corrupted, string? sockets)
     {
         var mods = new List<GameMod>();
-        var lines = new Dictionary<string, List<string>>();
+        // the lines of each mod array as they come, those the site described in place already resolved
+        var lines = new Dictionary<string, List<(string Text, OfferLine? Inline)>>();
         foreach (var (key, kind) in ModArrays)
         {
-            var texts = new List<string>();
+            var texts = new List<(string, OfferLine?)>();
             if (item.TryGetProperty(key, out var arr) && arr.ValueKind == JsonValueKind.Array)
                 foreach (var t in arr.EnumerateArray())
                 {
+                    var inline = InlineLine(t, kind);
                     // the index must stay in step with extended.hashes: an entry we cannot read keeps its place, empty
-                    var s = TextOf(t) ?? "";
-                    texts.Add(s);
-                    if (s.Length > 0) mods.Add(new GameMod(s, kind));
+                    var s = inline?.Text ?? TextOf(t) ?? "";
+                    texts.Add((s, inline));
+                    if (s.Length > 0) mods.Add(new GameMod(s, inline?.Kind ?? kind));
                 }
             lines[key[..^4]] = texts; // "explicitMods" → "explicit", the key of extended.hashes
         }
@@ -318,7 +409,16 @@ public sealed class TradeApi(HttpClient http)
         foreach (var (key, kind) in ModArrays)
         {
             var group = key[..^4];
-            var texts = lines[group];
+            var entries = lines[group];
+            // extended.hashes lists only the lines given as plain text (a fractured line described in place among the
+            // explicit ones is not in hashes.explicit): its index counts those alone
+            var texts = entries.Where(e => e.Inline == null).Select(e => e.Text).ToList();
+            foreach (var (text, inline) in entries)
+                if (inline != null && text.Length > 0)
+                {
+                    offerLines.Add(inline);
+                    if (inline.StatId is { } sid && GameItem.ValueOf(text) is double iv) stats[sid] = stats.GetValueOrDefault(sid) + iv;
+                }
             JsonElement hashes = default, modInfo = default;
             var hasHashes = hasExt && ext.TryGetProperty("hashes", out var hs) && hs.ValueKind == JsonValueKind.Object
                             && hs.TryGetProperty(group, out hashes) && hashes.ValueKind == JsonValueKind.Array;
@@ -361,6 +461,37 @@ public sealed class TradeApi(HttpClient http)
             Corrupted = corrupted, Sockets = sockets, Mods = mods,
         };
         return (offered, stats, offerLines);
+    }
+
+    /// <summary>
+    /// A mod line the site describes in place — {"description", "hash": "stat.fractured.stat_…", "domain", "flags",
+    /// "mods": [{"name", "tier"}]} — as an offer line: its own stat id, its kind by domain (a fractured line comes among the
+    /// explicit ones), its best tier. Null for a plain string (the older answer, resolved through extended.hashes).
+    /// </summary>
+    static OfferLine? InlineLine(JsonElement e, ModKind kind)
+    {
+        if (e.ValueKind != JsonValueKind.Object || !e.TryGetProperty("hash", out var h) || h.GetString() is not { Length: > 0 } hash) return null;
+        var text = TextOf(e) ?? "";
+        var stat = hash.StartsWith("stat.", StringComparison.Ordinal) ? hash[5..] : hash;
+        var domain = e.TryGetProperty("domain", out var d) ? d.GetString() : null;
+        var fractured = domain == "fractured" || (e.TryGetProperty("flags", out var f) && f.ValueKind == JsonValueKind.Object
+                                                   && f.TryGetProperty("fractured", out var fr) && fr.ValueKind == JsonValueKind.True);
+        kind = fractured ? ModKind.Fractured
+            : domain switch { "crafted" => ModKind.Crafted, "enchant" => ModKind.Enchant, "implicit" => ModKind.Implicit, _ => kind };
+        int? tier = null;
+        string? name = null;
+        bool? prefix = null;
+        if (e.TryGetProperty("mods", out var ms) && ms.ValueKind == JsonValueKind.Array)
+            foreach (var m in ms.EnumerateArray())
+            {
+                if (m.ValueKind != JsonValueKind.Object) continue;
+                var ts = m.TryGetProperty("tier", out var t) ? TextOf(t) : null;
+                if (TierOf(ts) is not int tv || (tier != null && tv >= tier)) continue;
+                tier = tv;
+                name = m.TryGetProperty("name", out var nm) ? TextOf(nm) : null;
+                prefix = ts![0] is 'P' or 'p' ? true : ts[0] is 'S' or 's' ? false : null;
+            }
+        return new OfferLine(text, kind, stat, tier) { Name = name, Prefix = prefix };
     }
 
     /// <summary>"S1" / "P2" / "R3" → 1 / 2 / 3; null for anything without a number.</summary>

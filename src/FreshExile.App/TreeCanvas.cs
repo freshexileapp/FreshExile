@@ -29,6 +29,8 @@ public sealed class TreeCanvas : FrameworkElement
     static readonly Color RefundEdge = Color.FromRgb(0xF0, 0x4A, 0x4A);
     static readonly Color RefundBright = Color.FromRgb(0xFF, 0x2E, 0x2E);
     static readonly Color StartRing = Color.FromRgb(0x4A, 0x4A, 0x50);
+    /// <summary>A cluster jewel the plan needs: its card on the game's tree.</summary>
+    static readonly Color ClusterColor = Color.FromRgb(0xC2, 0x96, 0xFF);
     static readonly Typeface Face = new(new FontFamily("Segoe UI Variable Text, Segoe UI"), FontStyles.Normal, FontWeights.SemiBold, FontStretches.Normal);
 
     PassiveTree? _tree;
@@ -45,6 +47,28 @@ public sealed class TreeCanvas : FrameworkElement
     /// game's own node icon shows through instead of the line crossing it.
     /// </summary>
     Geometry? _outsideRings;
+
+    /// <summary>
+    /// Overlay: a cluster jewel the plan takes passives of that the game does not draw yet — nothing of it is allocated,
+    /// so it is not in the game's socket. Its passives are drawn in the game's own art and a card says which jewel it is.
+    /// </summary>
+    sealed record GhostCluster(PobItem Item, Point Center, double Ring, Point Socket, List<(PassiveNode Node, bool Planned)> Nodes);
+    readonly List<GhostCluster> _ghosts = new();
+
+    /// <summary>
+    /// Overlay: a jewel socket the plan takes and the jewel the stage puts in it. The game shows the socket empty, so a card
+    /// says why it is taken; a cluster jewel's socket is told by its <see cref="GhostCluster"/> card instead.
+    /// </summary>
+    sealed record JewelCard(PobItem Item, Point Socket, int Root);
+    readonly List<JewelCard> _cards = new();
+
+    /// <summary>
+    /// A main-tree socket and everything grown from it (its cluster, the clusters in that one's sockets): how far it reaches
+    /// left and right, in tree units, and which way the tree's rim is. The cards of a bush stand in one column past it.
+    /// </summary>
+    readonly Dictionary<int, (double MinX, double MaxX, double Outward)> _bushes = new();
+
+    IReadOnlyDictionary<int, PobItem> _jewels = new Dictionary<int, PobItem>();
 
     /// <summary>On top of the in-game tree: only the stage path, rings instead of filled nodes, view set from outside.</summary>
     public bool OverlayMode { get; init; }
@@ -92,6 +116,7 @@ public sealed class TreeCanvas : FrameworkElement
     {
         ClipToBounds = true;
         Focusable = false;
+        TreeArt.Arrived += InvalidateVisual;
     }
 
     public static double Radius(PassiveNode n) => n.Kind switch
@@ -103,11 +128,13 @@ public sealed class TreeCanvas : FrameworkElement
         _ => 27,
     };
 
-    public void SetData(PassiveTree? tree, PlanResult? plan)
+    /// <param name="jewels">The stage's jewels by socket: the overlay cards a socket of the plan with the jewel for it.</param>
+    public void SetData(PassiveTree? tree, PlanResult? plan, IReadOnlyDictionary<int, PobItem>? jewels = null)
     {
         var treeChanged = !ReferenceEquals(tree, _tree);
         _tree = tree;
         _plan = plan;
+        _jewels = jewels ?? new Dictionary<int, PobItem>();
         Rebuild();
         if (!OverlayMode && (treeChanged || _needFit)) FitToPlan();
         else InvalidateVisual();
@@ -121,6 +148,9 @@ public sealed class TreeCanvas : FrameworkElement
     {
         _hoverable.Clear();
         _step.Clear();
+        _ghosts.Clear();
+        _cards.Clear();
+        _bushes.Clear();
         _hover = null;
         if (_tree == null)
         {
@@ -234,7 +264,42 @@ public sealed class TreeCanvas : FrameworkElement
         _outsideRings = new CombinedGeometry(GeometryCombineMode.Exclude, world, holes);
         _outsideRings.Freeze();
         (_baseEdges, _haveEdges, _planEdges, _refundEdges) = (gBase, gHave, gPlan, gRefund);
+
+        foreach (var (socketId, item) in _tree.Clusters)
+        {
+            if (!_tree.Nodes.TryGetValue(socketId, out var socket) || socket.ExpansionProxy is not int px || !_tree.Nodes.TryGetValue(px, out var proxy)) continue;
+            var members = _tree.Nodes.Values.Where(n => n.IsClusterNode && n.Drawable && n.Group == proxy.Group).ToList();
+            // a passive of it already taken: the jewel sits in the game's socket and the game draws it itself
+            if (members.Count == 0 || members.Any(n => StateOf(n) == State.Have) || !members.Any(n => StateOf(n) == State.Plan)) continue;
+            var center = new Point(members[0].GroupX, members[0].GroupY);
+            var ring = members.Max(n => Math.Sqrt((n.X - center.X) * (n.X - center.X) + (n.Y - center.Y) * (n.Y - center.Y)));
+            _ghosts.Add(new GhostCluster(item, center, ring, new Point(socket.X, socket.Y), members.Select(n => (n, StateOf(n) == State.Plan)).ToList()));
+            _cards.Add(new JewelCard(item, new Point(socket.X, socket.Y), RootSocket(socketId)));
+        }
+        // the plan's other sockets with a jewel waiting for them; a cluster whose ring the game already draws needs no card
+        foreach (var (socketId, item) in _jewels)
+            if (!ClusterJewel.IsCluster(item) && _tree.Nodes.TryGetValue(socketId, out var socket) && socket.Drawable && _step.ContainsKey(socketId))
+                _cards.Add(new JewelCard(item, new Point(socket.X, socket.Y), RootSocket(socketId)));
+
+        // each bush's reach: its root socket and every passive grown from it, the game's own rings included
+        var bushOfGroup = new Dictionary<int, int>();
+        foreach (var socketId in _tree.Clusters.Keys)
+            if (_tree.Nodes.TryGetValue(socketId, out var sk) && sk.ExpansionProxy is int px && _tree.Nodes.TryGetValue(px, out var proxy))
+                bushOfGroup[proxy.Group] = RootSocket(socketId);
+        foreach (var root in _cards.Select(c => c.Root).Distinct())
+        {
+            var r = _tree.Nodes[root];
+            var xs = _tree.Nodes.Values.Where(n => n.IsClusterNode && bushOfGroup.GetValueOrDefault(n.Group, -1) == root).Select(n => n.X).Append(r.X).ToList();
+            _bushes[root] = (xs.Min(), xs.Max(), r.X >= 0 ? 1 : -1);
+        }
         (_baseNodes, _baseMastery, _haveNodes, _planNodes, _planHalo, _refundNodes, _refundX, _starts) = (nBase, nMastery, nHave, nPlan, nHalo, nRefund, nX, nStart);
+    }
+
+    /// <summary>The main-tree socket a cluster socket grows from (itself for a main-tree socket).</summary>
+    int RootSocket(int socketId)
+    {
+        while (_tree!.Nodes.TryGetValue(socketId, out var n) && n.ExpansionParent is int p && _tree.Nodes.ContainsKey(p)) socketId = p;
+        return socketId;
     }
 
     int? ClassOfPlan()
@@ -279,6 +344,7 @@ public sealed class TreeCanvas : FrameworkElement
             dc.DrawGeometry(null, Pen(outline, 5.5 * px), _planEdges);
             dc.DrawGeometry(null, Pen(Colors.White, 2.4 * px), _planEdges);
             if (_outsideRings != null) dc.Pop();
+            DrawGhostArt(dc);
             dc.DrawGeometry(null, Pen(outline, 4.5 * px), _planRings);
             dc.DrawGeometry(null, Pen(Colors.White, 2 * px), _planRings);
             // respec: bright red dashes, outlined like the plan path, so they beat the gold links the game still shows as allocated
@@ -287,6 +353,7 @@ public sealed class TreeCanvas : FrameworkElement
             dc.DrawGeometry(null, Pen(outline, 4.5 * px), _refundX);
             dc.DrawGeometry(null, Pen(RefundBright, 2.4 * px), _refundX);
             dc.Pop();
+            DrawGhostCards(dc);
             DrawLabels(dc);
             DrawFocus(dc);
             return;
@@ -313,6 +380,156 @@ public sealed class TreeCanvas : FrameworkElement
         dc.Pop();
         DrawLabels(dc);
         DrawFocus(dc);
+    }
+
+    /// <summary>
+    /// The passives of a cluster the game does not show yet, in the game's own art (frame and icon, at the size the game
+    /// draws them): the ones to take now full, the rest of the jewel faint. World coordinates.
+    /// </summary>
+    void DrawGhostArt(DrawingContext dc)
+    {
+        if (_tree == null) return;
+        foreach (var g in _ghosts)
+            foreach (var (n, planned) in g.Nodes)
+            {
+                if (!planned) dc.PushOpacity(0.45);
+                var (sheet, frame) = n.Kind switch
+                {
+                    NodeKind.Notable => ("notableActive", "NotableFrameUnallocated"),
+                    NodeKind.Jewel => ("", "JewelFrameUnallocated"),
+                    _ => ("normalActive", "PSSkillFrame"),
+                };
+                if (sheet.Length > 0 && n.Icon.Length > 0) DrawSprite(dc, sheet, n.Icon, n.X, n.Y);
+                DrawSprite(dc, "frame", frame, n.X, n.Y);
+                if (!planned) dc.Pop();
+            }
+    }
+
+    void DrawSprite(DrawingContext dc, string sheetName, string name, double x, double y)
+    {
+        if (_tree == null || !_tree.Sprites.TryGetValue(sheetName, out var sheet) || !sheet.Coords.TryGetValue(name, out var r)) return;
+        if (TreeArt.Sprite(sheet, name) is not { } img) return;
+        var w = r.W / sheet.Zoom;
+        var h = r.H / sheet.Zoom;
+        dc.DrawImage(img, new Rect(x - w / 2, y - h / 2, w, h));
+    }
+
+    bool _clusterCardFull;
+
+    /// <summary>Settings: the cluster card lists every mod that makes the passives; off = the jewel and its notables only.</summary>
+    public bool ClusterCardFull
+    {
+        get => _clusterCardFull;
+        set
+        {
+            if (_clusterCardFull == value) return;
+            _clusterCardFull = value;
+            InvalidateVisual();
+        }
+    }
+
+    /// <summary>
+    /// A card per jewel the plan's sockets wait for: the jewel and, for a cluster, its notables — or, with
+    /// <see cref="ClusterCardFull"/>, every mod of it. The cards of one bush (a socket and the clusters grown from it) stand
+    /// in a column past its outer edge, where the game draws nothing, each level with its socket, a dashed line running to
+    /// the socket over whatever lies between. Screen coordinates.
+    /// </summary>
+    void DrawGhostCards(DrawingContext dc)
+    {
+        if (_cards.Count == 0 || _scale < 0.028) return;
+        var s = _scale;
+        var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
+        var linkEdge = Pen(Color.FromArgb(0xB0, 0, 0, 0), 3.5);
+        var margin = RingRadius(new PassiveNode { Kind = NodeKind.Notable }) * s + 20;
+        var socketR = RingRadius(new PassiveNode { Kind = NodeKind.Jewel }) * s;
+        var placed = new List<Rect>();
+
+        foreach (var bush in _cards.GroupBy(c => c.Root))
+        {
+            var (minX, maxX, outward) = _bushes[bush.Key];
+            var made = bush.Select(card => (card, lines: CardLines(card.Item, dpi), sock: new Point(card.Socket.X * s + _offset.X, card.Socket.Y * s + _offset.Y)))
+                .OrderBy(m => m.sock.Y).ToList();
+            var colW = made.Max(m => m.lines.Max(t => t.Width) + 16);
+            // the rim side if the column fits on screen there, else the other side
+            var right = maxX * s + _offset.X + margin;
+            var left = minX * s + _offset.X - margin - colW;
+            var x = outward > 0 ? (right + colW <= RenderSize.Width - 4 || left < 4 ? right : left)
+                                : (left >= 4 || right + colW > RenderSize.Width - 4 ? left : right);
+            x = Math.Clamp(x, 4, Math.Max(4, RenderSize.Width - colW - 4));
+            var onRight = x > made[0].sock.X;
+
+            foreach (var (card, lines, sock) in made)
+            {
+                var color = JewelColor(card.Item);
+                var w = lines.Max(t => t.Width) + 16;
+                var h = lines.Sum(t => t.Height) + 12 + (lines.Count > 1 ? 2 : 0);
+                // level with the socket; under the card above when they would overlap
+                var box = new Rect(onRight ? x : x + colW - w, sock.Y - h / 2, w, h);
+                for (var i = 0; i < 8 && placed.Any(box.IntersectsWith); i++) box.Y = placed.Where(box.IntersectsWith).Max(r => r.Bottom) + 6;
+                box.Y = Math.Clamp(box.Y, 4, Math.Max(4, RenderSize.Height - h - 4));
+                placed.Add(box);
+
+                var to = new Point(onRight ? box.Left : box.Right, Math.Clamp(sock.Y, box.Top + 8, box.Bottom - 8));
+                var d = to - sock;
+                if (d.Length > socketR + 6)
+                {
+                    d.Normalize();
+                    var from = sock + d * socketR;
+                    dc.DrawLine(linkEdge, from, to);
+                    dc.DrawLine(Pen(color, 1.5, dashed: true), from, to);
+                }
+
+                dc.DrawRoundedRectangle(LabelFill, Pen(color, 1.5), box, 6, 6);
+                var y = box.Y + 6;
+                foreach (var t in lines)
+                {
+                    dc.DrawText(t, new Point(box.X + 8, y));
+                    y += t.Height + (ReferenceEquals(t, lines[_clusterCardFull ? 1 : 0]) ? 2 : 0);
+                }
+            }
+        }
+    }
+
+    List<FormattedText> CardLines(PobItem item, double dpi)
+    {
+        var lines = new List<FormattedText>();
+        if (_clusterCardFull) lines.Add(Text(Loc.T("Вставь в гнездо:"), 10.5, dpi, Color.FromRgb(0xB8, 0xB8, 0xC0)));
+        lines.Add(Text(CardTitle(item), 12.5, dpi, JewelColor(item)));
+        var body = _clusterCardFull ? (ClusterJewel.IsCluster(item) ? ClusterLines(item) : item.Mods.Select(m => m.Text)).ToList() : MiniLines(item);
+        lines.AddRange(body.Take(8).Select(m => Text(m, 11, dpi)));
+        return lines;
+    }
+
+    /// <summary>A unique by its name; a cluster by its base; another rare jewel by base and name ("Viridian Jewel · Armageddon Heart").</summary>
+    static string CardTitle(PobItem item) =>
+        item.Rarity == ItemRarity.Unique ? item.Name
+        : ClusterJewel.IsCluster(item) || item.Name.Length == 0 || item.Name == item.BaseType ? item.BaseType
+        : $"{item.BaseType} · {item.Name}";
+
+    /// <summary>The jewel's colour as the game shows it: a unique's brown-gold, the gem colour of a plain jewel, violet for clusters.</summary>
+    static Color JewelColor(PobItem item) =>
+        item.Rarity == ItemRarity.Unique ? Color.FromRgb(0xD8, 0x8A, 0x45)
+        : item.BaseType.Contains("Viridian", StringComparison.OrdinalIgnoreCase) ? Color.FromRgb(0x72, 0xD6, 0x72)
+        : item.BaseType.Contains("Crimson", StringComparison.OrdinalIgnoreCase) ? Color.FromRgb(0xEE, 0x6A, 0x6A)
+        : item.BaseType.Contains("Cobalt", StringComparison.OrdinalIgnoreCase) ? Color.FromRgb(0x78, 0x9A, 0xFF)
+        : ClusterColor;
+
+    /// <summary>The lines of a cluster jewel that make its passives: "Adds 8 Passive Skills", "Added Small Passive Skills grant: …", notables, sockets.</summary>
+    static IEnumerable<string> ClusterLines(PobItem item) =>
+        item.Mods.Select(m => m.Text).Where(t =>
+            t.StartsWith("Adds ", StringComparison.OrdinalIgnoreCase) || t.Contains("Added ", StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>The short card: the notables by name; a jewel without notables says what its small passives grant.</summary>
+    static List<string> MiniLines(PobItem item)
+    {
+        const string notable = "1 Added Passive Skill is ", grant = "Added Small Passive Skills grant: ";
+        var texts = item.Mods.Select(m => m.Text).ToList();
+        // "1 Added Passive Skill is a Jewel Socket" reads like a notable but is not one
+        var notables = texts.Where(t => t.StartsWith(notable, StringComparison.OrdinalIgnoreCase)).Select(t => t[notable.Length..].Trim())
+            .Where(n => !n.Contains("Jewel Socket", StringComparison.OrdinalIgnoreCase)).ToList();
+        if (!ClusterJewel.IsCluster(item)) return [];
+        return notables.Count > 0 ? notables
+            : texts.Where(t => t.StartsWith(grant, StringComparison.OrdinalIgnoreCase)).Select(t => t[grant.Length..].Trim()).ToList();
     }
 
     void DrawLabels(DrawingContext dc)
@@ -416,6 +633,9 @@ public sealed class TreeCanvas : FrameworkElement
         dc.DrawRoundedRectangle(Frozen(Color.FromArgb(0xE6, 0x0B, 0x0B, 0x0C)), ring, box, box.Height / 2, box.Height / 2);
         StepBadge.Draw(dc, new Rect(at.X - w / 2, at.Y - StepBadge.Size / 2, w, StepBadge.Size), label, focus: true);
     }
+
+    FormattedText Text(string text, double size, double dpi, Color color) =>
+        new(text, CultureInfo.InvariantCulture, FlowDirection.LeftToRight, Face, size, Frozen(color), dpi);
 
     FormattedText Text(string text, double size, double dpi)
     {
