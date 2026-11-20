@@ -15,6 +15,9 @@ public sealed partial class MainViewModel
     NinjaUniques? _ninjaUniques;
     NinjaExchange? _ninjaExchange;
 
+    /// <summary>Puts a seller's message into the game's chat (set by the main window: it owns the hotkeys and the game's handle).</summary>
+    public Func<string, Task<bool>>? SendChat { get; set; }
+
     PriceSettings CurrentPriceSettings() => new()
     {
         Status = TradeStatus,
@@ -63,13 +66,18 @@ public sealed partial class MainViewModel
         using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3)))
             ninja = trade.ExchangeId(item) is { } exchangeId
                 // currency and the like: the in-game exchange's rate is the price, the trade's few bulk sellers are not
-                ? await (_ninjaExchange ??= new NinjaExchange(_http)).ChaosAsync(exchangeId, trade.League, cts.Token) is double chaos
+                ? await (_ninjaExchange ??= new NinjaExchange(_http)).ChaosAsync(exchangeId, trade.League, trade.ExchangeGroup(exchangeId), cts.Token) is double chaos
                     ? new NinjaPrice(chaos, _divineChaos is double r and > 0 ? chaos / r : 0, 0) { Market = true }
                     : null
                 : await (_ninjaUniques ??= new NinjaUniques(_http)).PriceAsync(item, trade.League, cts.Token);
-        var vm = new PriceCheckViewModel(check, TradeApi, trade, CurrentPriceSettings, () => State.PriceCollapse, _divineChaos, ninja, LoadArtAsync)
+        // a gem is mostly sold "in person": with instant buyout only there would be no one to whisper, so those come in too
+        Func<PriceSettings> settings = item.IsGem
+            ? () => CurrentPriceSettings() is { Status: "securable" } st ? st with { Status = "available" } : CurrentPriceSettings()
+            : CurrentPriceSettings;
+        var vm = new PriceCheckViewModel(check, TradeApi, trade, settings, () => State.PriceCollapse, _divineChaos, ninja, LoadArtAsync)
         {
             TopMods = CurrentTopMods(),
+            SendWhisper = SendChat,
         };
         AddOils(vm);
         vm.InheritCooldown(_priceReadyAt);

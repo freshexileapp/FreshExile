@@ -83,7 +83,11 @@ Both survive a restart of the overlay while the game is running.
   and the cheapest listings from the trade site. Filters are pre-ticked on what makes the price; minimums are a share
   of the item's own rolls.
 - Compare any listing with your item line by line; top mods (+1 charges, gem levels, immunities…) are starred.
-- Uniques also show their poe.ninja price.
+- Uniques also show their poe.ninja price; currency and league items (crystals, essences…) the market rate, the one
+  the in-game currency exchange trades at.
+- **Whisper** on an "in person" listing puts the seller's message straight into the game's chat.
+- A gem's **Trade** button in the build opens the same window for that gem: any level for a gem that levels on the
+  way, the build's level for Enlighten, Empower, Enhance and awakened gems.
 - **Smart cluster search**: your build's notables are required, and the free places may be any notable that sits
   *off their path* on the ring — so you never pay for a jewel that makes you walk through a notable you don't want.
 
@@ -130,8 +134,9 @@ All of them can be changed in *Settings → Keys*.
 ## Plays by GGG's rules
 
 Fresh Exile reads the game's log file and the public pathofexile.com API and draws its own window over the game.
-It never reads the game's memory. The only keystroke it sends to the game is `Ctrl+Alt+C` (copy the item) — once per
-press of the price check hotkey, as Awakened PoE Trade and similar tools do. Trade requests are made only on your
+It never reads the game's memory. The only keystrokes it sends to the game are `Ctrl+Alt+C` (copy the item) — once per
+press of the price check hotkey — and Enter, Ctrl+V, Enter for one whisper per click of **Whisper**, as Awakened PoE
+Trade and similar tools do. Trade requests are made only on your
 action and never faster than the site allows. The tree overlay looks at a screenshot of the game; with tracking off
 in the settings, the screen is never captured at all.
 

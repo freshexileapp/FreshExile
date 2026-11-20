@@ -38,6 +38,16 @@ public sealed record TradeListing(string Id, double Amount, string Currency, str
     /// <summary>The item stacks (currency, fragments…): nothing to compare line by line.</summary>
     public bool Stackable { get; init; }
 
+    /// <summary>
+    /// The site's ready message to the seller ("@Name Hi, I would like to buy your…"): an "in person" offer has one,
+    /// an instant buyout does not (that one is bought on the site, travelling to the seller's hideout).
+    /// </summary>
+    public string? Whisper { get; init; }
+
+    /// <summary>A gem's level and quality, as the offer lists them.</summary>
+    public int? GemLevel { get; init; }
+    public int GemQuality { get; init; }
+
     /// <summary>An exchange offer that is not one for one: "4 for 1 divine" — what the seller asks, as a whole.</summary>
     public (double Get, double Pay)? Ratio { get; init; }
 
@@ -305,6 +315,9 @@ public sealed class TradeApi(HttpClient http)
                 if (p.TryGetProperty("amount", out var a) && a.ValueKind == JsonValueKind.Number) amount = a.GetDouble();
                 if (p.TryGetProperty("currency", out var c)) currency = c.GetString() ?? "";
             }
+            var whisper = l.TryGetProperty("whisper", out var w) && w.ValueKind == JsonValueKind.String && w.GetString() is { Length: > 0 } wt ? wt : null;
+            int? gemLevel = null;
+            var gemQuality = 0;
             var account = l.TryGetProperty("account", out var acc) && acc.TryGetProperty("name", out var n) ? n.GetString() ?? "" : "";
             DateTime? indexed = l.TryGetProperty("indexed", out var ix)
                 && DateTime.TryParse(ix.GetString(), CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var d) ? d : null;
@@ -325,11 +338,23 @@ public sealed class TradeApi(HttpClient http)
                 if (item.TryGetProperty("icon", out var ic) && ic.GetString() is { } u && u.StartsWith("https://", StringComparison.Ordinal)) icon = u;
                 corrupted = item.TryGetProperty("corrupted", out var co) && co.ValueKind == JsonValueKind.True;
                 if (item.TryGetProperty("sockets", out var so) && so.ValueKind == JsonValueKind.Array) sockets = SocketText(so);
+                // a gem: "Level" [["3 (Max)", 0]], "Quality" [["+20%", 1]]
+                if (item.TryGetProperty("frameType", out var ft) && ft.ValueKind == JsonValueKind.Number && ft.GetInt32() == 4
+                    && item.TryGetProperty("properties", out var props) && props.ValueKind == JsonValueKind.Array)
+                    foreach (var prop in props.EnumerateArray())
+                    {
+                        var pn = prop.TryGetProperty("name", out var pnn) ? pnn.GetString() : null;
+                        if (pn is not ("Level" or "Quality") || !prop.TryGetProperty("values", out var pv) || pv.ValueKind != JsonValueKind.Array
+                            || pv.GetArrayLength() == 0 || pv[0].ValueKind != JsonValueKind.Array || pv[0].GetArrayLength() == 0) continue;
+                        var digits = new string((pv[0][0].ValueKind == JsonValueKind.String ? pv[0][0].GetString() ?? "" : "").SkipWhile(c => !char.IsDigit(c)).TakeWhile(char.IsDigit).ToArray());
+                        if (!int.TryParse(digits, NumberStyles.None, CultureInfo.InvariantCulture, out var pval)) continue;
+                        if (pn == "Level") gemLevel = pval; else gemQuality = pval;
+                    }
                 // kept as it came: the comparison reads it on the player's press, the search never depends on it
                 itemJson = item.GetRawText();
             }
             list.Add(new TradeListing(id, amount, currency, account, indexed, ilvl, sockets, corrupted)
-                { Icon = icon, ItemJson = itemJson, Stock = stack, Stackable = stackable });
+                { Icon = icon, ItemJson = itemJson, Stock = stack, Stackable = stackable, Whisper = whisper, GemLevel = gemLevel, GemQuality = gemQuality });
         }
         return list;
     }
@@ -627,25 +652,43 @@ public sealed class NinjaExchange(HttpClient http)
     static readonly string[] Types =
         ["Currency", "Fragment", "Oil", "Essence", "DivinationCard", "DeliriumOrb", "Fossil", "Resonator", "Omen", "Tattoo", "Runegraft", "Artifact", "AllflameEmber"];
 
-    readonly Dictionary<string, (DateTime At, Dictionary<string, double> Chaos)> _cache = new();
+    readonly Dictionary<string, (DateTime At, Dictionary<string, double> Chaos, HashSet<string> Types)> _cache = new();
 
-    public async Task<double?> ChaosAsync(string exchangeId, string league, CancellationToken ct = default)
+    /// <param name="tradeGroup">The item's group on the trade ("EnshroudingCrystals"): a league's own kind poe.ninja lists
+    /// under its own type, asked for when the usual lists do not have the item.</param>
+    public async Task<double?> ChaosAsync(string exchangeId, string league, string? tradeGroup = null, CancellationToken ct = default)
     {
         if (!_cache.TryGetValue(league, out var c) || DateTime.UtcNow - c.At > TimeSpan.FromHours(1))
         {
             var all = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
-            var lists = await Task.WhenAll(Types.Select(async t =>
-            {
-                try { return await http.GetStringAsync($"{Url}?league={Uri.EscapeDataString(league)}&type={t}", ct); }
-                catch (Exception) when (!ct.IsCancellationRequested) { return null; }
-            }));
-            foreach (var json in lists)
+            foreach (var json in await Task.WhenAll(Types.Select(t => GetAsync(t, league, ct))))
                 if (json != null) Read(json, all);
             if (all.Count == 0) return null;
-            _cache[league] = c = (DateTime.UtcNow, all);
+            _cache[league] = c = (DateTime.UtcNow, all, new HashSet<string>(Types, StringComparer.OrdinalIgnoreCase));
         }
-        return c.Chaos.TryGetValue(exchangeId, out var v) ? v : null;
+        if (c.Chaos.TryGetValue(exchangeId, out var v)) return v;
+        if (NinjaType(tradeGroup) is { } extra && c.Types.Add(extra) && await GetAsync(extra, league, ct) is { } more)
+        {
+            Read(more, c.Chaos);
+            if (c.Chaos.TryGetValue(exchangeId, out v)) return v;
+        }
+        return null;
     }
+
+    async Task<string?> GetAsync(string type, string league, CancellationToken ct)
+    {
+        try { return await http.GetStringAsync($"{Url}?league={Uri.EscapeDataString(league)}&type={type}", ct); }
+        catch (Exception) when (!ct.IsCancellationRequested) { return null; }
+    }
+
+    /// <summary>The trade's group → poe.ninja's type: "EnshroudingCrystals" → "EnshroudingCrystal", "Cards" → "DivinationCard".</summary>
+    public static string? NinjaType(string? tradeGroup) => tradeGroup switch
+    {
+        null or "" => null,
+        "Cards" => "DivinationCard",
+        _ when tradeGroup.EndsWith('s') => tradeGroup[..^1],
+        _ => tradeGroup,
+    };
 
     /// <summary>lines[] = {id: "eldritch-exalted-orb", primaryValue: 3.65} — the price in chaos.</summary>
     public static void Read(string json, Dictionary<string, double> into)

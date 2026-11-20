@@ -266,6 +266,10 @@
                                                 <StackPanel>
                                                     <TextBlock Text="{Binding Label}" Style="{StaticResource Caption}" Margin="10,5,8,2" TextTrimming="CharacterEllipsis"
                                                                Visibility="{Binding HasLabel, Converter={StaticResource Vis}}"/>
+                                                    <!-- the second weapon set: gems levelled for later, not part of the build -->
+                                                    <TextBlock Text="{x:Static l:GroupVm.SwapText}" Style="{StaticResource Caption}" Foreground="#E2BE62"
+                                                               Margin="10,5,8,2" TextTrimming="CharacterEllipsis" ToolTip="{Binding SwapTip}"
+                                                               Visibility="{Binding IsSwap, Converter={StaticResource Vis}}"/>
                                                     <ItemsControl ItemsSource="{Binding Rows}">
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate>

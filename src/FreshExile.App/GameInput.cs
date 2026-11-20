@@ -9,7 +9,7 @@ namespace FreshExile.App;
 /// </summary>
 public static class GameInput
 {
-    const ushort VK_CONTROL = 0x11, VK_MENU = 0x12, VK_C = 0x43;
+    const ushort VK_CONTROL = 0x11, VK_MENU = 0x12, VK_C = 0x43, VK_V = 0x56, VK_RETURN = 0x0D, VK_SHIFT = 0x10;
     const uint INPUT_KEYBOARD = 1, KEYEVENTF_KEYUP = 0x2;
 
     [StructLayout(LayoutKind.Sequential)]
@@ -72,6 +72,54 @@ public static class GameInput
         }
         if (text != null && old != null) TrySet(old);
         return text;
+    }
+
+    /// <summary>
+    /// A seller's message into the game's chat at the player's press: the game brought to the front, then Enter (opens the
+    /// chat), Ctrl+V, Enter (sends) — what the player would type, one message per press. The clipboard is put back after.
+    /// </summary>
+    public static async Task<bool> SendChatAsync(IntPtr game, string text)
+    {
+        if (game == IntPtr.Zero) { TrySet(text); return false; }
+        var old = ReadClipboard();
+        TrySet(text);
+        SetForegroundWindow(game);
+        // the game takes the focus a moment later; a key sent before that lands in our own window
+        for (var i = 0; i < 15 && GetForegroundWindow() != game; i++) await Task.Delay(20);
+        if (GetForegroundWindow() != game) return false;
+        await Task.Delay(60);
+
+        var keys = new List<INPUT>();
+        // a modifier still held (Shift, Ctrl) would turn Enter into something else
+        foreach (var vk in new[] { VK_SHIFT, VK_CONTROL, VK_MENU })
+            if (Down(vk)) keys.Add(Key(vk, true));
+        keys.Add(Key(VK_RETURN, false));
+        keys.Add(Key(VK_RETURN, true));
+        Send(keys);
+        await Task.Delay(50);
+        Send([Key(VK_CONTROL, false), Key(VK_V, false), Key(VK_V, true), Key(VK_CONTROL, true)]);
+        await Task.Delay(50);
+        Send([Key(VK_RETURN, false), Key(VK_RETURN, true)]);
+
+        // the game reads the clipboard on Ctrl+V: what the player had there comes back only after it
+        await Task.Delay(250);
+        if (old != null) TrySet(old);
+        return true;
+    }
+
+    static void Send(List<INPUT> keys) => SendInput((uint)keys.Count, keys.ToArray(), Marshal.SizeOf<INPUT>());
+
+    /// <summary>The game's main window, whether in front or not; zero when no client runs.</summary>
+    public static IntPtr FindGameWindow()
+    {
+        var all = System.Diagnostics.Process.GetProcesses();
+        try
+        {
+            return all.Where(p => p.ProcessName.StartsWith("PathOfExile", StringComparison.OrdinalIgnoreCase))
+                .Select(p => { try { return p.MainWindowHandle; } catch (InvalidOperationException) { return IntPtr.Zero; } })
+                .FirstOrDefault(h => h != IntPtr.Zero);
+        }
+        finally { foreach (var p in all) p.Dispose(); }
     }
 
     public static string? ReadClipboard()

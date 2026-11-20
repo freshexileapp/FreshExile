@@ -83,6 +83,11 @@ public sealed partial class PriceCheck
     /// <summary>Search the cluster by <see cref="Cluster"/>: the wanted notables, plus any of the harmless others.</summary>
     public bool UseClusterLayout { get; set; }
     public string? Category { get; }
+
+    /// <summary>A gem: level and quality at least these (the window's boxes); null = any. Start at the gem's own.</summary>
+    public int? GemLevelMin { get; set; }
+    public int? GemQualityMin { get; set; }
+
     public bool BaseOnly => Category == null || Item.Rarity is ItemRarity.Unique or ItemRarity.Normal || Item.IsGem;
 
     PriceCheck(GameItem item, IReadOnlyList<PriceFilter> filters, string? category)
@@ -300,6 +305,8 @@ public sealed partial class PriceCheck
             Unidentified = unique && item.Unidentified ? true : null,
             Foulborn = unique ? item.Foulborn : null,
             UseQuality = item.IsGem && item.Quality > 0,
+            GemLevelMin = item.IsGem && item.GemLevel is > 1 ? item.GemLevel : null,
+            GemQualityMin = item.IsGem && item.Quality > 0 ? item.Quality : null,
             UseLinks = item.Links >= 5,
             UseRarity = item.Rarity == ItemRarity.Magic && category != null,
             UseAreaLevel = item.HeistJob != null && item.AreaLevel > 0,
@@ -354,8 +361,12 @@ public sealed partial class PriceCheck
         Flag("fractured_item", Fractured);
         Flag("identified", Unidentified is bool u ? !u : null);
         Flag("mutated", Foulborn);
-        if (item.IsGem && item.GemLevel is int gl) misc["gem_level"] = new JsonObject { ["min"] = gl };
-        if (UseQuality && item.Quality > 0) misc["quality"] = new JsonObject { ["min"] = item.Quality };
+        if (item.IsGem)
+        {
+            if (GemLevelMin is int gl and > 1) misc["gem_level"] = new JsonObject { ["min"] = gl };
+            if (GemQualityMin is int gq and > 0) misc["quality"] = new JsonObject { ["min"] = gq };
+        }
+        else if (UseQuality && item.Quality > 0) misc["quality"] = new JsonObject { ["min"] = item.Quality };
         if (misc.Count > 0) filters["misc_filters"] = Group(misc);
 
         if (UseLevelCap && LevelCap > 0)

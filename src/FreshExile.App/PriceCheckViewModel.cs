@@ -93,9 +93,22 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
     static readonly Brush Same = Frozen(0xA1, 0xA1, 0xAA);
     static Brush Frozen(byte r, byte g, byte b) { var x = new SolidColorBrush(Color.FromRgb(r, g, b)); x.Freeze(); return x; }
 
+    /// <summary>The site's message to the seller: an "in person" offer has one, an instant buyout is bought on the site.</summary>
+    public string? Whisper => l.Whisper;
+    public bool CanWhisper => l.Whisper != null;
+
+    /// <summary>"Написать": the message goes into the game's chat (set by the window model); null for an instant buyout.</summary>
+    public RelayCommand? WhisperCommand { get; init; }
+    public bool HasWhisperButton => WhisperCommand != null;
+
+    bool _sent;
+    /// <summary>Already written to: the button says so, a second press writes again.</summary>
+    public bool IsSent { get => _sent; set { if (Set(ref _sent, value)) Raise(nameof(WhisperText)); } }
+    public string WhisperText => _sent ? Loc.T("Написано ✓") : Loc.T("Написать");
+
     /// <summary>"Сравнить": our item against this offer, line by line, unfolded under the row.</summary>
     // only whether there is something to read: the item itself is read on the press, not when the row appears
-    public bool CanCompare => check != null && l.ItemJson != null && !l.Stackable;
+    public bool CanCompare => check != null && !check.Item.IsGem && l.ItemJson != null && !l.Stackable;
 
     bool _comparing;
     public bool IsComparing
@@ -211,8 +224,9 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
     {
         // "4 шт за 1 divine": the exchange's offer as the seller set it
         l.Ratio is var (get, pay) ? Loc.T($"{Amount(get)} шт за {Amount(pay)} {CurrencyName(l.Currency)}") : null,
+        l.GemLevel is int gl ? Loc.T($"ур. {gl}") + (l.GemQuality > 0 ? $" · {l.GemQuality}%" : "") : null,
         l.Stackable ? Loc.T($"в наличии {l.Stock}") : null,
-        l.ItemLevel > 0 && !l.Stackable ? $"ilvl {l.ItemLevel}" : null,
+        l.ItemLevel > 0 && !l.Stackable && l.GemLevel == null ? $"ilvl {l.ItemLevel}" : null,
         l.Sockets,
         l.Corrupted ? Loc.T("коррапт") : null,
         l.Currency == "divine" && divineChaos is double d ? $"≈ {Math.Round(l.Amount * d)}c" : null,
@@ -290,6 +304,8 @@ public sealed class PriceCheckViewModel : Observable
         _settings = settings;
         _collapse = collapse;
         _divineChaos = divineChaos;
+        _gemLevel = check.GemLevelMin?.ToString(CultureInfo.InvariantCulture) ?? "";
+        _gemQuality = check.GemQualityMin?.ToString(CultureInfo.InvariantCulture) ?? "";
         Filters = new ObservableCollection<PriceFilterVm>(check.Filters.Select(f => new PriceFilterVm(f)));
         SearchCommand = new RelayCommand(() => _ = SearchAsync(), _ => CanRequest);
         MoreCommand = new RelayCommand(() => _ = MoreAsync(), _ => CanRequest && HasMore);
@@ -343,6 +359,22 @@ public sealed class PriceCheckViewModel : Observable
     public TopMods TopMods { get; init; } = TopMods.Default;
 
     public GameItem Item => _check.Item;
+
+    /// <summary>Sends a seller's message into the game's chat; false when the game is not running. Set by the window.</summary>
+    public Func<string, Task<bool>>? SendWhisper { get; init; }
+
+    async Task WhisperAsync(ListingVm row)
+    {
+        if (row.Whisper is not { } text || SendWhisper == null) return;
+        IsError = false;
+        if (await SendWhisper(text))
+        {
+            row.IsSent = true;
+            Status = Loc.T($"Написал продавцу {row.Account} в игре");
+        }
+        else Fail(Loc.T("Игра не запущена — сообщение скопировано, вставь его в чат сам"));
+    }
+
     public string Title => Item.Title;
     public string? BaseLine => Item.Name.Length > 0 && Item.BaseType != Item.Name ? Item.BaseType : null;
     public bool HasBaseLine => BaseLine != null;
@@ -422,7 +454,27 @@ public sealed class PriceCheckViewModel : Observable
     public bool IsUnique => Item.Rarity == ItemRarity.Unique;
     public bool HasFractured => Item.FracturedItem || Item.Mods.Any(m => m.Kind == ModKind.Fractured);
 
-    public bool HasQuality => Item.Quality > 0;
+    public bool HasQuality => Item.Quality > 0 && !Item.IsGem;
+
+    /// <summary>A gem: level and quality "от" boxes; empty = any.</summary>
+    public bool IsGem => Item.IsGem;
+    string _gemLevel = "", _gemQuality = "";
+    public string GemLevelText
+    {
+        get => _gemLevel;
+        set { if (Set(ref _gemLevel, value)) _check.GemLevelMin = ParseInt(value); }
+    }
+    public string GemQualityText
+    {
+        get => _gemQuality;
+        set { if (Set(ref _gemQuality, value)) _check.GemQualityMin = ParseInt(value); }
+    }
+    static int? ParseInt(string s) => int.TryParse(s.Trim(), NumberStyles.None, CultureInfo.InvariantCulture, out var v) && v > 0 ? v : null;
+
+    /// <summary>A gem that hardly levels (Enlighten, Awakened…): said beside the level box why it is not "any".</summary>
+    public string? GemLevelTip => !Item.IsGem ? null : GemSearch.BoughtAtLevel(Item.BaseType)
+        ? Loc.T("Этот гем почти не качается: ищем уровень как в билде")
+        : Loc.T("Гем качается сам: пусто — любой уровень, сначала дешёвые");
     public string QualityChip => Loc.T($"Качество ≥ {Item.Quality}%");
     public bool UseQuality { get => _check.UseQuality; set { _check.UseQuality = value; Raise(); } }
 
@@ -470,7 +522,8 @@ public sealed class PriceCheckViewModel : Observable
     public string HeistJobChip => $"{Item.HeistJob} ≥ {Item.HeistJobLevel}";
     public bool UseHeistJob { get => _check.UseHeistJob; set { _check.UseHeistJob = value; Raise(); } }
 
-    public string? InfoChip => Item.IsGem ? Loc.T($"ур. {Item.GemLevel} · {Item.Quality}%") : Item.MapTier is int t ? $"T{t}" : null;
+    // a gem has its level and quality boxes instead
+    public string? InfoChip => Item.IsGem ? null : Item.MapTier is int t ? $"T{t}" : null;
     public bool HasInfoChip => InfoChip != null;
 
     #endregion
@@ -575,7 +628,11 @@ public sealed class PriceCheckViewModel : Observable
         Status = Listings.Count == 0 ? Loc.T("На трейде никто не продаёт — смотри рыночный курс") : Loc.T($"Обмен на трейде: продавцов {_exchange.Total}");
         // the trade's few bulk sellers often ask far above the in-game exchange: said plainly, not left to a guess
         if (Listings.Count > 0 && _ninja is { Market: true } m && Listings[0].UnitChaos > m.Chaos * 1.5)
+        {
             Status += Loc.T($" · на трейде в {Listings[0].UnitChaos / m.Chaos:0.#} раза дороже рынка");
+            // the gold chip is "the answer": a few overpriced sellers are not, the market rate beside it is
+            LowestText = null;
+        }
     }
 
     public async Task SearchAsync()
@@ -675,7 +732,12 @@ public sealed class PriceCheckViewModel : Observable
         {
             // one seller, one line: the rest of their stash would push other offers out
             if (collapse && l.Account.Length > 0 && !_accounts.Add(l.Account)) continue;
-            var row = new ListingVm(l, _divineChaos, _check, TopMods);
+            ListingVm row = null!;
+            row = new ListingVm(l, _divineChaos, _check, TopMods)
+            {
+                // an instant buyout has no message: it is bought on the site ("Открыть на трейде"), the hideout trip needs a login
+                WhisperCommand = l.Whisper != null && SendWhisper != null ? new RelayCommand(() => _ = WhisperAsync(row)) : null,
+            };
             row.PropertyChanged += OnRowChanged;
             Listings.Add(row);
             if (_art != null && l.Icon is { } url) _ = LoadArtAsync(row, url);

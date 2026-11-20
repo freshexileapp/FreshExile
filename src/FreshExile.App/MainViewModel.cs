@@ -62,6 +62,13 @@ public sealed class GroupVm(string label, IReadOnlyList<GemRowVm> rows) : Observ
     /// <summary>Switched off in PoB: only the links view shows them, dimmed.</summary>
     public IReadOnlyList<Gem> Disabled { get; init; } = [];
     public bool HasLabel => Label.Length > 0;
+
+    /// <summary>In the second weapon set ("Weapon 1 Swap"): gems levelled there for later, not the build itself.</summary>
+    public bool IsSwap => Slot.EndsWith(" Swap", StringComparison.Ordinal);
+    public static readonly string SwapText = Loc.T("⇄ 2-й набор оружия — качаются, не в билде");
+    public string? SwapTip => IsSwap
+        ? Loc.T("В PoB эта связка стоит во втором наборе оружия (свап): там гемы просто набирают уровень, в билде они не работают. Свап переключается клавишей X.")
+        : null;
     public IReadOnlyList<GemRowVm> Rows { get; } = rows;
     public bool IsHeader => Rows.Count == 0;
     public bool IsCard => Rows.Count > 0;

@@ -839,4 +839,67 @@ public class PriceCheckTests
         const string json = """{"lines":[{"id":"chaos","primaryValue":1},{"id":"divine","primaryValue":149.1}]}""";
         Assert.Equal(149.1, NinjaRates.ReadExchangeDivine(json));
     }
+
+    [Fact]
+    public void InPersonOfferCarriesTheWhisperAndGemLevel()
+    {
+        // as the site sent them in November 2026: an "in person" gem with its message, an instant buyout without one
+        using var doc = JsonDocument.Parse("""
+            {"result":[
+              {"id":"a","listing":{"indexed":"2026-11-20T01:43:52Z","price":{"amount":1,"currency":"chaos"},"account":{"name":"Seller#1"},
+                "whisper":"@SomeSeller Hi, I would like to buy your level 3 20% Enlighten Support listed for 1 chaos in Standard"},
+               "item":{"frameType":4,"typeLine":"Enlighten Support","corrupted":true,
+                "properties":[{"name":"Exceptional, Support","values":[]},{"name":"Level","values":[["3 (Max)",0]]},{"name":"Quality","values":[["+20%",1]]}]}},
+              {"id":"b","listing":{"price":{"amount":35,"currency":"chaos"},"fee":108,"account":{"name":"Seller#2"}},
+               "item":{"frameType":4,"typeLine":"Enlighten Support","properties":[{"name":"Level","values":[["1",0]]}]}}
+            ]}
+            """);
+        var l = TradeApi.ReadListings(doc.RootElement);
+        Assert.StartsWith("@SomeSeller Hi", l[0].Whisper);
+        Assert.Equal(3, l[0].GemLevel);
+        Assert.Equal(20, l[0].GemQuality);
+        Assert.Null(l[1].Whisper);
+        Assert.Equal(1, l[1].GemLevel);
+        Assert.Equal(0, l[1].GemQuality);
+    }
+
+    [Theory]
+    [InlineData("Enlighten Support", 3, 3)]
+    [InlineData("Awakened Added Fire Damage Support", 5, 5)]
+    [InlineData("Arc", 20, 1)]
+    [InlineData("Added Fire Damage Support", 20, 1)]
+    public void BuildGemIsSearchedFromTheRightLevel(string name, int build, int expected) =>
+        Assert.Equal(expected, GemSearch.MinLevel(name, build));
+
+    [Fact]
+    public void BuildGemOpensAsACleanGemOfItsLevel()
+    {
+        var item = GameItem.Parse(GemSearch.ItemText("Enlighten Support", true, 3))!;
+        Assert.True(item.IsGem);
+        Assert.Equal("Enlighten Support", item.BaseType);
+        Assert.Equal(3, item.GemLevel);
+
+        var check = PriceCheck.For(item, TradeLink.FromData("Covens", Stats), 90);
+        Assert.Equal(3, check.GemLevelMin);
+        Assert.False(check.Corrupted);
+        var misc = check.Query(TradeLink.FromData("Covens", Stats), new PriceSettings { Status = "available" })["query"]!["filters"]!["misc_filters"]!["filters"]!;
+        Assert.Equal(3, (int)misc["gem_level"]!["min"]!);
+        Assert.Equal("false", (string?)misc["corrupted"]!["option"]);
+
+        // a gem that levels: level 1, no level filter at all — the cheapest of any level
+        var arc = PriceCheck.For(GameItem.Parse(GemSearch.ItemText("Arc", false, 1))!, TradeLink.FromData("Covens", Stats), 90);
+        Assert.Null(arc.GemLevelMin);
+        var arcMisc = arc.Query(TradeLink.FromData("Covens", Stats), new PriceSettings { Status = "available" })["query"]!["filters"]!["misc_filters"]!["filters"]!;
+        Assert.Null(arcMisc["gem_level"]);
+        arc.GemQualityMin = 20;
+        Assert.Equal(20, (int)arc.Query(TradeLink.FromData("Covens", Stats), new PriceSettings())["query"]!["filters"]!["misc_filters"]!["filters"]!["quality"]!["min"]!);
+    }
+
+    [Theory]
+    [InlineData("EnshroudingCrystals", "EnshroudingCrystal")]
+    [InlineData("Cards", "DivinationCard")]
+    [InlineData("Currency", "Currency")]
+    [InlineData(null, null)]
+    public void LeagueKindsArePricedFromTheirOwnNinjaList(string? group, string? type) =>
+        Assert.Equal(type, NinjaExchange.NinjaType(group));
 }

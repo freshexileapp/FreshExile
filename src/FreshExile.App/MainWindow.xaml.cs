@@ -33,6 +33,8 @@ public partial class MainWindow : Window
         vm.PropertyChanged += OnVmChanged;
         vm.HotkeysChanged += RegisterHotkeys;
         vm.PriceCheckRequested += (text, pick) => _ = RunPriceCheckAsync(text, pick);
+        vm.GemPriceRequested += text => _ = RunPriceCheckAsync(text);
+        vm.SendChat = SendChatAsync;
 
         _treeOverlay = new TreeOverlayController(vm, HideForGameTree, RestoreAfterGameTree);
         _treeOverlay.InventoryChanged += OnInventory;
@@ -105,6 +107,27 @@ public partial class MainWindow : Window
         }
         finally { _priceRunning = false; }
     }
+
+    /// <summary>
+    /// "Написать" on an offer: the message into the game's chat. Our hotkeys are off meanwhile — Ctrl+V or Enter may be
+    /// one of them, and a registered hotkey swallows the keystroke before the game sees it.
+    /// </summary>
+    async Task<bool> SendChatAsync(string text)
+    {
+        if (!GameFocus.GameRunning() && _gameWindow == IntPtr.Zero) { await GameInput.SendChatAsync(IntPtr.Zero, text); return false; }
+        var game = _gameWindow != IntPtr.Zero && IsWindow(_gameWindow) ? _gameWindow : GameInput.FindGameWindow();
+        if (game != IntPtr.Zero) _gameWindow = game;
+        _hotkeys?.Clear();
+        try
+        {
+            var sent = await GameInput.SendChatAsync(game, text);
+            Log.Write(sent ? "whisper: sent to the game's chat" : "whisper: game not found, copied only");
+            return sent;
+        }
+        finally { RegisterHotkeys(); }
+    }
+
+    [System.Runtime.InteropServices.DllImport("user32.dll")] static extern bool IsWindow(IntPtr h);
 
     /// <summary>One of our windows is in front (last check's price window), but the mouse is over the game: copy from it.</summary>
     bool OverGameFromOurWindow() =>

@@ -73,6 +73,10 @@ public sealed partial class TradeLink
 
     readonly Dictionary<string, string> _exchange = new(StringComparer.OrdinalIgnoreCase);
     readonly Dictionary<string, string> _exchangeArt = new(StringComparer.OrdinalIgnoreCase);
+    readonly Dictionary<string, string> _exchangeGroup = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>The trade's group of an exchange id ("imperial-enshrouding-crystal" → "EnshroudingCrystals"); null when unknown.</summary>
+    public string? ExchangeGroup(string id) => _exchangeGroup.GetValueOrDefault(id);
 
     /// <summary>The picture of an exchange id ("divine", "eldritch-exalted-orb") on GGG's CDN; null when the site has none.</summary>
     public string? ExchangeImage(string id) => _exchangeArt.GetValueOrDefault(id);
@@ -94,8 +98,10 @@ public sealed partial class TradeLink
         foreach (var g in groups.EnumerateArray())
         {
             if (!g.TryGetProperty("entries", out var entries) || entries.ValueKind != JsonValueKind.Array) continue;
+            var group = g.TryGetProperty("id", out var gid) ? gid.GetString() : null;
             foreach (var e in entries.EnumerateArray())
             {
+                if (group != null && e.TryGetProperty("id", out var eid) && eid.GetString() is { Length: > 0 } ei) _exchangeGroup.TryAdd(ei, group);
                 if (e.TryGetProperty("id", out var id) && id.GetString() is { Length: > 0 } i
                     && e.TryGetProperty("text", out var t) && t.GetString() is { Length: > 0 } text)
                     _exchange.TryAdd(text, i);
@@ -176,25 +182,6 @@ public sealed partial class TradeLink
                 _gems.TryAdd(text ?? type, (type, disc));
             }
         }
-    }
-
-    /// <summary>
-    /// Trade search for a gem: "Unbound Ailments" is listed as "Unbound Ailments Support", a transfigured gem
-    /// ("Poisonous Concoction of Bouncing") as its base with a discriminator. Cheapest first, any level:
-    /// a low gem levels up on the way.
-    /// </summary>
-    public string GemUrl(string name)
-    {
-        var (type, disc) = _gems.TryGetValue(name, out var g) ? g
-            : _gems.TryGetValue(name + " Support", out var s) ? s
-            : (name, (string?)null);
-        JsonNode typeNode = disc == null ? JsonValue.Create(type)! : new JsonObject { ["option"] = type, ["discriminator"] = disc };
-        var q = new JsonObject
-        {
-            ["query"] = new JsonObject { ["status"] = new JsonObject { ["option"] = Status }, ["type"] = typeNode },
-            ["sort"] = new JsonObject { ["price"] = "asc" },
-        };
-        return $"{Site}/trade/search/{Uri.EscapeDataString(League)}?q={Uri.EscapeDataString(q.ToJsonString())}";
     }
 
     void ReadStats(string json)

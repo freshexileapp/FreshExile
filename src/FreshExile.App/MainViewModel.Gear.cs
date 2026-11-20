@@ -234,6 +234,8 @@ public sealed partial class GearItemVm(string slot, PobItem item, RelayCommand t
     {
         "Weapon 1" => Loc.T("Оружие"),
         "Weapon 2" => Loc.T("Вторая рука"),
+        "Weapon 1 Swap" => Loc.T("Свап · оружие"),
+        "Weapon 2 Swap" => Loc.T("Свап · вторая рука"),
         "Helmet" => Loc.T("Шлем"),
         "Body Armour" => Loc.T("Нагрудник"),
         "Gloves" => Loc.T("Перчатки"),
@@ -338,24 +340,20 @@ public sealed partial class MainViewModel
 
     RelayCommand? _tradeGem;
 
-    /// <summary>A gem row's trade button: the gem on the trade site, cheapest first.</summary>
-    public RelayCommand TradeGemCommand => _tradeGem ??= new RelayCommand(p => { if (p is GemRowVm r) _ = TradeGemAsync(r); });
+    /// <summary>
+    /// A gem row's trade button: the price check window on this gem, cheapest first, with "Написать" on each offer —
+    /// any level for a gem that levels up on the way, the build's level for an Enlighten or an awakened one.
+    /// </summary>
+    public RelayCommand TradeGemCommand => _tradeGem ??= new RelayCommand(p => { if (p is GemRowVm r) TradeGem(r); });
 
-    async Task TradeGemAsync(GemRowVm row)
+    /// <summary>A gem's text as the game would copy it, for the price check window.</summary>
+    public event Action<string>? GemPriceRequested;
+
+    void TradeGem(GemRowVm row)
     {
-        try
-        {
-            var trade = await EnsureTradeAsync();
-            trade.Status = TradeStatus;
-            // the database name carries "Support"; a transfigured gem keeps its own name
-            var name = row.FromLab ? row.Name : _gems?.Find(row.Gem)?.Name ?? row.Name;
-            Process.Start(new ProcessStartInfo(trade.GemUrl(name)) { UseShellExecute = true });
-        }
-        catch (Exception)
-        {
-            _tradeLoading = null;
-            Toast(Loc.T("Трейд не открылся, нет связи с сайтом"));
-        }
+        // the database name carries "Support"; a transfigured gem keeps its own name
+        var name = row.FromLab ? row.Name : _gems?.Find(row.Gem)?.Name ?? row.Name;
+        GemPriceRequested?.Invoke(GemSearch.ItemText(name, row.IsSupport, GemSearch.MinLevel(name, row.Gem.Level)));
     }
 
     async Task<TradeLink> EnsureTradeAsync() => _trade ??= await (_tradeLoading ??= TradeLink.LoadAsync(_http, State.TradeLeague));

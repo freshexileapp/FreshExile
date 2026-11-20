@@ -109,12 +109,14 @@ public class GearTests
               {"type":"Poisonous Concoction","text":"Poisonous Concoction of Bouncing","disc":"alt_x"}]}]}
             """;
         var trade = TradeLink.FromData("Covens", null, items);
-        static string Q(string url) => Uri.UnescapeDataString(url[(url.IndexOf("?q=", StringComparison.Ordinal) + 3)..]);
+        // the gem row's button: the gem as the game would copy it, through the price check's query
+        string Q(string name) => PriceCheck.For(GameItem.Parse(GemSearch.ItemText(name, false, 1))!, trade, 90)
+            .Query(trade, new PriceSettings()).ToJsonString();
 
-        Assert.Contains("\"type\":{\"option\":\"Poisonous Concoction\",\"discriminator\":\"alt_x\"}", Q(trade.GemUrl("Poisonous Concoction of Bouncing")));
-        Assert.Contains("\"type\":\"Unbound Ailments Support\"", Q(trade.GemUrl("Unbound Ailments")));
-        Assert.Contains("\"type\":\"Poisonous Concoction\"", Q(trade.GemUrl("Poisonous Concoction")));
-        Assert.Contains("\"option\":\"securable\"", Q(trade.GemUrl("Poisonous Concoction")));
+        Assert.Contains("\"type\":{\"option\":\"Poisonous Concoction\",\"discriminator\":\"alt_x\"}", Q("Poisonous Concoction of Bouncing"));
+        Assert.Contains("\"type\":\"Unbound Ailments Support\"", Q("Unbound Ailments"));
+        Assert.Contains("\"type\":\"Poisonous Concoction\"", Q("Poisonous Concoction"));
+        Assert.Contains("\"option\":\"securable\"", Q("Poisonous Concoction"));
     }
 
     [Fact]
