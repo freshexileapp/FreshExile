@@ -85,6 +85,32 @@ public class PriceCheckTests
         """;
 
     [Fact]
+    public void Zero_width_space_in_a_line_does_not_hide_its_trade_stat()
+    {
+        // the game's own copy: an invisible U+200B before "Item Rarity Support"
+        var item = GameItem.Parse("""
+            Item Class: Body Armours
+            Rarity: Rare
+            Sorrow Suit
+            Twilight Regalia
+            --------
+            Item Level: 85
+            --------
+            { Suffix Modifier "of Shaping" (Tier: 1) — Gem, Drop }
+            Socketed Gems are Supported by Level 15 {ZWSP}Item Rarity Support — Unscalable Value
+            +17(13-18)% to Item Rarity from Slain Unique Enemies
+            """.Replace("{ZWSP}", ((char)0x200B).ToString()))!;
+        var trade = TradeLink.FromData("Covens", """
+            {"result":[{"id":"explicit","entries":[
+              {"id":"explicit.effect_3334987531","text":"Socketed Gems are Supported by Level # Item Rarity Support"}]}]}
+            """);
+
+        var f = PriceCheck.For(item, trade, 90).Filters.Single(x => x.Label.StartsWith("Socketed", StringComparison.Ordinal));
+        Assert.Equal("Socketed Gems are Supported by Level 15 Item Rarity Support", f.Label);
+        Assert.Equal("explicit.effect_3334987531", f.StatId);
+    }
+
+    [Fact]
     public void Advanced_copy_reads_tiers_ranges_and_properties()
     {
         var item = GameItem.Parse(Advanced)!;

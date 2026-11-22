@@ -492,5 +492,15 @@
   "⇄ 2-й набор оружия — качаются, не в билде": "⇄ Weapon swap — levelling, not in the build",
   "В PoB эта связка стоит во втором наборе оружия (свап): там гемы просто набирают уровень, в билде они не работают. Свап переключается клавишей X.": "In PoB this link sits in the second weapon set (swap): the gems only gain levels there and do nothing for the build. Swap weapons with X.",
   "Свап · оружие": "Swap · weapon",
-  "Свап · вторая рука": "Swap · off hand"
+  "Свап · вторая рука": "Swap · off hand",
+  "Поиск на трейде по названию": "Search the trade by name",
+  "Fresh Exile · поиск на трейде": "Fresh Exile · trade search",
+  "ПОИСК НА ТРЕЙДЕ": "TRADE SEARCH",
+  "Название: shaper guardian map, mageblood, divine…": "Name: shaper guardian map, mageblood, divine…",
+  "{0} · обмен": "{0} · exchange",
+  "Загружаю список предметов трейда…": "Loading the trade's item list…",
+  "Недавние · ↑↓ выбрать, Enter — искать": "Recent · ↑↓ to pick, Enter to search",
+  "Начни вводить название предмета, карты, валюты…": "Start typing an item, map or currency name…",
+  "↑↓ выбрать, Enter — искать": "↑↓ to pick, Enter to search",
+  "Ничего не нашлось. Названия — как на трейде, по-английски.": "Nothing found. Names are as on the trade site, in English."
 }

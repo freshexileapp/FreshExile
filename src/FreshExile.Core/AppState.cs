@@ -25,6 +25,9 @@ public sealed class AppState
     /// <summary>Builds loaded before, newest first (the current one among them): the build itself is kept, not just its link.</summary>
     public List<RecentBuild> RecentBuilds { get; set; } = new();
 
+    /// <summary>Names searched on the trade by name (the search window), newest first.</summary>
+    public List<string> RecentSearches { get; set; } = new();
+
     /// <summary>Trade league to search in; empty = the current softcore league from the trade site.</summary>
     public string? TradeLeague { get; set; }
 

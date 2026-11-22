@@ -99,8 +99,12 @@ public sealed partial class TradeLink
         {
             if (!g.TryGetProperty("entries", out var entries) || entries.ValueKind != JsonValueKind.Array) continue;
             var group = g.TryGetProperty("id", out var gid) ? gid.GetString() : null;
+            var label = g.TryGetProperty("label", out var gl) && gl.GetString() is { Length: > 0 } lb ? lb : group ?? "";
             foreach (var e in entries.EnumerateArray())
             {
+                // the exchange's name over the same base from the item list: the search then goes to the exchange
+                if (e.TryGetProperty("text", out var ct) && ct.GetString() is { Length: > 0 } ctext)
+                    _catalog[ctext] = new TradeEntry(ctext, ctext, null, label, TradeEntryKind.Exchange);
                 if (group != null && e.TryGetProperty("id", out var eid) && eid.GetString() is { Length: > 0 } ei) _exchangeGroup.TryAdd(ei, group);
                 if (e.TryGetProperty("id", out var id) && id.GetString() is { Length: > 0 } i
                     && e.TryGetProperty("text", out var t) && t.GetString() is { Length: > 0 } text)
@@ -169,9 +173,17 @@ public sealed partial class TradeLink
         using var doc = JsonDocument.Parse(json);
         foreach (var group in doc.RootElement.GetProperty("result").EnumerateArray())
         {
+            var label = group.TryGetProperty("label", out var gl) ? gl.GetString() ?? "" : "";
+            var gems = group.TryGetProperty("id", out var gidc) && gidc.GetString() == "gem";
             // every base the site knows, for names that carry more than the base ("Greater Engorged Eye")
             foreach (var e in group.GetProperty("entries").EnumerateArray())
-                if (e.TryGetProperty("type", out var any) && any.GetString() is { Length: > 0 } ty) _types.Add(ty);
+            {
+                if (e.TryGetProperty("type", out var any) && any.GetString() is { Length: > 0 } ty)
+                {
+                    _types.Add(ty);
+                    AddToCatalog(e, ty, label, gems);
+                }
+            }
             if (!group.TryGetProperty("id", out var gid) || gid.GetString() != "gem") continue;
             foreach (var e in group.GetProperty("entries").EnumerateArray())
             {
@@ -182,6 +194,26 @@ public sealed partial class TradeLink
                 _gems.TryAdd(text ?? type, (type, disc));
             }
         }
+    }
+
+    readonly Dictionary<string, TradeEntry> _catalog = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>Every name the trade sells, for the search window.</summary>
+    public IReadOnlyCollection<TradeEntry> Catalog => _catalog.Values;
+
+    public IReadOnlyList<TradeEntry> FindNames(string? query, int max = 40) => TradeCatalog.Find(_catalog.Values, query, max);
+
+    void AddToCatalog(JsonElement e, string type, string label, bool gem)
+    {
+        var text = e.TryGetProperty("text", out var t) ? t.GetString() : null;
+        if (e.TryGetProperty("name", out var n) && n.GetString() is { Length: > 0 } name)
+        {
+            text ??= name + " " + type;
+            _catalog.TryAdd(text, new TradeEntry(text, type, name, label, TradeEntryKind.Unique));
+        }
+        else if (gem) _catalog.TryAdd(text ?? type, new TradeEntry(text ?? type, type, null, label, TradeEntryKind.Gem));
+        // "Map" with disc "map" and the like: the site's generic entries, the same name as a real base
+        else if (!e.TryGetProperty("disc", out _)) _catalog.TryAdd(text ?? type, new TradeEntry(text ?? type, type, null, label, TradeEntryKind.Item));
     }
 
     void ReadStats(string json)

@@ -37,7 +37,31 @@ public sealed partial class MainViewModel
             return (null, Loc.T($"Наведи мышь на предмет в игре и нажми {KeyText(HotkeyActions.Price)}. Можно и так: Ctrl+C на предмете, потом сочетание вне игры."));
         if (item.Unidentified && item.Rarity != ItemRarity.Unique)
             return (null, Loc.T("Предмет не опознан: цена зависит от модов, сначала опознай его."));
+        return await PreparePriceCheckAsync(item, pick);
+    }
 
+    const int MaxRecentSearches = 10;
+
+    /// <summary>A name picked in the search window goes on top of the recent ones.</summary>
+    public void RememberSearch(string text)
+    {
+        var recent = State.RecentSearches;
+        recent.RemoveAll(s => s.Equals(text, StringComparison.OrdinalIgnoreCase));
+        recent.Insert(0, text);
+        if (recent.Count > MaxRecentSearches) recent.RemoveRange(MaxRecentSearches, recent.Count - MaxRecentSearches);
+        Save();
+    }
+
+    /// <summary>The trade's name list for the search window; null while the site is out of reach.</summary>
+    public async Task<TradeLink?> TradeForSearchAsync()
+    {
+        try { return await EnsureTradeAsync(); }
+        catch (Exception) { _tradeLoading = null; return null; }
+    }
+
+    /// <summary>The window model for an item already in hand: copied in game, or picked by name in the search window.</summary>
+    public async Task<(PriceCheckViewModel? Vm, string? Error)> PreparePriceCheckAsync(GameItem item, IReadOnlyCollection<string>? pick = null)
+    {
         TradeLink trade;
         try { trade = await EnsureTradeAsync(); }
         catch (Exception)
@@ -59,6 +83,9 @@ public sealed partial class MainViewModel
         }
 
         var check = PriceCheck.For(item, trade, (int)TradeStrictness, _gameLevel, WantedNotables(item, pick));
+        // a line the trade does not know: logged as read, odd characters spelled out (an invisible one breaks the match)
+        foreach (var f in check.Filters.Where(f => !f.Searchable))
+            Log.Write($"price check: no trade stat for \"{string.Concat(f.Label.Select(c => c is >= ' ' and <= '~' ? c.ToString() : $"\\u{(int)c:X4}"))}\"");
         if (pick is { Count: > 0 })
             foreach (var f in check.Filters)
                 if (f.Searchable && pick.Contains(f.Label, StringComparer.OrdinalIgnoreCase)) { f.Enabled = true; f.Shown = true; }

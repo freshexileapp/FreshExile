@@ -128,6 +128,7 @@ close the app (*Settings → About*).
 | `Ctrl+Alt+E` | tree window: clicks through on / off |
 | `Ctrl+Alt+←` / `→` | previous / next stage |
 | `Ctrl+Alt+D` | price check the item under the mouse (taken only while the game is in front) |
+| `Ctrl+Alt+F` | search the trade by name (maps, uniques, currency…), no item needed; the result opens in the price check window |
 
 All of them can be changed in *Settings → Keys*.
 

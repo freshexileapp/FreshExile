@@ -108,6 +108,50 @@ public partial class MainWindow : Window
         finally { _priceRunning = false; }
     }
 
+    SearchWindow? _search;
+
+    /// <summary>The search hotkey: a name box over the game; the picked name goes to the price check window and is searched.</summary>
+    async Task OpenSearchAsync()
+    {
+        Log.Write("search: hotkey");
+        if (GameFocus.Front() == FrontWindow.Game) _gameWindow = GameInput.GetForegroundWindow();
+        if (_search == null)
+        {
+            _search = new SearchWindow();
+            _search.Picked += entry => _ = RunNamedSearchAsync(entry);
+        }
+        _search.Open(_gameWindow, () => _vm.State.RecentSearches);
+        var trade = await _vm.TradeForSearchAsync();
+        _search.SetTrade(trade);
+        if (trade == null) Log.Write("search: trade site out of reach");
+    }
+
+    async Task RunNamedSearchAsync(TradeEntry entry)
+    {
+        if (_priceRunning) { Log.Write("search: the price check is still busy"); return; }
+        _priceRunning = true;
+        Log.Write($"search: {entry.Kind} \"{entry.Text}\"");
+        try
+        {
+            _vm.RememberSearch(entry.Text);
+            _price ??= new PriceCheckWindow();
+            var (vm, error) = await _vm.PreparePriceCheckAsync(entry.ToItem());
+            if (vm == null)
+            {
+                _price.ShowMessage(error ?? "", _gameWindow);
+                return;
+            }
+            _price.ShowCheck(vm, _gameWindow);
+            // a name was asked for: searched right away, whatever the auto-search setting
+            if (vm.CanRequest) await vm.SearchAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Write("search failed: " + ex.Message);
+        }
+        finally { _priceRunning = false; }
+    }
+
     /// <summary>
     /// "Написать" on an offer: the message into the game's chat. Our hotkeys are off meanwhile — Ctrl+V or Enter may be
     /// one of them, and a registered hotkey swallows the keystroke before the game sees it.
@@ -166,6 +210,7 @@ public partial class MainWindow : Window
                 HotkeyActions.Prev => () => _vm.StepStage(-1),
                 HotkeyActions.Compact => ToggleCompact,
                 HotkeyActions.Price => () => _ = RunPriceCheckAsync(),
+                HotkeyActions.Search => () => _ = OpenSearchAsync(),
                 _ => () => _vm.StepStage(1),
             };
             var ok = _hotkeys.Register(b.NativeMods, b.Key, action);

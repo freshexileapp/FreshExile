@@ -108,7 +108,8 @@ public sealed partial record GameItem
     public static GameItem? Parse(string? text)
     {
         if (string.IsNullOrWhiteSpace(text)) return null;
-        var lines = text.Replace("\r", "").Split('\n').Select(l => l.Trim()).ToList();
+        // the game hides zero-width spaces in some lines (U+200B before "Item" in "Level 15 Item Rarity Support"): out, or the trade's text never matches
+        var lines = ZeroWidthRx().Replace(text.Replace("\r", ""), "").Split('\n').Select(l => l.Trim()).ToList();
         var sections = new List<List<string>>();
         var cur = new List<string>();
         foreach (var l in lines)
@@ -435,6 +436,7 @@ public sealed partial record GameItem
     [GeneratedRegex(@"^(Quality|Armour|Evasion Rating|Energy Shield|Ward|Level|Map Tier|Chance to Block|Physical Damage|Elemental Damage|Critical Strike Chance|Attacks per Second|Weapon Range|Stack Size|Item Quantity|Item Rarity|Monster Pack Size|Experience|Charges per use|Lasts|Recovers|Consumes)[^:]*:\s*(.*)$")]
     private static partial Regex PropRx();
     [GeneratedRegex(@"\(Tier: (\d+)\)")] private static partial Regex TierRx();
+    [GeneratedRegex(@"[\u200B-\u200D\u2060\uFEFF]")] private static partial Regex ZeroWidthRx();
     [GeneratedRegex(@"Modifier ""([^""]+)""")] private static partial Regex AffixNameRx();
     [GeneratedRegex(@"^Requires (Lockpicking|Brute Force|Perception|Demolition|Counter-Thaumaturgy|Trap Disarmament|Agility|Deception|Engineering) \(Level (\d+)\)")]
     private static partial Regex HeistJobRx();
