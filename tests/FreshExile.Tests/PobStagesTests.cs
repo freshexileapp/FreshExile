@@ -21,6 +21,31 @@ public class PobStagesTests
         """;
 
     [Fact]
+    public void Guide_tags_pair_trees_with_the_gem_and_item_sets_named_differently()
+    {
+        static string Spec(string title, string nodes) => $"""<Spec title="{title}" nodes="{nodes}" treeVersion="3_26"/>""";
+        static string Set(string title, string gem) =>
+            $"""<SkillSet title="{title}"><Skill label=""><Gem nameSpec="{gem}" skillId="{gem}" level="1" enabled="true"/></Skill></SkillSet>""";
+        var xml = $$"""
+            <PathOfBuilding>
+              <Build level="100" className="Templar" ascendClassName="None"/>
+              <Tree activeSpec="1">{{Spec("Act 1 {1}", "1")}}{{Spec("lvl 80 Pinnacles {6}", "1,2")}}{{Spec("lvl 92 Farming {7}", "1,2,3")}}{{Spec("lvl 100 Endgame (Invert the rules) {9}", "1,2,3,4")}}</Tree>
+              <Skills>{{Set("Act 1 {1}", "Smite")}}{{Set("Pinnacles {6,7}", "Raise Zombie")}}{{Set("Endgame {9}", "Absolution")}}</Skills>
+              <Items><ItemSet id="1" title="Campaign {1,2,3,4,5}"/><ItemSet id="2" title="Endgame {9}"/></Items>
+            </PathOfBuilding>
+            """;
+        var build = BuildParser.Parse(xml);
+
+        // every stage has its tree: the sets no longer trail behind as tree-less stages
+        Assert.Equal(["Act 1 {1}", "lvl 80 Pinnacles {6}", "lvl 92 Farming {7}", "lvl 100 Endgame (Invert the rules) {9}"],
+            build.Stages.Select(s => s.Title));
+        Assert.All(build.Stages, s => Assert.NotNull(s.Tree));
+        Assert.Equal(["Smite", "Raise Zombie", "Raise Zombie", "Absolution"], build.Stages.Select(s => s.AllGems.Single().Name));
+        Assert.Equal("Campaign {1,2,3,4,5}", build.GearFor(build.Stages[0])!.Value.Set.Title);
+        Assert.Equal("Endgame {9}", build.GearFor(build.Stages[3])!.Value.Set.Title);
+    }
+
+    [Fact]
     public void Each_snapshot_of_a_live_build_becomes_its_own_stage_with_its_own_gems_and_gear()
     {
         var (a, o1, t1) = PobStages.Append(null, Live(12, "1,2", "Fireball", "Doom Crown"));

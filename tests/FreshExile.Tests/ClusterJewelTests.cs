@@ -6,6 +6,46 @@ namespace FreshExile.Tests;
 
 public class ClusterJewelTests
 {
+    [Fact]
+    public void Profile_passives_include_the_ones_inside_cluster_jewels()
+    {
+        using var doc = System.Text.Json.JsonDocument.Parse("""{"hashes":[12,345],"hashes_ex":[65537,66116],"mastery_effects":{"59344":"3016512962"}}""");
+        Assert.Equal([12, 345, 65537, 66116, 59344], PoeApi.ReadNodes(doc.RootElement));
+
+        // the other shape: a list of effect << 16 | node
+        using var list = System.Text.Json.JsonDocument.Parse("""{"hashes":[12],"mastery_effects":[3889561424]}""");
+        Assert.Equal([12, (int)(3889561424L & 0xFFFF)], PoeApi.ReadNodes(list.RootElement));
+    }
+
+    [Fact]
+    public void Profile_masteries_say_which_effect_was_chosen()
+    {
+        // as the profile answered in November 2026: {"node": effect}
+        using var doc = System.Text.Json.JsonDocument.Parse("""{"mastery_effects":{"62416":50863,"33823":"9986"}}""");
+        var m = PoeApi.ReadMasteryEffects(doc.RootElement);
+        Assert.Equal(50863, m[62416]);
+        Assert.Equal(9986, m[33823]);
+
+        // the other shape: effect << 16 | node
+        using var list = System.Text.Json.JsonDocument.Parse($$"""{"mastery_effects":[{{(28589L << 16) | 48349}}]}""");
+        Assert.Equal(28589, PoeApi.ReadMasteryEffects(list.RootElement)[48349]);
+    }
+
+    [Fact]
+    public void Profile_runegrafts_and_tattoos_are_read_by_node()
+    {
+        using var doc = System.Text.Json.JsonDocument.Parse("""
+            {"skill_overrides":{"43647":{"name":"Runegraft of the Fortress","stats":["40% increased Defences"]},
+                                "23027":{"name":"Tattoo of the Kitava Blood Drinker","isTattoo":true}}}
+            """);
+        var o = PoeApi.ReadOverrides(doc.RootElement);
+        Assert.Equal("Runegraft of the Fortress", o[43647]);
+        Assert.Equal("Tattoo of the Kitava Blood Drinker", o[23027]);
+        // the answer without any: nothing, not a failure
+        using var none = System.Text.Json.JsonDocument.Parse("""{"skill_overrides":{}}""");
+        Assert.Empty(PoeApi.ReadOverrides(none.RootElement));
+    }
+
     // one large cluster socket (index 3), taken, as GGG's export writes it
     const string TreeJson = """
         {"constants":{"skillsPerOrbit":[1,6,16,16,40],"orbitRadii":[0,82,162,335,493]},

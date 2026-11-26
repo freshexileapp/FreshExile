@@ -119,4 +119,15 @@ public sealed class HotkeyRowVm(string id, string title) : Observable
     }
 
     public bool HasError => !string.IsNullOrEmpty(_error);
+
+    string? _clash;
+    bool _isDefault = true;
+
+    /// <summary>"Занято: Прайс-чек": another action has the same key (kept, drawn in red).</summary>
+    public string? Clash { get => _clash; set { Set(ref _clash, value); Raise(nameof(HasClash)); } }
+    public bool HasClash => !string.IsNullOrEmpty(_clash);
+
+    /// <summary>The key is the action's default: no ↺ beside it.</summary>
+    public bool IsDefault { get => _isDefault; set { Set(ref _isDefault, value); Raise(nameof(CanReset)); } }
+    public bool CanReset => !_isDefault;
 }

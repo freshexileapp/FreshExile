@@ -28,6 +28,13 @@ public sealed class TreeCanvas : FrameworkElement
     /// <summary>Respec between stages: nodes and links of the previous stage that this stage drops.</summary>
     static readonly Color RefundEdge = Color.FromRgb(0xF0, 0x4A, 0x4A);
     static readonly Color RefundBright = Color.FromRgb(0xFF, 0x2E, 0x2E);
+    // a runegraft / tattoo on the node: the app's bronze; a mastery the character took with another effect: red, dashed
+    static readonly Color OverrideRing = Color.FromRgb(0xC9, 0x91, 0x3F);
+    // on the game's own tree bronze melts into its gold frames: a teal that stands out from them
+    static readonly Color OverrideRingInGame = Color.FromRgb(0x4F, 0xD8, 0xE0);
+    // tattoos apart from runegrafts: violet, the same as the tattoo block over the game's tree
+    static readonly Color TattooRing = Color.FromRgb(0xB4, 0x8C, 0xF0);
+    static readonly Color ClashRing = Color.FromRgb(0xFF, 0x4A, 0x4A);
     static readonly Color StartRing = Color.FromRgb(0x4A, 0x4A, 0x50);
     /// <summary>A cluster jewel the plan needs: its card on the game's tree.</summary>
     static readonly Color ClusterColor = Color.FromRgb(0xC2, 0x96, 0xFF);
@@ -41,6 +48,8 @@ public sealed class TreeCanvas : FrameworkElement
 
     Geometry? _baseEdges, _haveEdges, _planEdges, _refundEdges;
     Geometry? _baseNodes, _baseMastery, _haveNodes, _planNodes, _planHalo, _refundNodes, _refundX, _starts, _planRings;
+    Geometry? _overrideRings, _tattooRings, _clashRings;
+    IReadOnlySet<int> _overrides = new HashSet<int>(), _tattoos = new HashSet<int>(), _clashes = new HashSet<int>();
 
     /// <summary>
     /// Overlay: everything but the insides of the plan's rings. The path is clipped to it, so a ring stays empty and the
@@ -129,12 +138,18 @@ public sealed class TreeCanvas : FrameworkElement
     };
 
     /// <param name="jewels">The stage's jewels by socket: the overlay cards a socket of the plan with the jewel for it.</param>
-    public void SetData(PassiveTree? tree, PlanResult? plan, IReadOnlyDictionary<int, PobItem>? jewels = null)
+    /// <param name="overrides">Nodes a runegraft or a tattoo replaces: a bronze ring.</param>
+    /// <param name="clashes">Masteries the character took with another effect than the build's: a red dashed ring.</param>
+    public void SetData(PassiveTree? tree, PlanResult? plan, IReadOnlyDictionary<int, PobItem>? jewels = null,
+        IReadOnlySet<int>? overrides = null, IReadOnlySet<int>? clashes = null, IReadOnlySet<int>? tattoos = null)
     {
         var treeChanged = !ReferenceEquals(tree, _tree);
         _tree = tree;
         _plan = plan;
         _jewels = jewels ?? new Dictionary<int, PobItem>();
+        _overrides = overrides ?? new HashSet<int>();
+        _clashes = clashes ?? new HashSet<int>();
+        _tattoos = tattoos ?? new HashSet<int>();
         Rebuild();
         if (!OverlayMode && (treeChanged || _needFit)) FitToPlan();
         else InvalidateVisual();
@@ -255,6 +270,21 @@ public sealed class TreeCanvas : FrameworkElement
         }
 
         foreach (var g in new Geometry[] { gBase, gHave, gPlan, gRefund, nBase, nMastery, nHave, nPlan, nHalo, nRefund, nX, nStart, nRings }) g.Freeze();
+        _overrideRings = Rings(_overrides.Where(id => !_tattoos.Contains(id)).ToHashSet(), 14);
+        _tattooRings = Rings(_tattoos, 14);
+        // a step wider: on a runegraft node taken without it both rings show
+        _clashRings = Rings(_clashes, 30);
+
+        Geometry? Rings(IReadOnlySet<int> ids, double gap)
+        {
+            if (ids.Count == 0) return null;
+            var geo = new StreamGeometry();
+            using (var c = geo.Open())
+                foreach (var id in ids)
+                    if (_tree.Nodes.TryGetValue(id, out var n) && n.Drawable) Circle(c, n.X, n.Y, RingRadius(n) + gap, false);
+            geo.Freeze();
+            return geo;
+        }
         _planRings = nRings;
         var holes = new GeometryGroup { FillRule = FillRule.Nonzero };
         foreach (var n in _tree.Nodes.Values)
@@ -352,6 +382,7 @@ public sealed class TreeCanvas : FrameworkElement
             dc.DrawGeometry(null, Pen(RefundBright, 3 * px, dashed: true), _refundEdges);
             dc.DrawGeometry(null, Pen(outline, 4.5 * px), _refundX);
             dc.DrawGeometry(null, Pen(RefundBright, 2.4 * px), _refundX);
+            DrawMarks(dc, px, outline);
             dc.Pop();
             DrawGhostCards(dc);
             DrawLabels(dc);
@@ -373,6 +404,7 @@ public sealed class TreeCanvas : FrameworkElement
         dc.DrawGeometry(null, Pen(RefundEdge, 1.5 * px), _refundX);
         dc.DrawGeometry(PlanHalo, null, _planHalo);
         dc.DrawGeometry(PlanNode, null, _planNodes);
+        DrawMarks(dc, px, Color.FromArgb(0x90, 0, 0, 0));
 
         if (_hover != null)
             dc.DrawEllipse(null, Pen(Colors.White, 1.5 * px), new Point(_hover.X, _hover.Y), Radius(_hover) + 7 * px, Radius(_hover) + 7 * px);
@@ -380,6 +412,26 @@ public sealed class TreeCanvas : FrameworkElement
         dc.Pop();
         DrawLabels(dc);
         DrawFocus(dc);
+    }
+
+    /// <summary>Runegrafts / tattoos (bronze ring) and masteries with another effect at the character (red dashes).</summary>
+    void DrawMarks(DrawingContext dc, double px, Color outline)
+    {
+        if (_overrideRings != null)
+        {
+            dc.DrawGeometry(null, Pen(outline, (OverlayMode ? 6.5 : 5) * px), _overrideRings);
+            dc.DrawGeometry(null, Pen(OverlayMode ? OverrideRingInGame : OverrideRing, (OverlayMode ? 3.4 : 2.6) * px), _overrideRings);
+        }
+        if (_tattooRings != null)
+        {
+            dc.DrawGeometry(null, Pen(outline, (OverlayMode ? 6.5 : 5) * px), _tattooRings);
+            dc.DrawGeometry(null, Pen(TattooRing, (OverlayMode ? 3.4 : 2.6) * px), _tattooRings);
+        }
+        if (_clashRings != null)
+        {
+            dc.DrawGeometry(null, Pen(outline, 5 * px), _clashRings);
+            dc.DrawGeometry(null, Pen(ClashRing, 2.6 * px, dashed: true), _clashRings);
+        }
     }
 
     /// <summary>

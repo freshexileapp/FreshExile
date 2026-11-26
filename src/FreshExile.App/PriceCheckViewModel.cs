@@ -11,11 +11,11 @@ namespace FreshExile.App;
 /// <summary>One filter row: tick, the line, tier badge, min / max boxes.</summary>
 public sealed class PriceFilterVm(PriceFilter f) : Observable
 {
-    static readonly Brush ModBlue = Frozen(0x88, 0x88, 0xFF);
+    static readonly Brush ModBlue = Frozen(0xA9, 0xA9, 0xFF);
     static readonly Brush CraftedBlue = Frozen(0xB4, 0xB4, 0xFF);
     static readonly Brush FracturedGold = Frozen(0xA2, 0x90, 0x60);
     static readonly Brush EnchantBlue = Frozen(0xB8, 0xDA, 0xF2);
-    static readonly Brush Plain = Frozen(0xF4, 0xF4, 0xF5);
+    static readonly Brush Plain = Frozen(0xED, 0xE3, 0xCF);
 
     static Brush Frozen(byte r, byte g, byte b) { var x = new SolidColorBrush(Color.FromRgb(r, g, b)); x.Freeze(); return x; }
 
@@ -35,6 +35,8 @@ public sealed class PriceFilterVm(PriceFilter f) : Observable
     public bool HasTier => Filter.Tier != null;
     public string? RangeText => Filter.Range is { } r ? $"({r})" : null;
     public bool HasRange => Filter.Range != null;
+    /// <summary>" (7–10)" at the end of the line's text, an en dash between the numbers.</summary>
+    public string RangeSuffix => Filter.Range is { } r ? " (" + System.Text.RegularExpressions.Regex.Replace(r, @"(\d)-(\d|-)", "$1–$2") + ")" : "";
     public bool IsTopTier => Filter.Tier is 1 or 2;
     public string KindText => Filter.ModKind switch
     {
@@ -46,6 +48,12 @@ public sealed class PriceFilterVm(PriceFilter f) : Observable
         _ => "",
     };
     public bool HasKind => KindText.Length > 0;
+
+    /// <summary>A cluster notable under the "Под мой билд" card: "из билда" (required) or "в «любой из N»" (counted there).</summary>
+    public string? ClusterTag { get; set; }
+    public bool HasClusterTag => ClusterTag != null;
+    /// <summary>One of the card's "any of N": its own tick does not decide it, the card does.</summary>
+    public bool IsClusterOther { get; set; }
     public string ToolTip => Searchable ? Label : Loc.T("Этого стата нет в поиске трейда");
     public string? Hint => Filter.Hint;
     /// <summary>The "!" badge: a flagged line that is still unticked.</summary>
@@ -90,7 +98,7 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
 {
     static readonly Brush Ahead = Frozen(0x4A, 0xDE, 0x80);
     static readonly Brush Behind = Frozen(0xF8, 0x71, 0x71);
-    static readonly Brush Same = Frozen(0xA1, 0xA1, 0xAA);
+    static readonly Brush Same = Frozen(0xB5, 0xA6, 0x8C);
     static Brush Frozen(byte r, byte g, byte b) { var x = new SolidColorBrush(Color.FromRgb(r, g, b)); x.Freeze(); return x; }
 
     /// <summary>The site's message to the seller: an "in person" offer has one, an instant buyout is bought on the site.</summary>
@@ -143,8 +151,8 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
         public string? TheirsChipTip => TheirsFractured ? Loc.T("Фрактурный — не перекрафтится") : null;
     }
 
-    static readonly Brush ChipFill = Frozen(0x2A, 0x2A, 0x30);
-    static readonly Brush ChipText = Frozen(0xA1, 0xA1, 0xAA);
+    static readonly Brush ChipFill = Frozen(0x2A, 0x21, 0x17);
+    static readonly Brush ChipText = Frozen(0xB5, 0xA6, 0x8C);
     static readonly Brush FracturedFill = Frozen(0x4A, 0x40, 0x26);
     static readonly Brush FracturedText = Frozen(0xE2, 0xC9, 0x8A);
 
@@ -307,6 +315,14 @@ public sealed class PriceCheckViewModel : Observable
         _gemLevel = check.GemLevelMin?.ToString(CultureInfo.InvariantCulture) ?? "";
         _gemQuality = check.GemQualityMin?.ToString(CultureInfo.InvariantCulture) ?? "";
         Filters = new ObservableCollection<PriceFilterVm>(check.Filters.Select(f => new PriceFilterVm(f)));
+        // a cluster for the build: its notables say whether the card requires them or counts them among "any of N"
+        if (check.Cluster is { } plan)
+            foreach (var f in Filters)
+                if (PriceCheck.ClusterNotableOf(f.Label) is { } n)
+                {
+                    if (plan.Wanted.Contains(n, StringComparer.OrdinalIgnoreCase)) f.ClusterTag = Loc.T("из билда");
+                    else if (plan.Others.Contains(n, StringComparer.OrdinalIgnoreCase)) { f.ClusterTag = Loc.T($"в «любой из {plan.Others.Count}»"); f.IsClusterOther = true; }
+                }
         SearchCommand = new RelayCommand(() => _ = SearchAsync(), _ => CanRequest);
         MoreCommand = new RelayCommand(() => _ = MoreAsync(), _ => CanRequest && HasMore);
         OpenTradeCommand = new RelayCommand(OpenTrade);
@@ -410,6 +426,8 @@ public sealed class PriceCheckViewModel : Observable
           + (n.Market ? Loc.T("/шт") : "")
         : null;
     public bool HasNinja => _ninja != null;
+    /// <summary>The in-game exchange's rate is the price of currency and the like: gold, like the trade's cheapest offer.</summary>
+    public bool IsMarketPrice => _ninja is { Market: true };
     public string NinjaTip => _ninja is { Market: true }
         ? Loc.T("Курс внутриигрового обмена валюты (poe.ninja): по нему и продают. Продавцов на трейде мало, и они часто просят больше")
         : Loc.T("Цена уника на poe.ninja: без запроса к трейду");
@@ -421,9 +439,9 @@ public sealed class PriceCheckViewModel : Observable
 
     public Brush RarityBrush => Item.Rarity switch
     {
-        ItemRarity.Unique => Rarity(0xAF, 0x60, 0x25),
-        ItemRarity.Rare => Rarity(0xFF, 0xFF, 0x77),
-        ItemRarity.Magic => Rarity(0x88, 0x88, 0xFF),
+        ItemRarity.Unique => Rarity(0xD8, 0x80, 0x3A),
+        ItemRarity.Rare => Rarity(0xF2, 0xE3, 0x6C),
+        ItemRarity.Magic => Rarity(0xA9, 0xA9, 0xFF),
         _ when Item.IsGem => Rarity(0x1B, 0xA2, 0x9B),
         _ => Rarity(0xC8, 0xC8, 0xC8),
     };
@@ -507,12 +525,22 @@ public sealed class PriceCheckViewModel : Observable
     // a cluster from the build: its wanted notables, the rest any of those that keep off their path
     public bool HasClusterLayout => _check.Cluster != null;
     public bool UseClusterLayout { get => _check.UseClusterLayout; set { _check.UseClusterLayout = value; Raise(); } }
-    public string ClusterLayoutChip => _check.Cluster is { } p
-        ? Loc.T($"+{p.Count} любой не на пути · {p.Others.Count} вар.")
-        : "";
-    public string ClusterLayoutTip => _check.Cluster is { } p
-        ? Loc.T($"Мои нотабли ({string.Join(", ", p.Wanted)}) обязательны, остальные места — любой из: {string.Join(", ", p.Others)}. Они встают на кольце дальше моих, и к моим не надо идти через них. Не подходят ({p.Skipped}): встали бы на пути.")
-        : "";
+    public bool UseClusterLayoutOn
+    {
+        get => UseClusterLayout;
+        set { UseClusterLayout = value; Raise(); Raise(nameof(SearchText)); Raise(nameof(ClusterOff)); }
+    }
+    /// <summary>The card folded to one line: "Под мой билд — выкл."</summary>
+    public bool ClusterOff => HasClusterLayout && !UseClusterLayout;
+    /// <summary>The build's own notables: the search requires each.</summary>
+    public IReadOnlyList<string> ClusterWanted => _check.Cluster?.Wanted ?? [];
+    /// <summary>The places left: any of these (they sit further round the ring, off the way to the build's own).</summary>
+    public IReadOnlyList<string> ClusterOthers => _check.Cluster?.Others ?? [];
+    public string ClusterAnyLabel => _check.Cluster is { } p ? Loc.T($"+{p.Count} любой из {p.Others.Count}") : "";
+    public string ClusterSkippedText => _check.Cluster is { } p ? Loc.T($"Не подходят · {p.Skipped}") : "";
+    public bool HasClusterSkipped => _check.Cluster is { Skipped: > 0 };
+    /// <summary>The main button says what it searches for.</summary>
+    public string SearchText => HasClusterLayout && UseClusterLayout ? Loc.T("Искать под билд") : Loc.T("Искать");
 
     public bool HasAreaLevel => Item.HeistJob != null && Item.AreaLevel > 0;
     public string AreaLevelChip => Loc.T($"Уровень зоны ≥ {Item.AreaLevel}");
@@ -602,6 +630,8 @@ public sealed class PriceCheckViewModel : Observable
 
     public bool HasMore => _result != null && _fetched < Math.Min(_result.ItemIds.Count, MaxShown);
     public bool HasListings => Listings.Count > 0;
+    /// <summary>"Найдено · 385" on the diamond between the buttons and the offers.</summary>
+    public string? FoundText => HasListings && _result is { } r ? Loc.T($"Найдено · {r.Total}") : null;
 
     /// <summary>The bulk exchange's id of the checked item: currency and the like are priced there, not by the item search.</summary>
     string? ExchangeId => _trade.ExchangeId(Item);
@@ -698,7 +728,7 @@ public sealed class PriceCheckViewModel : Observable
             IsBusy = false;
             StartCooldown(Cooldown > _api.NextSearchWait ? Cooldown : _api.NextSearchWait);
             Raise(nameof(HasMore));
-            Raise(nameof(HasListings));
+            Raise(nameof(HasListings)); Raise(nameof(FoundText));
         }
     }
 
@@ -717,7 +747,7 @@ public sealed class PriceCheckViewModel : Observable
             IsBusy = false;
             StartCooldown(Cooldown > _api.NextSearchWait ? Cooldown : _api.NextSearchWait);
             Raise(nameof(HasMore));
-            Raise(nameof(HasListings));
+            Raise(nameof(HasListings)); Raise(nameof(FoundText));
         }
     }
 

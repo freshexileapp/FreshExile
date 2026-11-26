@@ -85,8 +85,9 @@ public sealed partial class StageFollower(IReadOnlyList<string> titles)
 
     int? FindActStage(int act)
     {
+        // "Acts 4-5" covers act 5 too: the stage whose act range holds this act
         for (var i = 0; i < Titles.Count; i++)
-            if (ActOf(Titles[i]) == act) return i;
+            if (ActRange(Titles[i]) is var (from, to) && from <= act && act <= to) return i;
         return null;
     }
 
@@ -108,12 +109,18 @@ public sealed partial class StageFollower(IReadOnlyList<string> titles)
         return best;
     }
 
-    public static int? ActOf(string title)
+    public static int? ActOf(string title) => ActRange(title)?.From;
+
+    /// <summary>Acts a stage title names: "Act 3" = 3..3, "Acts 6-10" / "Акты 4-5" = a range.</summary>
+    public static (int From, int To)? ActRange(string title)
     {
         var m = ActRx().Match(title);
-        return m.Success ? int.Parse(m.Groups[1].Value) : null;
+        if (!m.Success) return null;
+        var from = int.Parse(m.Groups[1].Value);
+        var to = m.Groups[2].Success ? int.Parse(m.Groups[2].Value) : from;
+        return (from, Math.Max(from, to));
     }
 
-    [GeneratedRegex(@"\b(?:act|акт)\s*(\d+)\b", RegexOptions.IgnoreCase)] private static partial Regex ActRx();
+    [GeneratedRegex(@"\b(?:acts?|акты?)\s*(\d+)(?:\s*[-–—]\s*(\d+))?\b", RegexOptions.IgnoreCase)] private static partial Regex ActRx();
 }
 

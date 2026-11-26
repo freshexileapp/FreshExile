@@ -57,11 +57,11 @@ public sealed record GearInfluenceVm(string Sep, string Name, Brush Brush);
 public sealed partial class GearItemVm(string slot, PobItem item, RelayCommand trade, RelayCommand copy) : Observable
 {
     // the game's own rarity colours, slightly lifted for the dark panel
-    static readonly Brush Unique = Frozen(0xAF, 0x60, 0x25);
-    static readonly Brush Rare = Frozen(0xFF, 0xFF, 0x77);
-    static readonly Brush Magic = Frozen(0x88, 0x88, 0xFF);
+    static readonly Brush Unique = Frozen(0xD8, 0x80, 0x3A);
+    static readonly Brush Rare = Frozen(0xF2, 0xE3, 0x6C);
+    static readonly Brush Magic = Frozen(0xA9, 0xA9, 0xFF);
     static readonly Brush Normal = Frozen(0xC8, 0xC8, 0xC8);
-    static readonly Brush ModBlue = Frozen(0x88, 0x88, 0xFF);
+    static readonly Brush ModBlue = Frozen(0xA9, 0xA9, 0xFF);
     static readonly Brush CraftedBlue = Frozen(0xB4, 0xB4, 0xFF);
     static readonly Brush Fractured = Frozen(0xA2, 0x90, 0x60);
     static readonly Brush Enchant = Frozen(0xB8, 0xDA, 0xF2);
@@ -200,6 +200,7 @@ public sealed partial class GearItemVm(string slot, PobItem item, RelayCommand t
     /// <summary>A cluster: "Нотабли 3 из 3 · малые 2 из 3", in green when all its notables are taken.</summary>
     public string? ClusterSummary { get; init; }
     public Brush ClusterSummaryBrush { get; init; } = TakenBrush;
+    public bool HasClusterSummary => ClusterSummary != null;
 
     /// <summary>
     /// What the folded row says under the name: a cluster's notables, a timeless jewel's seed, else the first
@@ -248,8 +249,25 @@ public sealed partial class GearItemVm(string slot, PobItem item, RelayCommand t
         _ when slot.StartsWith("Flask ", StringComparison.Ordinal) => Loc.T($"Фласка {slot[6..]}"),
         "Jewel" => Loc.T("Джевел"),
         "Cluster" => Loc.T("Кластер"),
+        "Body" => Loc.T("Тело"),
+        "Arm" => Loc.T("Рука"),
+        "Leg" => Loc.T("Нога"),
         _ => slot,
     };
+
+    /// <summary>The gear tab's group of a slot: weapons, armour, jewellery, flasks, jewels, or the special slots of the rest.</summary>
+    internal static string GearGroup(string slot) => slot switch
+    {
+        _ when slot.StartsWith("Weapon ", StringComparison.Ordinal) => "weapons",
+        "Helmet" or "Body Armour" or "Gloves" or "Boots" => "armour",
+        "Amulet" or "Belt" => "jewellery",
+        _ when slot.StartsWith("Ring ", StringComparison.Ordinal) => "jewellery",
+        _ when slot.StartsWith("Flask ", StringComparison.Ordinal) => "flasks",
+        "Jewel" or "Cluster" => "jewels",
+        _ => "special",
+    };
+
+    public bool IsSwap => Slot.EndsWith(" Swap", StringComparison.Ordinal);
 }
 
 public sealed partial class MainViewModel
@@ -258,6 +276,36 @@ public sealed partial class MainViewModel
     public bool HasGear => Gear.Count > 0;
     public bool HasNoGear => Build != null && Gear.Count == 0;
 
+    /// <summary>The gear tab by groups, each under a diamond heading with its count; empty groups are left out.</summary>
+    public ObservableCollection<GearGroupVm> GearGroups { get; } = new();
+
+    static readonly (string Key, string Title)[] GearGroupOrder =
+    [
+        ("weapons", Loc.T("Оружие")), ("armour", Loc.T("Броня")), ("jewellery", Loc.T("Бижутерия")),
+        ("flasks", Loc.T("Фласки")), ("special", Loc.T("Особые слоты")), ("jewels", Loc.T("Самоцветы")),
+    ];
+
+    void RefreshGearGroups()
+    {
+        GearGroups.Clear();
+        var folded = Build != null && _s.GearGroupsFolded.TryGetValue(MarksKey, out var f) ? f : null;
+        foreach (var (key, title) in GearGroupOrder)
+        {
+            var items = Gear.Where(g => GearItemVm.GearGroup(g.Slot) == key).ToList();
+            if (items.Count == 0) continue;
+            GearGroups.Add(new GearGroupVm(key, title, items.Where(i => !i.IsSwap).ToList(), items.Where(i => i.IsSwap).ToList(),
+                folded?.Contains(key) != true, ToggleGearGroup));
+        }
+    }
+
+    void ToggleGearGroup(GearGroupVm g)
+    {
+        if (Build == null) return;
+        if (!_s.GearGroupsFolded.TryGetValue(MarksKey, out var folded)) _s.GearGroupsFolded[MarksKey] = folded = new HashSet<string>();
+        if (g.IsOpen) folded.Remove(g.Key); else folded.Add(g.Key);
+        Save();
+    }
+
     // the gear tab in two groups: what is worn, then the jewels in the tree (clusters among them)
     public IReadOnlyList<GearItemVm> GearWorn => Gear.Where(g => !g.IsJewel).ToList();
     public IReadOnlyList<GearItemVm> GearJewels => Gear.Where(g => g.IsJewel).ToList();
@@ -265,12 +313,14 @@ public sealed partial class MainViewModel
     public string JewelsCaption => Loc.T($"САМОЦВЕТЫ В ДЕРЕВЕ · {Gear.Count(g => g.IsJewel)}");
 
     /// <summary>One click opens every card (to read the whole set) or folds them back into rows.</summary>
-    public string ExpandAllText => Gear.Count > 0 && Gear.All(g => g.IsExpanded) ? Loc.T("Свернуть всё") : Loc.T("Развернуть всё");
+    public string ExpandAllText => Gear.Count > 0 && Gear.All(g => g.IsExpanded) ? Loc.T("Свернуть все") : Loc.T("Раскрыть все");
     RelayCommand? _expandAll;
     public RelayCommand ExpandAllCommand => _expandAll ??= new RelayCommand(() =>
     {
         var open = !Gear.All(g => g.IsExpanded);
         foreach (var g in Gear) g.IsExpanded = open;
+        // the groups too: a folded group would hide the cards just opened
+        if (open) foreach (var grp in GearGroups.Where(x => !x.IsOpen)) grp.IsOpen = true;
         Raise(nameof(ExpandAllText));
     });
 
@@ -443,6 +493,7 @@ public sealed partial class MainViewModel
             }
         }
         if (Build != null) AddJewels(Build.Stages[StageIndex]);
+        RefreshGearGroups();
         foreach (var n in new[] { nameof(HasGear), nameof(HasNoGear), nameof(GearWorn), nameof(GearJewels), nameof(HasJewels), nameof(JewelsCaption), nameof(ExpandAllText) })
             Raise(n);
         _ = LoadGearIconsAsync();
@@ -537,3 +588,39 @@ public sealed partial class MainViewModel
         return "";
     }
 }
+
+/// <summary>One group of the gear tab: "Оружие · 2" over its items, the second weapon set apart and dimmed; a click folds it.</summary>
+public sealed class GearGroupVm : Observable
+{
+    readonly Action<GearGroupVm> _toggled;
+    bool _open;
+
+    public GearGroupVm(string key, string title, IReadOnlyList<GearItemVm> items, IReadOnlyList<GearItemVm> swap, bool open, Action<GearGroupVm> toggled)
+    {
+        Key = key;
+        Name = title;
+        Items = items;
+        Swap = swap;
+        _open = open;
+        _toggled = toggled;
+        ToggleCommand = new RelayCommand(() => { IsOpen = !IsOpen; _toggled(this); });
+    }
+
+    public string Key { get; }
+    public string Name { get; }
+    public IReadOnlyList<GearItemVm> Items { get; }
+    /// <summary>The second weapon set: levelled for later, shown under "Свап".</summary>
+    public IReadOnlyList<GearItemVm> Swap { get; }
+    public bool HasSwap => Swap.Count > 0;
+    public RelayCommand ToggleCommand { get; }
+
+    public bool IsOpen
+    {
+        get => _open;
+        set { if (Set(ref _open, value)) Raise(nameof(Title)); }
+    }
+
+    /// <summary>"Оружие · 2", with ▸ while folded.</summary>
+    public string Title => $"{Name} · {Items.Count + Swap.Count}" + (_open ? "" : "  ▸");
+}
+

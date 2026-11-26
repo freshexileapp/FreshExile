@@ -8,10 +8,15 @@ namespace FreshExile.App;
 /// <summary>Short over-the-game plate when the game moved the guide to a new stage.</summary>
 public partial class SwapNoticeWindow : Window
 {
-    static readonly TimeSpan ShowFor = TimeSpan.FromSeconds(5);
+    static readonly TimeSpan ShowFor = TimeSpan.FromSeconds(8);
 
-    public SwapNoticeWindow(MainViewModel vm)
+    readonly Action<bool> _openPanel;
+    AnimationClock? _clock;
+
+    /// <param name="openPanel">Opens the panel: true on the gems tab, false on the links tab.</param>
+    public SwapNoticeWindow(MainViewModel vm, Action<bool> openPanel)
     {
+        _openPanel = openPanel;
         InitializeComponent();
         UiScale.Attach(this);
         DataContext = vm;
@@ -35,8 +40,11 @@ public partial class SwapNoticeWindow : Window
 
         BeginAnimation(OpacityProperty, new DoubleAnimation(1, TimeSpan.FromMilliseconds(180)));
         var timer = new DoubleAnimation(1, 0, ShowFor);
-        timer.Completed += (_, _) => Dismiss();
-        TimerScale.BeginAnimation(ScaleTransform.ScaleXProperty, timer);
+        // only this announcement's own countdown hides it, not the clock of an earlier one
+        timer.Completed += (sender, _) => { if (ReferenceEquals(sender, _clock)) Dismiss(); };
+        _clock?.Controller?.Stop();
+        _clock = timer.CreateClock();
+        TimerScale.ApplyAnimationClock(ScaleTransform.ScaleXProperty, _clock);
     }
 
     void Dismiss()
@@ -48,4 +56,12 @@ public partial class SwapNoticeWindow : Window
     }
 
     void Dismiss_Click(object sender, MouseButtonEventArgs e) => Dismiss();
+    void Close_Click(object sender, RoutedEventArgs e) => Dismiss();
+
+    // the countdown waits while the mouse is on the plate (reading it, reaching for a chip)
+    void Hover_Enter(object sender, MouseEventArgs e) => _clock?.Controller?.Pause();
+    void Hover_Leave(object sender, MouseEventArgs e) => _clock?.Controller?.Resume();
+
+    void Gems_Click(object sender, RoutedEventArgs e) { _openPanel(true); Dismiss(); }
+    void Links_Click(object sender, RoutedEventArgs e) { _openPanel(false); Dismiss(); }
 }

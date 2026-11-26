@@ -11,8 +11,10 @@ namespace FreshExile.App;
 public sealed class StagePip(int index, string title) : Observable
 {
     bool _current, _past;
+    string _title = title;
     public int Index { get; } = index;
-    public string Title { get; } = title;
+    /// <summary>The player's name for the stage when given, else PoB's.</summary>
+    public string Title { get => _title; set => Set(ref _title, value); }
     public bool IsCurrent { get => _current; set => Set(ref _current, value); }
     public bool IsPast { get => _past; set => Set(ref _past, value); }
 }
@@ -77,6 +79,21 @@ public sealed class GroupVm(string label, IReadOnlyList<GemRowVm> rows) : Observ
 
 public sealed record KeyNodeVm(string Step, string Name, string Detail);
 
+/// <summary>
+/// One kind of the stage's choices on the tree, poe.ninja style: "Staff Mastery · 2" with the effects taken, or a
+/// tattoo / runegraft with how many and what it grants.
+/// </summary>
+public sealed record TreePickVm(string Name, int Count, IReadOnlyList<string> Lines)
+{
+    public bool HasCount => Count > 1 || IsMastery;
+    public bool IsMastery { get; init; }
+    /// <summary>"У персонажа другой эффект: …": the character took this mastery with another effect than the build's.</summary>
+    public IReadOnlyList<string> Clashes { get; init; } = [];
+    public bool HasClashes => Clashes.Count > 0;
+    /// <summary>A runegraft or a tattoo is an item to buy: a price check straight from its card.</summary>
+    public bool CanBuy => !IsMastery;
+}
+
 /// <summary>One numbered node of the stage; IsNext = the very first point to spend.</summary>
 public sealed record PlanStepVm(string Step, string Name, string Effect, bool IsKey, int NodeId, bool IsNext);
 
@@ -137,16 +154,19 @@ public sealed partial class MainViewModel : Observable
 
     public void Start()
     {
+        PoeApi.Trace = Log.Write;
         StartRunClock();
         StartUpdates();
         if (!string.IsNullOrEmpty(_s.BuildXml))
         {
             try { ApplyBuild(BuildParser.Parse(_s.BuildXml)); }
             catch (PobFormatException) { _s.BuildXml = null; }
-            // the build loaded before the list existed joins it; the list shows the others
-            if (Build != null && !_s.RecentBuilds.Any(r => r.Id == _s.BuildId)) RememberBuild();
+            if (Build != null) _s.BuildId ??= Build.Id; // a state from before the key: its marks sit under the old id
+            // the build loaded before the list existed joins it (marked as the open one)
+            if (Build != null && !_s.RecentBuilds.Any(IsOpen)) RememberBuild();
         }
         RefreshRecent();
+        StartPobCheck();
         if (string.IsNullOrEmpty(_s.ClientLogPath) && ClientLogParser.AutoDetect() is { } found)
         {
             _s.ClientLogPath = found;
@@ -187,6 +207,14 @@ public sealed partial class MainViewModel : Observable
     }
     public PlanResult? Plan { get; private set; }
 
+    /// <summary>The current stage's tree is all taken: Plan walks this later stage's path instead.</summary>
+    public int? AheadStage { get; private set; }
+
+    /// <summary>Caption over the numbered steps: says when they already belong to the next stage.</summary>
+    public string StepsCaption => AheadStage is int a
+        ? Loc.T($"ЭТАП СОБРАН · ДАЛЬШЕ «{StageName(a).ToUpperInvariant()}»")
+        : Loc.T("ЧТО ДАЮТ УЗЛЫ · НАВЕДИ — ПОКАЖУ НА ДЕРЕВЕ");
+
     /// <summary>The current stage's jewels by the socket they go in.</summary>
     public IReadOnlyDictionary<int, PobItem> StageJewels =>
         Build != null && CurrentStage is { } stage
@@ -200,13 +228,17 @@ public sealed partial class MainViewModel : Observable
     public bool HasBuild => Build != null;
     public int StageIndex => _s.StageIndex;
     public Stage? CurrentStage => Build == null ? null : Build.Stages[Math.Clamp(_s.StageIndex, 0, Build.Stages.Count - 1)];
-    public IReadOnlyDictionary<int, int>? CurrentMasteryEffects => CurrentStage?.Tree?.MasteryEffects;
+    public IReadOnlyDictionary<int, int>? CurrentMasteryEffects =>
+        (AheadStage is int a && Build != null && a < Build.Stages.Count ? Build.Stages[a] : CurrentStage)?.Tree?.MasteryEffects;
 
     public string BuildLine => Build == null ? "Path of Exile"
         : string.IsNullOrEmpty(Build.Ascendancy) ? Build.ClassName : $"{Build.ClassName} · {Build.Ascendancy}";
 
-    public string StageTitle => CurrentStage?.Title ?? "";
+    /// <summary>The stage's name as shown (the player's own when given).</summary>
+    public string StageTitle => Build == null ? "" : StageName(StageIndex);
     public string StageNumberText => Build == null ? "" : Loc.T($"ЭТАП {StageIndex + 1} ИЗ {Build.Stages.Count}");
+    /// <summary>"этап 4 из 14", quiet, beside the stage's name on the panel.</summary>
+    public string StageOfText => Build == null ? "" : Loc.T($"этап {StageIndex + 1} из {Build.Stages.Count}");
 
     public string BuildInput
     {
@@ -221,6 +253,46 @@ public sealed partial class MainViewModel : Observable
     {
         get => _busy;
         private set { if (Set(ref _busy, value)) { Raise(nameof(LoadButtonText)); Raise(nameof(SaveStageText)); Raise(nameof(SyncButtonText)); CommandManagerInvalidate(); } }
+    }
+
+    System.Windows.Threading.DispatcherTimer? _pobCheck;
+
+    /// <summary>At start and every 15 minutes: the PoB behind the open build's link, re-read.</summary>
+    void StartPobCheck()
+    {
+        _ = RefreshFromLinkAsync();
+        _pobCheck = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMinutes(15) };
+        _pobCheck.Tick += (_, _) => _ = RefreshFromLinkAsync();
+        _pobCheck.Start();
+    }
+
+    /// <summary>
+    /// The build is kept as a copy: edited in PoB behind the same link, the copy went stale (a mastery taken out there
+    /// still asked for here). A changed build is taken over, its key, marks and stage kept. Not a chain of saved stages:
+    /// each of its stages is a snapshot of that link on purpose.
+    /// </summary>
+    async Task RefreshFromLinkAsync()
+    {
+        var input = _s.BuildInput.Trim();
+        if (IsBusy || Build == null || !input.StartsWith("http", StringComparison.OrdinalIgnoreCase) || PobStages.IsChain(_s.BuildXml)) return;
+        try
+        {
+            var code = await PobCode.ResolveCodeAsync(input, _http);
+            var xml = await Task.Run(() => PobCode.DecodeToXml(code));
+            // the user may have opened another build meanwhile
+            if (xml == _s.BuildXml || IsBusy || _s.BuildInput.Trim() != input) return;
+            var build = BuildParser.Parse(xml);
+            if (build.Stages.Count == 0) return;
+            _s.BuildXml = xml;
+            _s.StageIndex = Math.Clamp(_s.StageIndex, 0, build.Stages.Count - 1);
+            ApplyBuild(build);
+            RaisePages();
+            RememberBuild();
+            Toast(Loc.T("Билд изменился в PoB по ссылке — обновил"));
+            Save();
+            Log.Write("pob: the build behind the link changed, reloaded");
+        }
+        catch (Exception ex) { Log.Write("pob check: " + ex.Message); }
     }
 
     public string LoadButtonText => IsBusy ? Loc.T("Загружаю…") : Loc.T("Загрузить билд");
@@ -238,12 +310,13 @@ public sealed partial class MainViewModel : Observable
             var build = BuildParser.Parse(xml);
             if (build.Stages.Count == 0) throw new PobFormatException(Loc.T("В билде нет ни деревьев, ни наборов гемов"));
 
-            var same = build.Id == _s.BuildId;
+            var input = BuildInput.Trim();
+            var (key, stage) = KnownBuild(xml, input);
             KeepStageOfCurrent();
             _s.BuildXml = xml;
-            _s.BuildId = build.Id;
-            _s.BuildInput = BuildInput.Trim();
-            if (!same) _s.StageIndex = 0;
+            _s.BuildId = key ?? NewBuildKey();
+            _s.BuildInput = input;
+            _s.StageIndex = stage ?? 0;
 
             ApplyBuild(build);
             _tab = Tab.Gems;
@@ -283,10 +356,9 @@ public sealed partial class MainViewModel : Observable
             if (outcome == PobStages.Outcome.Unchanged) { Toast(Loc.T($"Ничего не поменялось с этапа «{title}»")); return; }
 
             var build = BuildParser.Parse(merged);
-            var oldId = _s.BuildId;
-            if (outcome == PobStages.Outcome.Appended && oldId != null) CarryMarks(oldId, build.Id);
+            // a grown chain is the same build: its key, and so its marks, stay; a new chain is a build of its own
+            if (outcome != PobStages.Outcome.Appended || _s.BuildId == null) _s.BuildId = NewBuildKey();
             _s.BuildXml = merged;
-            _s.BuildId = build.Id;
             _s.BuildInput = BuildInput.Trim();
             _s.StageIndex = build.Stages.Count - 1;
 
@@ -304,14 +376,25 @@ public sealed partial class MainViewModel : Observable
         finally { IsBusy = false; }
     }
 
-    /// <summary>A new stage changes the build's id: bought gems, done swaps and the user's stage levels go along.</summary>
-    void CarryMarks(string from, string to)
+    /// <summary>
+    /// The key bought gems, done swaps and the user's stage levels / tiers / names are kept under: one per loaded build.
+    /// Not <see cref="Build.Id"/> (class|ascendancy|stage titles): two different one-tree Pathfinder builds share that one,
+    /// and their marks got mixed. Builds saved before keep their old key, so nothing is lost.
+    /// </summary>
+    string MarksKey => _s.BuildId ?? Build!.Id;
+
+    static string NewBuildKey() => Guid.NewGuid().ToString("N")[..16];
+
+    /// <summary>
+    /// The key (and stage) of a build loaded before: the same XML, or the same link (the PoB behind it may have changed,
+    /// it is still that build) — the open one first, then the recent list. Null: a new build.
+    /// </summary>
+    (string? Key, int? Stage) KnownBuild(string xml, string input)
     {
-        if (from == to) return;
-        if (_s.Bought.TryGetValue(from, out var b)) _s.Bought[to] = new HashSet<string>(b);
-        if (_s.SwapDone.TryGetValue(from, out var d)) _s.SwapDone[to] = new HashSet<int>(d);
-        if (_s.StageLevels.TryGetValue(from, out var l)) _s.StageLevels[to] = new Dictionary<int, int>(l);
-        if (_s.StageTiers.TryGetValue(from, out var t)) _s.StageTiers[to] = new Dictionary<int, int>(t);
+        var link = input.StartsWith("http", StringComparison.OrdinalIgnoreCase);
+        bool Same(string? x, string? i) => x == xml || (link && string.Equals(i?.Trim(), input, StringComparison.OrdinalIgnoreCase));
+        if (_s.BuildId != null && Same(_s.BuildXml, _s.BuildInput)) return (_s.BuildId, _s.StageIndex);
+        return _s.RecentBuilds.FirstOrDefault(r => Same(r.Xml, r.Input)) is { } r ? (r.Id, r.StageIndex) : (null, null);
     }
 
     void ApplyBuild(Build build)
@@ -319,7 +402,7 @@ public sealed partial class MainViewModel : Observable
         Build = build;
         _s.StageIndex = Math.Clamp(_s.StageIndex, 0, build.Stages.Count - 1);
         Stages.Clear();
-        for (var i = 0; i < build.Stages.Count; i++) Stages.Add(new StagePip(i, build.Stages[i].Title));
+        for (var i = 0; i < build.Stages.Count; i++) Stages.Add(new StagePip(i, StageName(i)));
         Raise(nameof(Build));
         Raise(nameof(HasBuild));
         Raise(nameof(BuildLine));
@@ -391,6 +474,7 @@ public sealed partial class MainViewModel : Observable
         Raise(nameof(StageIndex));
         Raise(nameof(StageTitle));
         Raise(nameof(StageNumberText));
+        Raise(nameof(StageOfText));
         Raise(nameof(CurrentStage));
         Raise(nameof(HasNoGems));
         RecomputePlan();
@@ -407,7 +491,7 @@ public sealed partial class MainViewModel : Observable
     {
         get
         {
-            var id = Build!.Id;
+            var id = MarksKey;
             if (!_s.Bought.TryGetValue(id, out var set)) _s.Bought[id] = set = new HashSet<string>();
             return set;
         }
@@ -418,6 +502,9 @@ public sealed partial class MainViewModel : Observable
     public double Progress => TotalGems == 0 ? 0 : (double)BoughtGems / TotalGems;
     public string ProgressText => TotalGems == 0 ? Loc.T("Нет гемов") : Loc.T($"Куплено {BoughtGems} из {TotalGems}");
     public string StageSubtitle { get; private set; } = "";
+    /// <summary>The gems tab's badge: gems still to buy on this stage; empty = no badge.</summary>
+    public string GemsBadge => TotalGems - BoughtGems is > 0 and var n ? n.ToString() : "";
+    public bool HasGemsBadge => GemsBadge.Length > 0;
     public bool HasNoGems => CurrentStage != null && !CurrentStage.AllGems.Any();
     public bool ShowAllBought => HideBought && TotalGems > 0 && BoughtGems == TotalGems;
 
@@ -490,6 +577,8 @@ public sealed partial class MainViewModel : Observable
         Raise(nameof(Progress));
         Raise(nameof(ProgressText));
         Raise(nameof(StageSubtitle));
+        Raise(nameof(GemsBadge));
+        Raise(nameof(HasGemsBadge));
         Raise(nameof(ShowAllBought));
     }
 
@@ -510,6 +599,52 @@ public sealed partial class MainViewModel : Observable
     public bool HasLabText => AscendancyNodes.Count > 0;
     public bool HasAscendancy => AscendancyCount > 0;
     public bool HasKeyNodes => KeyNodes.Count > 0;
+
+    /// <summary>The stage's masteries, one per kind: how many of that kind it takes and every effect chosen.</summary>
+    public ObservableCollection<TreePickVm> MasteryPicks { get; } = new();
+    /// <summary>Runegrafts and tattoos PoB put on the stage's tree, one line per kind.</summary>
+    public ObservableCollection<TreePickVm> RunegraftPicks { get; } = new();
+    public ObservableCollection<TreePickVm> TattooPicks { get; } = new();
+    public bool HasMasteryPicks => MasteryPicks.Count > 0;
+    public bool HasRunegraftPicks => RunegraftPicks.Count > 0;
+    public bool HasTattooPicks => TattooPicks.Count > 0;
+
+    /// <summary>
+    /// Masteries by kind ("Staff Mastery · 2", the effects chosen under it, in the tree's own words), tattoos and runegrafts
+    /// by name (how many, what they grant): out of the stage's own PoB tree.
+    /// </summary>
+    void RefreshTreePicks()
+    {
+        MasteryPicks.Clear();
+        RunegraftPicks.Clear();
+        TattooPicks.Clear();
+        if (CurrentStage?.Tree is { } spec && Tree != null)
+        {
+            var taken = spec.Nodes.ToHashSet();
+            var masteries = spec.MasteryEffects
+                .Where(kv => taken.Contains(kv.Key) && Tree.Nodes.ContainsKey(kv.Key) && !spec.Overrides.Any(o => o.NodeId == kv.Key))
+                .Select(kv => (Node: Tree.Nodes[kv.Key], Effect: kv.Value))
+                .GroupBy(x => x.Node.Name)
+                .OrderByDescending(g => g.Count()).ThenBy(g => g.Key, StringComparer.Ordinal);
+            foreach (var g in masteries)
+            {
+                // each effect a line of its own; an effect of two stats keeps them together on its line
+                var lines = g.Select(x => x.Node.MasteryEffects.TryGetValue(x.Effect, out var stats) ? string.Join(" · ", stats) : null)
+                    .OfType<string>().Distinct().ToList();
+                // compared with the character: a mastery it took with another effect than the build's, in red
+                var clashes = g.Select(x => MasteryClash(x.Node, x.Effect)).OfType<string>().Distinct().ToList();
+                MasteryPicks.Add(new TreePickVm(g.Key, g.Count(), lines) { IsMastery = true, Clashes = clashes });
+            }
+            foreach (var g in spec.Overrides.Where(o => taken.Contains(o.NodeId) || !Tree.Nodes.ContainsKey(o.NodeId))
+                         .GroupBy(o => o.Name).OrderBy(g => g.Key, StringComparer.Ordinal))
+            {
+                var pick = new TreePickVm(g.Key, g.Count(), g.First().Lines) { Clashes = g.Select(OverrideClash).OfType<string>().Distinct().ToList() };
+                if (g.First().IsRunegraft) RunegraftPicks.Add(pick);
+                else TattooPicks.Add(pick);
+            }
+        }
+        foreach (var n in new[] { nameof(HasMasteryPicks), nameof(HasRunegraftPicks), nameof(HasTattooPicks) }) Raise(n);
+    }
 
     public string? TreeHint =>
         TreeStatus ?? (CurrentStage is { Tree: null } ? Loc.T("В PoB нет дерева для этого этапа") : null);
@@ -590,12 +725,35 @@ public sealed partial class MainViewModel : Observable
         // a stage of its own may socket other cluster jewels: their passives join the tree before the path is laid
         UpdateStageTree();
         var stage = CurrentStage;
+        AheadStage = null;
         if (Tree == null || stage?.Tree == null || Build == null) Plan = null;
         else
         {
             IEnumerable<int> have = Live(CompareWithCharacter && _char != null ? _char.Nodes : AssumedTaken());
-            Plan = PathPlanner.Plan(Tree, have, stage.Tree.Nodes, stage.Tree.ClassId);
+            var haveList = have.ToList();
+            Plan = PathPlanner.Plan(Tree, haveList, stage.Tree.Nodes, stage.Tree.ClassId);
+            // a node the next stage takes is a point spent early, not one to refund
+            if (Plan.Refund.Count > 0 && Build.Stages.Skip(StageIndex + 1).FirstOrDefault(s => s.Tree != null)?.Tree is { } nextTree)
+            {
+                var later = nextTree.Nodes.ToHashSet();
+                if (Plan.Refund.Any(later.Contains))
+                    Plan = Plan with { Refund = Plan.Refund.Where(id => !later.Contains(id)).ToHashSet() };
+            }
+            // the stage's tree is done while the game still holds the guide on it (act stages wait for the next act,
+            // levels outrun them): the points keep going to the next stage's path instead of nowhere
+            if (Plan.Order.Count == 0 && Plan.Refund.Count == 0)
+                for (var i = StageIndex + 1; i < Build.Stages.Count; i++)
+                {
+                    if (Build.Stages[i].Tree is not { } next) continue;
+                    var ahead = PathPlanner.Plan(Tree, haveList, next.Nodes, next.ClassId);
+                    if (ahead.Order.Count == 0) continue;
+                    // only new points: a respec or the lab of a later stage waits for that stage
+                    Plan = ahead with { Refund = new HashSet<int>(), Ascendancy = [] };
+                    AheadStage = i;
+                    break;
+                }
         }
+        Raise(nameof(StepsCaption));
 
         KeyNodes.Clear();
         AscendancyNodes.Clear();
@@ -605,7 +763,7 @@ public sealed partial class MainViewModel : Observable
             {
                 var n = Tree.Nodes[Plan.Order[i]];
                 if (!n.IsKey) continue;
-                KeyNodes.Add(new KeyNodeVm($"{i + 1}", n.Name, NodeDetail(n)));
+                KeyNodes.Add(new KeyNodeVm($"{i + 1}", NodeName(n), NodeDetail(n)));
             }
             foreach (var id in Plan.Ascendancy)
                 if (Tree.Nodes[id].Kind == NodeKind.Notable) AscendancyNodes.Add(Tree.Nodes[id].Name);
@@ -623,6 +781,7 @@ public sealed partial class MainViewModel : Observable
         Raise(nameof(HasTreeHint));
         Raise(nameof(CompareHint));
         Raise(nameof(CurrentMasteryEffects));
+        RefreshTreePicks();
         RebuildPlanSteps();
         PlanChanged?.Invoke();
     }
@@ -636,6 +795,7 @@ public sealed partial class MainViewModel : Observable
 
     public string NodeDetail(PassiveNode n) => n.Kind switch
     {
+        _ when OverrideOf(n.Id) is { } o => string.Join("; ", o.Lines),
         NodeKind.Mastery => MasteryText(n) ?? Loc.T("Мастерство"),
         NodeKind.Keystone => "Keystone",
         NodeKind.Jewel => Loc.T("Гнездо самоцвета"),
@@ -643,9 +803,65 @@ public sealed partial class MainViewModel : Observable
         _ => Loc.T("Пассивка"),
     };
 
+    /// <summary>
+    /// "У персонажа другой эффект: +30 to Strength": the character, compared with, took the mastery with another effect than
+    /// the build's (the game lets you change it there); null when it is the same, not taken or not compared with.
+    /// </summary>
+    public string? MasteryClash(PassiveNode n, int buildEffect)
+    {
+        if (!CompareWithCharacter || _char == null || OverrideOf(n.Id) != null
+            || !_char.MasteryEffects.TryGetValue(n.Id, out var theirs) || theirs == buildEffect) return null;
+        var effect = n.MasteryEffects.TryGetValue(theirs, out var stats) ? string.Join(" · ", stats) : "?";
+        return Loc.T($"У персонажа другой эффект: {effect}");
+    }
+
+    /// <summary>"Купить" on a runegraft / tattoo card: the price check for it by name (the bulk exchange sells them).</summary>
+    public event Action<string>? NamedPriceRequested;
+    public RelayCommand BuyPickCommand => _buyPick ??= new RelayCommand(p => { if (p is TreePickVm { CanBuy: true } pick) NamedPriceRequested?.Invoke(pick.Name); });
+    RelayCommand? _buyPick;
+
+    /// <summary>
+    /// Nodes the character holds differently from the build: a mastery with another effect, or a node taken without the
+    /// runegraft / tattoo the build puts on it. Marked on the trees with a red dashed ring.
+    /// </summary>
+    public IReadOnlySet<int> MasteryClashNodes => CurrentStage?.Tree is { } spec && Tree != null
+        ? spec.MasteryEffects.Where(kv => OverrideOf(kv.Key) == null && Tree.Nodes.TryGetValue(kv.Key, out var n) && MasteryClash(n, kv.Value) != null)
+            .Select(kv => kv.Key)
+            .Concat(spec.Overrides.Where(o => OverrideClash(o) != null).Select(o => o.NodeId))
+            .ToHashSet()
+        : new HashSet<int>();
+
+    /// <summary>
+    /// "У персонажа здесь не руна: …": the character has the node taken, but not with the build's runegraft / tattoo
+    /// (a plain mastery or passive, or another one); null when it is the same, not taken yet or not compared with.
+    /// </summary>
+    public string? OverrideClash(TreeOverride o)
+    {
+        if (!CompareWithCharacter || _char == null || !_char.Nodes.Contains(o.NodeId)) return null;
+        if (_char.Overrides.TryGetValue(o.NodeId, out var theirs) && string.Equals(theirs, o.Name, StringComparison.OrdinalIgnoreCase)) return null;
+        return string.IsNullOrEmpty(theirs) ? Loc.T("У персонажа узел взят без неё") : Loc.T($"У персонажа здесь другое: {theirs}");
+    }
+
+    /// <summary>
+    /// The runegraft / tattoo PoB put on the node, if any. It replaces the node: a mastery under a runegraft is no mastery
+    /// in the game any more (PoB still keeps its old effect in masteryEffects).
+    /// </summary>
+    public TreeOverride? OverrideOf(int nodeId) =>
+        (CurrentStage?.Tree is { } t ? t : null)?.Overrides.FirstOrDefault(o => o.NodeId == nodeId);
+
+    /// <summary>The node's name as the game shows it: the runegraft's / tattoo's when one replaces it.</summary>
+    public string NodeName(PassiveNode n) => OverrideOf(n.Id)?.Name ?? n.Name;
+
+    /// <summary>Passives replaced by runegrafts and tattoos on the stage's tree: marked on the trees.</summary>
+    public IReadOnlySet<int> OverrideNodes => CurrentStage?.Tree?.Overrides.Select(o => o.NodeId).ToHashSet() ?? new HashSet<int>();
+    /// <summary>The tattoos among them: their ring has a colour of its own.</summary>
+    public IReadOnlySet<int> TattooNodes => CurrentStage?.Tree?.Overrides.Where(o => o.IsTattoo).Select(o => o.NodeId).ToHashSet() ?? new HashSet<int>();
+
+    /// <summary>The build's effect of the mastery; when the character took it with another one, that is said on a second line.</summary>
     public string? MasteryText(PassiveNode n) =>
-        CurrentMasteryEffects is { } me && me.TryGetValue(n.Id, out var eff) && n.MasteryEffects.TryGetValue(eff, out var stats)
-            ? string.Join("; ", stats)
+        OverrideOf(n.Id) is { } o ? string.Join("; ", o.Lines)
+        : CurrentMasteryEffects is { } me && me.TryGetValue(n.Id, out var eff) && n.MasteryEffects.TryGetValue(eff, out var stats)
+            ? string.Join("; ", stats) + (MasteryClash(n, eff) is { } clash ? "\n" + clash : "")
             : null;
 
     #endregion
@@ -820,6 +1036,9 @@ public sealed partial class MainViewModel : Observable
             }
             CharStatus = Loc.T($"{_char.Name} · ур. {_char.Level} · {_char.Nodes.Count} пассивок · {_char.GemKeys.Count} гемов");
             RefreshStage();
+            if (Plan != null && Tree != null)
+                Log.Write($"character sync: {_char.Nodes.Count} nodes; plan starts with "
+                          + string.Join(", ", Plan.Order.Take(3).Select(id => $"{id} {Tree.Nodes[id].Name} ({(_char.Nodes.Contains(id) ? "in profile" : "not in profile")})")));
             Save();
             if (!quiet) Toast(Loc.T("Персонаж синхронизирован"));
         }

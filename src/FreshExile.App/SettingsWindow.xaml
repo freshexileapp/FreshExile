@@ -8,12 +8,13 @@
         FontFamily="{StaticResource UiFont}" Foreground="{StaticResource Text}"
         UseLayoutRounding="True">
 
-    <!-- a settings window of its own: opened rarely, so the overlay panel keeps only what is played with -->
+    <!-- a settings window of its own: opened rarely, so the overlay panel keeps only what is played with.
+         Only settings live here; the builds and the character are also one click away in the panel's header. -->
     <Window.Resources>
-        <!-- a section in the menu on the left -->
+        <!-- a section in the menu on the left: the open one on Surface2 with a 2 px flame bar on its left -->
         <Style x:Key="NavItem" TargetType="RadioButton">
             <Setter Property="Foreground" Value="{StaticResource Text2}"/>
-            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontSize" Value="{StaticResource FsBody}"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="GroupName" Value="section"/>
@@ -21,16 +22,21 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="b" Background="Transparent" CornerRadius="8" Padding="12,7">
-                            <ContentPresenter VerticalAlignment="Center"/>
-                        </Border>
+                        <Grid>
+                            <Border x:Name="b" Background="Transparent" CornerRadius="0,6,6,0" Padding="12,7" SnapsToDevicePixels="True">
+                                <ContentPresenter VerticalAlignment="Center"/>
+                            </Border>
+                            <Rectangle x:Name="bar" Width="2" HorizontalAlignment="Left" Fill="{StaticResource Accent}" Visibility="Hidden" SnapsToDevicePixels="True"/>
+                        </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                <Setter TargetName="b" Property="Background" Value="{StaticResource Surface2}"/>
                             </Trigger>
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="b" Property="Background" Value="{StaticResource Surface3}"/>
-                                <Setter Property="Foreground" Value="{StaticResource Text}"/>
+                                <Setter TargetName="b" Property="Background" Value="{StaticResource Surface2}"/>
+                                <Setter TargetName="bar" Property="Visibility" Value="Visible"/>
+                                <Setter Property="Foreground" Value="{StaticResource TitleText}"/>
                                 <Setter Property="FontWeight" Value="SemiBold"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -38,42 +44,146 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="Hint" TargetType="TextBlock">
+        <Style x:Key="NavGroup" TargetType="TextBlock" BasedOn="{StaticResource Caption}">
+            <Setter Property="FontSize" Value="{StaticResource FsCaption}"/>
             <Setter Property="Foreground" Value="{StaticResource Text3}"/>
-            <Setter Property="FontSize" Value="11.5"/>
+            <Setter Property="Opacity" Value="0.75"/>
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+        </Style>
+        <Style x:Key="NavRule" TargetType="Border">
+            <Setter Property="Height" Value="1"/>
+            <Setter Property="Background" Value="{StaticResource Line}"/>
+            <Setter Property="Margin" Value="0,10,0,10"/>
+            <Setter Property="IsHitTestVisible" Value="False"/>
+        </Style>
+        <Style x:Key="Hint" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource Text2}"/>
+            <Setter Property="FontSize" Value="{StaticResource FsSmall}"/>
             <Setter Property="TextWrapping" Value="Wrap"/>
-            <Setter Property="LineHeight" Value="16"/>
+            <Setter Property="LineHeight" Value="17"/>
             <Setter Property="Margin" Value="2,6,0,0"/>
         </Style>
+        <Style x:Key="ErrorText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{StaticResource DangerText}"/>
+            <Setter Property="FontSize" Value="{StaticResource FsSmall}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="2,6,0,0"/>
+        </Style>
+        <!-- one built line: the whole line opens it; ✎ and ✕ show on hover, ★ always (it is a state) -->
+        <DataTemplate x:Key="BuildRow">
+            <Grid Margin="0,0,0,6">
+            <Border x:Name="row" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1"
+                    CornerRadius="{StaticResource RadiusM}" Padding="4,6,6,6" Cursor="Hand" SnapsToDevicePixels="True">
+                <Border.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding DataContext.OpenRecentCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                  CommandParameter="{Binding}"/>
+                </Border.InputBindings>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="pin" Style="{StaticResource IconButton}" Content="{Binding PinGlyph}" FontSize="{StaticResource FsSmall}" VerticalAlignment="Center"
+                            ToolTip="{Binding PinTip}" Command="{Binding DataContext.PinRecentCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="4,0,8,0">
+                        <TextBlock Text="{Binding Title}" FontSize="{StaticResource FsBody}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                   Visibility="{Binding IsNotRenaming, Converter={StaticResource Vis}}"/>
+                        <TextBox Style="{StaticResource Field}" Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}" Padding="6,3" FontSize="{StaticResource FsSmall}"
+                                 Tag="{Binding ClassLine}" MaxLength="60" Visibility="{Binding IsRenaming, Converter={StaticResource Vis}}"
+                                 IsVisibleChanged="RenameBox_IsVisibleChanged" LostKeyboardFocus="RenameBox_LostFocus"/>
+                        <TextBlock Text="{Binding Details}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                    <!-- loaded from a link: the link on hover over the chain -->
+                    <TextBlock Grid.Column="2" Text="&#xE71B;" FontFamily="{StaticResource IconFont}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text3}"
+                               VerticalAlignment="Center" Margin="0,0,6,0" ToolTip="{Binding LinkTip}" Visibility="{Binding HasLink, Converter={StaticResource Vis}}"/>
+                    <Button x:Name="rename" Grid.Column="3" Style="{StaticResource IconButton}" Content="&#xE70F;" FontSize="{StaticResource FsCaption}" VerticalAlignment="Center"
+                            ToolTip="{l:T 'Переименовать'}" Opacity="0"
+                            Command="{Binding DataContext.RenameRecentCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
+                    <Button x:Name="remove" Grid.Column="4" Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}" VerticalAlignment="Center"
+                            ToolTip="{l:T 'Убрать из списка'}" Opacity="0"
+                            Command="{Binding DataContext.RemoveRecentCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"
+                            Visibility="{Binding CanOpen, Converter={StaticResource Vis}}"/>
+                </Grid>
+            </Border>
+            <Rectangle x:Name="bar" Width="2" HorizontalAlignment="Left" Fill="{StaticResource Accent}" Visibility="Hidden" IsHitTestVisible="False"/>
+            </Grid>
+            <DataTemplate.Triggers>
+                <Trigger SourceName="row" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="row" Property="BorderBrush" Value="{StaticResource HoverBorder}"/>
+                    <Setter TargetName="row" Property="CornerRadius" Value="0,6,6,0"/>
+                    <Setter TargetName="bar" Property="Visibility" Value="Visible"/>
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="rename" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                                <DoubleAnimation Storyboard.TargetName="remove" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.12"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetName="rename" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.12"/>
+                                <DoubleAnimation Storyboard.TargetName="remove" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.12"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+                <DataTrigger Binding="{Binding IsPinned}" Value="True">
+                    <Setter TargetName="pin" Property="Foreground" Value="{StaticResource Accent}"/>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                    <Setter TargetName="row" Property="Cursor" Value="Arrow"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
     </Window.Resources>
 
-    <Border Background="{StaticResource LineStrong}" CornerRadius="12" Padding="1" UseLayoutRounding="False">
-    <Border Background="{StaticResource PanelBrush}" CornerRadius="11">
+    <ContentControl Style="{StaticResource WindowFrame}">
         <Grid UseLayoutRounding="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- menu -->
-            <Border Background="{StaticResource Surface}" CornerRadius="11,0,0,11" MouseLeftButtonDown="Drag_MouseDown">
+            <!-- menu: three groups -->
+            <Border Background="{StaticResource Surface}" CornerRadius="9,0,0,9" MouseLeftButtonDown="Drag_MouseDown">
                 <DockPanel Margin="12,14,12,14">
-                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4,0,0,18" IsHitTestVisible="False">
+                    <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="4,0,0,8" IsHitTestVisible="False">
                         <Image Source="logo.png" Width="28" Height="28" RenderOptions.BitmapScalingMode="HighQuality"/>
                         <StackPanel Margin="9,0,0,0" VerticalAlignment="Center">
-                            <TextBlock Text="FRESH EXILE" Style="{StaticResource Caption}" FontSize="9.5"/>
-                            <TextBlock Text="{l:T 'Настройки'}" FontSize="14" FontWeight="SemiBold"/>
+                            <TextBlock Text="Fresh Exile" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Bronze}"/>
+                            <TextBlock Text="{l:T 'Настройки'}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsSection}" FontWeight="Bold"
+                                       Foreground="{StaticResource TitleText}"/>
                         </StackPanel>
                     </StackPanel>
-                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding AppVersionText}" Foreground="{StaticResource Text3}" FontSize="11" Margin="12,8,0,0"/>
+                    <!-- the version, and an update waiting as a link to «О программе» -->
+                    <StackPanel DockPanel.Dock="Bottom" Margin="12,8,0,0">
+                        <TextBlock Text="{Binding AppVersionText}" Foreground="{StaticResource Text3}" FontSize="{StaticResource FsCaption}"/>
+                        <TextBlock FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Bronze}" Cursor="Hand" Margin="0,2,0,0"
+                                   Text="{l:T 'обновление скачано ›'}" Visibility="{Binding UpdateReady, Converter={StaticResource Vis}}">
+                            <TextBlock.InputBindings>
+                                <MouseBinding MouseAction="LeftClick" Command="{Binding OpenAboutCommand}"/>
+                            </TextBlock.InputBindings>
+                        </TextBlock>
+                    </StackPanel>
                     <StackPanel>
+                        <TextBlock Text="{l:T 'ИГРА'}" Style="{StaticResource NavGroup}" Margin="0,6,0,4"/>
                         <RadioButton Style="{StaticResource NavItem}" Content="{l:T 'Общие'}" IsChecked="{Binding IsSetGame}"/>
                         <RadioButton Style="{StaticResource NavItem}" Content="{l:T 'Отслеживание'}" IsChecked="{Binding IsSetTracking}"/>
                         <RadioButton Style="{StaticResource NavItem}" Content="{l:T 'Билд и этапы'}" IsChecked="{Binding IsSetBuild}"/>
                         <RadioButton Style="{StaticResource NavItem}" Content="{l:T 'Дерево'}" IsChecked="{Binding IsSetTree}"/>
-                        <RadioButton Style="{StaticResource NavItem}" Content="{l:T 'Трейд'}" IsChecked="{Binding IsSetTrade}"/>
-                        <RadioButton Style="{StaticResource NavItem}" Content="{l:T 'Прайс-чек'}" IsChecked="{Binding IsSetPrice}"/>
+                        <Border Style="{StaticResource NavRule}"/>
+                        <TextBlock Text="{l:T 'ТРЕЙД'}" Style="{StaticResource NavGroup}"/>
+                        <RadioButton Style="{StaticResource NavItem}" Content="{l:T 'Трейд и прайс-чек'}" IsChecked="{Binding IsSetTrade}"/>
                         <RadioButton Style="{StaticResource NavItem}" Content="{l:T 'Топ-моды'}" IsChecked="{Binding IsSetTop}"/>
+                        <Border Style="{StaticResource NavRule}"/>
+                        <TextBlock Text="{l:T 'ПРОГРАММА'}" Style="{StaticResource NavGroup}"/>
                         <RadioButton Style="{StaticResource NavItem}" Content="{l:T 'Клавиши'}" IsChecked="{Binding IsSetKeys}"/>
                         <RadioButton Style="{StaticResource NavItem}" Content="{l:T 'О программе'}" IsChecked="{Binding IsSetAbout}"/>
                     </StackPanel>
@@ -87,51 +197,70 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <Grid Margin="26,16,10,0" Background="Transparent" MouseLeftButtonDown="Drag_MouseDown">
-                    <TextBlock Text="{Binding SettingsSectionTitle}" FontFamily="{StaticResource DisplayFont}" FontSize="22" FontWeight="SemiBold"
-                               VerticalAlignment="Center"/>
-                    <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="10" HorizontalAlignment="Right" VerticalAlignment="Top"
+                    <TextBlock Text="{Binding SettingsSectionTitle}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsTitle}" FontWeight="Bold"
+                               Foreground="{StaticResource TitleText}" VerticalAlignment="Center"/>
+                    <!-- toast: "отчёт на рабочем столе", "открыт билд…", "Сохранено" — in the header next to the cross, where it covers no control -->
+                    <Border HorizontalAlignment="Right" VerticalAlignment="Center" Margin="190,0,40,0" MaxWidth="360"
+                            Background="{StaticResource Accent}" CornerRadius="{StaticResource RadiusM}" Padding="12,6" IsHitTestVisible="False"
+                            Visibility="{Binding IsToastVisible, Converter={StaticResource Vis}}">
+                        <TextBlock Text="{Binding ToastText}" Foreground="{StaticResource OnAccent}" FontSize="{StaticResource FsSmall}" FontWeight="SemiBold"
+                                   TextTrimming="CharacterEllipsis"/>
+                    </Border>
+                    <Border x:Name="SavedToast" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,40,0"
+                            Background="{StaticResource AccentSoft}" BorderBrush="{StaticResource Bronze}" BorderThickness="1"
+                            CornerRadius="{StaticResource RadiusM}" Padding="10,4" IsHitTestVisible="False" Opacity="0">
+                        <TextBlock Text="{l:T 'Сохранено'}" Foreground="{StaticResource AccentHover}" FontSize="{StaticResource FsSmall}" FontWeight="SemiBold"/>
+                    </Border>
+                    <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}" HorizontalAlignment="Right" VerticalAlignment="Top"
                             ToolTip="{l:T 'Закрыть · Esc'}" Click="Close_Click"/>
                 </Grid>
 
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,8,4,14">
+                <Grid Grid.Row="1" Margin="0,8,4,14">
+                <ScrollViewer x:Name="Scroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" ScrollChanged="Scroll_Changed">
                     <StackPanel Margin="26,0,22,8">
 
-                        <!-- general -->
+                        <!-- ===== general ===== -->
                         <StackPanel Visibility="{Binding IsSetGame, Converter={StaticResource Vis}}">
-                            <TextBlock Text="{l:T 'ЯЗЫК'}" Style="{StaticResource Caption}" Margin="0,4,0,8"/>
-                            <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="3" Width="260" HorizontalAlignment="Left">
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Язык'}" Margin="0,4,0,8"/>
+                            <Border Background="{StaticResource Well}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}"
+                                    Padding="2" Width="260" HorizontalAlignment="Left">
                                 <UniformGrid Rows="1">
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="lang" Content="Русский" FontSize="11.5" IsChecked="{Binding IsLangRu}"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="lang" Content="English" FontSize="11.5" IsChecked="{Binding IsLangEn}"/>
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="lang" Content="Русский" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsLangRu}"/>
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="lang" Content="English" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsLangEn}"/>
                                 </UniformGrid>
                             </Border>
-                            <StackPanel Orientation="Horizontal" Margin="2,8,0,0" Visibility="{Binding LanguagePending, Converter={StaticResource Vis}}">
-                                <TextBlock Text="{l:T 'Язык сменится после перезапуска'}" FontSize="11.5" Foreground="{StaticResource Text3}" VerticalAlignment="Center"/>
-                                <Button Style="{StaticResource PrimaryButton}" Content="{l:T 'Перезапустить'}" Padding="10,4" FontSize="11.5" Margin="12,0,0,0"
-                                        Command="{Binding RestartCommand}"/>
-                            </StackPanel>
+                            <!-- only after a change: the plate with the restart -->
+                            <Border Background="{StaticResource AccentSoft}" BorderBrush="{StaticResource BronzeLine}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}"
+                                    Padding="12,8" Margin="0,8,0,0" Visibility="{Binding LanguagePending, Converter={StaticResource Vis}}">
+                                <DockPanel>
+                                    <Button DockPanel.Dock="Right" Style="{StaticResource PrimaryButton}" Content="{l:T 'Перезапустить'}" Padding="12,5" FontSize="{StaticResource FsSmall}"
+                                            Command="{Binding RestartCommand}"/>
+                                    <TextBlock Text="{l:T 'Язык сменится после перезапуска'}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource AccentHover}"
+                                               VerticalAlignment="Center" TextWrapping="Wrap" Margin="0,0,10,0"/>
+                                </DockPanel>
+                            </Border>
+                            <TextBlock Style="{StaticResource Hint}" Margin="2,8,0,0" Foreground="{StaticResource AccentHover}"
+                                       Text="{l:T 'Это язык программы. Сама игра пока должна быть на английском: отслеживание зон и уровней и прайс-чек читают английские тексты игры.'}"/>
 
-                            <TextBlock Text="{l:T 'МАСШТАБ ИНТЕРФЕЙСА'}" Style="{StaticResource Caption}" Margin="0,20,0,8"/>
-                            <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="3" Width="360" HorizontalAlignment="Left">
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Масштаб интерфейса'}"/>
+                            <Border Background="{StaticResource Well}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}"
+                                    Padding="2" Width="360" HorizontalAlignment="Left">
                                 <ItemsControl ItemsSource="{Binding ScaleOptions}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate><UniformGrid Rows="1"/></ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
-                                            <RadioButton Style="{StaticResource Segment}" GroupName="uiscale" Content="{Binding Label}" FontSize="11.5"
+                                            <RadioButton Style="{StaticResource Segment}" GroupName="uiscale" Content="{Binding Label}" FontSize="{StaticResource FsSmall}"
                                                          IsChecked="{Binding IsChecked}"/>
                                         </DataTemplate>
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
                             </Border>
-                            <TextBlock Style="{StaticResource Hint}" Margin="2,6,0,0"
+                            <TextBlock Style="{StaticResource Hint}"
                                        Text="{l:T 'Для 1440p и 4K, если в Windows стоит масштаб 100 % и всё мелкое. Наложение на дерево в игре не меняется.'}"/>
 
-                            <TextBlock Style="{StaticResource Hint}" Margin="2,8,0,0" Foreground="{StaticResource Accent}"
-                                       Text="{l:T 'Это язык программы. Сама игра пока должна быть на английском: отслеживание зон и уровней и прайс-чек читают английские тексты игры.'}"/>
-
-                            <TextBlock Text="{l:T 'ЛОГ ИГРЫ · CLIENT.TXT'}" Style="{StaticResource Caption}" Margin="0,24,0,8"/>
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Лог игры · Client.txt'}"/>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -144,85 +273,151 @@
                             </Grid>
                             <TextBlock Text="{Binding LogStatus}" Style="{StaticResource Hint}"/>
 
-                            <TextBlock Text="{l:T 'ПАНЕЛЬ'}" Style="{StaticResource Caption}" Margin="0,24,0,6"/>
-                            <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding HideWhenGameInactive}" Margin="-7,0,0,0">
-                                <TextBlock Text="{l:T 'Прятать панель и дерево, когда впереди другая программа (игра запущена)'}" FontSize="12.5" TextWrapping="Wrap"/>
-                            </CheckBox>
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Панель'}"/>
+                            <Border Style="{StaticResource OptionCard}">
+                                <Border Style="{StaticResource OptionRow}" BorderThickness="0">
+                                    <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding HideWhenGameInactive}">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Прятать, когда впереди другая программа'}"/>
+                                            <TextBlock Style="{StaticResource OptionNote}" Text="{l:T 'Пока игра запущена, панель и дерево исчезают, если переключился в браузер или другую программу.'}"/>
+                                        </StackPanel>
+                                    </CheckBox>
+                                </Border>
+                            </Border>
+
+                            <!-- the character: the gems it already wears, its tree for the comparison -->
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Персонаж · публичный профиль'}"/>
+                            <UniformGrid Rows="1" Margin="0,0,-8,0">
+                                <TextBox Style="{StaticResource Field}" Tag="{l:T 'Аккаунт, например Name#1234'}" Text="{Binding Account}" Margin="0,0,8,0"/>
+                                <TextBox Style="{StaticResource Field}" Tag="{l:T 'Имя персонажа'}" Text="{Binding Character}" Margin="0,0,8,0"/>
+                            </UniformGrid>
+                            <Button Style="{StaticResource PrimaryButton}" Content="{Binding SyncButtonText}" Command="{Binding SyncCharacterCommand}" Margin="0,8,0,0"
+                                    HorizontalAlignment="Left" Padding="16,7"/>
+                            <TextBlock Text="{Binding CharStatus}" Style="{StaticResource Hint}"/>
+                            <TextBlock Text="{Binding CharError}" Style="{StaticResource ErrorText}" Visibility="{Binding HasCharError, Converter={StaticResource Vis}}"/>
+                            <TextBlock Style="{StaticResource Hint}"
+                                       Text="{l:T 'Отметит гемы, которые уже стоят в шмотках, и даст сравнить дерево с реальным персонажем.'}"/>
                         </StackPanel>
 
-                        <!-- tracking: the master switch and what of it -->
+                        <!-- ===== tracking: the master switch and what of it ===== -->
                         <StackPanel Visibility="{Binding IsSetTracking, Converter={StaticResource Vis}}">
-                            <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="4,8,12,10" Margin="0,4,0,0">
+                            <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource BronzeLine}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}"
+                                    Padding="14,12" Margin="0,4,0,0">
                                 <StackPanel>
-                                    <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding Tracking}">
-                                        <TextBlock Text="{l:T 'Следить за игрой'}" FontSize="13.5" FontWeight="SemiBold"/>
+                                    <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding Tracking}">
+                                        <TextBlock Text="{l:T 'Следить за игрой'}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsSection}" FontWeight="Bold"
+                                                   Foreground="{StaticResource TitleText}"/>
                                     </CheckBox>
-                                    <TextBlock Foreground="{StaticResource Text3}" FontSize="11.5" Margin="33,2,0,0" TextWrapping="Wrap" LineHeight="16"
-                                               Text="{l:T 'Этапы сами по логу, путь на игровом дереве, панель уходит от инвентаря, подсказки нового этапа и персонажа, покупки в городе. Выключи — останется гайд: этапы листаешь сам, шмот и гемы смотришь, прайс-чек и таймер карт работают. Экран тогда не снимается совсем.'}"/>
+                                    <l:FoldHint Margin="0,6,0,0"
+                                                Short="{l:T 'Этапы сами по логу, путь на игровом дереве, панель уходит от инвентаря, подсказки нового этапа и персонажа, покупки в городе.'}"
+                                                More="{l:T 'Выключи — останется гайд: этапы листаешь сам, шмот и гемы смотришь, прайс-чек и таймер карт работают. Экран тогда не снимается совсем.'}"/>
                                 </StackPanel>
                             </Border>
-                            <StackPanel Margin="0,10,0,0" IsEnabled="{Binding Tracking}">
-                                <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding FollowGame}" Margin="-7,0,0,0">
-                                    <TextBlock Text="{l:T 'Переключать этап по акту и уровню из игры'}" FontSize="12.5" TextWrapping="Wrap"/>
-                                </CheckBox>
-                                <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding TrackGems}" Margin="-7,2,0,0">
-                                    <TextBlock Text="{l:T 'Гемы: что купить в городе'}" FontSize="12.5" TextWrapping="Wrap"/>
-                                </CheckBox>
-                                <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding TrackGemLinks}" Margin="-7,2,0,0">
-                                    <TextBlock Text="{l:T 'Связки: что переставить в сокетах'}" FontSize="12.5" TextWrapping="Wrap"/>
-                                </CheckBox>
-                                <!-- the path on the game tree is switched in its own section, «Дерево» -->
-                                <TextBlock Style="{StaticResource Hint}" Margin="26,8,0,0" Text="{l:T 'Путь на игровом дереве — в разделе «Дерево».'}"/>
-                            </StackPanel>
+                            <Border Style="{StaticResource OptionCard}" Margin="0,10,0,0" IsEnabled="{Binding Tracking}">
+                                <StackPanel>
+                                    <Border Style="{StaticResource OptionRow}">
+                                        <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding FollowGame}">
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Переключать этап по акту и уровню из игры'}"/>
+                                                <TextBlock Style="{StaticResource OptionNote}" Text="{l:T 'То же, что «Авто» на панели: этап идёт только вперёд, по правилам из «Билд и этапы».'}"/>
+                                            </StackPanel>
+                                        </CheckBox>
+                                    </Border>
+                                    <Border Style="{StaticResource OptionRow}">
+                                        <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding TrackGems}">
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Гемы: что купить в городе'}"/>
+                                                <TextBlock Style="{StaticResource OptionNote}" Text="{l:T 'В городе мини-трекер показывает гемы этапа по торговцам. Выключи, если покупаешь их на трейде.'}"/>
+                                            </StackPanel>
+                                        </CheckBox>
+                                    </Border>
+                                    <Border Style="{StaticResource OptionRow}" BorderThickness="0">
+                                        <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding TrackGemLinks}">
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Связки: что переставить в сокетах'}"/>
+                                                <TextBlock Style="{StaticResource OptionNote}" Text="{l:T 'В городе напоминает, какие гемы этапа заменить в уже стоящих связках.'}"/>
+                                            </StackPanel>
+                                        </CheckBox>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                            <TextBlock Style="{StaticResource Hint}" Margin="2,8,0,0" Text="{l:T 'Путь на игровом дереве — в разделе «Дерево».'}"/>
                         </StackPanel>
 
-                        <!-- build and stages -->
+                        <!-- ===== build and stages ===== -->
                         <StackPanel Visibility="{Binding IsSetBuild, Converter={StaticResource Vis}}">
-                            <TextBlock Text="PATH OF BUILDING" Style="{StaticResource Caption}" Margin="0,4,0,8"/>
-                            <TextBox Style="{StaticResource Field}" Tag="{l:T 'Ссылка pobb.in или код PoB'}" Text="{Binding BuildInput, UpdateSourceTrigger=PropertyChanged}"/>
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="Path of Building" Margin="0,4,0,8"/>
+                            <TextBox Style="{StaticResource Field}" Tag="{l:T 'Ссылка pobb.in или код PoB'}" Text="{Binding BuildInput, UpdateSourceTrigger=PropertyChanged}"
+                                     TextWrapping="NoWrap" MaxLines="1"/>
                             <UniformGrid Rows="1" Margin="0,8,-8,0">
                                 <Button Style="{StaticResource PrimaryButton}" Content="{Binding LoadButtonText}" Command="{Binding LoadBuildCommand}" Margin="0,0,8,0"/>
                                 <Button Style="{StaticResource GhostButton}" Content="{Binding SaveStageText}" Command="{Binding SaveStageCommand}" Margin="0,0,8,0"
                                         ToolTip="{l:T 'Для PoB, который меняется по ходу игры (стример): то, что сейчас по ссылке, добавится к твоему билду новым этапом «Ур. N». Сохраняется сам билд, не ссылка: прошлые этапы не меняются.'}"/>
                             </UniformGrid>
-                            <TextBlock Text="{Binding BuildError}" TextWrapping="Wrap" FontSize="12" Margin="2,8,0,0"
-                                       Visibility="{Binding HasBuildError, Converter={StaticResource Vis}}"/>
+                            <TextBlock Text="{Binding BuildError}" Style="{StaticResource ErrorText}" Visibility="{Binding HasBuildError, Converter={StaticResource Vis}}"/>
 
-                            <StackPanel Visibility="{Binding HasRecentBuilds, Converter={StaticResource Vis}}">
-                                <TextBlock Text="{l:T 'НЕДАВНИЕ БИЛДЫ'}" Style="{StaticResource Caption}" Margin="0,24,0,6"/>
-                                <ItemsControl ItemsSource="{Binding RecentBuilds}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12,7,6,7" Margin="0,0,0,6">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="*"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                        <ColumnDefinition Width="Auto"/>
-                                                    </Grid.ColumnDefinitions>
-                                                    <StackPanel VerticalAlignment="Center">
-                                                        <TextBlock Text="{Binding Title}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock Text="{Binding Details}" FontSize="11" Foreground="{StaticResource Text3}" TextTrimming="CharacterEllipsis"/>
-                                                    </StackPanel>
-                                                    <Button Grid.Column="1" Style="{StaticResource GhostButton}" Content="{l:T 'Открыть'}" Padding="12,5" Margin="8,0,4,0"
-                                                            Command="{Binding DataContext.OpenRecentCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding}"/>
-                                                    <Button Grid.Column="2" Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="9" VerticalAlignment="Center"
-                                                            ToolTip="{l:T 'Убрать из списка'}"
-                                                            Command="{Binding DataContext.RemoveRecentCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                                            CommandParameter="{Binding}"/>
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                <TextBlock Style="{StaticResource Hint}" Margin="2,0,0,0"
-                                           Text="{l:T 'Хранится сам билд, не только ссылка: откроется, даже если ссылка уже не работает, и с того этапа, где ты остановился.'}"/>
+                            <!-- the open build: a card of its own, never a line in the list -->
+                            <StackPanel Visibility="{Binding HasCurrentRecent, Converter={StaticResource Vis}}">
+                                <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Текущий'}"/>
+                                <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource BronzeLine}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}"
+                                        Padding="12,8,6,8" DataContext="{Binding CurrentRecent}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Title}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsSection}" FontWeight="Bold"
+                                                       Foreground="{StaticResource TitleText}" TextTrimming="CharacterEllipsis"
+                                                       Visibility="{Binding IsNotRenaming, Converter={StaticResource Vis}}"/>
+                                            <TextBox Style="{StaticResource Field}" Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}" Padding="6,3" FontSize="{StaticResource FsSmall}"
+                                                     Tag="{Binding ClassLine}" MaxLength="60" Visibility="{Binding IsRenaming, Converter={StaticResource Vis}}"
+                                                     IsVisibleChanged="RenameBox_IsVisibleChanged" LostKeyboardFocus="RenameBox_LostFocus"/>
+                                            <TextBlock Text="{Binding Details}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}" TextTrimming="CharacterEllipsis"/>
+                                        </StackPanel>
+                                        <TextBlock Grid.Column="1" Text="&#xE71B;" FontFamily="{StaticResource IconFont}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text3}"
+                                                   VerticalAlignment="Center" Margin="0,0,6,0" ToolTip="{Binding LinkTip}" Visibility="{Binding HasLink, Converter={StaticResource Vis}}"/>
+                                        <Button Grid.Column="2" Style="{StaticResource IconButton}" Content="&#xE70F;" FontSize="{StaticResource FsCaption}" VerticalAlignment="Center"
+                                                ToolTip="{l:T 'Переименовать'}"
+                                                Command="{Binding DataContext.RenameRecentCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
+                                    </Grid>
+                                </Border>
                             </StackPanel>
 
-                            <TextBlock Text="{l:T 'ПЕРЕКЛЮЧЕНИЕ ЭТАПОВ'}" Style="{StaticResource Caption}" Margin="0,24,0,6"/>
-                            <TextBlock Style="{StaticResource Hint}" Margin="2,0,0,10"
-                                       Text="{l:T 'С какого уровня персонажа или тира карты включается этап. Пусто = по названию (lvl 12-30, T11, Red Maps) или по акту. Работает при включённом «Авто», только вперёд.'}"/>
+                            <StackPanel Visibility="{Binding HasPinnedRecent, Converter={StaticResource Vis}}">
+                                <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Закреплённые'}"/>
+                                <ItemsControl ItemsSource="{Binding PinnedRecent}" ItemTemplate="{StaticResource BuildRow}"/>
+                            </StackPanel>
+
+                            <StackPanel Visibility="{Binding HasOtherRecent, Converter={StaticResource Vis}}">
+                                <Grid>
+                                    <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Недавние билды'}" Margin="0,22,150,8"/>
+                                    <!-- "Очистить" asks right in the line: "Точно очистить? Да · Нет" for 4 s -->
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,8">
+                                        <Button Style="{StaticResource SmallButton}" Content="{l:T 'Очистить'}" Background="Transparent" BorderBrush="{StaticResource LineStrong}"
+                                                Foreground="{StaticResource Text2}" ToolTip="{l:T 'Убрать все, кроме закреплённых и открытого'}"
+                                                Command="{Binding AskClearRecentCommand}" Visibility="{Binding NotConfirmingClear, Converter={StaticResource Vis}}"/>
+                                        <StackPanel Orientation="Horizontal" Visibility="{Binding ConfirmingClear, Converter={StaticResource Vis}}">
+                                            <TextBlock Text="{l:T 'Точно очистить?'}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource DangerText}"
+                                                       VerticalAlignment="Center" Margin="0,0,8,0"/>
+                                            <Button Style="{StaticResource SmallButton}" Content="{l:T 'Да'}" Background="{StaticResource DangerSoft}" BorderBrush="{StaticResource Danger}"
+                                                    Foreground="{StaticResource DangerText}" Command="{Binding ClearRecentCommand}" Margin="0,0,4,0"/>
+                                            <Button Style="{StaticResource SmallButton}" Content="{l:T 'Нет'}" Background="Transparent" BorderBrush="{StaticResource LineStrong}"
+                                                    Foreground="{StaticResource Text2}" Command="{Binding CancelClearRecentCommand}"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding OtherRecent}" ItemTemplate="{StaticResource BuildRow}"/>
+                            </StackPanel>
+                            <TextBlock Style="{StaticResource Hint}" Margin="2,2,0,0" TextTrimming="CharacterEllipsis" TextWrapping="NoWrap"
+                                       Visibility="{Binding HasRecentBuilds, Converter={StaticResource Vis}}"
+                                       Text="{l:T 'Хранится сам билд, не только ссылка: откроется, даже если ссылка уже не работает.'}"/>
+
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Переключение этапов'}"/>
+                            <l:FoldHint Margin="2,0,0,10"
+                                        Short="{l:T 'С какого уровня персонажа или тира карты включается этап.'}"
+                                        More="{l:T 'Пусто = по названию (lvl 12-30, T11, Red Maps) или по акту. Работает при включённом «Авто», только вперёд.'}"/>
                             <Grid Margin="0,0,0,4">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
@@ -230,8 +425,8 @@
                                     <ColumnDefinition Width="6"/>
                                     <ColumnDefinition Width="96"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Text="{l:T 'УРОВЕНЬ'}" Style="{StaticResource Caption}" FontSize="9.5" Margin="2,0,0,0"/>
-                                <TextBlock Grid.Column="3" Text="{l:T 'ТИР КАРТЫ'}" Style="{StaticResource Caption}" FontSize="9.5" Margin="2,0,0,0"/>
+                                <TextBlock Grid.Column="1" Text="{l:T 'УРОВЕНЬ'}" Style="{StaticResource Caption}" FontSize="{StaticResource FsCaption}" Margin="2,0,0,0"/>
+                                <TextBlock Grid.Column="3" Text="{l:T 'ТИР КАРТЫ'}" Style="{StaticResource Caption}" FontSize="{StaticResource FsCaption}" Margin="2,0,0,0"/>
                             </Grid>
                             <ItemsControl ItemsSource="{Binding StageLevelRows}">
                                 <ItemsControl.ItemTemplate>
@@ -243,123 +438,140 @@
                                                 <ColumnDefinition Width="6"/>
                                                 <ColumnDefinition Width="96"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding Title}" FontSize="12.5" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="2,0,10,0"/>
-                                            <TextBox Grid.Column="1" Style="{StaticResource Field}" Padding="8,5" FontSize="12"
+                                            <TextBox Style="{StaticResource Field}" Padding="8,5" FontSize="{StaticResource FsSmall}" Margin="0,0,10,0" MaxLength="40"
+                                                     Tag="{Binding Title}" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                     ToolTip="{l:T 'Своё название этапа; пусто = как в PoB. Автопереключение смотрит на название из PoB.'}"/>
+                                            <TextBox Grid.Column="1" Style="{StaticResource Field}" Padding="8,5" FontSize="{StaticResource FsSmall}"
                                                      Tag="{Binding AutoText}" Text="{Binding Text}" ToolTip="{l:T 'Уровень персонажа 1–100, пусто = авто'}"/>
-                                            <TextBox Grid.Column="3" Style="{StaticResource Field}" Padding="8,5" FontSize="12"
+                                            <TextBox Grid.Column="3" Style="{StaticResource Field}" Padding="8,5" FontSize="{StaticResource FsSmall}"
                                                      Tag="{Binding AutoTierText}" Text="{Binding TierText}" ToolTip="{l:T 'Тир карты 1–17 (T11 = красные), пусто = авто'}"/>
                                         </Grid>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-
-                            <TextBlock Text="{l:T 'ПЕРСОНАЖ · ПУБЛИЧНЫЙ ПРОФИЛЬ'}" Style="{StaticResource Caption}" Margin="0,24,0,8"/>
-                            <UniformGrid Rows="1" Margin="0,0,-8,0">
-                                <TextBox Style="{StaticResource Field}" Tag="{l:T 'Аккаунт, например Name#1234'}" Text="{Binding Account}" Margin="0,0,8,0"/>
-                                <TextBox Style="{StaticResource Field}" Tag="{l:T 'Имя персонажа'}" Text="{Binding Character}" Margin="0,0,8,0"/>
-                            </UniformGrid>
-                            <Button Style="{StaticResource PrimaryButton}" Content="{Binding SyncButtonText}" Command="{Binding SyncCharacterCommand}" Margin="0,8,0,0"
-                                    HorizontalAlignment="Left" Padding="16,7"/>
-                            <TextBlock Text="{Binding CharStatus}" Foreground="{StaticResource Text2}" FontSize="11.5" Margin="2,6,0,0" TextWrapping="Wrap"/>
-                            <TextBlock Text="{Binding CharError}" FontSize="12" Margin="2,6,0,0" TextWrapping="Wrap"
-                                       Visibility="{Binding HasCharError, Converter={StaticResource Vis}}"/>
-                            <TextBlock Style="{StaticResource Hint}"
-                                       Text="{l:T 'Отметит гемы, которые уже стоят в шмотках, и даст сравнить дерево с реальным персонажем.'}"/>
                         </StackPanel>
 
-                        <!-- tree overlay -->
+                        <!-- ===== tree overlay ===== -->
                         <StackPanel Visibility="{Binding IsSetTree, Converter={StaticResource Vis}}">
-                            <TextBlock Text="{l:T 'НАЛОЖЕНИЕ НА ИГРОВОЕ ДЕРЕВО'}" Style="{StaticResource Caption}" Margin="0,4,0,6"/>
-                            <TextBlock Style="{StaticResource Hint}" Margin="2,0,0,8"
-                                       Text="{l:T 'Открыл дерево (P) — панель прячется, сверху шапка, путь этапа лежит прямо на узлах, клики проходят в игру. Ищет твой уже взятый путь по снимку экрана, поэтому синхронизируй персонажа. Зум можно менять: новый масштаб подбирается сам за 1–2 с и запоминается.'}"/>
-                            <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding TreeOverlayEnabled}" Margin="-7,0,0,0" IsEnabled="{Binding Tracking}">
-                                <TextBlock Text="{l:T 'Рисовать путь прямо на дереве в игре'}" FontSize="12.5" TextWrapping="Wrap"/>
-                            </CheckBox>
-                            <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding TreeOverlayInCapture}" Margin="-7,2,0,0" IsEnabled="{Binding Tracking}">
-                                <TextBlock Text="{l:T 'Показывать путь на скриншотах и записи экрана'}" FontSize="12.5" TextWrapping="Wrap"/>
-                            </CheckBox>
-                            <TextBlock Style="{StaticResource Hint}" Margin="33,0,0,4"
-                                       Text="{l:T 'Для видео, если путь съезжает. Пока включено, программа хуже замечает только что взятые узлы. Сбрасывается при перезапуске.'}"/>
-                            <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding ClusterCardFull}" Margin="-7,6,0,0">
-                                <TextBlock Text="{l:T 'Карточка джевела: все моды, а не только ноталки'}" FontSize="12.5" TextWrapping="Wrap"/>
-                            </CheckBox>
-                            <TextBlock Text="{Binding ScaleInfo}" Foreground="{StaticResource Text2}" FontSize="11.5" Margin="2,10,0,0" TextWrapping="Wrap"/>
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Наложение на игровое дерево'}" Margin="0,4,0,6"/>
+                            <l:FoldHint Margin="2,0,0,10"
+                                        Short="{l:T 'Открыл дерево (P) — панель прячется, сверху шапка, путь этапа лежит прямо на узлах, клики проходят в игру.'}"
+                                        More="{l:T 'Ищет твой уже взятый путь по снимку экрана, поэтому синхронизируй персонажа. Зум можно менять: новый масштаб подбирается сам за 1–2 с и запоминается.'}"/>
+                            <Border Style="{StaticResource OptionCard}">
+                                <StackPanel>
+                                    <Border Style="{StaticResource OptionRow}">
+                                        <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding TreeOverlayEnabled}" IsEnabled="{Binding Tracking}">
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Рисовать путь прямо на дереве в игре'}"/>
+                                                <TextBlock Style="{StaticResource OptionNote}" Text="{l:T 'Нужна включённая слежка за игрой: программа смотрит на экран, пока открыто дерево.'}"/>
+                                            </StackPanel>
+                                        </CheckBox>
+                                    </Border>
+                                    <Border Style="{StaticResource OptionRow}">
+                                        <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding TreeOverlayInCapture}" IsEnabled="{Binding Tracking}">
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Показывать путь на скриншотах и записи экрана'}"/>
+                                                <TextBlock Style="{StaticResource OptionNote}"
+                                                           Text="{l:T 'Для видео, если путь съезжает. Пока включено, программа хуже замечает только что взятые узлы. Сбрасывается при перезапуске.'}"/>
+                                            </StackPanel>
+                                        </CheckBox>
+                                    </Border>
+                                    <Border Style="{StaticResource OptionRow}" BorderThickness="0">
+                                        <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding ClusterCardFull}">
+                                            <StackPanel>
+                                                <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Карточка джевела: все моды, а не только ноталки'}"/>
+                                                <TextBlock Style="{StaticResource OptionNote}" Text="{l:T 'Что показывает подсказка над кластером на дереве.'}"/>
+                                            </StackPanel>
+                                        </CheckBox>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                            <TextBlock Text="{Binding ScaleInfo}" Style="{StaticResource Hint}" Margin="2,10,0,0"/>
                             <Button Style="{StaticResource GhostButton}" Content="{l:T 'Откалибровать масштаб заново'}" Command="{Binding RecalibrateCommand}" Margin="0,8,0,0"
-                                    HorizontalAlignment="Left" Padding="14,7" IsEnabled="{Binding Tracking}"/>
-
-                            <TextBlock Text="{l:T 'ДАННЫЕ ДЕРЕВА'}" Style="{StaticResource Caption}" Margin="0,24,0,8"/>
-                            <Button Style="{StaticResource GhostButton}" Content="{l:T 'Обновить данные дерева'}" Command="{Binding RefreshTreeCommand}"
-                                    HorizontalAlignment="Left" Padding="14,7"/>
-                            <TextBlock Text="{Binding TreeInfo}" Style="{StaticResource Hint}"/>
+                                    HorizontalAlignment="Left" Padding="14,7" IsEnabled="{Binding Tracking}"
+                                    ToolTip="{l:T 'То же есть в шапке над деревом в игре'}"/>
                         </StackPanel>
 
-                        <!-- trade search, shared by the gear and gem buttons and the price check -->
+                        <!-- ===== trade search, then the price check window ===== -->
                         <StackPanel Visibility="{Binding IsSetTrade, Converter={StaticResource Vis}}">
-                            <TextBlock Style="{StaticResource Hint}" Margin="2,0,0,12"
-                                       Text="{l:T 'Общее для кнопок трейда у шмота и гемов и для прайс-чека: каких продавцов показывать и насколько строго подбирать статы. Лигу можно не трогать: берётся текущая софткор-лига.'}"/>
-                            <TextBlock Text="{l:T 'ПРОДАВЦЫ'}" Style="{StaticResource Caption}" Margin="0,4,0,8"/>
-                            <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="3">
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Поиск на трейде'}" Margin="0,4,0,6"/>
+                            <l:FoldHint Margin="2,0,0,10"
+                                        Short="{l:T 'Общее для кнопок трейда у шмота и гемов и для прайс-чека: каких продавцов показывать и насколько строго подбирать статы.'}"
+                                        More="{l:T 'Лигу можно не трогать: берётся текущая софткор-лига.'}"/>
+                            <TextBlock Text="{l:T 'Продавцы'}" FontSize="{StaticResource FsSmall}" Margin="2,0,0,6"/>
+                            <Border Background="{StaticResource Well}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="2">
                                 <UniformGrid Rows="1">
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="tradeStatus" Content="Instant" FontSize="11.5" IsChecked="{Binding IsTradeInstant}"
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="tradeStatus" Content="Instant" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsTradeInstant}"
                                                  ToolTip="{l:T 'Instant Buyout: только то, что покупается сразу, без переписки'}"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="tradeStatus" Content="{l:T 'Instant и лично'}" FontSize="11.5" IsChecked="{Binding IsTradeInstantOrPerson}"
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="tradeStatus" Content="{l:T 'Instant и лично'}" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsTradeInstantOrPerson}"
                                                  ToolTip="Instant Buyout and In Person"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="tradeStatus" Content="{l:T 'Лично онлайн'}" FontSize="11.5" IsChecked="{Binding IsTradeInPerson}"
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="tradeStatus" Content="{l:T 'Лично онлайн'}" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsTradeInPerson}"
                                                  ToolTip="{l:T 'In Person (Online): продавец в игре, пишешь ему в личку'}"/>
                                 </UniformGrid>
                             </Border>
-                            <Grid Margin="2,18,0,0">
-                                <TextBlock Text="{l:T 'Подбор статов'}" FontSize="12.5"/>
-                                <TextBlock Text="{Binding TradeStrictness, StringFormat='{}{0:0}%'}" FontFamily="{StaticResource MonoFont}" FontSize="12"
+                            <Grid Margin="2,16,0,0">
+                                <TextBlock Text="{l:T 'Подбор статов'}" FontSize="{StaticResource FsSmall}"/>
+                                <TextBlock Text="{Binding TradeStrictness, StringFormat='{}{0:0}%'}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsSmall}"
                                            Foreground="{StaticResource Text2}" HorizontalAlignment="Right"/>
                             </Grid>
                             <Slider Style="{StaticResource Thin}" Minimum="0" Maximum="100" TickFrequency="5" IsSnapToTickEnabled="True"
                                     SmallChange="5" LargeChange="10" Value="{Binding TradeStrictness}" Margin="0,6,0,0"
                                     ToolTip="{l:T 'Минимумы статов в поиске: доля от роллов в PoB. Правее строже, левее больше находится'}"/>
                             <TextBlock Text="{Binding TradeStrictnessText}" Style="{StaticResource Hint}" Margin="2,4,0,0"/>
-                            <TextBlock Text="{l:T 'ЛИГА'}" Style="{StaticResource Caption}" Margin="0,22,0,8"/>
+                            <TextBlock Text="{l:T 'Лига'}" FontSize="{StaticResource FsSmall}" Margin="2,16,0,6"/>
                             <TextBox Style="{StaticResource Field}" Tag="{l:T 'Лига (пусто = текущая)'}" Text="{Binding TradeLeagueInput}" Width="260" HorizontalAlignment="Left"/>
-                        </StackPanel>
-
-                        <!-- price check -->
-                        <StackPanel Visibility="{Binding IsSetPrice, Converter={StaticResource Vis}}">
-                            <TextBlock Style="{StaticResource Hint}" Margin="2,0,0,12" Text="{Binding PriceHint}"/>
-                            <TextBlock Text="{l:T 'Валюта цены'}" FontSize="12.5" Margin="2,0,0,6"/>
-                            <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="3">
+                            <TextBlock Text="{l:T 'Валюта цены'}" FontSize="{StaticResource FsSmall}" Margin="2,16,0,6"/>
+                            <Border Background="{StaticResource Well}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="2">
                                 <UniformGrid Rows="1">
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceCur" Content="{l:T 'Любая'}" FontSize="11.5" IsChecked="{Binding IsPriceAnyCurrency}"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceCur" Content="Chaos" FontSize="11.5" IsChecked="{Binding IsPriceChaos}"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceCur" Content="Divine" FontSize="11.5" IsChecked="{Binding IsPriceDivine}"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceCur" Content="Chaos/Div" FontSize="11.5" IsChecked="{Binding IsPriceChaosDivine}"
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceCur" Content="{l:T 'Любая'}" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsPriceAnyCurrency}"/>
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceCur" Content="Chaos" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsPriceChaos}"/>
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceCur" Content="Divine" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsPriceDivine}"/>
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceCur" Content="Chaos/Div" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsPriceChaosDivine}"
                                                  ToolTip="{l:T 'Только цены в chaos или divine: без странных валют'}"/>
                                 </UniformGrid>
                             </Border>
-                            <TextBlock Text="{l:T 'Выставлено'}" FontSize="12.5" Margin="2,14,0,6"/>
-                            <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="3">
+                            <TextBlock Text="{l:T 'Выставлено'}" FontSize="{StaticResource FsSmall}" Margin="2,16,0,6"/>
+                            <Border Background="{StaticResource Well}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="2">
                                 <UniformGrid Rows="1">
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceListed" Content="{l:T 'Когда угодно'}" FontSize="11.5" IsChecked="{Binding IsListedAny}"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceListed" Content="{l:T 'За день'}" FontSize="11.5" IsChecked="{Binding IsListedDay}"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceListed" Content="{l:T '3 дня'}" FontSize="11.5" IsChecked="{Binding IsListed3Days}"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceListed" Content="{l:T 'Неделя'}" FontSize="11.5" IsChecked="{Binding IsListedWeek}"/>
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceListed" Content="{l:T 'Когда угодно'}" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsListedAny}"/>
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceListed" Content="{l:T 'За день'}" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsListedDay}"/>
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceListed" Content="{l:T '3 дня'}" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsListed3Days}"/>
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="priceListed" Content="{l:T 'Неделя'}" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsListedWeek}"/>
                                 </UniformGrid>
                             </Border>
-                            <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding PriceCollapse}" Margin="-7,12,0,0">
-                                <TextBlock Text="{l:T 'Одна строка на продавца'}" FontSize="12.5" TextWrapping="Wrap"/>
-                            </CheckBox>
-                            <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding PriceAutoSearch}" Margin="-7,2,0,0">
-                                <TextBlock Text="{l:T 'Искать сразу, как откроется окно'}" FontSize="12.5" TextWrapping="Wrap"/>
-                            </CheckBox>
+                            <Border Style="{StaticResource OptionCard}" Margin="0,12,0,0">
+                                <Border Style="{StaticResource OptionRow}" BorderThickness="0">
+                                    <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding PriceCollapse}">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Одна строка на продавца'}"/>
+                                            <TextBlock Style="{StaticResource OptionNote}" Text="{l:T 'Продавец с десятком одинаковых лотов занимает в списке одну строку.'}"/>
+                                        </StackPanel>
+                                    </CheckBox>
+                                </Border>
+                            </Border>
+
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Окно прайс-чека'}"/>
+                            <TextBlock Style="{StaticResource Hint}" Margin="2,0,0,10" Text="{Binding PriceHint}"/>
+                            <Border Style="{StaticResource OptionCard}">
+                                <Border Style="{StaticResource OptionRow}" BorderThickness="0">
+                                    <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding PriceAutoSearch}">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Искать сразу, как откроется окно'}"/>
+                                            <TextBlock Style="{StaticResource OptionNote}" Text="{l:T 'Выключено — окно ждёт, пока ты выберешь фильтры и нажмёшь «Искать».'}"/>
+                                        </StackPanel>
+                                    </CheckBox>
+                                </Border>
+                            </Border>
                         </StackPanel>
 
-                        <!-- top mods: the star of the comparison window, a list per slot -->
+                        <!-- ===== top mods: the star of the comparison window, a list per slot ===== -->
                         <StackPanel Visibility="{Binding IsSetTop, Converter={StaticResource Vis}}">
-                            <TextBlock Style="{StaticResource Hint}" Margin="2,0,0,12"
-                                       Text="{l:T 'Строка со звёздочкой, если в её тексте есть фраза из списка слота (# — любое число, регистр не важен) и её тир в верхней части тиров этого мода на этой базе (данные игры, RePoE). «Всегда» — для любого слота и тира: +1 к зарядам, уровни гемов, иммунитеты.'}"/>
+                            <l:FoldHint Margin="2,4,0,12"
+                                        Short="{l:T 'Строка со звёздочкой, если в её тексте есть фраза из списка слота (# — любое число, регистр не важен) и её тир в верхней части тиров этого мода на этой базе (данные игры, RePoE).'}"
+                                        More="{l:T '«Всегда» — для любого слота и тира: +1 к зарядам, уровни гемов, иммунитеты.'}"/>
                             <ItemsControl ItemsSource="{Binding TopSlots}">
                                 <ItemsControl.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <WrapPanel/>
-                                    </ItemsPanelTemplate>
+                                    <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -368,55 +580,91 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <TextBox Style="{StaticResource Field}" FontSize="12" FontFamily="{StaticResource MonoFont}" Padding="8,6" Margin="0,4,0,0"
-                                     AcceptsReturn="True" TextWrapping="NoWrap" HorizontalScrollBarVisibility="Auto" MinHeight="140" MaxHeight="260"
-                                     VerticalScrollBarVisibility="Auto" Text="{Binding TopModsText}" Tag="{l:T 'одна фраза на строку'}"/>
-                            <Grid Margin="0,6,0,0">
-                                <TextBlock Text="{l:T 'Список сохраняется, когда уходишь из поля'}" Foreground="{StaticResource Text3}" FontSize="11" VerticalAlignment="Center"/>
-                                <Button Style="{StaticResource GhostButton}" Content="{l:T 'Сбросить слот'}" Padding="10,4" FontSize="11.5" HorizontalAlignment="Right"
-                                        Command="{Binding ResetTopModsCommand}" IsEnabled="{Binding TopModsEdited}"/>
-                            </Grid>
-                            <TextBlock Text="{l:T 'Тир мода слота'}" FontSize="12.5" Margin="2,14,0,6"/>
-                            <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="3">
+                            <!-- the slot's phrases as chips; one added under them (Enter), several lines pasted = several chips -->
+                            <Border Background="{StaticResource Well}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}"
+                                    Padding="8,8,4,4" Margin="0,6,0,0">
+                                <ItemsControl ItemsSource="{Binding TopPhrases}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border Background="{StaticResource Surface2}" BorderBrush="{StaticResource LineStrong}" BorderThickness="1"
+                                                    CornerRadius="{StaticResource RadiusS}" Padding="8,2,2,2" Margin="0,0,4,4">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsSmall}" VerticalAlignment="Center"/>
+                                                    <Button Style="{StaticResource IconButton}" Width="22" Height="22" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}"
+                                                            Margin="4,0,0,0" ToolTip="{l:T 'Убрать фразу'}"
+                                                            Command="{Binding DataContext.RemoveTopPhraseCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                            CommandParameter="{Binding}"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Border>
+                            <TextBox x:Name="TopPhraseBox" Style="{StaticResource Field}" FontSize="{StaticResource FsSmall}" FontFamily="{StaticResource MonoFont}" Padding="8,6" Margin="0,6,0,0"
+                                     Tag="{l:T 'Добавить фразу… (Enter)'}" KeyDown="TopPhrase_KeyDown"
+                                     ToolTip="{l:T '# — любое число, регистр не важен: «# to maximum Life»'}"/>
+                            <Button Style="{StaticResource GhostButton}" Content="{l:T 'Сбросить слот'}" Padding="10,4" FontSize="{StaticResource FsSmall}" HorizontalAlignment="Right"
+                                    Margin="0,6,0,0" Command="{Binding ResetTopModsCommand}" IsEnabled="{Binding TopModsEdited}"/>
+                            <TextBlock Text="{l:T 'Тир мода слота'}" FontSize="{StaticResource FsSmall}" Margin="2,10,0,6"/>
+                            <Border Background="{StaticResource Well}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="2">
                                 <UniformGrid Rows="1">
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="topTier" Content="{l:T 'Верхняя треть'}" FontSize="11.5" IsChecked="{Binding IsTopThird}"
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="topTier" Content="{l:T 'Верхняя треть'}" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsTopThird}"
                                                  ToolTip="{l:T 'Жизнь на перчатках: 9 тиров → T1–T3; мод с 2 тирами → только T1'}"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="topTier" Content="{l:T 'Половина'}" FontSize="11.5" IsChecked="{Binding IsTopHalf}"
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="topTier" Content="{l:T 'Половина'}" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsTopHalf}"
                                                  ToolTip="{l:T 'Жизнь на перчатках: 9 тиров → T1–T5'}"/>
-                                    <RadioButton Style="{StaticResource Segment}" GroupName="topTier" Content="{l:T 'Любой'}" FontSize="11.5" IsChecked="{Binding IsTopAnyTier}"/>
+                                    <RadioButton Style="{StaticResource Segment}" GroupName="topTier" Content="{l:T 'Любой'}" FontSize="{StaticResource FsSmall}" IsChecked="{Binding IsTopAnyTier}"/>
                                 </UniformGrid>
                             </Border>
-                            <TextBlock Style="{StaticResource Hint}" Margin="2,4,0,0" FontSize="11"
+                            <TextBlock Style="{StaticResource Hint}" Margin="2,4,0,0"
                                        Text="{l:T 'Если число тиров мода неизвестно (крафт, влияние), считается как 6: треть = T1–T2.'}"/>
                         </StackPanel>
 
-                        <!-- hotkeys -->
+                        <!-- ===== hotkeys ===== -->
                         <StackPanel Visibility="{Binding IsSetKeys, Converter={StaticResource Vis}}">
                             <TextBlock Style="{StaticResource Hint}" Margin="2,0,0,12"
                                        Text="{l:T 'Нажми на кнопку и затем сочетание с Ctrl или Alt. Esc — отмена, Backspace — снять.'}"/>
                             <ItemsControl ItemsSource="{Binding HotkeyRows}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Margin="0,0,0,6">
+                                        <StackPanel x:Name="line" Margin="0,0,0,6" Background="Transparent">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="*"/>
                                                     <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
                                                 </Grid.ColumnDefinitions>
-                                                <TextBlock Text="{Binding Title}" FontSize="12.5" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="2,0,10,0"/>
-                                                <Button x:Name="cap" Grid.Column="1" Style="{StaticResource GhostButton}" MinWidth="150" Padding="10,6"
-                                                        Command="{Binding DataContext.BeginCaptureCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                <TextBlock Text="{Binding Title}" FontSize="{StaticResource FsSmall}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Margin="2,0,10,0"/>
+                                                <!-- ↺: back to this action's default, shown on hover when the key was changed -->
+                                                <Button x:Name="reset" Grid.Column="1" Style="{StaticResource IconButton}" Content="&#xE72C;" FontSize="{StaticResource FsCaption}" Margin="0,0,4,0"
+                                                        ToolTip="{l:T 'По умолчанию'}" Visibility="Hidden"
+                                                        Command="{Binding DataContext.ResetHotkeyCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"/>
+                                                <Button x:Name="cap" Grid.Column="2" Style="{StaticResource GhostButton}" MinWidth="150" Padding="10,6"
+                                                        Command="{Binding DataContext.BeginCaptureCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                         CommandParameter="{Binding}">
-                                                    <TextBlock Text="{Binding Text}" FontFamily="{StaticResource MonoFont}" FontSize="11.5" FontWeight="Normal"/>
+                                                    <TextBlock Text="{Binding Text}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsSmall}" FontWeight="Normal"/>
                                                 </Button>
                                             </Grid>
-                                            <TextBlock Text="{Binding Error}" FontSize="11.5" Margin="2,4,0,0" TextWrapping="Wrap"
-                                                       Visibility="{Binding HasError, Converter={StaticResource Vis}}"/>
+                                            <TextBlock Text="{Binding Clash}" Style="{StaticResource ErrorText}" HorizontalAlignment="Right" Margin="0,4,2,0"
+                                                       Visibility="{Binding HasClash, Converter={StaticResource Vis}}"/>
+                                            <TextBlock Text="{Binding Error}" Style="{StaticResource ErrorText}" Visibility="{Binding HasError, Converter={StaticResource Vis}}"/>
                                         </StackPanel>
                                         <DataTemplate.Triggers>
+                                            <DataTrigger Binding="{Binding HasClash}" Value="True">
+                                                <Setter TargetName="cap" Property="BorderBrush" Value="{StaticResource Danger}"/>
+                                            </DataTrigger>
                                             <DataTrigger Binding="{Binding IsCapturing}" Value="True">
                                                 <Setter TargetName="cap" Property="BorderBrush" Value="{StaticResource Accent}"/>
                                             </DataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding IsMouseOver, ElementName=line}" Value="True"/>
+                                                    <Condition Binding="{Binding CanReset}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter TargetName="reset" Property="Visibility" Value="Visible"/>
+                                            </MultiDataTrigger>
                                         </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
@@ -425,46 +673,66 @@
                                     HorizontalAlignment="Left" Padding="14,7"/>
                         </StackPanel>
 
-                        <!-- about: the bug report and what the program may touch -->
+                        <!-- ===== about: updates, data, the bug report and what the program may touch ===== -->
                         <StackPanel Visibility="{Binding IsSetAbout, Converter={StaticResource Vis}}">
-                            <TextBlock Text="{l:T 'ОБНОВЛЕНИЯ'}" Style="{StaticResource Caption}" Margin="0,4,0,8"/>
-                            <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding AutoUpdate}" Margin="-7,0,0,0">
-                                <TextBlock Text="{l:T 'Обновляться автоматически'}" FontSize="12.5" TextWrapping="Wrap"/>
-                            </CheckBox>
-                            <TextBlock Style="{StaticResource Hint}" Margin="33,0,0,6"
-                                       Text="{l:T 'Новая версия скачивается с GitHub и встаёт на место exe при выходе из программы. Настройки и билд сохраняются.'}"/>
-                            <StackPanel Orientation="Horizontal">
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Обновления'}" Margin="0,4,0,8"/>
+                            <Border Style="{StaticResource OptionCard}">
+                                <Border Style="{StaticResource OptionRow}" BorderThickness="0">
+                                    <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding AutoUpdate}">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Обновляться автоматически'}"/>
+                                            <TextBlock Style="{StaticResource OptionNote}"
+                                                       Text="{l:T 'Новая версия скачивается с GitHub и встаёт на место exe при выходе из программы. Настройки и билд сохраняются.'}"/>
+                                        </StackPanel>
+                                    </CheckBox>
+                                </Border>
+                            </Border>
+                            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
                                 <Button Style="{StaticResource GhostButton}" Content="{l:T 'Проверить сейчас'}" Command="{Binding CheckUpdateCommand}" Padding="14,7"/>
                                 <Button Style="{StaticResource GhostButton}" Content="{l:T 'Перезапустить'}" Command="{Binding RestartCommand}" Padding="14,7" Margin="8,0,0,0"
                                         Visibility="{Binding UpdateReady, Converter={StaticResource Vis}}"/>
                                 <Button Style="{StaticResource GhostButton}" Content="{l:T 'Страница релиза'}" Command="{Binding OpenReleaseCommand}" Padding="14,7" Margin="8,0,0,0"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding UpdateStatus}" Foreground="{StaticResource Text2}" FontSize="11.5" Margin="2,6,0,0" TextWrapping="Wrap"/>
+                            <TextBlock Text="{Binding UpdateStatus}" Style="{StaticResource Hint}"/>
 
-                            <TextBlock Text="{l:T 'ОТЧЁТ ОБ ОШИБКЕ'}" Style="{StaticResource Caption}" Margin="0,24,0,8"/>
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Данные'}"/>
+                            <Button Style="{StaticResource GhostButton}" Content="{l:T 'Обновить данные дерева'}" Command="{Binding RefreshTreeCommand}"
+                                    HorizontalAlignment="Left" Padding="14,7"/>
+                            <TextBlock Text="{Binding TreeInfo}" Style="{StaticResource Hint}"/>
+
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Отчёт об ошибке'}"/>
                             <Button Style="{StaticResource GhostButton}" Content="{l:T 'Сохранить отчёт на рабочий стол'}" Click="Report_Click"
                                     HorizontalAlignment="Left" Padding="14,7"/>
-                            <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding ReportWithFrames}" Margin="-7,8,0,0">
-                                <TextBlock Text="{l:T 'Приложить скриншоты наложения дерева'}" FontSize="12.5" TextWrapping="Wrap"/>
-                            </CheckBox>
-                            <TextBlock Style="{StaticResource Hint}"
-                                       Text="{l:T 'Zip с логом и настройками. Аккаунт, имя персонажа и имя пользователя Windows в путях заменены. Скриншоты — только с галочкой: на них может попасть чат с чужими никами.'}"/>
+                            <Border Style="{StaticResource OptionCard}" Margin="0,10,0,0">
+                                <Border Style="{StaticResource OptionRow}" BorderThickness="0">
+                                    <CheckBox Style="{StaticResource OptionSwitch}" IsChecked="{Binding ReportWithFrames}">
+                                        <StackPanel>
+                                            <TextBlock Style="{StaticResource OptionTitle}" Text="{l:T 'Приложить скриншоты наложения дерева'}"/>
+                                            <TextBlock Style="{StaticResource OptionNote}"
+                                                       Text="{l:T 'Zip с логом и настройками. Аккаунт, имя персонажа и имя пользователя Windows в путях заменены. Скриншоты — только с галочкой: на них может попасть чат с чужими никами.'}"/>
+                                        </StackPanel>
+                                    </CheckBox>
+                                </Border>
+                            </Border>
 
-                            <TextBlock Text="{l:T 'ЧТО ПРОГРАММА ДЕЛАЕТ С ИГРОЙ'}" Style="{StaticResource Caption}" Margin="0,24,0,2"/>
-                            <TextBlock Style="{StaticResource Hint}"
-                                       Text="{l:T 'Только разрешённое: читает Client.txt и публичный профиль, рисует своё окно поверх игры. В память игры не лезет. Единственное нажатие в игру — Ctrl+Alt+C (скопировать предмет) на одно нажатие прайс-чека. Игра должна быть в режиме Windowed Fullscreen.'}"/>
+                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Что программа делает с игрой'}"/>
+                            <l:FoldHint Margin="2,0,0,0"
+                                        Short="{l:T 'Только разрешённое: читает Client.txt и публичный профиль, рисует своё окно поверх игры.'}"
+                                        More="{l:T 'В память игры не лезет. Единственное нажатие в игру — Ctrl+Alt+C (скопировать предмет) на одно нажатие прайс-чека. Игра должна быть в режиме Windowed Fullscreen.'}"/>
                         </StackPanel>
                     </StackPanel>
                 </ScrollViewer>
-
-                <!-- toast: "отчёт на рабочем столе" and the like, the same as on the panel -->
-                <Border Grid.Row="1" VerticalAlignment="Bottom" HorizontalAlignment="Center" Margin="16,0,16,18"
-                        Background="{StaticResource Accent}" CornerRadius="8" Padding="14,8" IsHitTestVisible="False"
-                        Visibility="{Binding IsToastVisible, Converter={StaticResource Vis}}">
-                    <TextBlock Text="{Binding ToastText}" Foreground="{StaticResource OnAccent}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap" TextAlignment="Center"/>
+                <!-- more below: a soft shadow over the bottom edge -->
+                <Border x:Name="MoreShadow" Height="24" VerticalAlignment="Bottom" IsHitTestVisible="False" Margin="0,0,10,0">
+                    <Border.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Color="{StaticResource PanelClearColor}" Offset="0"/>
+                            <GradientStop Color="{StaticResource PanelColor}" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
                 </Border>
+                </Grid>
             </Grid>
         </Grid>
-    </Border>
-    </Border>
+    </ContentControl>
 </Window>

@@ -46,7 +46,9 @@ public static partial class PriceCompare
             if (f.Value is not double ours) continue;
             var lines = LinesOf(f, offer.Lines);
             matched.UnionWith(lines);
-            var theirs = Theirs(f, their, offer.Stats);
+            var theirs = f.StatId == PriceCheck.EmptyPrefixStat ? OpenOn(their, offer.Lines, true)
+                : f.StatId == PriceCheck.EmptySuffixStat ? OpenOn(their, offer.Lines, false)
+                : Theirs(f, their, offer.Stats);
             var mod = f.Kind == PriceFilterKind.Stat && !f.IsPseudo;
             var ourCount = ModTiers.Count(check.Item.BaseType, f.ModName, f.Prefix);
             // their best line of the stat: its tier and how many tiers it has on their base
@@ -83,6 +85,19 @@ public static partial class PriceCompare
         return rows;
     }
 
+    /// <summary>
+    /// Empty prefixes (or suffixes) of an offer, by its lines' "P1" / "S2" marks (one affix = one name, a hybrid's two
+    /// lines count once); null when a line's side is unknown or the offer is not magic / rare.
+    /// </summary>
+    static double? OpenOn(GameItem their, IReadOnlyList<OfferLine> lines, bool prefix)
+    {
+        if (their.Rarity is not (ItemRarity.Rare or ItemRarity.Magic)) return null;
+        var affixes = lines.Where(l => l.Kind is ModKind.Explicit or ModKind.Crafted or ModKind.Fractured).ToList();
+        if (affixes.Any(l => l.Prefix == null)) return null;
+        var used = affixes.Where(l => l.Prefix == prefix).Select(l => string.IsNullOrEmpty(l.Name) ? l.Text : l.Name).Distinct().Count();
+        return Math.Max(0, their.AffixMax() - used);
+    }
+
     /// <summary>Tiers of an offer's line on the offer's own base.</summary>
     static int? CountOf(OfferLine l, GameItem their) => ModTiers.Count(their.BaseType, l.Name, l.Prefix);
 
@@ -106,6 +121,10 @@ public static partial class PriceCompare
             case PriceFilterKind.Evasion: return their.AtFullQuality(their.Evasion, "Evasion");
             case PriceFilterKind.EnergyShield: return their.AtFullQuality(their.EnergyShield, "Energy Shield");
             case PriceFilterKind.Ward: return their.Ward;
+            case PriceFilterKind.MapDrops: return their.MapDrops;
+            case PriceFilterKind.MapQuantity: return their.MapQuantity;
+            case PriceFilterKind.MapRarity: return their.MapRarity;
+            case PriceFilterKind.MapPackSize: return their.MapPackSize;
         }
         switch (f.StatId)
         {

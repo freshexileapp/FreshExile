@@ -175,7 +175,7 @@ public sealed class TreeOverlayController : IDisposable
         _restoreOthers = restoreOthers;
         vm.AlignNodesChanged += RebuildAligner;
         vm.RecalibrateRequested += () => _nextCalibration = DateTime.MinValue;
-        vm.PlanChanged += () => _overlay?.Canvas.SetData(_vm.Tree, _vm.Plan, _vm.StageJewels);
+        vm.PlanChanged += () => _overlay?.Canvas.SetData(_vm.Tree, _vm.Plan, _vm.StageJewels, _vm.OverrideNodes, _vm.MasteryClashNodes, _vm.TattooNodes);
         vm.PropertyChanged += (_, e) =>
         {
             if (e.PropertyName == nameof(MainViewModel.HighlightNodeId) && _overlay != null) _overlay.Canvas.Highlight = _vm.HighlightNodeId;
@@ -294,9 +294,14 @@ public sealed class TreeOverlayController : IDisposable
 
         if (patch != null && !v.TitleSeen)
         {
+            // one frame without the "Skills" title is not the tree closed: at a far zoom or under an effect the check
+            // misses it now and then, and the overlay used to vanish 0.3 s after showing. It goes after 0.7 s of misses.
+            _titleMissingSince ??= DateTime.UtcNow;
+            if (_open && DateTime.UtcNow - _titleMissingSince.Value < TimeSpan.FromMilliseconds(700)) return;
             if (_open) _ = _ui.BeginInvoke(Close);
             return;
         }
+        _titleMissingSince = null;
 
         if (good != _open || newScale || (DateTime.UtcNow - _lastLog).TotalSeconds > 5)
         {
@@ -398,6 +403,7 @@ public sealed class TreeOverlayController : IDisposable
     DateTime _lastLog;
     double? _shownScale;
     bool _lastTitle;
+    DateTime? _titleMissingSince;
     HashSet<int> _refundSeen = new();
     HashSet<int> _lostSeen = new();
     HashSet<int> _backSeen = new();
@@ -449,7 +455,7 @@ public sealed class TreeOverlayController : IDisposable
             _hideOthers();
             _overlay ??= new OverlayWindow { InCapture = _vm.TreeOverlayInCapture };
             _header ??= new TreeHeaderWindow(_vm);
-            _overlay.Canvas.SetData(_vm.Tree, _vm.Plan, _vm.StageJewels);
+            _overlay.Canvas.SetData(_vm.Tree, _vm.Plan, _vm.StageJewels, _vm.OverrideNodes, _vm.MasteryClashNodes, _vm.TattooNodes);
             _overlay.Canvas.Highlight = _vm.HighlightNodeId;
             _overlay.Canvas.ClusterCardFull = _vm.ClusterCardFull;
             _overlay.Show();

@@ -51,6 +51,11 @@ public sealed partial record GameItem
     public int? Ward { get; init; }
     public int? GemLevel { get; init; }
     public int? MapTier { get; init; }
+    /// <summary>A map's own totals from its property block: "Atlas Drops: +71%", "Item Quantity", "Item Rarity", "Monster Pack Size".</summary>
+    public int? MapDrops { get; init; }
+    public int? MapQuantity { get; init; }
+    public int? MapRarity { get; init; }
+    public int? MapPackSize { get; init; }
     /// <summary>"Area Level: 80" of a heist contract (and a map's own line).</summary>
     public int? AreaLevel { get; init; }
     /// <summary>A contract's job, "Requires Agility (Level 1)" → (Agility, 1).</summary>
@@ -98,11 +103,17 @@ public sealed partial record GameItem
         var explicitMods = Mods.Where(m => m.Kind is ModKind.Explicit or ModKind.Crafted or ModKind.Fractured).ToList();
         // a plain copy does not say which side a line is on
         if (explicitMods.Count == 0 ? !Mods.Any(m => m.Affix != null) : explicitMods.Any(m => m.Affix == null || m.Prefix == null)) return null;
-        var jewel = ItemClass is "Jewels" or "Abyss Jewels" || BaseType.EndsWith(" Jewel", StringComparison.Ordinal) || BaseType.EndsWith(" Eye Jewel", StringComparison.Ordinal);
-        var max = Rarity == ItemRarity.Magic ? 1 : jewel ? 2 : 3;
+        var max = AffixMax();
         var prefixes = explicitMods.Where(m => m.Prefix == true).Select(m => m.Affix).Distinct().Count();
         var suffixes = explicitMods.Where(m => m.Prefix == false).Select(m => m.Affix).Distinct().Count();
         return (prefixes, suffixes, max);
+    }
+
+    /// <summary>Prefixes (and as many suffixes) the item can hold: magic 1, a rare jewel 2, any other rare 3.</summary>
+    public int AffixMax()
+    {
+        var jewel = ItemClass is "Jewels" or "Abyss Jewels" || BaseType.EndsWith(" Jewel", StringComparison.Ordinal) || BaseType.EndsWith(" Eye Jewel", StringComparison.Ordinal);
+        return Rarity == ItemRarity.Magic ? 1 : jewel ? 2 : 3;
     }
 
     public static GameItem? Parse(string? text)
@@ -145,6 +156,7 @@ public sealed partial record GameItem
 
         int itemLevel = 0, quality = 0, requiredLevel = 0;
         int? armour = null, evasion = null, es = null, ward = null, gemLevel = null, mapTier = null;
+        int? mapDrops = null, mapQuantity = null, mapRarity = null, mapPackSize = null;
         string? sockets = null;
         int? areaLevel = null;
         string? heistJob = null;
@@ -178,7 +190,8 @@ public sealed partial record GameItem
             foreach (var l in sec)
                 switch (l)
                 {
-                    case "Corrupted": corrupted = true; flags++; break;
+                    // a double corruption (Vaal Orb on a corrupted item, 3.27) reads "Twice Corrupted": corrupted all the same
+                    case "Corrupted" or "Twice Corrupted": corrupted = true; flags++; break;
                     case "Mirrored": mirrored = true; flags++; break;
                     case "Unidentified": unidentified = true; flags++; break;
                     case "Fractured Item": fracturedItem = true; flags++; break;
@@ -213,6 +226,10 @@ public sealed partial record GameItem
                     case "Ward": ward = v; props++; break;
                     case "Level": gemLevel = v; props++; break;
                     case "Map Tier": mapTier = v; props++; break;
+                    case "Atlas Drops": mapDrops = v; props++; break;
+                    case "Item Quantity": mapQuantity = v; props++; break;
+                    case "Item Rarity": mapRarity = v; props++; break;
+                    case "Monster Pack Size": mapPackSize = v; props++; break;
                     default: props++; break;
                 }
             }
@@ -253,11 +270,15 @@ public sealed partial record GameItem
             }
         }
 
+        // the current maps carry no "Map Tier:" line: the base is "Map (Tier 16)"
+        if (mapTier == null && MapBaseRx().Match(baseType) is { Success: true } mb) mapTier = int.Parse(mb.Groups[1].Value, CultureInfo.InvariantCulture);
+
         return new GameItem
         {
             ItemClass = itemClass, Rarity = rarity, RarityText = rarityText, Name = name, BaseType = baseType,
             ItemLevel = itemLevel, RequiredLevel = requiredLevel, Quality = quality, Sockets = sockets,
             Armour = armour, Evasion = evasion, EnergyShield = es, Ward = ward, GemLevel = gemLevel, MapTier = mapTier,
+            MapDrops = mapDrops, MapQuantity = mapQuantity, MapRarity = mapRarity, MapPackSize = mapPackSize,
             AreaLevel = areaLevel, HeistJob = heistJob, HeistJobLevel = heistJobLevel,
             Corrupted = corrupted, Mirrored = mirrored, Unidentified = unidentified, FracturedItem = fracturedItem, Foulborn = foulborn, Mods = mods,
         };
@@ -290,7 +311,8 @@ public sealed partial record GameItem
                 tier = t.Success ? int.Parse(t.Groups[1].Value, CultureInfo.InvariantCulture) : null;
                 continue;
             }
-            var line = raw.Replace(" — Unscalable Value", "", StringComparison.Ordinal);
+            // "Map contains Al-Hezmin's Citadel(...)": the advanced copy's mark of a hidden value, not part of the text
+            var line = raw.Replace(" — Unscalable Value", "", StringComparison.Ordinal).Replace("(...)", "", StringComparison.Ordinal).TrimEnd();
             var marker = Marker(line);
             if (marker != null)
             {
@@ -433,9 +455,10 @@ public sealed partial record GameItem
 
     #endregion
 
-    [GeneratedRegex(@"^(Quality|Armour|Evasion Rating|Energy Shield|Ward|Level|Map Tier|Chance to Block|Physical Damage|Elemental Damage|Critical Strike Chance|Attacks per Second|Weapon Range|Stack Size|Item Quantity|Item Rarity|Monster Pack Size|Experience|Charges per use|Lasts|Recovers|Consumes)[^:]*:\s*(.*)$")]
+    [GeneratedRegex(@"^(Quality|Armour|Evasion Rating|Energy Shield|Ward|Level|Map Tier|Chance to Block|Physical Damage|Elemental Damage|Critical Strike Chance|Attacks per Second|Weapon Range|Stack Size|Atlas Drops|Item Quantity|Item Rarity|Monster Pack Size|Experience|Charges per use|Lasts|Recovers|Consumes)[^:]*:\s*(.*)$")]
     private static partial Regex PropRx();
     [GeneratedRegex(@"\(Tier: (\d+)\)")] private static partial Regex TierRx();
+    [GeneratedRegex(@"^Map \(Tier (\d+)\)$")] private static partial Regex MapBaseRx();
     [GeneratedRegex(@"[\u200B-\u200D\u2060\uFEFF]")] private static partial Regex ZeroWidthRx();
     [GeneratedRegex(@"Modifier ""([^""]+)""")] private static partial Regex AffixNameRx();
     [GeneratedRegex(@"^Requires (Lockpicking|Brute Force|Perception|Demolition|Counter-Thaumaturgy|Trap Disarmament|Agility|Deception|Engineering) \(Level (\d+)\)")]
@@ -444,7 +467,8 @@ public sealed partial record GameItem
     [GeneratedRegex(@"-?\d+(?:\.\d+)?")] private static partial Regex NumRx();
     [GeneratedRegex(@"^(\d+)% increased ((?:Armour|Evasion(?: Rating)?|Energy Shield)(?:,? (?:and )?(?:Armour|Evasion(?: Rating)?|Energy Shield))*)$")]
     private static partial Regex IncreasedRx();
-    [GeneratedRegex(@"^\+(\d+)% to (.+) Resistances?$")] private static partial Regex ResRx();
+    // "+2% to maximum Fire Resistance" raises the cap, not the resistance: never in the sums
+    [GeneratedRegex(@"^\+(\d+)% to (?!.*maximum)(.+) Resistances?$", RegexOptions.IgnoreCase)] private static partial Regex ResRx();
     [GeneratedRegex(@"^\+(\d+) to maximum Life$")] private static partial Regex LifeRx();
     [GeneratedRegex(@"^\+(\d+) to maximum Mana$")] private static partial Regex ManaRx();
     [GeneratedRegex(@"^\+(\d+) to (?:Intelligence(?: and \w+)?|\w+ and Intelligence|all Attributes)$")] private static partial Regex IntRx();

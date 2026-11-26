@@ -44,7 +44,7 @@ public partial class TreeWindow : Window
 
     void OnPlanChanged()
     {
-        Canvas.SetData(_vm.Tree, _vm.Plan);
+        Canvas.SetData(_vm.Tree, _vm.Plan, null, _vm.OverrideNodes, _vm.MasteryClashNodes, _vm.TattooNodes);
         // new stage (also when Auto switched it): jump to what has to be taken now
         if (_vm.StageIndex != _shownStage)
         {
@@ -79,12 +79,15 @@ public partial class TreeWindow : Window
             : plan != null && plan.Have.Contains(node.Id) && plan.Target.Contains(node.Id) ? Loc.T("уже взято")
             : null;
 
-        TipTitle.Text = node.Name.Length > 0 ? node.Name : Loc.T("Пассивка");
+        var name = _vm.NodeName(node);
+        TipTitle.Text = name.Length > 0 ? name : Loc.T("Пассивка");
         TipKind.Text = (KindName(node) + (state != null ? " · " + state : "")).ToUpperInvariant();
         TipStepBox.Visibility = step >= 0 ? Visibility.Visible : Visibility.Collapsed;
         TipStep.Text = $"#{step + 1}";
 
-        var stats = node.Kind == NodeKind.Mastery
+        // a runegraft / tattoo replaces the node: its lines, not the passive's under it
+        var stats = _vm.OverrideOf(node.Id) is { } o ? string.Join("\n", o.Lines)
+            : node.Kind == NodeKind.Mastery
             ? _vm.MasteryText(node) is { } chosen ? chosen : Loc.T($"{node.MasteryEffects.Count} вариантов мастерства")
             : string.Join("\n", node.Stats);
         TipStats.Text = stats;

@@ -4,8 +4,18 @@ using FreshExile.Core;
 namespace FreshExile.App;
 
 /// <summary>One stage row in settings: start character level and start map tier (custom or read from the title).</summary>
-public sealed class StageLevelVm(int index, string title, int? auto, int? custom, int? autoTier, int? customTier, Action<StageLevelVm> onChanged) : Observable
+public sealed class StageLevelVm(int index, string title, int? auto, int? custom, int? autoTier, int? customTier, Action<StageLevelVm> onChanged,
+    string? name = null, Action<StageLevelVm>? onRenamed = null) : Observable
 {
+    string _name = name ?? "";
+
+    /// <summary>The player's own name for the stage; empty = PoB's <see cref="Title"/> (shown as the box's placeholder).</summary>
+    public string Name
+    {
+        get => _name;
+        set { if (Set(ref _name, value ?? "")) onRenamed?.Invoke(this); }
+    }
+
     string _text = custom?.ToString() ?? "";
     string _tierText = customTier?.ToString() ?? "";
 
@@ -101,16 +111,39 @@ public sealed partial class MainViewModel
     {
         StageLevelRows.Clear();
         if (Build == null) return;
-        _s.StageLevels.TryGetValue(Build.Id, out var custom);
-        _s.StageTiers.TryGetValue(Build.Id, out var tiers);
+        _s.StageLevels.TryGetValue(MarksKey, out var custom);
+        _s.StageTiers.TryGetValue(MarksKey, out var tiers);
+        _s.StageNames.TryGetValue(MarksKey, out var names);
         for (var i = 0; i < Build.Stages.Count; i++)
         {
             var title = Build.Stages[i].Title;
             int? c = custom != null && custom.TryGetValue(i, out var v) ? v : null;
             int? ct = tiers != null && tiers.TryGetValue(i, out var t) ? t : null;
-            StageLevelRows.Add(new StageLevelVm(i, title, StageLevels.FromTitle(title), c, StageLevels.TierFromTitle(title), ct, OnStageLevelChanged));
+            string? name = names != null && names.TryGetValue(i, out var nm) ? nm : null;
+            StageLevelRows.Add(new StageLevelVm(i, title, StageLevels.FromTitle(title), c, StageLevels.TierFromTitle(title), ct, OnStageLevelChanged, name, OnStageRenamed));
         }
         SyncFollower();
+    }
+
+    /// <summary>A stage's name as shown: the player's own when given, else PoB's title.</summary>
+    public string StageName(int i)
+    {
+        if (Build == null || i < 0 || i >= Build.Stages.Count) return "";
+        return _s.StageNames.TryGetValue(MarksKey, out var map) && map.TryGetValue(i, out var n) && n.Length > 0 ? n : Build.Stages[i].Title;
+    }
+
+    /// <summary>A name typed in the settings row: kept per build, shown on the panel right away; empty = back to PoB's.</summary>
+    void OnStageRenamed(StageLevelVm row)
+    {
+        if (Build == null) return;
+        if (!_s.StageNames.TryGetValue(MarksKey, out var map)) _s.StageNames[MarksKey] = map = new Dictionary<int, string>();
+        var name = row.Name.Trim();
+        if (name.Length == 0 || name == row.Title) map.Remove(row.Index); else map[row.Index] = name;
+        if (map.Count == 0) _s.StageNames.Remove(MarksKey);
+        if (row.Index < Stages.Count) Stages[row.Index].Title = StageName(row.Index);
+        Raise(nameof(StageTitle));
+        Raise(nameof(SwapCaption));
+        Save();
     }
 
     void OnStageLevelChanged(StageLevelVm row)
@@ -124,7 +157,7 @@ public sealed partial class MainViewModel
 
         void Put(Dictionary<string, Dictionary<int, int>> store, int? value)
         {
-            if (!store.TryGetValue(Build!.Id, out var map)) store[Build.Id] = map = new Dictionary<int, int>();
+            if (!store.TryGetValue(MarksKey, out var map)) store[MarksKey] = map = new Dictionary<int, int>();
             if (value is int v) map[row.Index] = v; else map.Remove(row.Index);
         }
     }
@@ -142,7 +175,8 @@ public sealed partial class MainViewModel
     #region Settings tabs
 
     // the sections of the settings window, in menu order; the first, «Общие», opens by default
-    enum Section { General, Tracking, Build, Tree, Trade, Price, Top, Keys, About }
+    // «Трейд» and «Прайс-чек» are one section now: the search on the site, then the price check window
+    enum Section { General, Tracking, Build, Tree, Trade, Top, Keys, About }
 
     Section _section;
 
@@ -153,7 +187,7 @@ public sealed partial class MainViewModel
         foreach (var n in new[]
                  {
                      nameof(IsSetGame), nameof(IsSetTracking), nameof(IsSetBuild), nameof(IsSetTree), nameof(IsSetTrade),
-                     nameof(IsSetPrice), nameof(IsSetTop), nameof(IsSetKeys), nameof(IsSetAbout), nameof(SettingsSectionTitle),
+                     nameof(IsSetTop), nameof(IsSetKeys), nameof(IsSetAbout), nameof(SettingsSectionTitle),
                  })
             Raise(n);
     }
@@ -163,14 +197,19 @@ public sealed partial class MainViewModel
     public bool IsSetBuild { get => _section == Section.Build; set => SetSection(Section.Build, value); }
     public bool IsSetTree { get => _section == Section.Tree; set => SetSection(Section.Tree, value); }
     public bool IsSetTrade { get => _section == Section.Trade; set => SetSection(Section.Trade, value); }
-    public bool IsSetPrice { get => _section == Section.Price; set => SetSection(Section.Price, value); }
     public bool IsSetTop { get => _section == Section.Top; set => SetSection(Section.Top, value); }
     public bool IsSetKeys { get => _section == Section.Keys; set => SetSection(Section.Keys, value); }
     public bool IsSetAbout { get => _section == Section.About; set => SetSection(Section.About, value); }
 
+    /// <summary>The menu's "обновление скачано ›": to «О программе».</summary>
+    public RelayCommand OpenAboutCommand => _openAbout ??= new RelayCommand(() => SetSection(Section.About, true));
+    RelayCommand? _openAbout;
+
     /// <summary>QA: a section by its enum name, case ignored ("--settings=keys").</summary>
     public void OpenSettingsSection(string name)
     {
+        // "price" was a section of its own: it is the second half of «Трейд и прайс-чек» now
+        if (string.Equals(name, "price", StringComparison.OrdinalIgnoreCase)) name = nameof(Section.Trade);
         if (Enum.TryParse<Section>(name, ignoreCase: true, out var s)) SetSection(s, true);
     }
 
@@ -180,8 +219,7 @@ public sealed partial class MainViewModel
         Section.Tracking => Loc.T("Отслеживание"),
         Section.Build => Loc.T("Билд и этапы"),
         Section.Tree => Loc.T("Дерево"),
-        Section.Trade => Loc.T("Трейд"),
-        Section.Price => Loc.T("Прайс-чек"),
+        Section.Trade => Loc.T("Трейд и прайс-чек"),
         Section.Top => Loc.T("Топ-моды"),
         Section.Keys => Loc.T("Клавиши"),
         Section.About => Loc.T("О программе"),
@@ -223,6 +261,44 @@ public sealed partial class MainViewModel
         HotkeysChanged?.Invoke();
     });
 
+    /// <summary>The row's own default back (the ↺ beside a changed key).</summary>
+    public RelayCommand ResetHotkeyCommand => _resetHotkey ??= new RelayCommand(p =>
+    {
+        if (p is not HotkeyRowVm row) return;
+        _s.Hotkeys.Remove(row.Id);
+        row.Binding = HotkeyBinding.Parse(HotkeyActions.All.First(a => a.Id == row.Id).Default);
+        row.Error = null;
+        Save();
+        RaiseKeys();
+        HotkeysChanged?.Invoke();
+    });
+    RelayCommand? _resetHotkey;
+
+    /// <summary>Combinations Windows or every program already owns: copy, paste, closing and switching windows.</summary>
+    static string? Reserved(HotkeyBinding b)
+    {
+        var ctrl = b.Mods == System.Windows.Input.ModifierKeys.Control;
+        var alt = b.Mods == System.Windows.Input.ModifierKeys.Alt;
+        if (ctrl && b.Key is System.Windows.Input.Key.C or System.Windows.Input.Key.V or System.Windows.Input.Key.X or System.Windows.Input.Key.Z)
+            return Loc.T("Это копирование и вставка в игре и в Windows: выбери другое сочетание");
+        if (alt && b.Key is System.Windows.Input.Key.F4 or System.Windows.Input.Key.Tab)
+            return Loc.T("Это сочетание Windows (закрыть окно, переключить окно): выбери другое");
+        if (b.Mods == (System.Windows.Input.ModifierKeys.Control | System.Windows.Input.ModifierKeys.Alt) && b.Key == System.Windows.Input.Key.Delete)
+            return Loc.T("Это сочетание Windows: выбери другое");
+        return null;
+    }
+
+    /// <summary>Two actions on one key: both rows say so (kept, but only one of them will work).</summary>
+    void MarkHotkeyClashes()
+    {
+        foreach (var row in HotkeyRows)
+        {
+            var other = row.Binding == null ? null : HotkeyRows.FirstOrDefault(r => r != row && r.Binding == row.Binding);
+            row.Clash = other == null ? null : Loc.T($"Занято: {other.Title}");
+            row.IsDefault = row.Binding == HotkeyBinding.Parse(HotkeyActions.All.First(a => a.Id == row.Id).Default);
+        }
+    }
+
     void LoadHotkeys()
     {
         if (HotkeyRows.Count == 0)
@@ -250,9 +326,9 @@ public sealed partial class MainViewModel
             {
                 row.Error = Loc.T("Нужен Ctrl или Alt: одиночная клавиша перестанет работать в игре");
             }
-            else if (binding != null && HotkeyRows.FirstOrDefault(r => r != row && r.Binding == binding) is { } other)
+            else if (binding != null && Reserved(binding) is { } why)
             {
-                row.Error = Loc.T($"Уже занято: «{other.Title}»");
+                row.Error = why;
             }
             else
             {
@@ -289,6 +365,7 @@ public sealed partial class MainViewModel
 
     void RaiseKeys()
     {
+        MarkHotkeyClashes();
         foreach (var n in new[] { nameof(KeyMain), nameof(KeyTree), nameof(KeyThrough), nameof(TipPrev), nameof(TipNext), nameof(TipThrough), nameof(TipHideTree), "PriceHint" })
             Raise(n);
     }

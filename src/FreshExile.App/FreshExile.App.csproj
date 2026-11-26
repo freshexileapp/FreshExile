@@ -10,13 +10,15 @@
     <AssemblyName>FreshExile</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>app.ico</ApplicationIcon>
-    <Version>0.3.12</Version>
+    <Version>0.3.13</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <Resource Include="app.ico" />
     <!-- the app.ico 64 px frame: the logo inside the windows (an .ico in an Image takes its first, 16 px frame) -->
     <Resource Include="logo.png" />
+    <!-- Alegreya SC (SIL OFL 1.1, Fonts\OFL.txt): titles, tabs, item names -->
+    <Resource Include="Fonts\*.ttf" />
   </ItemGroup>
 
   <ItemGroup>

@@ -14,15 +14,15 @@ public sealed class StepBadge : FrameworkElement
 
     static readonly Typeface Face = new(new FontFamily("Segoe UI"), FontStyles.Normal, FontWeights.SemiBold, FontStretches.Normal);
     static readonly Dictionary<string, Geometry> Glyphs = new();
-    static readonly Brush Fill = Frozen(Color.FromRgb(0x0B, 0x0B, 0x0C));
+    static readonly Brush Fill = Frozen(Color.FromRgb(0x0F, 0x0C, 0x09));
     static readonly Pen Ring = FrozenPen(Colors.White, 1);
 
     /// <summary>"Take this one next" / "this one" — stands out on both our dark tree and the gold in-game art.</summary>
     // the app's accent (Theme.xaml "Accent", the logo's flame): the next point to spend
-    public static readonly Color FocusColor = Color.FromRgb(0xF0, 0xA9, 0x45);
+    public static readonly Color FocusColor = Color.FromRgb(0xE8, 0xA4, 0x45);
     static readonly Brush FocusFill = Frozen(FocusColor);
-    static readonly Pen FocusRing = FrozenPen(Color.FromRgb(0x0B, 0x0B, 0x0C), 1);
-    static readonly Brush FocusInk = Frozen(Color.FromRgb(0x0B, 0x0B, 0x0C));
+    static readonly Pen FocusRing = FrozenPen(Color.FromRgb(0x0F, 0x0C, 0x09), 1);
+    static readonly Brush FocusInk = Frozen(Color.FromRgb(0x0F, 0x0C, 0x09));
 
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
         nameof(Text), typeof(string), typeof(StepBadge),

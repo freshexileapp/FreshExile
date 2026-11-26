@@ -7,6 +7,15 @@ public static partial class BuildChoices
 {
     static readonly string[] Bandits = ["Alira", "Kraityn", "Oak"];
 
+    /// <summary>The bandits are met in Act 2.</summary>
+    public const int BanditAct = 2;
+
+    /// <summary>
+    /// The act where the pantheon's first choice comes: the first major god (The Brine King) is freed in Act 6, at the
+    /// Brine King's Reef. Fixed here, not guessed from the log.
+    /// </summary>
+    public const int PantheonAct = 6;
+
     /// <summary>"помочь Alira — убить Kraityn и Oak"; PoB's "None" is killing all three; null when PoB says nothing.</summary>
     public static string? BanditText(string? bandit)
     {

@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace FreshExile.Core;
 
-public enum PriceFilterKind { Stat, Armour, Evasion, EnergyShield, Ward }
+public enum PriceFilterKind { Stat, Armour, Evasion, EnergyShield, Ward, MapDrops, MapQuantity, MapRarity, MapPackSize }
 
 /// <summary>One line of the price check: a stat (or a defence value) with its minimum, ticked or not.</summary>
 public sealed class PriceFilter
@@ -111,7 +111,11 @@ public sealed partial class PriceCheck
         // a magic item comes as one line, "Allocated Quicksilver Flask of Bracing": the base is the longest known type in it
         if (item.Rarity == ItemRarity.Magic && item.BaseType.Length == 0 && item.Name.Length > 0 && trade.TypeFor(item.Name) is var b && b != item.Name)
             item = item with { BaseType = b };
-        var category = CategoryOf(item.ItemClass);
+        // the game copies a cluster (and an abyss jewel) as "Item Class: Jewels": the base says which jewels to search,
+        // or a cluster is looked for among plain jewels and nothing is ever found
+        var category = item.BaseType.EndsWith("Cluster Jewel", StringComparison.OrdinalIgnoreCase) ? "jewel.cluster"
+            : item.BaseType.EndsWith(" Eye Jewel", StringComparison.OrdinalIgnoreCase) ? "jewel.abyss"
+            : CategoryOf(item.ItemClass);
         var filters = new List<PriceFilter>();
         var rareish = item.Rarity is ItemRarity.Rare or ItemRarity.Magic;
         var unique = item.Rarity == ItemRarity.Unique;
@@ -145,6 +149,22 @@ public sealed partial class PriceCheck
             Def(PriceFilterKind.Evasion, item.Evasion, "Evasion", Loc.T("Уклонение"));
             Def(PriceFilterKind.EnergyShield, item.EnergyShield, "Energy Shield", Loc.T("Энергощит"));
             Def(PriceFilterKind.Ward, item.Ward, "Ward", "Ward");
+        }
+
+        // a map is paid for by its totals (Atlas Drops, rarity, pack size) and what it holds (a citadel, the Originator),
+        // not by which monster mods made them up
+        var map = item.MapTier != null;
+        if (map)
+        {
+            void MapProp(PriceFilterKind k, int? v, string label)
+            {
+                if (v is not int x || x <= 0) return;
+                Add(new PriceFilter { Label = $"{label}: +{x}%", Kind = k, Value = x, DefaultMin = Min(x), Enabled = rareish });
+            }
+            MapProp(PriceFilterKind.MapDrops, item.MapDrops, "Atlas Drops");
+            MapProp(PriceFilterKind.MapQuantity, item.MapQuantity, Loc.T("Количество предметов"));
+            MapProp(PriceFilterKind.MapRarity, item.MapRarity, Loc.T("Редкость предметов"));
+            MapProp(PriceFilterKind.MapPackSize, item.MapPackSize, Loc.T("Размер групп монстров"));
         }
 
         var mods = item.Mods.Where(m => m.Kind != ModKind.Enchant || !unique).ToList();
@@ -192,6 +212,23 @@ public sealed partial class PriceCheck
                 Value = mana, DefaultMin = Min(mana), Enabled = false,
             });
 
+        // room for a craft or an exalt: "at least N empty prefixes / suffixes" on the site; off by default, and only when
+        // the item has such an open place (a full side has nothing to search for)
+        if (!map && item.Affixes() is var (pre, suf, most))
+        {
+            void Open(int open, string label, string id)
+            {
+                if (open <= 0) return;
+                Add(new PriceFilter
+                {
+                    Label = $"{label}: {open}", StatId = id, IsPseudo = true,
+                    Value = open, DefaultMin = open, Enabled = false, Shown = true,
+                });
+            }
+            Open(most - pre, Loc.T("Пустых префиксов"), EmptyPrefixStat);
+            Open(most - suf, Loc.T("Пустых суффиксов"), EmptySuffixStat);
+        }
+
         // tiers come with the advanced copy (always, from the hotkey); a plain copy pasted by hand falls back to a list
         var hasTiers = mods.Any(m => m.Tier != null);
         var localSlot = category != null && (category.StartsWith("armour.", StringComparison.Ordinal) || category.StartsWith("weapon", StringComparison.Ordinal));
@@ -218,11 +255,17 @@ public sealed partial class PriceCheck
                           || (hasLife && GameItem.IsLifeOrStrength(m.Text))
                           || (hasMana && GameItem.IsManaOrIntelligence(m.Text))
                           || (localSlot && item.HasDefences && LocalDefenceRx().IsMatch(m.Text));
-            var good = hasTiers ? m.Tier is 1 or 2 : ValuableRx().IsMatch(m.Text);
-            var enabled = id != null && rareish && m.Kind is not (ModKind.Implicit or ModKind.Enchant) && !covered && good;
+            // a line whose header carries no "(Tier: N)" (a one-tier mod such as a wand's "+1 to Level of all Spell Skill Gems",
+            // shown with a rank or nothing) is judged as in a plain copy: by what it is, not dropped as a low tier.
+            // A bench craft stays off: anyone can put it on again, it is not what the item is paid for
+            var good = !hasTiers ? ValuableRx().IsMatch(m.Text)
+                : m.Tier is int t ? t <= 2
+                : m.Kind != ModKind.Crafted && ValuableRx().IsMatch(m.Text);
+            var enabled = map ? id != null && m.Kind == ModKind.Implicit
+                : id != null && rareish && m.Kind is not (ModKind.Implicit or ModKind.Enchant) && !covered && good;
             // a line with no number (an immunity, "cannot be Frozen") or a known big one: not ticked, but flagged.
             // A unique's fixed lines are the same on every copy, so they say nothing about this one's price.
-            var hint = id != null && !enabled && !unique && !covered && (m.Value == null || NotableRx().IsMatch(m.Text))
+            var hint = id != null && !enabled && !unique && !map && !covered && (m.Value == null || NotableRx().IsMatch(m.Text))
                 ? Loc.T("Этот стат может сильно поднять цену — включи его и поищи ещё раз")
                 : null;
 
@@ -317,6 +360,9 @@ public sealed partial class PriceCheck
         return check;
     }
 
+    public const string EmptyPrefixStat = "pseudo.pseudo_number_of_empty_prefix_mods";
+    public const string EmptySuffixStat = "pseudo.pseudo_number_of_empty_suffix_mods";
+
     /// <summary>"38-42" → (38, 42); "-10--5" works too.</summary>
     static (double? Lo, double? Hi) ParseRange(string? range)
     {
@@ -330,6 +376,9 @@ public sealed partial class PriceCheck
     [GeneratedRegex(@"^(-?\d+(?:\.\d+)?)-(-?\d+(?:\.\d+)?)$")] private static partial Regex RangeRx();
     // "1 Added Passive Skill is a Jewel Socket" is the medium cluster's socket, not a notable
     [GeneratedRegex(@"^1 Added Passive Skill is (?!an? Jewel Socket$)(.+)$")] private static partial Regex ClusterNotableRx();
+
+    /// <summary>"1 Added Passive Skill is Paralysis" → "Paralysis"; null for any other line.</summary>
+    public static string? ClusterNotableOf(string line) => ClusterNotableRx().Match(line) is { Success: true } m ? m.Groups[1].Value.Trim() : null;
     [GeneratedRegex(@"^Adds (\d+) Passive Skills$")] private static partial Regex ClusterAddsRx();
     [GeneratedRegex(@"^(\d+) Added Passive Skills? (?:are|is an?) Jewel Sockets?$")] private static partial Regex ClusterSocketsRx();
 
@@ -377,6 +426,22 @@ public sealed partial class PriceCheck
         var mapF = new JsonObject();
         if (item.MapTier is int tier) mapF["map_tier"] = new JsonObject { ["min"] = tier, ["max"] = tier };
         if (UseAreaLevel && item.AreaLevel is int area) mapF["area_level"] = new JsonObject { ["min"] = area };
+        foreach (var f in Filters.Where(f => f.Enabled))
+        {
+            var key = f.Kind switch
+            {
+                PriceFilterKind.MapDrops => "map_bonus",
+                PriceFilterKind.MapQuantity => "map_iiq",
+                PriceFilterKind.MapRarity => "map_iir",
+                PriceFilterKind.MapPackSize => "map_packsize",
+                _ => null,
+            };
+            if (key == null) continue;
+            var r = new JsonObject();
+            if (f.Min is double mn) r["min"] = mn;
+            if (f.Max is double mx) r["max"] = mx;
+            mapF[key] = r;
+        }
         if (mapF.Count > 0) filters["map_filters"] = Group(mapF);
         // "Counter-Thaumaturgy" → heist_counter_thaumaturgy, "Brute Force" → heist_brute_force
         if (UseHeistJob && item.HeistJob is { } job)
@@ -387,11 +452,30 @@ public sealed partial class PriceCheck
 
         var armour = new JsonObject();
         var stats = new JsonArray();
-        foreach (var f in Filters.Where(f => f.Enabled && f.Searchable))
+        foreach (var f in Filters.Where(f => f.Searchable))
         {
+            if (f.Kind is PriceFilterKind.MapDrops or PriceFilterKind.MapQuantity or PriceFilterKind.MapRarity or PriceFilterKind.MapPackSize) continue;
             var range = new JsonObject();
             if (f.Min is double mn) range["min"] = mn;
             if (f.Max is double mx) range["max"] = mx;
+            // "implicit.stat_2563183002|3" (Map contains Al-Hezmin's Citadel): one stat, the line picked by its option
+            var statId = f.StatId;
+            if (statId?.IndexOf('|') is int bar and > 0)
+            {
+                var opt = statId[(bar + 1)..];
+                statId = statId[..bar];
+                range = new JsonObject { ["option"] = long.TryParse(opt, out var n) ? JsonValue.Create(n) : JsonValue.Create(opt) };
+            }
+            if (!f.Enabled)
+            {
+                // an unticked line goes along switched off: it does not narrow the search, but on the site it is one
+                // click away (accuracy, bleed and the like used to be missing there altogether)
+                if (f.Kind is PriceFilterKind.Armour or PriceFilterKind.Evasion or PriceFilterKind.EnergyShield or PriceFilterKind.Ward) continue;
+                var off = new JsonObject { ["id"] = statId, ["disabled"] = true };
+                if (range.Count > 0) off["value"] = range;
+                stats.Add(off);
+                continue;
+            }
             switch (f.Kind)
             {
                 case PriceFilterKind.Armour: armour["ar"] = range; break;
@@ -399,7 +483,7 @@ public sealed partial class PriceCheck
                 case PriceFilterKind.EnergyShield: armour["es"] = range; break;
                 case PriceFilterKind.Ward: armour["ward"] = range; break;
                 default:
-                    var stat = new JsonObject { ["id"] = f.StatId };
+                    var stat = new JsonObject { ["id"] = statId };
                     if (range.Count > 0) stat["value"] = range;
                     stats.Add(stat);
                     break;

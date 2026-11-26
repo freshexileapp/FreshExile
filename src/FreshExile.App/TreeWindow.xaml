@@ -9,9 +9,9 @@
         FontFamily="{StaticResource UiFont}" Foreground="{StaticResource Text}"
         UseLayoutRounding="True">
 
-    <Border x:Name="Frame" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource Line}">
+    <Border x:Name="Frame" CornerRadius="{StaticResource RadiusL}" BorderThickness="1" BorderBrush="{StaticResource Line}">
         <Border.Background>
-            <SolidColorBrush Color="#08080A" Opacity="{Binding TreeBgOpacity}"/>
+            <SolidColorBrush Color="{StaticResource TreeBgColor}" Opacity="{Binding TreeBgOpacity}"/>
         </Border.Background>
         <Grid>
             <Grid.RowDefinitions>
@@ -20,8 +20,8 @@
             </Grid.RowDefinitions>
 
             <!-- toolbar -->
-            <Border x:Name="Toolbar" Margin="8,8,8,0" Padding="10,6,6,6" CornerRadius="8" Background="{StaticResource PanelBrush}"
-                    BorderBrush="{StaticResource Line}" BorderThickness="1" MouseLeftButtonDown="Drag_MouseDown"
+            <Border x:Name="Toolbar" Margin="8,8,8,0" Padding="14,6,6,6" CornerRadius="{StaticResource RadiusM}" Background="{StaticResource PanelBrush}"
+                    BorderBrush="{StaticResource LineStrong}" BorderThickness="1" MouseLeftButtonDown="Drag_MouseDown"
                     Visibility="{Binding TreeClickThrough, Converter={StaticResource NotVis}}">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -31,52 +31,50 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel VerticalAlignment="Center" IsHitTestVisible="False">
-                        <TextBlock Text="{l:T 'ДЕРЕВО · ЭТАП'}" Style="{StaticResource Caption}" FontSize="9.5"/>
-                        <TextBlock Text="{Binding StageTitle}" FontFamily="{StaticResource DisplayFont}" FontSize="17" FontWeight="SemiBold"/>
+                        <TextBlock Text="{l:T 'Дерево этапа'}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Bronze}"/>
+                        <TextBlock Text="{Binding StageTitle}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsTitle}" FontWeight="Bold"
+                                   Foreground="{StaticResource TitleText}" Margin="0,-2,0,0"/>
                     </StackPanel>
 
                     <WrapPanel Grid.Column="1" Margin="24,0,12,0" VerticalAlignment="Center" IsHitTestVisible="False">
                         <StackPanel Orientation="Horizontal" Margin="0,2,18,2">
-                            <Grid Width="12" Height="12" VerticalAlignment="Center">
-                                <Ellipse Fill="#30FFFFFF"/>
-                                <Ellipse Fill="White" Width="6" Height="6"/>
-                            </Grid>
-                            <TextBlock Margin="7,0,0,0" FontSize="12" VerticalAlignment="Center">
-                                <Run Text="{l:T 'Взять'}"/> <Run Text="{Binding PointsToTake, Mode=OneWay}" FontWeight="SemiBold"/>
-                            </TextBlock>
+                            <Border MinWidth="18" Height="18" CornerRadius="9" Background="{StaticResource Accent}" Padding="4,0" VerticalAlignment="Center">
+                                <TextBlock Text="{Binding PointsToTake}" FontSize="{StaticResource FsCaption}" FontWeight="Bold" Foreground="{StaticResource OnAccent}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <TextBlock Text="{l:T 'взять'}" Margin="7,0,0,0" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}" VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,2,18,2">
-                            <Ellipse Fill="#9C9CA3" Width="7" Height="7" VerticalAlignment="Center"/>
-                            <TextBlock Text="{l:T 'Уже взято'}" Margin="7,0,0,0" FontSize="12" Foreground="{StaticResource Text2}" VerticalAlignment="Center"/>
+                            <Ellipse Fill="{StaticResource Text2}" Width="10" Height="10" VerticalAlignment="Center"/>
+                            <TextBlock Text="{l:T 'уже взято'}" Margin="7,0,0,0" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}" VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,2,18,2">
-                            <Grid Width="10" Height="10" VerticalAlignment="Center">
-                                <Ellipse Stroke="#D96A6A" StrokeThickness="1.2" Fill="#1C1011"/>
-                                <Path Data="M3,3 L7,7 M3,7 L7,3" Stroke="#D96A6A" StrokeThickness="1.1"/>
-                            </Grid>
-                            <TextBlock Margin="7,0,0,0" FontSize="12" Foreground="{StaticResource Text2}" VerticalAlignment="Center">
-                                <Run Text="{l:T 'Снять'}"/> <Run Text="{Binding RefundCount, Mode=OneWay}"/>
+                            <Ellipse Width="12" Height="12" Stroke="{StaticResource SocketR}" StrokeThickness="2" VerticalAlignment="Center"/>
+                            <TextBlock Margin="7,0,0,0" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}" VerticalAlignment="Center">
+                                <Run Text="{l:T 'снять'}"/><Run Text="{Binding RefundCount, Mode=OneWay, StringFormat=' · {0}'}"/>
                             </TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,2,18,2" Visibility="{Binding HasAscendancy, Converter={StaticResource Vis}}">
                             <Path Data="M5,0.5 L9.5,5 L5,9.5 L0.5,5 Z" Width="10" Height="10" Stretch="None" Stroke="{StaticResource Text}"
                                   StrokeThickness="1.2" StrokeLineJoin="Round" VerticalAlignment="Center"/>
-                            <TextBlock Margin="6,0,0,0" FontSize="12" Foreground="{StaticResource Text2}" VerticalAlignment="Center">
+                            <TextBlock Margin="6,0,0,0" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}" VerticalAlignment="Center">
                                 <Run Text="{l:T 'Асценд.'}"/> <Run Text="{Binding AscendancyCount, Mode=OneWay}"/>
                             </TextBlock>
                         </StackPanel>
                     </WrapPanel>
 
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Border Background="{StaticResource Surface}" CornerRadius="9" Padding="2" Margin="0,0,10,0">
+                        <TextBlock Text="{l:T 'Сравнить с'}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Border Background="{StaticResource Well}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="2" Margin="0,0,12,0">
                             <StackPanel Orientation="Horizontal">
-                                <RadioButton Style="{StaticResource Segment}" GroupName="tcmp" Width="96" Content="{l:T 'Прошлый этап'}" FontSize="11.5"
+                                <RadioButton Style="{StaticResource Segment}" GroupName="tcmp" Width="118" Content="{l:T 'прошлым этапом'}" FontSize="{StaticResource FsSmall}"
                                              IsChecked="{Binding CompareWithPrevious}"/>
-                                <RadioButton Style="{StaticResource Segment}" GroupName="tcmp" Width="86" Content="{l:T 'Персонаж'}" FontSize="11.5"
+                                <RadioButton Style="{StaticResource Segment}" GroupName="tcmp" Width="96" Content="{l:T 'персонажем'}" FontSize="{StaticResource FsSmall}"
                                              IsChecked="{Binding CompareWithCharacter}"/>
                             </StackPanel>
                         </Border>
-                        <TextBlock Text="{l:T 'ФОН'}" Style="{StaticResource Caption}" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                        <Border Width="1" Height="28" Background="{StaticResource Line}" Margin="0,0,12,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{l:T 'Фон'}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}" VerticalAlignment="Center" Margin="0,0,8,0"/>
                         <Slider Style="{StaticResource Thin}" Width="84" Minimum="0" Maximum="1" Value="{Binding TreeBgOpacity}"
                                 VerticalAlignment="Center" Margin="0,0,10,0" ToolTip="{l:T 'Прозрачность фона: 0 = только линии поверх игрового дерева'}"/>
                         <Button Style="{StaticResource IconButton}" Content="&#xE71F;" ToolTip="{l:T 'Приблизить'}" Click="ZoomIn_Click"/>
@@ -84,7 +82,7 @@
                         <Button Style="{StaticResource IconButton}" Content="&#xE9A6;" ToolTip="{l:T 'Показать план этапа'}" Click="Fit_Click"/>
                         <ToggleButton Style="{StaticResource IconToggle}" Content="&#xE7C9;" IsChecked="{Binding TreeClickThrough}"
                                       ToolTip="{Binding TipThrough}"/>
-                        <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="10" ToolTip="{Binding TipHideTree}" Click="Hide_Click"/>
+                        <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}" ToolTip="{Binding TipHideTree}" Click="Hide_Click"/>
                     </StackPanel>
                 </Grid>
             </Border>
@@ -92,40 +90,44 @@
             <Grid Grid.Row="1">
                 <local:TreeCanvas x:Name="Canvas" Margin="1,4,1,1"/>
 
-                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource PanelBrush}" CornerRadius="10" Padding="14,9"
+                <Border HorizontalAlignment="Center" VerticalAlignment="Center" Background="{StaticResource PanelBrush}" CornerRadius="{StaticResource RadiusM}" Padding="14,9"
                         Visibility="{Binding HasTreeHint, Converter={StaticResource Vis}}" IsHitTestVisible="False">
                     <TextBlock Text="{Binding TreeHint}" Foreground="{StaticResource Text2}"/>
                 </Border>
 
-                <Border HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12" Padding="10,5" CornerRadius="8"
+                <Border HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="12" Padding="10,5" CornerRadius="{StaticResource RadiusM}"
                         Background="{StaticResource PanelBrush}" IsHitTestVisible="False"
                         Visibility="{Binding TreeClickThrough, Converter={StaticResource Vis}}">
-                    <TextBlock FontSize="11.5" Foreground="{StaticResource Text2}">
+                    <TextBlock FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}">
                         <Run Text="{Binding KeyThrough, Mode=OneWay}" FontFamily="{StaticResource MonoFont}" Foreground="{StaticResource Text}"/> <Run Text="{l:T 'вернуть управление'}"/>
                     </TextBlock>
                 </Border>
 
-                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,26,12" FontSize="11" Foreground="{StaticResource Text3}"
-                           IsHitTestVisible="False" Text="{l:T 'колесо: масштаб · ЛКМ: двигать · наведи на узел'}"
-                           Visibility="{Binding TreeClickThrough, Converter={StaticResource NotVis}}"/>
+                <!-- how to drive it: the keys bright, the rest quiet -->
+                <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,26,12" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}"
+                           IsHitTestVisible="False" Visibility="{Binding TreeClickThrough, Converter={StaticResource NotVis}}">
+                    <Run Text="{l:T 'Колесо'}" Foreground="{StaticResource Text}" FontWeight="SemiBold"/><Run Text="{l:T ' — масштаб · '}"/><Run
+                         Text="{l:T 'ЛКМ'}" Foreground="{StaticResource Text}" FontWeight="SemiBold"/><Run Text="{l:T ' — двигать · '}"/><Run
+                         Text="{l:T 'Наведи'}" Foreground="{StaticResource Text}" FontWeight="SemiBold"/><Run Text="{l:T ' на узел — описание'}"/>
+                </TextBlock>
 
                 <Canvas IsHitTestVisible="False">
                     <Border x:Name="Tip" Visibility="Collapsed" Background="{StaticResource Surface2}" BorderBrush="{StaticResource LineStrong}"
-                            BorderThickness="1" CornerRadius="10" Padding="12,9" MaxWidth="340">
+                            BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="12,9" MaxWidth="340">
                         <StackPanel>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock x:Name="TipTitle" FontSize="13.5" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                                <Border x:Name="TipStepBox" Grid.Column="1" Background="{StaticResource Accent}" CornerRadius="4" Padding="6,1" Margin="10,0,0,0"
+                                <TextBlock x:Name="TipTitle" FontSize="{StaticResource FsBody}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                                <Border x:Name="TipStepBox" Grid.Column="1" Background="{StaticResource Accent}" CornerRadius="{StaticResource RadiusS}" Padding="6,1" Margin="10,0,0,0"
                                         VerticalAlignment="Top">
-                                    <TextBlock x:Name="TipStep" FontSize="10.5" FontWeight="Bold" Foreground="{StaticResource OnAccent}"/>
+                                    <TextBlock x:Name="TipStep" FontSize="{StaticResource FsCaption}" FontWeight="Bold" Foreground="{StaticResource OnAccent}"/>
                                 </Border>
                             </Grid>
                             <TextBlock x:Name="TipKind" Style="{StaticResource Caption}" Margin="0,2,0,0"/>
-                            <TextBlock x:Name="TipStats" FontSize="12" Foreground="{StaticResource Text2}" TextWrapping="Wrap" Margin="0,6,0,0" LineHeight="17"/>
+                            <TextBlock x:Name="TipStats" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}" TextWrapping="Wrap" Margin="0,6,0,0" LineHeight="17"/>
                         </StackPanel>
                     </Border>
                 </Canvas>

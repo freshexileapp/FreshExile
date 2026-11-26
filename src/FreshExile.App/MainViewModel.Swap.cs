@@ -15,11 +15,11 @@ public sealed partial class MainViewModel
     /// <summary>The user marked this stage's socket changes as made: the town block and the plate stop asking.</summary>
     public bool IsSwapDone
     {
-        get => Build != null && _s.SwapDone.TryGetValue(Build.Id, out var done) && done.Contains(StageIndex);
+        get => Build != null && _s.SwapDone.TryGetValue(MarksKey, out var done) && done.Contains(StageIndex);
         set
         {
             if (Build == null || value == IsSwapDone) return;
-            if (!_s.SwapDone.TryGetValue(Build.Id, out var done)) _s.SwapDone[Build.Id] = done = new HashSet<int>();
+            if (!_s.SwapDone.TryGetValue(MarksKey, out var done)) _s.SwapDone[MarksKey] = done = new HashSet<int>();
             if (value) done.Add(StageIndex); else done.Remove(StageIndex);
             RaiseSwapDone();
             Save();
@@ -29,18 +29,21 @@ public sealed partial class MainViewModel
     /// <summary>The "ЗАМЕНА" lines in the town block: something to change in existing sockets, not done yet.</summary>
     public bool ShowMiniSwap => HasSwapRemove && !IsSwapDone;
     public bool ShowSwapLines => !IsSwapDone;
+    /// <summary>The links tab's badge: socket changes still to make on this stage; empty = no badge.</summary>
+    public string LinksBadge => HasSwap && !IsSwapDone && SwapLines.Count > 0 ? SwapLines.Count.ToString() : "";
+    public bool HasLinksBadge => LinksBadge.Length > 0;
 
     public RelayCommand MarkSwapDoneCommand => _markSwapDone ??= new RelayCommand(() => IsSwapDone = true);
     RelayCommand? _markSwapDone;
 
     void RaiseSwapDone()
     {
-        foreach (var n in new[] { nameof(IsSwapDone), nameof(ShowMiniSwap), nameof(ShowTownSwap), nameof(ShowSwapLines), nameof(ShowTownBlock) })
+        foreach (var n in new[] { nameof(IsSwapDone), nameof(ShowMiniSwap), nameof(ShowTownSwap), nameof(ShowSwapLines), nameof(ShowTownBlock), nameof(LinksBadge), nameof(HasLinksBadge) })
             Raise(n);
     }
     public bool HasSwapRemove => SwapRemove != null;
     public bool HasSwapAdd => SwapAdd != null;
-    public string SwapCaption => Build == null || StageIndex == 0 ? "" : Loc.T($"СМЕНА СВЯЗОК ПОСЛЕ «{Build.Stages[StageIndex - 1].Title.ToUpperInvariant()}»");
+    public string SwapCaption => Build == null || StageIndex == 0 ? "" : Loc.T($"СМЕНА СВЯЗОК ПОСЛЕ «{StageName(StageIndex - 1).ToUpperInvariant()}»");
 
     /// <summary>"Volley → Greater Volley", "Herald → убрать", "+ Grace".</summary>
     public System.Collections.ObjectModel.ObservableCollection<SwapLineVm> SwapLines { get; } = new();

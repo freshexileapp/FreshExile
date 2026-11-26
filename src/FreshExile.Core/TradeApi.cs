@@ -220,6 +220,9 @@ public sealed class TradeApi(HttpClient http)
             ? r.EnumerateArray().Select(x => x.GetString() ?? "").Where(x => x.Length > 0).ToList()
             : [];
         var total = root.TryGetProperty("total", out var t) && t.ValueKind == JsonValueKind.Number ? t.GetInt32() : ids.Count;
+        // the filters as sent and how many matched: "nothing found" can then be told apart from a wrong filter.
+        // The query holds stat ids and numbers only, no account or character
+        if (total == 0) Log?.Invoke($"trade search found nothing: {query.ToJsonString()}");
         return new TradeSearchResult(id, ids, total);
     }
 

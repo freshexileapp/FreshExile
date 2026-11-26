@@ -53,7 +53,7 @@ public static partial class StageLevels
         areaLevel >= 68 ? Math.Min(17, areaLevel - 67) : null;
 
     [GeneratedRegex(@"(?:\bt|\btier\s*|\bтир\s*)(\d{1,2})\b")] private static partial Regex TierRx();
-    [GeneratedRegex(@"\b(?:act|акт)\s*\d+")] private static partial Regex ActRx();
+    [GeneratedRegex(@"\b(?:acts?|акты?)\s*\d+")] private static partial Regex ActRx();
     [GeneratedRegex(@"(?:\blvl|\blevel|\blv|\bур(?:овень|\.)?)\s*\.?\s*(\d{1,3})")] private static partial Regex LvlRx();
     [GeneratedRegex(@"(?:^|\s)(\d{1,3})\s*[-–—]\s*\d{1,3}\b")] private static partial Regex RangeRx();
     [GeneratedRegex(@"(?:^|\s)(\d{1,3})\s*\+")] private static partial Regex PlusRx();

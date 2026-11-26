@@ -244,6 +244,27 @@ public class LogReplayTests
     }
 
     [Fact]
+    public void Acts_range_titles_follow_acts_not_levels()
+    {
+        string[] titles = ["Act 1 {1}", "Act 2 {2}", "Act 3 {3}", "Acts 4-5 {4}", "Acts 6-10 {5}", "lvl 80 Pinnacles {6}"];
+        var f = new StageFollower(titles)
+        {
+            StartLevels = titles.Select(StageLevels.FromTitle).ToList(),
+            StartTiers = titles.Select(_ => (int?)null).ToList(),
+        };
+        LogEvent Lvl(int n) => new LevelUp("Hero", "Templar", n);
+
+        Assert.Equal([null, null, null, null, null, 80], f.StartLevels);
+        Assert.Null(f.OnEvent(Lvl(4), 0, true));                                   // act 1, level 4: stay
+        Assert.Null(f.OnEvent(Lvl(6), 0, true));                                   // act 1, level 6: stay
+        Assert.Equal(3, f.OnEvent(Area(30, "1_4_1"), 2, true)!.Stage);            // act 4 → "Acts 4-5"
+        Assert.Null(f.OnEvent(Area(40, "1_5_1"), 3, true));                        // act 5: still "Acts 4-5"
+        Assert.Equal(4, f.OnEvent(Area(45, "2_6_1"), 3, true)!.Stage);            // act 6 → "Acts 6-10"
+        Assert.Null(f.OnEvent(Area(60, "2_9_1"), 4, true));                        // act 9: same stage
+        Assert.Equal(5, f.OnEvent(Area(68, "MapWorldsLookout"), 4, true)!.Stage); // first map → after the acts
+    }
+
+    [Fact]
     public void Hideout_is_town_but_does_not_move_the_guide()
     {
         var f = Follower(Ranger());

@@ -97,11 +97,9 @@ public sealed partial class MainViewModel
                     ? new NinjaPrice(chaos, _divineChaos is double r and > 0 ? chaos / r : 0, 0) { Market = true }
                     : null
                 : await (_ninjaUniques ??= new NinjaUniques(_http)).PriceAsync(item, trade.League, cts.Token);
-        // a gem is mostly sold "in person": with instant buyout only there would be no one to whisper, so those come in too
-        Func<PriceSettings> settings = item.IsGem
-            ? () => CurrentPriceSettings() is { Status: "securable" } st ? st with { Status = "available" } : CurrentPriceSettings()
-            : CurrentPriceSettings;
-        var vm = new PriceCheckViewModel(check, TradeApi, trade, settings, () => State.PriceCollapse, _divineChaos, ninja, LoadArtAsync)
+        // the sellers setting holds for gems too (they were silently widened to "in person" and a picked Instant showed whispers
+        // from days ago); with no instant offer at all the search still widens by itself and says so
+        var vm = new PriceCheckViewModel(check, TradeApi, trade, CurrentPriceSettings, () => State.PriceCollapse, _divineChaos, ninja, LoadArtAsync)
         {
             TopMods = CurrentTopMods(),
             SendWhisper = SendChat,
@@ -212,6 +210,7 @@ public sealed partial class MainViewModel
         _topSlot = slot;
         foreach (var s in TopSlots) if (s != slot) s.IsSelected = false;
         Raise(nameof(TopModsText));
+        Raise(nameof(TopPhrases));
         Raise(nameof(TopModsEdited));
     }
 
@@ -236,6 +235,29 @@ public sealed partial class MainViewModel
         }
     }
 
+    /// <summary>The selected slot's phrases as chips (the same list as <see cref="TopModsText"/>).</summary>
+    public IReadOnlyList<string> TopPhrases => TopModsText.Replace("\r", "").Split('\n').Where(s => s.Trim().Length > 0).ToList();
+
+    RelayCommand? _removeTopPhrase;
+    public RelayCommand RemoveTopPhraseCommand => _removeTopPhrase ??= new RelayCommand(p =>
+    {
+        if (p is not string phrase) return;
+        var list = TopPhrases.ToList();
+        list.Remove(phrase);
+        TopModsText = string.Join("\n", list);
+        Raise(nameof(TopPhrases));
+    });
+
+    /// <summary>Typed or pasted phrases: several lines become several chips; one already in the list is not doubled.</summary>
+    public void AddTopPhrases(string text)
+    {
+        var list = TopPhrases.ToList();
+        foreach (var p in text.Replace("\r", "").Split('\n').Select(s => s.Trim()).Where(s => s.Length > 0))
+            if (!list.Contains(p, StringComparer.OrdinalIgnoreCase)) list.Add(p);
+        TopModsText = string.Join("\n", list);
+        Raise(nameof(TopPhrases));
+    }
+
     /// <summary>The selected slot differs from the default: "Сбросить" is on.</summary>
     public bool TopModsEdited => State.TopMods.ContainsKey(TopSlotSelected.Key);
 
@@ -246,6 +268,7 @@ public sealed partial class MainViewModel
         _topMods = null;
         Save();
         Raise(nameof(TopModsText));
+        Raise(nameof(TopPhrases));
         Raise(nameof(TopModsEdited));
     });
 
@@ -266,8 +289,8 @@ public sealed partial class MainViewModel
 
     public bool PriceAutoSearch
     {
-        get => State.PriceAutoSearch;
-        set { if (State.PriceAutoSearch == value) return; State.PriceAutoSearch = value; Raise(); Save(); }
+        get => State.PriceSearchOnOpen;
+        set { if (State.PriceSearchOnOpen == value) return; State.PriceSearchOnOpen = value; Raise(); Save(); }
     }
 
     public bool PriceCollapse

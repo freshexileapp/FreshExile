@@ -154,7 +154,8 @@ public sealed partial class MainViewModel
     #region Step list under the in-game header
 
     /// <summary>Folded, the list shows the next few points; unfolded, all of them (up to a sane cap).</summary>
-    const int ShortSteps = 10;
+    // the next five points are what matters while playing; runegrafts and tattoos have blocks of their own below
+    const int ShortSteps = 5;
     const int MaxSteps = 40;
 
     public System.Collections.ObjectModel.ObservableCollection<PlanStepVm> PlanSteps { get; } = new();
@@ -184,19 +185,60 @@ public sealed partial class MainViewModel
             for (var i = 0; i < Plan.Order.Count && i < limit; i++)
             {
                 var n = Tree.Nodes[Plan.Order[i]];
-                var effect = n.Kind == FreshExile.Core.NodeKind.Mastery
+                // a runegraft / tattoo on the node: it is what the game shows there, not the mastery or passive under it
+                var effect = OverrideOf(n.Id) is { } o ? string.Join(", ", o.Lines)
+                    : n.Kind == FreshExile.Core.NodeKind.Mastery
                     ? MasteryText(n) ?? Loc.T("мастерство: эффект выбрать в игре")
                     : string.Join(", ", n.Stats.Take(n.Kind == FreshExile.Core.NodeKind.Normal ? 3 : 2));
-                PlanSteps.Add(new PlanStepVm($"{i + 1}", n.Name, Shorten(effect, 90), n.IsKey, n.Id, i == 0));
+                PlanSteps.Add(new PlanStepVm($"{i + 1}", NodeName(n), Shorten(effect, 90), n.IsKey, n.Id, i == 0));
             }
             if (Plan.Order.Count > limit) MoreSteps = StepsExpanded
                 ? Loc.T($"и ещё {Plan.Order.Count - limit} — во вкладке «Дерево» · свернуть")
                 : Loc.T($"ещё {Plan.Order.Count - limit}…");
             else if (StepsExpanded && Plan.Order.Count > ShortSteps) MoreSteps = Loc.T("свернуть");
+
         }
+        RebuildGrafts();
         Raise(nameof(HasPlanSteps));
         Raise(nameof(MoreSteps));
         Raise(nameof(HasMoreSteps));
+    }
+
+    /// <summary>The stage's runegrafts and tattoos under the steps, each block with its colour and a "done of all" count.</summary>
+    public System.Collections.ObjectModel.ObservableCollection<PlanStepVm> RuneSteps { get; } = new();
+    public System.Collections.ObjectModel.ObservableCollection<PlanStepVm> TattooSteps { get; } = new();
+    public bool HasRuneSteps => RuneSteps.Count > 0;
+    public bool HasTattooSteps => TattooSteps.Count > 0;
+    public string RuneCaption { get; private set; } = "";
+    public string TattooCaption { get; private set; } = "";
+
+    /// <summary>
+    /// Each runegraft / tattoo of the stage with what is left for it: compared with the character, "✓ стоит", "узел взят без
+    /// неё" or "сначала взять узел · шаг N"; without the character, what it grants. The node lights on hover like a step.
+    /// </summary>
+    void RebuildGrafts()
+    {
+        RuneSteps.Clear();
+        TattooSteps.Clear();
+        int runesDone = 0, tattoosDone = 0;
+        if (CurrentStage?.Tree is { } spec)
+            foreach (var o in spec.Overrides)
+            {
+                var known = CompareWithCharacter && _char != null;
+                var done = known && _char!.Overrides.TryGetValue(o.NodeId, out var theirs) && string.Equals(theirs, o.Name, StringComparison.OrdinalIgnoreCase);
+                var step = Plan?.Order is { } order ? order.ToList().IndexOf(o.NodeId) : -1;
+                var status = done ? Loc.T("стоит")
+                    : OverrideClash(o) is { } why ? why
+                    : step >= 0 ? Loc.T($"сначала взять узел · шаг {step + 1}")
+                    : string.Join(", ", o.Lines.Where(l => !l.StartsWith("Limited to", StringComparison.Ordinal)));
+                var row = new PlanStepVm(done ? "✓" : "", o.Name, Shorten(status, 90), true, o.NodeId, false);
+                if (o.IsTattoo) { TattooSteps.Add(row); if (done) tattoosDone++; }
+                else { RuneSteps.Add(row); if (done) runesDone++; }
+            }
+        var compared = CompareWithCharacter && _char != null;
+        RuneCaption = compared ? Loc.T($"РУНЫ · {runesDone} из {RuneSteps.Count}") : Loc.T($"РУНЫ · {RuneSteps.Count}");
+        TattooCaption = compared ? Loc.T($"ТАТУ · {tattoosDone} из {TattooSteps.Count}") : Loc.T($"ТАТУ · {TattooSteps.Count}");
+        foreach (var n in new[] { nameof(HasRuneSteps), nameof(HasTattooSteps), nameof(RuneCaption), nameof(TattooCaption) }) Raise(n);
     }
 
     int? _highlightNodeId;

@@ -6,11 +6,11 @@ namespace FreshExile.App;
 
 public static class GemPalette
 {
-    // muted socket colours that still read on the black panel
-    static readonly Color Red = Color.FromRgb(0xE0, 0x5A, 0x52);
-    static readonly Color Green = Color.FromRgb(0x5B, 0xB0, 0x5F);
-    static readonly Color Blue = Color.FromRgb(0x5A, 0x8F, 0xEF);
-    static readonly Color White = Color.FromRgb(0xC9, 0xC9, 0xCF);
+    // socket colours, the same as Theme.xaml SocketR / SocketG / SocketB / SocketW
+    static readonly Color Red = Color.FromRgb(0xD0, 0x50, 0x3F);
+    static readonly Color Green = Color.FromRgb(0x5F, 0xA8, 0x45);
+    static readonly Color Blue = Color.FromRgb(0x5B, 0x86, 0xD9);
+    static readonly Color White = Color.FromRgb(0xD8, 0xD2, 0xC4);
 
     static readonly Dictionary<GemColour, (Brush Stroke, Brush Fill)> Cache = new();
 
@@ -133,7 +133,18 @@ public sealed record LinkGroupVm(IReadOnlyList<LinkGemVm> Gems)
     /// <summary>What the item in the slot changes for this link, in words ("ауры здесь — временный баф…").</summary>
     public string? Note { get; init; }
     public bool HasNote => Note != null;
+
+    /// <summary>In the second weapon set: levelled there for later, drawn dashed and dim.</summary>
+    public bool IsSwap { get; init; }
+
+    /// <summary>The sockets the link needs, one per gem you socket, in the gems' colours ("4L" beside them).</summary>
+    public IReadOnlyList<LinkSocketVm> Sockets => Gems.Where(g => !g.IsGranted)
+        .Select((g, i) => new LinkSocketVm(g.Brush, i > 0)).ToList();
+    public string LinkText => $"{Gems.Count(g => !g.IsGranted)}L";
 }
+
+/// <summary>One socket in a link's strip; Linked = joined to the one before it.</summary>
+public sealed record LinkSocketVm(System.Windows.Media.Brush Brush, bool Linked);
 
 public sealed partial class MainViewModel
 {
@@ -181,6 +192,7 @@ public sealed partial class MainViewModel
             {
                 Note = item == null ? null : LinkNote(item, granted),
                 SlotCaption = g.Slot.Length == 0 ? "" : GearItemVm.SlotName(g.Slot).ToUpperInvariant(),
+                IsSwap = g.IsSwap,
             });
         }
         Raise(nameof(HasLinkGroups));
@@ -189,7 +201,7 @@ public sealed partial class MainViewModel
     static readonly System.Windows.Media.Brush GrantedBrush = MakeGranted();
     static System.Windows.Media.Brush MakeGranted()
     {
-        var b = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xAF, 0x60, 0x25)); // unique-item orange: it comes from the item
+        var b = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(0xD8, 0x80, 0x3A)); // unique-item orange: it comes from the item
         b.Freeze();
         return b;
     }

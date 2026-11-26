@@ -19,7 +19,7 @@ public sealed class SearchRowVm(TradeEntry entry)
         _ => Plain,
     };
 
-    static readonly Brush Unique = Frozen(0xAF, 0x60, 0x25), Gem = Frozen(0x1B, 0xA2, 0x9B), Plain = Frozen(0xC8, 0xC8, 0xC8);
+    static readonly Brush Unique = Frozen(0xD8, 0x80, 0x3A), Gem = Frozen(0x1B, 0xA2, 0x9B), Plain = Frozen(0xC8, 0xC8, 0xC8);
     static Brush Frozen(byte r, byte g, byte b) { var x = new SolidColorBrush(Color.FromRgb(r, g, b)); x.Freeze(); return x; }
 }
 

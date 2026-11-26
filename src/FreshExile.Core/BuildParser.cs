@@ -38,6 +38,19 @@ public sealed record TreeSpec(
 {
     /// <summary>Jewels PoB put into the tree's sockets: socket node id → item id (sockets left empty are not listed).</summary>
     public IReadOnlyDictionary<int, int> Jewels { get; init; } = new Dictionary<int, int>();
+
+    /// <summary>
+    /// Passives replaced on the tree: tattoos ("Tattoo of the Kitava Blood Drinker") and runegrafts ("Runegraft of the
+    /// Warp"), from the spec's &lt;Overrides&gt;: the node, the name PoB shows and the lines it grants instead.
+    /// </summary>
+    public IReadOnlyList<TreeOverride> Overrides { get; init; } = [];
+}
+
+/// <summary>One replaced passive: <see cref="Name"/> is PoB's "dn", <see cref="Lines"/> what the node grants now.</summary>
+public sealed record TreeOverride(int NodeId, string Name, IReadOnlyList<string> Lines)
+{
+    public bool IsTattoo => Name.StartsWith("Tattoo", StringComparison.OrdinalIgnoreCase);
+    public bool IsRunegraft => Name.StartsWith("Runegraft", StringComparison.OrdinalIgnoreCase);
 }
 
 public sealed record Stage(string Title, TreeSpec? Tree, IReadOnlyList<GemGroup> Groups)
@@ -141,12 +154,23 @@ public static partial class BuildParser
             if (ParseInt((string?)so.Attribute("nodeId"), 0) is var node and > 0 && ParseInt((string?)so.Attribute("itemId"), 0) is var item and > 0)
                 jewels[node] = item;
 
+        // <Overrides><Override nodeId="…" dn="Tattoo of …" icon="…">one line per stat</Override></Overrides>
+        var overrides = new List<TreeOverride>();
+        foreach (var o in e.Element("Overrides")?.Elements("Override") ?? [])
+        {
+            var name = ((string?)o.Attribute("dn"))?.Trim();
+            if (string.IsNullOrEmpty(name) || ParseInt((string?)o.Attribute("nodeId"), 0) is not (var id and > 0)) continue;
+            var lines = o.Value.Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            overrides.Add(new TreeOverride(id, name, lines));
+        }
+
         return new TreeSpec(title, nodes, mastery,
             ParseInt((string?)e.Attribute("classId"), 0),
             ParseInt((string?)e.Attribute("ascendClassId"), 0),
             (string?)e.Attribute("treeVersion") ?? "")
         {
             Jewels = jewels,
+            Overrides = overrides,
         };
     }
 
@@ -262,6 +286,14 @@ public static partial class BuildParser
         i = sets.FindIndex(s => Norm(s.Title).Length > 5 && Digits(Norm(s.Title)) == Digits(t) && Distance(Norm(s.Title), t) <= 2);
         if (i >= 0) return i;
 
+        // guide tags: tree "lvl 100 Endgame (Invert the rules) {9}" ↔ set "Endgame {9}", trees {6} and {7} ↔ "Pinnacles {6,7}"
+        if (Tags(t) is { Count: > 0 } tags)
+        {
+            i = sets.FindIndex(s => Tags(Norm(s.Title)).SetEquals(tags));
+            if (i < 0) i = sets.FindIndex(s => Tags(Norm(s.Title)).IsSupersetOf(tags));
+            if (i >= 0) return i;
+        }
+
         // "Act 7+" applies to Act 7, 8, 9…
         var act = ActNumber(t);
         if (act == null) return -1;
@@ -281,6 +313,15 @@ public static partial class BuildParser
     {
         var m = ActRx().Match(normTitle);
         return m.Success ? int.Parse(m.Groups[1].Value, CultureInfo.InvariantCulture) : null;
+    }
+
+    /// <summary>The numbers of a "{6,7}" tag in a title; empty when there is none.</summary>
+    static HashSet<int> Tags(string normTitle)
+    {
+        var m = TagRx().Match(normTitle);
+        return m.Success
+            ? m.Groups[1].Value.Split(',').Select(x => int.Parse(x.Trim(), CultureInfo.InvariantCulture)).ToHashSet()
+            : [];
     }
 
     static int Distance(string a, string b)
@@ -309,4 +350,5 @@ public static partial class BuildParser
     [GeneratedRegex(@"\s+")] private static partial Regex WsRx();
     [GeneratedRegex(@"^(?:act|акт)\s*(\d+)\s*\+$")] private static partial Regex ActPlusRx();
     [GeneratedRegex(@"\b(?:act|акт)\s*(\d+)\b")] private static partial Regex ActRx();
+    [GeneratedRegex(@"\{\s*(\d{1,3}(?:\s*,\s*\d{1,3})*)\s*\}")] private static partial Regex TagRx();
 }

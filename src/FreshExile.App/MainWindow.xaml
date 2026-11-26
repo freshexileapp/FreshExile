@@ -9,13 +9,74 @@
         UseLayoutRounding="True">
 
     <Window.Resources>
+        <!-- a mastery kind / runegraft / tattoo: its name, how many, the lines it grants -->
+        <DataTemplate x:Key="TreePick">
+            <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}"
+                    Padding="10,7,10,8" Margin="0,0,0,6">
+                <StackPanel>
+                    <DockPanel>
+                        <!-- a runegraft / tattoo is bought: its price check from here -->
+                        <Button DockPanel.Dock="Right" Style="{StaticResource SmallButton}" Content="{l:T 'Цена'}" VerticalAlignment="Center"
+                                ToolTip="{l:T 'Прайс-чек: найти на трейде и купить'}"
+                                Command="{Binding DataContext.BuyPickCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"
+                                Visibility="{Binding CanBuy, Converter={StaticResource Vis}}"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Name}" FontSize="{StaticResource FsBody}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                            <Border Background="{StaticResource Ok}" CornerRadius="{StaticResource RadiusS}" Padding="5,0,5,1" Margin="8,0,0,0" VerticalAlignment="Center"
+                                    Visibility="{Binding HasCount, Converter={StaticResource Vis}}">
+                                <TextBlock Text="{Binding Count}" FontSize="{StaticResource FsCaption}" FontWeight="Bold" Foreground="{StaticResource OnAccent}"/>
+                            </Border>
+                        </StackPanel>
+                    </DockPanel>
+                    <ItemsControl ItemsSource="{Binding Lines}" Margin="0,3,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding Clashes}" Margin="0,3,0,0" Visibility="{Binding HasClashes, Converter={StaticResource Vis}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource DangerText}" TextWrapping="Wrap" Margin="0,2,0,0"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="PopupBuildRow">
+            <Border x:Name="row" Background="Transparent" CornerRadius="{StaticResource RadiusM}" Padding="6,5" Cursor="Hand" MouseLeftButtonUp="PopupBuild_Click">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock x:Name="pin" Text="{Binding PinGlyph}" FontFamily="{StaticResource IconFont}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text3}"
+                               VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="{Binding Title}" FontSize="{StaticResource FsBody}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                        <TextBlock Text="{Binding Details}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+                <Trigger SourceName="row" Property="IsMouseOver" Value="True">
+                    <Setter TargetName="row" Property="Background" Value="{StaticResource Surface2}"/>
+                </Trigger>
+                <DataTrigger Binding="{Binding IsPinned}" Value="True">
+                    <Setter TargetName="pin" Property="Foreground" Value="{StaticResource Accent}"/>
+                </DataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
+
         <!-- the log shows another character: offer a fresh start from stage 1 -->
         <DataTemplate x:Key="NewCharBanner">
-            <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource LineStrong}" BorderThickness="1" CornerRadius="7" Padding="10,8"
+            <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource LineStrong}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="10,8"
                     Visibility="{Binding HasNewCharPrompt, Converter={StaticResource Vis}}">
                 <StackPanel>
-                    <TextBlock Text="{Binding NewCharText}" FontSize="12.5" FontWeight="SemiBold" TextWrapping="Wrap"/>
-                    <TextBlock Text="{l:T 'Отметки «куплено» этого билда сбросятся.'}" FontSize="11" Foreground="{StaticResource Text3}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding NewCharText}" FontSize="{StaticResource FsSmall}" FontWeight="SemiBold" TextWrapping="Wrap"/>
+                    <TextBlock Text="{l:T 'Отметки «куплено» этого билда сбросятся.'}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" Margin="0,2,0,0" TextWrapping="Wrap"/>
                     <UniformGrid Rows="1" Margin="0,8,-6,0">
                         <Button Style="{StaticResource PrimaryButton}" Content="{l:T 'С этапа 1'}" Padding="10,5" Command="{Binding AcceptNewCharCommand}" Margin="0,0,6,0"/>
                         <Button Style="{StaticResource GhostButton}" Content="{l:T 'Нет, тот же'}" Padding="10,5" Command="{Binding DismissNewCharCommand}" Margin="0,0,6,0"/>
@@ -25,9 +86,7 @@
         </DataTemplate>
     </Window.Resources>
 
-    <!-- outline as two filled layers: a stroked rounded border looks thinner on the arcs than on the straight edges -->
-    <Border Background="{StaticResource Line}" CornerRadius="10" Padding="1" UseLayoutRounding="False">
-    <Border Background="{StaticResource PanelBrush}" CornerRadius="9">
+    <ContentControl Style="{StaticResource WindowFrame}">
         <Grid UseLayoutRounding="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -38,126 +97,264 @@
             </Grid.RowDefinitions>
 
             <!-- header -->
-            <Grid Grid.Row="0" Margin="14,12,10,0" Background="Transparent" MouseLeftButtonDown="Drag_MouseDown"
+            <Grid x:Name="Header" Grid.Row="0" Margin="14,12,10,0" Background="Transparent" MouseLeftButtonDown="Drag_MouseDown"
                   Visibility="{Binding ShowMini, Converter={StaticResource NotVis}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" IsHitTestVisible="False">
-                    <Image Source="logo.png" Width="28" Height="28" RenderOptions.BitmapScalingMode="HighQuality"/>
-                    <StackPanel Margin="9,0,0,0" VerticalAlignment="Center">
-                        <TextBlock Text="FRESH EXILE" Style="{StaticResource Caption}" FontSize="9.5"/>
-                        <TextBlock Text="{Binding BuildLine}" FontSize="13" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                <!-- full: brand + class; scrolled down: one line "logo · Act 4 · 4/14 · Ур. 38" -->
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center"
+                            Visibility="{Binding Condensed, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource NotVis}}">
+                    <Image Source="logo.png" Width="30" Height="30" RenderOptions.BitmapScalingMode="HighQuality" IsHitTestVisible="False"/>
+                    <StackPanel Margin="10,0,0,0" VerticalAlignment="Center">
+                        <TextBlock Text="Fresh Exile" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Bronze}"
+                                   IsHitTestVisible="False"/>
+                        <!-- "Ranger · Pathfinder ▾": the builds, the PoB box and the character, without the settings -->
+                        <Border x:Name="BuildSwitch" Background="Transparent" Cursor="Hand" MouseLeftButtonDown="BuildSwitch_MouseDown" MouseLeftButtonUp="BuildSwitch_MouseUp"
+                                ToolTip="{l:T 'Билды: открыть другой, вставить PoB, синхронизировать персонажа'}"
+                                Visibility="{Binding HasBuild, Converter={StaticResource Vis}}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock x:Name="BuildSwitchText" Text="{Binding BuildLine}" FontSize="{StaticResource FsBody}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="&#xE70D;" FontFamily="{StaticResource IconFont}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}"
+                                           VerticalAlignment="Center" Margin="6,2,0,0"/>
+                            </StackPanel>
+                        </Border>
+                        <TextBlock Text="{Binding BuildLine}" FontSize="{StaticResource FsBody}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"
+                                   IsHitTestVisible="False" Visibility="{Binding HasBuild, Converter={StaticResource NotVis}}"/>
                     </StackPanel>
                 </StackPanel>
+                <DockPanel VerticalAlignment="Center" LastChildFill="True"
+                           Visibility="{Binding Condensed, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource Vis}}">
+                    <Image DockPanel.Dock="Left" Source="logo.png" Width="26" Height="26" RenderOptions.BitmapScalingMode="HighQuality" IsHitTestVisible="False"/>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                        <!-- the build switcher from the folded header too -->
+                        <Button Style="{StaticResource IconButton}" Content="&#xE70D;" FontSize="{StaticResource FsCaption}" Click="BuildSwitch_Click"
+                                ToolTip="{l:T 'Билды: открыть другой, вставить PoB, синхронизировать персонажа'}"/>
+                        <Button Style="{StaticResource IconButton}" Content="&#xE76B;" FontSize="{StaticResource FsCaption}" Command="{Binding PrevCommand}" ToolTip="{Binding TipPrev}"/>
+                        <Button Style="{StaticResource IconButton}" Content="&#xE76C;" FontSize="{StaticResource FsCaption}" Command="{Binding NextCommand}" ToolTip="{Binding TipNext}"/>
+                    </StackPanel>
+                    <TextBlock Margin="8,0,6,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" IsHitTestVisible="False">
+                        <Run Text="{Binding StageTitle, Mode=OneWay}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsTitle}" FontWeight="Bold"
+                             Foreground="{StaticResource TitleText}"/><Run Text="  "/><Run Text="{Binding StageOfText, Mode=OneWay}" FontSize="{StaticResource FsCaption}"
+                             Foreground="{StaticResource Text3}"/>
+                    </TextBlock>
+                </DockPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                     <Button Style="{StaticResource IconButton}" Content="&#xE713;" ToolTip="{l:T 'Настройки'}" Click="Settings_Click"/>
                     <!-- X folds into the mini tracker; the app itself closes from the footer -->
-                    <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="10" ToolTip="{l:T 'Свернуть в мини'}" Click="Collapse_Click"/>
+                    <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}" ToolTip="{l:T 'Свернуть в мини'}" Click="Collapse_Click"/>
                 </StackPanel>
             </Grid>
 
+            <!-- the build switcher: a click on "Class · Ascendancy" in the header. The open build and its character, a box for
+                 a PoB link or code (Ctrl+V into the empty box loads it at once), then the pinned and the recent builds. -->
+            <Popup x:Name="BuildPopup" Grid.Row="0" PlacementTarget="{Binding ElementName=Header}" Placement="Bottom" VerticalOffset="6" HorizontalOffset="-6"
+                   StaysOpen="False" AllowsTransparency="True" PopupAnimation="Fade" Closed="BuildPopup_Closed">
+                <Border Width="{Binding BuildPopupWidth, RelativeSource={RelativeSource AncestorType=Window}}" Background="{StaticResource PanelBrush}"
+                        BorderBrush="{StaticResource LineStrong}" BorderThickness="1" CornerRadius="{StaticResource RadiusL}" Padding="10" KeyDown="BuildPopup_KeyDown">
+                    <!-- the link to the settings sits at the bottom of the switcher, which reaches down to the footer -->
+                    <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel>
+                        <!-- the open build -->
+                        <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource BronzeLine}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}"
+                                Padding="10,8,4,8" Visibility="{Binding HasCurrentRecent, Converter={StaticResource Vis}}">
+                            <Grid DataContext="{Binding CurrentRecent}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Title}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsSection}" FontWeight="Bold"
+                                               Foreground="{StaticResource TitleText}" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Text="{Binding Details}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}" TextTrimming="CharacterEllipsis"/>
+                                    <!-- bandits and pantheon: a choice of the build, always at hand here -->
+                                    <TextBlock Text="{Binding DataContext.ChoicesLine, RelativeSource={RelativeSource AncestorType=Window}}" FontSize="{StaticResource FsSmall}"
+                                               Foreground="{StaticResource AccentHover}" TextWrapping="Wrap" Margin="0,3,0,0"
+                                               Visibility="{Binding DataContext.HasChoices, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource Vis}}"/>
+                                </StackPanel>
+                                <Button Grid.Column="1" Style="{StaticResource IconButton}" Content="&#xE72C;" FontSize="{StaticResource FsSmall}" VerticalAlignment="Center"
+                                        ToolTip="{l:T 'Синхронизировать персонажа: гемы в шмотках и дерево для сравнения'}"
+                                        Command="{Binding DataContext.SyncCharacterCommand, RelativeSource={RelativeSource AncestorType=Window}}"/>
+                            </Grid>
+                        </Border>
+                        <TextBlock Text="{Binding CharStatus}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" Margin="2,4,0,0" TextTrimming="CharacterEllipsis">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <Trigger Property="Text" Value=""><Setter Property="Visibility" Value="Collapsed"/></Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+
+                        <!-- a link or a code -->
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="PopupInput" Style="{StaticResource Field}" FontSize="{StaticResource FsSmall}" Padding="8,6" TextWrapping="NoWrap"
+                                     Tag="{l:T 'Вставить ссылку pobb.in / pastebin или код PoB'}" Text="{Binding BuildInput, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Grid.Column="1" Style="{StaticResource PrimaryButton}" Content="{Binding LoadButtonText}" Command="{Binding LoadBuildCommand}"
+                                    Padding="12,0" Margin="6,0,0,0" FontSize="{StaticResource FsSmall}"/>
+                        </Grid>
+                        <TextBlock Text="{Binding BuildError}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource DangerText}" TextWrapping="Wrap" Margin="2,6,0,0"
+                                   Visibility="{Binding HasBuildError, Converter={StaticResource Vis}}"/>
+
+                        <ScrollViewer MaxHeight="320" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,6,0,0">
+                            <StackPanel>
+                                <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Закреплённые'}" Margin="0,8,0,6"
+                                                   Visibility="{Binding HasPinnedRecent, Converter={StaticResource Vis}}"/>
+                                <ItemsControl ItemsSource="{Binding PinnedRecent}" ItemTemplate="{StaticResource PopupBuildRow}"/>
+                                <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Недавние билды'}" Margin="0,8,0,6"
+                                                   Visibility="{Binding HasOtherRecent, Converter={StaticResource Vis}}"/>
+                                <ItemsControl ItemsSource="{Binding OtherRecent}" ItemTemplate="{StaticResource PopupBuildRow}"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </StackPanel>
+                    <TextBlock Grid.Row="1" Margin="2,10,0,0" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Bronze}" Cursor="Hand"
+                               Text="{l:T 'Все билды и правила этапов в настройках ›'}" MouseLeftButtonUp="PopupSettings_Click"/>
+                    </Grid>
+                </Border>
+            </Popup>
+
             <!-- stage -->
-            <!-- mini tracker: one line in the field, gem shopping only in town -->
+            <!-- mini tracker: one line in the field, gem shopping by vendor only in town -->
             <StackPanel Grid.Row="1" Visibility="{Binding ShowMini, Converter={StaticResource Vis}}">
-                <!-- icon | stage + level (the stage name trims, never the timer) | timer | buttons -->
+                <!-- logo | stage (the name trims, never the timer) | timer | buttons -->
                 <!-- DockPanel, not a Grid: a Grid's Auto column under SizeToContent did not widen when the clock
-                     went 0:9 -> 0:10, and the chip text got cut on both sides -->
-                <DockPanel Margin="10,7,6,7" Background="Transparent" MouseLeftButtonDown="Drag_MouseDown" LastChildFill="True">
-                    <Image DockPanel.Dock="Left" Source="logo.png" Width="22" Height="22" VerticalAlignment="Center" IsHitTestVisible="False"
+                     went 0:9 -> 0:10, and the text got cut on both sides -->
+                <DockPanel Margin="10,8,6,8" Background="Transparent" MouseLeftButtonDown="Drag_MouseDown" LastChildFill="True">
+                    <Image DockPanel.Dock="Left" Source="logo.png" Width="24" Height="24" VerticalAlignment="Center" IsHitTestVisible="False"
                            RenderOptions.BitmapScalingMode="HighQuality"/>
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Style="{StaticResource IconButton}" Width="24" Height="24" FontSize="10" Content="&#xE76B;" Command="{Binding PrevCommand}" ToolTip="{Binding TipPrev}"/>
-                        <Button Style="{StaticResource IconButton}" Width="24" Height="24" FontSize="10" Content="&#xE76C;" Command="{Binding NextCommand}" ToolTip="{Binding TipNext}"/>
-                        <Button Style="{StaticResource IconButton}" Width="24" Height="24" FontSize="10" Content="&#xE70E;" ToolTip="{l:T 'Развернуть'}" Click="Compact_Click"/>
+                        <Button Style="{StaticResource IconButton}" Width="28" Height="28" FontSize="{StaticResource FsCaption}" Content="&#xE76B;" Command="{Binding PrevCommand}" ToolTip="{Binding TipPrev}"/>
+                        <Button Style="{StaticResource IconButton}" Width="28" Height="28" FontSize="{StaticResource FsCaption}" Content="&#xE76C;" Command="{Binding NextCommand}" ToolTip="{Binding TipNext}"/>
+                        <Button Style="{StaticResource IconButton}" Width="28" Height="28" FontSize="{StaticResource FsCaption}" Content="&#xE70E;" ToolTip="{l:T 'Развернуть'}" Click="Compact_Click"/>
                     </StackPanel>
-                    <!-- run clock as a quiet chip: "карта  0:12"; the time keeps a minimum width so the chip does not twitch every second -->
-                    <Border DockPanel.Dock="Right" Background="{StaticResource Surface}" CornerRadius="6" Padding="7,2,7,3" Margin="2,0,6,0"
-                            VerticalAlignment="Center" ToolTip="{Binding RunTimerTip}"
-                            Visibility="{Binding HasRunTimer, Converter={StaticResource Vis}}">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding RunTimerLabel}" FontSize="10.5" Foreground="{StaticResource Text3}" VerticalAlignment="Center" Margin="0,0,5,0"/>
-                            <TextBlock Text="{Binding RunTimerTime}" FontFamily="{StaticResource MonoFont}" FontSize="12" FontWeight="SemiBold"
-                                       Foreground="{StaticResource Text}" VerticalAlignment="Center" MinWidth="30" TextAlignment="Right"/>
-                        </StackPanel>
-                    </Border>
+                    <!-- the run clock: a bronze stopwatch (act or map in its tooltip) and the time; the time keeps a minimum width
+                         so the line does not twitch every second -->
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Margin="4,0,6,0" VerticalAlignment="Center" Background="Transparent"
+                                ToolTip="{Binding RunTimerTip}" Visibility="{Binding HasRunTimer, Converter={StaticResource Vis}}">
+                        <TextBlock Text="&#xE916;" FontFamily="{StaticResource IconFont}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Bronze}"
+                                   VerticalAlignment="Center" Margin="0,1,6,0"/>
+                        <TextBlock Text="{Binding RunTimerTime}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsSection}"
+                                   Foreground="{StaticResource AccentHover}" VerticalAlignment="Center" MinWidth="36" TextAlignment="Right"/>
+                    </StackPanel>
                     <!-- the level is the game's own business: the stage name gets the room -->
-                    <TextBlock Text="{Binding StageTitle}" FontSize="14" FontWeight="SemiBold" Margin="9,0,6,0" VerticalAlignment="Center"
+                    <TextBlock Text="{Binding StageTitle}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsSection}" FontWeight="Bold"
+                               Foreground="{StaticResource TitleText}" Margin="9,0,6,0" VerticalAlignment="Center"
                                TextTrimming="CharacterEllipsis" IsHitTestVisible="False" ToolTip="{Binding StageTitle}"/>
                 </DockPanel>
 
                 <!-- Act 2: which bandit the build takes -->
-                <TextBlock Margin="39,-3,10,7" FontSize="11.5" TextWrapping="Wrap" IsHitTestVisible="False"
+                <TextBlock Margin="42,-3,10,7" FontSize="{StaticResource FsSmall}" TextWrapping="Wrap" IsHitTestVisible="False"
                            Visibility="{Binding ShowMiniBandit, Converter={StaticResource Vis}}">
-                    <Run Text="{l:T 'БАНДИТЫ'}" FontSize="9.5" FontWeight="SemiBold" Foreground="{StaticResource Text3}"/><Run Text="  "/><Run Text="{Binding BanditText, Mode=OneWay}" Foreground="{StaticResource Text2}"/>
+                    <Run Text="{l:T 'БАНДИТЫ'}" FontSize="{StaticResource FsCaption}" FontWeight="SemiBold" Foreground="{StaticResource Text3}"/><Run Text="  "/><Run Text="{Binding BanditText, Mode=OneWay}" Foreground="{StaticResource AccentHover}"/>
+                </TextBlock>
+
+                <!-- the act of the pantheon's first god: which gods the build takes -->
+                <TextBlock Margin="42,-3,10,7" FontSize="{StaticResource FsSmall}" TextWrapping="Wrap" IsHitTestVisible="False"
+                           Visibility="{Binding ShowMiniPantheon, Converter={StaticResource Vis}}">
+                    <Run Text="{l:T 'ПАНТЕОН'}" FontSize="{StaticResource FsCaption}" FontWeight="SemiBold" Foreground="{StaticResource Text3}"/><Run Text="  "/><Run Text="{Binding PantheonText, Mode=OneWay}" Foreground="{StaticResource AccentHover}"/>
                 </TextBlock>
 
                 <!-- next labyrinth: ascendancy notables of this stage still to take -->
-                <TextBlock Margin="39,-3,10,7" FontSize="11.5" TextWrapping="Wrap" IsHitTestVisible="False"
+                <TextBlock Margin="42,-3,10,7" FontSize="{StaticResource FsSmall}" TextWrapping="Wrap" IsHitTestVisible="False"
                            Visibility="{Binding HasLabText, Converter={StaticResource Vis}}">
-                    <Run Text="{l:T 'ЛАБА'}" FontSize="9.5" FontWeight="SemiBold" Foreground="{StaticResource Text3}"/><Run Text="  "/><Run Text="{Binding LabText, Mode=OneWay}" Foreground="{StaticResource Text2}"/>
+                    <Run Text="{l:T 'ЛАБА'}" FontSize="{StaticResource FsCaption}" FontWeight="SemiBold" Foreground="{StaticResource Text3}"/><Run Text="  "/><Run Text="{Binding LabText, Mode=OneWay}" Foreground="{StaticResource Text2}"/>
                 </TextBlock>
 
                 <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NewCharBanner}" Margin="6,0,6,6" Focusable="False"
                                 Visibility="{Binding HasNewCharPrompt, Converter={StaticResource Vis}}"/>
 
-                <Border Margin="6,0,6,6" Background="{StaticResource Surface}"
-                        CornerRadius="7" Padding="3,7,3,4" Visibility="{Binding ShowTownBlock, Converter={StaticResource Vis}}">
+                <!-- in town: what to buy, by vendor (each with its own search string), then what to swap in the sockets -->
+                <Border BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Padding="6,8,6,6"
+                        Visibility="{Binding ShowTownBlock, Converter={StaticResource Vis}}">
                     <StackPanel>
-                        <TextBlock Text="{Binding TownCaption}" Style="{StaticResource Caption}" FontSize="9.5" Margin="9,0,0,3"/>
-                        <ItemsControl ItemsSource="{Binding TownGems}">
+                        <ItemsControl ItemsSource="{Binding TownVendors}">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox Style="{StaticResource GemOrb}" IsChecked="{Binding IsBought}" ToolTip="{Binding SourceText}">
-                                        <Grid>
+                                    <StackPanel Margin="0,0,0,8">
+                                        <!-- "Nessa  Акт 1 · 4 ——— [Поиск]" -->
+                                        <Grid Margin="8,0,2,3">
                                             <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
-                                                <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding Name}" FontSize="12.5" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                                            <TextBlock Grid.Column="1" Text="{Binding NpcWithAct}" FontSize="11" Foreground="{StaticResource Text3}" Margin="10,0,2,0" VerticalAlignment="Center"/>
-                                            <Button Grid.Column="2" Style="{StaticResource IconButton}" Width="20" Height="20" FontSize="10" Content="&#xE7BF;" Margin="2,0,0,0"
-                                                    Command="{Binding DataContext.TradeGemCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"
-                                                    ToolTip="{l:T 'Найти на трейде'}"/>
+                                            <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{Binding Heading}" Margin="0,0,8,0" Grid.ColumnSpan="2"/>
+                                            <Button Grid.Column="2" Style="{StaticResource SmallButton}" Content="{Binding SearchButton}" Command="{Binding SearchCommand}"
+                                                    ToolTip="{l:T 'Копирует строку поиска по гемам этого торговца: вставь (Ctrl+V) в поиск его окна'}"
+                                                    Visibility="{Binding CanSearch, Converter={StaticResource Vis}}"/>
                                         </Grid>
-                                    </CheckBox>
+                                        <ItemsControl ItemsSource="{Binding Gems}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox Style="{StaticResource GemSocket}" IsChecked="{Binding IsBought}" ToolTip="{Binding SourceText}">
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="*"/>
+                                                                <ColumnDefinition Width="Auto"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Text="{Binding Name}" FontSize="{StaticResource FsBody}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                                            <Button Grid.Column="1" Style="{StaticResource IconButton}" Width="24" Height="24" FontSize="{StaticResource FsCaption}" Content="&#xE7BF;"
+                                                                    Margin="4,0,0,0"
+                                                                    Command="{Binding DataContext.TradeGemCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}"
+                                                                    ToolTip="{l:T 'Найти на трейде'}"/>
+                                                        </Grid>
+                                                    </CheckBox>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <Button Style="{StaticResource GhostButton}" Content="{Binding VendorSearchButton}" FontSize="11.5" Padding="8,4" Margin="6,4,6,2"
-                                HorizontalAlignment="Left" Command="{Binding CopyVendorSearchCommand}"
-                                ToolTip="{l:T 'Копирует строку поиска по этим гемам: вставь (Ctrl+V) в поиск окна торговца'}"
-                                Visibility="{Binding HasTownGems, Converter={StaticResource Vis}}"/>
                         <!-- new gems are the buy list above; here only what changes in existing sockets -->
-                        <StackPanel Margin="9,5,6,2" Visibility="{Binding ShowTownSwap, Converter={StaticResource Vis}}">
-                            <Grid Margin="0,0,0,2">
-                                <TextBlock Text="{l:T 'ЗАМЕНА'}" Style="{StaticResource Caption}" FontSize="9.5" VerticalAlignment="Center"/>
-                                <Button Style="{StaticResource GhostButton}" Content="{l:T '✓ сделано'}" FontSize="10.5" Padding="6,1" HorizontalAlignment="Right"
-                                        Command="{Binding MarkSwapDoneCommand}" ToolTip="{l:T 'Связки уже поменял: больше не напоминать на этом этапе'}"/>
-                            </Grid>
-                            <ItemsControl ItemsSource="{Binding MiniSwapLines}" ItemTemplate="{StaticResource SwapLine}"/>
-                        </StackPanel>
+                        <Border Padding="8,4,4,2" Visibility="{Binding ShowTownSwap, Converter={StaticResource Vis}}">
+                            <StackPanel>
+                                <Grid Margin="0,0,0,3">
+                                    <l:OrnamentDivider Style="{StaticResource SectionHeader}" Text="{l:T 'Перестановка'}" Margin="0,0,96,0"/>
+                                    <Button Style="{StaticResource SmallButton}" Content="{l:T '✓ Сделано'}" HorizontalAlignment="Right"
+                                            Background="Transparent" BorderBrush="{StaticResource LineStrong}" Foreground="{StaticResource Text2}"
+                                            Command="{Binding MarkSwapDoneCommand}" ToolTip="{l:T 'Связки уже поменял: больше не напоминать на этом этапе'}"/>
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding MiniSwapLines}" ItemTemplate="{StaticResource SwapLine}"/>
+                            </StackPanel>
+                        </Border>
                     </StackPanel>
                 </Border>
             </StackPanel>
 
-            <StackPanel Grid.Row="1" Margin="18,16,14,0" Visibility="{Binding ShowFullStage, Converter={StaticResource Vis}}">
-                <Grid>
-                    <StackPanel>
-                        <TextBlock Style="{StaticResource Caption}" Text="{Binding StageNumberText}"/>
-                        <TextBlock Text="{Binding StageTitle}" FontFamily="{StaticResource DisplayFont}" FontSize="28"
-                                   FontWeight="SemiBold" Margin="0,1,72,0" TextTrimming="CharacterEllipsis"/>
-                        <TextBlock Text="{Binding StageSubtitle}" Foreground="{StaticResource Text2}" FontSize="12" Margin="0,1,0,0"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,14,0,0">
-                        <Button Style="{StaticResource IconButton}" Content="&#xE76B;" Command="{Binding PrevCommand}" ToolTip="{Binding TipPrev}"/>
-                        <Button Style="{StaticResource IconButton}" Content="&#xE76C;" Command="{Binding NextCommand}" ToolTip="{Binding TipNext}"/>
-                    </StackPanel>
-                </Grid>
+            <Border Grid.Row="1" Visibility="{Binding Condensed, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource NotVis}}">
+            <StackPanel x:Name="FullStage" Margin="10,10,14,0" Visibility="{Binding ShowFullStage, Converter={StaticResource Vis}}">
+                <DockPanel LastChildFill="True">
+                    <Button DockPanel.Dock="Left" Style="{StaticResource IconButton}" Content="&#xE76B;" Command="{Binding PrevCommand}" ToolTip="{Binding TipPrev}"
+                            VerticalAlignment="Center"/>
+                    <TextBlock DockPanel.Dock="Right" Text="{Binding StageOfText}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}"
+                               VerticalAlignment="Center" Margin="8,0,0,0"/>
+                    <!-- "‹ Act 4 ›": the arrows hug the name; a long name trims before the arrow is pushed away -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="{Binding StageTitle}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsHero}" FontWeight="Bold"
+                                   Foreground="{StaticResource TitleText}" Margin="2,0,2,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                   ToolTip="{Binding StageTitle}" MaxWidth="220"/>
+                        <Button Grid.Column="1" Style="{StaticResource IconButton}" Content="&#xE76C;" Command="{Binding NextCommand}" ToolTip="{Binding TipNext}"
+                                VerticalAlignment="Center"/>
+                    </Grid>
+                </DockPanel>
 
-                <ItemsControl ItemsSource="{Binding Stages}" Margin="-1.5,10,2,0">
+                <ItemsControl ItemsSource="{Binding Stages}" Margin="2.5,8,0,0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate><UniformGrid Rows="1"/></ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
@@ -169,33 +366,58 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
 
-                <Grid Margin="0,8,2,0">
+                <Grid Margin="4,8,0,0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
+                    <!-- green: the game's log is read; a hollow ring: not linked -->
                     <Grid Width="7" Height="7" VerticalAlignment="Center">
-                        <Ellipse Fill="{StaticResource Accent}" Visibility="{Binding IsGameLinked, Converter={StaticResource Vis}}"/>
+                        <Ellipse Fill="{StaticResource Ok}" Visibility="{Binding IsGameLinked, Converter={StaticResource Vis}}"/>
                         <Ellipse Stroke="{StaticResource Text3}" StrokeThickness="1.2" Visibility="{Binding IsGameLinked, Converter={StaticResource NotVis}}"/>
                     </Grid>
-                    <TextBlock Grid.Column="1" Text="{Binding GameLine}" Foreground="{StaticResource Text2}" FontSize="11.5"
+                    <TextBlock Grid.Column="1" Text="{Binding GameLine}" Foreground="{StaticResource Text2}" FontSize="{StaticResource FsSmall}"
                                Margin="8,0,8,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                     <ToggleButton Grid.Column="2" Style="{StaticResource Chip}" Content="{l:T 'Авто'}" IsChecked="{Binding FollowGame}"
                                   ToolTip="{l:T 'Переключать этап по акту и уровню из игры (только вперёд)'}"/>
                 </Grid>
+                <!-- bandit: the plate while in its act; ✕ hides it on this stage -->
+                <Border Margin="0,8,0,0" BorderBrush="{StaticResource BronzeLine}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="10,6,4,6"
+                        Background="{StaticResource AccentSoft}" Visibility="{Binding ShowBanditPlate, Converter={StaticResource Vis}}">
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Width="24" Height="24" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}"
+                                Command="{Binding HidePlateCommand}" CommandParameter="bandit" ToolTip="{l:T 'Скрыть до следующего этапа'}"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="{StaticResource FsSmall}" VerticalAlignment="Center">
+                            <Run Text="{l:T 'Бандиты:'}" Foreground="{StaticResource Text3}"/><Run Text="  "/><Run Text="{Binding BanditText, Mode=OneWay}" Foreground="{StaticResource AccentHover}"/>
+                        </TextBlock>
+                    </DockPanel>
+                </Border>
+                <!-- pantheon: the plate while in its act; ✕ hides it on this stage -->
+                <Border Margin="0,8,0,0" BorderBrush="{StaticResource BronzeLine}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="10,6,4,6"
+                        Background="{StaticResource AccentSoft}" Visibility="{Binding ShowPantheonPlate, Converter={StaticResource Vis}}">
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Width="24" Height="24" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}"
+                                Command="{Binding HidePlateCommand}" CommandParameter="pantheon" ToolTip="{l:T 'Скрыть до следующего этапа'}"/>
+                        <TextBlock TextWrapping="Wrap" FontSize="{StaticResource FsSmall}" VerticalAlignment="Center">
+                            <Run Text="{l:T 'Пантеон:'}" Foreground="{StaticResource Text3}"/><Run Text="  "/><Run Text="{Binding PantheonText, Mode=OneWay}" Foreground="{StaticResource AccentHover}"/>
+                        </TextBlock>
+                    </DockPanel>
+                </Border>
                 <ContentControl Content="{Binding}" ContentTemplate="{StaticResource NewCharBanner}" Margin="0,10,2,0" Focusable="False"
                                 Visibility="{Binding HasNewCharPrompt, Converter={StaticResource Vis}}"/>
             </StackPanel>
+            </Border>
 
             <!-- tabs -->
-            <Border Grid.Row="2" Margin="14,14,14,0" Background="{StaticResource Surface}" CornerRadius="10" Padding="3"
+            <!-- tabs: underlined, with what is waiting as a badge (gems to buy, sockets to change) -->
+            <Border Grid.Row="2" Margin="14,10,14,0" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1"
                     Visibility="{Binding ShowTabs, Converter={StaticResource Vis}}">
-                <UniformGrid Rows="1">
-                    <RadioButton Style="{StaticResource Segment}" GroupName="tab" Content="{l:T 'Гемы'}" IsChecked="{Binding IsGemsTab}"/>
-                    <RadioButton Style="{StaticResource Segment}" GroupName="tab" Content="{l:T 'Дерево'}" IsChecked="{Binding IsTreeTab}"/>
-                    <RadioButton Style="{StaticResource Segment}" GroupName="tab" Content="{l:T 'Связки'}" IsChecked="{Binding IsLinksTab}"/>
-                    <RadioButton Style="{StaticResource Segment}" GroupName="tab" Content="{l:T 'Гир'}" IsChecked="{Binding IsGearTab}"/>
+                <UniformGrid Rows="1" Margin="0,0,0,-1">
+                    <RadioButton Style="{StaticResource PanelTab}" GroupName="tab" Content="{l:T 'Гемы'}" IsChecked="{Binding IsGemsTab}" Tag="{Binding GemsBadge}"/>
+                    <RadioButton Style="{StaticResource PanelTab}" GroupName="tab" Content="{l:T 'Дерево'}" IsChecked="{Binding IsTreeTab}"/>
+                    <RadioButton Style="{StaticResource PanelTab}" GroupName="tab" Content="{l:T 'Связки'}" IsChecked="{Binding IsLinksTab}" Tag="{Binding LinksBadge}"/>
+                    <RadioButton Style="{StaticResource PanelTab}" GroupName="tab" Content="{l:T 'Шмот'}" IsChecked="{Binding IsGearTab}"/>
                 </UniformGrid>
             </Border>
 
@@ -204,25 +426,25 @@
 
                 <!-- empty state -->
                 <StackPanel VerticalAlignment="Center" Margin="22,0,22,30" Visibility="{Binding ShowEmpty, Converter={StaticResource Vis}}">
-                    <Border Width="44" Height="44" CornerRadius="8" Background="{StaticResource Surface2}" HorizontalAlignment="Left">
-                        <TextBlock Text="&#xE71B;" FontFamily="{StaticResource IconFont}" FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <Border Width="44" Height="44" CornerRadius="{StaticResource RadiusM}" Background="{StaticResource Surface2}" HorizontalAlignment="Left">
+                        <TextBlock Text="&#xE71B;" FontFamily="{StaticResource IconFont}" FontSize="{StaticResource FsTitle}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
-                    <TextBlock Text="{l:T 'Импорт билда'}" FontFamily="{StaticResource DisplayFont}" FontSize="24" FontWeight="SemiBold" Margin="0,16,0,0"/>
-                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Text2}" FontSize="12.5" Margin="0,6,0,16" LineHeight="18"
+                    <TextBlock Text="{l:T 'Импорт билда'}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsHero}" FontWeight="Bold" Margin="0,16,0,0"/>
+                    <TextBlock TextWrapping="Wrap" Foreground="{StaticResource Text2}" FontSize="{StaticResource FsSmall}" Margin="0,6,0,16" LineHeight="18"
                                Text="{l:T 'Ссылка pobb.in / pastebin или сам код Path of Building. Этапы берутся из деревьев и наборов гемов PoB (Act 1, Act 2…).'}"/>
                     <TextBox Style="{StaticResource Field}" Tag="https://pobb.in/…" Text="{Binding BuildInput, UpdateSourceTrigger=PropertyChanged}"/>
                     <Button Style="{StaticResource PrimaryButton}" Content="{Binding LoadButtonText}" Command="{Binding LoadBuildCommand}" Margin="0,10,0,0"/>
                     <Button Style="{StaticResource GhostButton}" Content="{Binding SaveStageText}" Command="{Binding SaveStageCommand}" Margin="0,8,0,0"
                             ToolTip="{l:T 'Для PoB, который меняется по ходу игры (стример): каждое нажатие сохраняет то, что сейчас по ссылке, новым этапом «Ур. N».'}"/>
-                    <Border Margin="0,12,0,0" BorderBrush="{StaticResource LineStrong}" BorderThickness="1" CornerRadius="9" Padding="10,8"
+                    <Border Margin="0,12,0,0" BorderBrush="{StaticResource LineStrong}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}" Padding="10,8"
                             Visibility="{Binding HasBuildError, Converter={StaticResource Vis}}">
-                        <TextBlock Text="{Binding BuildError}" TextWrapping="Wrap" FontSize="12" Foreground="{StaticResource Text}"/>
+                        <TextBlock Text="{Binding BuildError}" TextWrapping="Wrap" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text}"/>
                     </Border>
                 </StackPanel>
 
                 <!-- gems -->
                 <Grid Visibility="{Binding ShowGems, Converter={StaticResource Vis}}">
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,4,0">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,6,0">
                         <StackPanel Margin="14,0,8,12">
                             <Button Style="{StaticResource GhostButton}" Margin="0,0,0,10" Command="{Binding CopyVendorSearchCommand}"
                                     ToolTip="{l:T 'Копирует строку поиска по гемам, которые уже продаются и ещё не куплены: вставь (Ctrl+V) в поиск окна торговца'}"
@@ -231,49 +453,27 @@
                                     <Run Text="{Binding VendorSearchButton, Mode=OneWay}"/><Run Text="{Binding TownCaption, Mode=OneWay, StringFormat='  ·  {0}'}" Foreground="{StaticResource Text3}" FontWeight="Normal"/>
                                 </TextBlock>
                             </Button>
-                            <!-- what changes in the sockets when this stage starts -->
-                            <Border Background="{StaticResource Surface}"
-                                    CornerRadius="8" Padding="12,9,12,10" Margin="0,0,0,10"
-                                    Visibility="{Binding HasSwap, Converter={StaticResource Vis}}">
-                                <StackPanel>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*"/>
-                                            <ColumnDefinition Width="Auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <TextBlock Text="{Binding SwapCaption}" Style="{StaticResource Caption}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
-                                        <ToggleButton Grid.Column="1" Style="{StaticResource Chip}" Content="{l:T 'Сделано'}" IsChecked="{Binding IsSwapDone}" Margin="8,0,0,0"
-                                                      ToolTip="{l:T 'Связки уже поменял: свернуть и не напоминать в городе'}"/>
-                                    </Grid>
-                                    <ItemsControl ItemsSource="{Binding SwapLines}" ItemTemplate="{StaticResource SwapLine}" Margin="0,6,0,0"
-                                                  Visibility="{Binding ShowSwapLines, Converter={StaticResource Vis}}"/>
-                                </StackPanel>
-                            </Border>
                             <ItemsControl ItemsSource="{Binding Groups}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <Grid Visibility="{Binding IsVisible, Converter={StaticResource Vis}}">
-                                            <Grid Margin="4,8,4,8" Visibility="{Binding IsHeader, Converter={StaticResource Vis}}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto"/>
-                                                    <ColumnDefinition Width="*"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Text="{Binding Label}" Style="{StaticResource Caption}" FontSize="11" Foreground="{StaticResource Text2}"/>
-                                                <Border Grid.Column="1" Height="1" Background="{StaticResource Line}" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                                            </Grid>
-                                            <Border Visibility="{Binding IsCard, Converter={StaticResource Vis}}" Background="{StaticResource Surface}"
-                                                    CornerRadius="8" Padding="4" Margin="0,0,0,8">
+                                            <!-- a PoB label without gems ("1-12"): a diamond divider between the groups of links -->
+                                            <l:OrnamentDivider Text="{Binding Label}" Margin="0,4,0,10"
+                                                               Visibility="{Binding IsHeader, Converter={StaticResource Vis}}"/>
+                                            <!-- one link: a card, the gems' sockets joined by the bronze link bar -->
+                                            <Border x:Name="card" Visibility="{Binding IsCard, Converter={StaticResource Vis}}" Background="{StaticResource Surface}"
+                                                    BorderBrush="{StaticResource Line}" BorderThickness="1"
+                                                    CornerRadius="{StaticResource RadiusM}" Padding="0,3,4,3" Margin="0,0,0,8">
                                                 <StackPanel>
-                                                    <TextBlock Text="{Binding Label}" Style="{StaticResource Caption}" Margin="10,5,8,2" TextTrimming="CharacterEllipsis"
+                                                    <TextBlock Text="{Binding Label}" Style="{StaticResource Caption}" Margin="10,4,8,2" TextTrimming="CharacterEllipsis"
                                                                Visibility="{Binding HasLabel, Converter={StaticResource Vis}}"/>
-                                                    <!-- the second weapon set: gems levelled for later, not part of the build -->
-                                                    <TextBlock Text="{x:Static l:GroupVm.SwapText}" Style="{StaticResource Caption}" Foreground="#E2BE62"
-                                                               Margin="10,5,8,2" TextTrimming="CharacterEllipsis" ToolTip="{Binding SwapTip}"
-                                                               Visibility="{Binding IsSwap, Converter={StaticResource Vis}}"/>
                                                     <ItemsControl ItemsSource="{Binding Rows}">
+                                                        <ItemsControl.ItemsPanel>
+                                                            <ItemsPanelTemplate><l:LinkedStackPanel LinkX="17" LinkY="16"/></ItemsPanelTemplate>
+                                                        </ItemsControl.ItemsPanel>
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate>
-                                                                <CheckBox x:Name="cb" Style="{StaticResource GemOrb}" IsChecked="{Binding IsBought}"
+                                                                <CheckBox x:Name="cb" Style="{StaticResource GemSocket}" IsChecked="{Binding IsBought}"
                                                                           Visibility="{Binding IsVisible, Converter={StaticResource Vis}}">
                                                                     <Grid>
                                                                         <Grid.ColumnDefinitions>
@@ -283,13 +483,13 @@
                                                                             <ColumnDefinition Width="Auto"/>
                                                                         </Grid.ColumnDefinitions>
                                                                         <Grid.RowDefinitions>
-                                                                            <RowDefinition Height="18"/>
+                                                                            <RowDefinition Height="22"/>
                                                                             <RowDefinition Height="Auto"/>
                                                                         </Grid.RowDefinitions>
-                                                                        <TextBlock x:Name="name" Text="{Binding Name}" FontSize="13" FontWeight="SemiBold"
+                                                                        <TextBlock x:Name="name" Text="{Binding Name}" FontSize="{StaticResource FsBody}" FontWeight="SemiBold"
                                                                                    TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
                                                                         <TextBlock x:Name="source" Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding SourceText}" ToolTip="{Binding SourceTip}"
-                                                                                   FontSize="11" Foreground="{StaticResource Text3}" Margin="0,1,0,1" TextTrimming="CharacterEllipsis"
+                                                                                   FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" Margin="0,1,0,1" TextTrimming="CharacterEllipsis"
                                                                                    Visibility="{Binding HasSource, Converter={StaticResource Vis}}"/>
                                                                         <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                                                                             <Path Data="M5.5,1 A2.2,2.2 0 1 1 5.49,1 Z M1.5,10.5 C1.5,7.6 3.3,6.4 5.5,6.4 C7.7,6.4 9.5,7.6 9.5,10.5"
@@ -297,24 +497,23 @@
                                                                                   StrokeLineJoin="Round" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
                                                                                   Margin="6,0,0,0" VerticalAlignment="Center" ToolTip="{l:T 'Уже стоит у персонажа'}"
                                                                                   Visibility="{Binding InCharacter, Converter={StaticResource Vis}}"/>
-                                                                            <Border x:Name="newBadge" Style="{StaticResource Badge}" Margin="6,0,0,0"
-                                                                                    Visibility="{Binding IsNew, Converter={StaticResource Vis}}">
-                                                                                <TextBlock Text="NEW" FontSize="9" FontWeight="Bold"/>
+                                                                            <!-- NEW on this stage: a green tag -->
+                                                                            <Border x:Name="newBadge" Background="{StaticResource Ok}" CornerRadius="{StaticResource RadiusS}" Padding="4,0,4,1"
+                                                                                    Margin="6,0,0,0" VerticalAlignment="Center" Visibility="{Binding IsNew, Converter={StaticResource Vis}}">
+                                                                                <TextBlock Text="NEW" FontSize="{StaticResource FsCaption}" FontWeight="Bold" Foreground="{StaticResource OnAccent}"/>
                                                                             </Border>
                                                                         </StackPanel>
-                                                                        <TextBlock Grid.Column="2" Text="{Binding LevelText}" FontFamily="{StaticResource MonoFont}" FontSize="10.5"
-                                                                                   Foreground="{StaticResource Text3}" Margin="10,0,4,0" VerticalAlignment="Center"/>
-                                                                        <Button Grid.Column="3" Grid.RowSpan="2" Style="{StaticResource IconButton}" Width="22" Height="22" FontSize="11"
-                                                                                Content="&#xE7BF;" VerticalAlignment="Center" Margin="0,0,2,0"
+                                                                        <TextBlock Grid.Column="2" Text="{Binding LevelText}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsCaption}"
+                                                                                   Foreground="{StaticResource Text2}" Margin="10,0,4,0" VerticalAlignment="Center"/>
+                                                                        <Button Grid.Column="3" Style="{StaticResource IconButton}" Width="28" Height="22" FontSize="{StaticResource FsCaption}"
+                                                                                Content="&#xE7BF;" VerticalAlignment="Center"
                                                                                 Command="{Binding DataContext.TradeGemCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                                 CommandParameter="{Binding}" ToolTip="{l:T 'Найти на трейде (дешёвые сверху)'}"/>
                                                                     </Grid>
                                                                 </CheckBox>
                                                                 <DataTemplate.Triggers>
                                                                     <DataTrigger Binding="{Binding IsSupport}" Value="True">
-                                                                        <Setter TargetName="cb" Property="Margin" Value="16,0,0,0"/>
                                                                         <Setter TargetName="name" Property="FontWeight" Value="Normal"/>
-                                                                        <Setter TargetName="name" Property="Foreground" Value="{StaticResource Text2}"/>
                                                                     </DataTrigger>
                                                                     <DataTrigger Binding="{Binding IsBought}" Value="True">
                                                                         <Setter TargetName="name" Property="Foreground" Value="{StaticResource Text3}"/>
@@ -329,12 +528,30 @@
                                                 </StackPanel>
                                             </Border>
                                         </Grid>
+                                        <DataTemplate.Triggers>
+                                            <!-- the second weapon set: gems levelled for later, not the build: dashed and dim, the why on hover -->
+                                            <DataTrigger Binding="{Binding IsSwap}" Value="True">
+                                                <Setter TargetName="card" Property="Opacity" Value="0.8"/>
+                                                <Setter TargetName="card" Property="ToolTip" Value="{x:Static l:GroupVm.SwapText}"/>
+                                                <Setter TargetName="card" Property="BorderBrush">
+                                                    <Setter.Value>
+                                                        <VisualBrush TileMode="Tile" Viewport="0,0,8,8" ViewportUnits="Absolute" Viewbox="0,0,8,8" ViewboxUnits="Absolute">
+                                                            <VisualBrush.Visual>
+                                                                <Grid Width="8" Height="8">
+                                                                    <Rectangle Width="4" Height="8" HorizontalAlignment="Left" Fill="{StaticResource Gold}"/>
+                                                                </Grid>
+                                                            </VisualBrush.Visual>
+                                                        </VisualBrush>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                        </DataTemplate.Triggers>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
                             <StackPanel HorizontalAlignment="Center" Margin="0,30,0,0" Visibility="{Binding ShowAllBought, Converter={StaticResource Vis}}">
-                                <TextBlock Text="&#xE73E;" FontFamily="{StaticResource IconFont}" FontSize="22" HorizontalAlignment="Center"/>
+                                <TextBlock Text="&#xE73E;" FontFamily="{StaticResource IconFont}" FontSize="{StaticResource FsTitle}" HorizontalAlignment="Center"/>
                                 <TextBlock Text="{l:T 'На этом этапе всё куплено'}" Foreground="{StaticResource Text2}" Margin="0,8,0,0"/>
                             </StackPanel>
                             <TextBlock Text="{l:T 'В PoB нет гемов для этого этапа'}" Foreground="{StaticResource Text2}" HorizontalAlignment="Center" Margin="0,30,0,0"
@@ -343,40 +560,74 @@
                     </ScrollViewer>
                 </Grid>
 
-                <!-- links -->
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,4,0"
+                <!-- links: one-off choices, what to swap on this stage, then every link of the build as a card -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,6,0"
                               Visibility="{Binding ShowLinks, Converter={StaticResource Vis}}">
                     <StackPanel Margin="14,0,8,14">
-                        <!-- one-off choices of the build: Act 2 bandits, pantheon -->
-                        <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12,9,12,9" Margin="0,0,0,10"
-                                Visibility="{Binding HasChoices, Converter={StaticResource Vis}}">
+
+                        <!-- what changes in the sockets when this stage starts; "✓ Сделано" folds it and stops the reminders in town -->
+                        <Border Background="{StaticResource AccentSoft}" BorderBrush="{StaticResource BronzeLine}" BorderThickness="1"
+                                CornerRadius="{StaticResource RadiusM}" Padding="10,7,10,8" Margin="0,0,0,8"
+                                Visibility="{Binding HasSwap, Converter={StaticResource Vis}}">
                             <StackPanel>
-                                <StackPanel Visibility="{Binding HasBandit, Converter={StaticResource Vis}}">
-                                    <TextBlock Text="{l:T 'БАНДИТЫ · АКТ 2'}" Style="{StaticResource Caption}" Margin="0,0,0,3"/>
-                                    <TextBlock Text="{Binding BanditText}" FontSize="12.5" TextWrapping="Wrap"/>
-                                </StackPanel>
-                                <StackPanel Margin="0,8,0,0" Visibility="{Binding HasPantheon, Converter={StaticResource Vis}}">
-                                    <TextBlock Text="{l:T 'ПАНТЕОН'}" Style="{StaticResource Caption}" Margin="0,0,0,3"/>
-                                    <TextBlock Text="{Binding PantheonText}" FontSize="12.5" TextWrapping="Wrap"/>
-                                </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{l:T 'Переставить на этом этапе'}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsSection}"
+                                               Foreground="{StaticResource AccentHover}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
+                                               ToolTip="{Binding SwapCaption}"/>
+                                    <ToggleButton Grid.Column="1" Style="{StaticResource SmallButton}" IsChecked="{Binding IsSwapDone}" Margin="8,0,0,0"
+                                                  Background="Transparent" BorderBrush="{StaticResource LineStrong}" Foreground="{StaticResource Text2}"
+                                                  Content="{l:T '✓ Сделано'}" ToolTip="{l:T 'Связки уже поменял: свернуть и не напоминать в городе'}"/>
+                                </Grid>
+                                <ItemsControl ItemsSource="{Binding SwapLines}" ItemTemplate="{StaticResource SwapLine}" Margin="0,4,0,0"
+                                              Visibility="{Binding ShowSwapLines, Converter={StaticResource Vis}}"/>
                             </StackPanel>
                         </Border>
-                        <!-- links tab: the stage's links as PoB draws them: main gem, supports hanging off it -->
-                        <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12,10,12,4"
-                                Visibility="{Binding HasLinkGroups, Converter={StaticResource Vis}}">
-                            <StackPanel>
-                                <ItemsControl ItemsSource="{Binding LinkGroups}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Margin="0,0,0,6">
-                                            <!-- which item the link sits in, as PoB says -->
-                                            <TextBlock Text="{Binding SlotCaption}" Style="{StaticResource Caption}" FontSize="9.5" Margin="3,2,0,2"
-                                                       Visibility="{Binding HasSlot, Converter={StaticResource Vis}}"/>
+
+                        <l:OrnamentDivider Text="{l:T 'Связки билда'}" Margin="0,2,0,8" Visibility="{Binding HasLinkGroups, Converter={StaticResource Vis}}"/>
+
+                        <ItemsControl ItemsSource="{Binding LinkGroups}" Visibility="{Binding HasLinkGroups, Converter={StaticResource Vis}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border x:Name="card" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1"
+                                            CornerRadius="{StaticResource RadiusM}" Padding="10,7,10,7" Margin="0,0,0,8">
+                                        <StackPanel>
+                                            <!-- the item the link sits in, as PoB says, and the sockets it needs -->
+                                            <Grid Margin="0,0,0,3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock x:Name="slot" Text="{Binding SlotCaption}" Style="{StaticResource Caption}" FontSize="{StaticResource FsCaption}"
+                                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock x:Name="swapCap" Text="{l:T 'ВТОРОЙ СЕТ ОРУЖИЯ · ПРОКАЧКА'}" Style="{StaticResource Caption}" FontSize="{StaticResource FsCaption}"
+                                                           VerticalAlignment="Center" TextTrimming="CharacterEllipsis" Visibility="{Binding IsSwap, Converter={StaticResource Vis}}"/>
+                                                <ItemsControl Grid.Column="1" ItemsSource="{Binding Sockets}" VerticalAlignment="Center" IsHitTestVisible="False">
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate><StackPanel Orientation="Horizontal"/></ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Border Width="6" Height="3" Background="{StaticResource Bronze}" VerticalAlignment="Center"
+                                                                        Visibility="{Binding Linked, Converter={StaticResource Vis}}"/>
+                                                                <Ellipse Width="11" Height="11" Fill="{Binding Brush}"/>
+                                                            </StackPanel>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                </ItemsControl>
+                                                <TextBlock Grid.Column="2" Text="{Binding LinkText}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsCaption}"
+                                                           Foreground="{StaticResource BronzeText}" MinWidth="22" TextAlignment="Right" Margin="6,0,0,0" VerticalAlignment="Center"/>
+                                            </Grid>
                                             <ItemsControl ItemsSource="{Binding Gems}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
                                                         <!-- a click copies the gem's name (stash or vendor search) -->
-                                                        <Grid x:Name="line" Background="Transparent" Cursor="Hand" ToolTip="{l:T 'Клик — скопировать имя гема'}">
+                                                        <Grid x:Name="line" Background="Transparent" Cursor="Hand" Margin="0,1,0,1" ToolTip="{l:T 'Клик — скопировать имя гема'}">
                                                             <Grid.InputBindings>
                                                                 <MouseBinding MouseAction="LeftClick"
                                                                               Command="{Binding DataContext.CopyGemCommand, RelativeSource={RelativeSource AncestorType=Window}}"
@@ -387,29 +638,32 @@
                                                                 <ColumnDefinition Width="*"/>
                                                                 <ColumnDefinition Width="Auto"/>
                                                             </Grid.ColumnDefinitions>
-                                                            <TextBlock x:Name="branch" Text="{Binding Branch}" Foreground="{StaticResource Text3}"
-                                                                       FontSize="12.5" Width="14" Margin="3,0,0,0"/>
-                                                            <TextBlock x:Name="name" Grid.Column="1" Foreground="{Binding Brush}" FontSize="12.5"
-                                                                       TextTrimming="CharacterEllipsis" ToolTip="{Binding NameTip}">
+                                                            <Ellipse x:Name="dot" Width="8" Height="8" Fill="{Binding Brush}" Margin="16,0,8,0" VerticalAlignment="Center"/>
+                                                            <TextBlock x:Name="name" Grid.Column="1" Foreground="{StaticResource Text2}" FontSize="{StaticResource FsSmall}"
+                                                                       TextTrimming="CharacterEllipsis" ToolTip="{Binding NameTip}" VerticalAlignment="Center">
                                                                 <Run Text="{Binding Name, Mode=OneWay}"/><Run x:Name="from" Text="{Binding FromText, Mode=OneWay}"
                                                                      Foreground="{StaticResource Text3}" FontStyle="Normal"/><Run Text="{Binding OffText, Mode=OneWay}"
                                                                      Foreground="{StaticResource Text3}" FontStyle="Normal"/>
                                                             </TextBlock>
-                                                            <TextBlock x:Name="level" Grid.Column="2" Text="{Binding Level}" FontFamily="{StaticResource MonoFont}" FontSize="10.5"
-                                                                       Foreground="{StaticResource Text3}" Margin="10,0,0,0" VerticalAlignment="Center" ToolTip="{Binding LevelTip}"/>
+                                                            <TextBlock x:Name="level" Grid.Column="2" Text="{Binding Level}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsCaption}"
+                                                                       Foreground="{StaticResource Text2}" Margin="10,0,0,0" VerticalAlignment="Center" ToolTip="{Binding LevelTip}"/>
                                                         </Grid>
                                                         <DataTemplate.Triggers>
                                                             <DataTrigger Binding="{Binding KeepLevel}" Value="True">
                                                                 <Setter TargetName="level" Property="Foreground" Value="{StaticResource Text}"/>
                                                                 <Setter TargetName="level" Property="FontWeight" Value="Bold"/>
                                                             </DataTrigger>
+                                                            <!-- the main gem: no indent, 13 semibold -->
                                                             <DataTrigger Binding="{Binding IsHead}" Value="True">
-                                                                <Setter TargetName="branch" Property="Visibility" Value="Collapsed"/>
+                                                                <Setter TargetName="dot" Property="Margin" Value="0,0,8,0"/>
                                                                 <Setter TargetName="name" Property="FontWeight" Value="SemiBold"/>
+                                                                <Setter TargetName="name" Property="FontSize" Value="{StaticResource FsBody}"/>
+                                                                <Setter TargetName="name" Property="Foreground" Value="{StaticResource Text}"/>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding IsOff}" Value="True">
                                                                 <Setter TargetName="name" Property="Opacity" Value="0.5"/>
                                                                 <Setter TargetName="level" Property="Opacity" Value="0.5"/>
+                                                                <Setter TargetName="dot" Property="Opacity" Value="0.5"/>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding IsGranted}" Value="True">
                                                                 <Setter TargetName="name" Property="FontStyle" Value="Italic"/>
@@ -420,100 +674,99 @@
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                             </ItemsControl>
-                                            <TextBlock Text="{Binding Note}" FontSize="11" Foreground="{StaticResource Text3}" TextWrapping="Wrap" Margin="17,2,0,0"
+                                            <TextBlock Text="{Binding Note}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" TextWrapping="Wrap" Margin="16,3,0,0"
                                                        Visibility="{Binding HasNote, Converter={StaticResource Vis}}"/>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </StackPanel>
-                        </Border>
+                                        </StackPanel>
+                                    </Border>
+                                    <DataTemplate.Triggers>
+                                        <!-- the second weapon set: levelled for later, not the build — dashed and dim -->
+                                        <DataTrigger Binding="{Binding IsSwap}" Value="True">
+                                            <Setter TargetName="card" Property="Opacity" Value="0.8"/>
+                                            <Setter TargetName="card" Property="BorderBrush">
+                                                <Setter.Value>
+                                                    <VisualBrush TileMode="Tile" Viewport="0,0,8,8" ViewportUnits="Absolute" Viewbox="0,0,8,8" ViewboxUnits="Absolute">
+                                                        <VisualBrush.Visual>
+                                                            <Grid Width="8" Height="8">
+                                                                <Rectangle Width="4" Height="8" HorizontalAlignment="Left" Fill="{StaticResource LineStrong}"/>
+                                                            </Grid>
+                                                        </VisualBrush.Visual>
+                                                    </VisualBrush>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Setter TargetName="slot" Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </DataTemplate.Triggers>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                         <TextBlock Text="{l:T 'В PoB нет гемов для этого этапа'}" Foreground="{StaticResource Text2}" HorizontalAlignment="Center" Margin="0,30,0,0"
                                    Visibility="{Binding HasNoGems, Converter={StaticResource Vis}}"/>
                     </StackPanel>
                 </ScrollViewer>
 
-                <!-- gear: the stage's PoB item set as a compact list; a row opens into the card drawn like the game's tooltip -->
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,4,0"
+                <!-- gear: the stage's PoB item set as short rows (icon, name, slot); a row opens into the full card -->
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,6,0"
                               Visibility="{Binding ShowGear, Converter={StaticResource Vis}}">
                     <ScrollViewer.Resources>
                         <DataTemplate x:Key="GearRow">
-                            <Border Background="#F00C0B0A" CornerRadius="7" BorderThickness="1" Margin="0,0,0,6">
-                                <Border.BorderBrush>
-                                    <SolidColorBrush Color="{Binding RarityBrush.Color}" Opacity="0.35"/>
-                                </Border.BorderBrush>
+                            <Grid Margin="0,0,0,4">
+                            <Border x:Name="card" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" CornerRadius="{StaticResource RadiusM}"
+                                    BorderThickness="1" SnapsToDevicePixels="True">
                                 <StackPanel>
-                                    <!-- the row: art | slot, name, what matters | chevron; a click opens or folds the card -->
-                                    <Border Background="Transparent" Padding="8,7,6,7" Cursor="Hand" CornerRadius="6">
+                                    <!-- the row: art | name in the rarity colour, slot | chevron; a click opens or folds the card -->
+                                    <Border x:Name="head" Background="Transparent" Padding="5,5,6,5" Cursor="Hand" CornerRadius="{StaticResource RadiusM}">
                                         <Border.InputBindings>
                                             <MouseBinding MouseAction="LeftClick" Command="{Binding ToggleCommand}"/>
                                         </Border.InputBindings>
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="44"/>
+                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-                                            <Border Width="40" Height="40" CornerRadius="6" VerticalAlignment="Top">
-                                                <Border.Background>
-                                                    <SolidColorBrush Color="{Binding RarityBrush.Color}" Opacity="0.08"/>
-                                                </Border.Background>
-                                                <Image Source="{Binding Icon}" Margin="3" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                            <Border Width="32" Height="32" CornerRadius="{StaticResource RadiusS}" Background="{StaticResource Well}"
+                                                    BorderBrush="{StaticResource Line}" BorderThickness="1" VerticalAlignment="Center">
+                                                <Image Source="{Binding Icon}" Margin="2" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality"/>
                                             </Border>
-                                            <StackPanel Grid.Column="1" Margin="8,0,4,0" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding SlotText}" Style="{StaticResource Caption}" FontSize="9.5"/>
-                                                <TextBlock Text="{Binding Title}" Foreground="{Binding RarityBrush}" FontSize="13" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                                                <ItemsControl ItemsSource="{Binding Summary}" Visibility="{Binding IsCollapsed, Converter={StaticResource Vis}}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" FontSize="11.5" TextTrimming="CharacterEllipsis"/>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                </ItemsControl>
+                                            <StackPanel Grid.Column="1" Margin="10,0,4,0" VerticalAlignment="Center">
+                                                <TextBlock Text="{Binding Title}" Foreground="{Binding RarityBrush}" FontFamily="{StaticResource DisplayFont}"
+                                                           FontSize="{StaticResource FsSection}" FontWeight="Bold" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding SlotText}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}"/>
                                             </StackPanel>
-                                            <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
-                                                <TextBlock Text="{Binding MoreText}" FontSize="10.5" Foreground="{StaticResource Text3}" VerticalAlignment="Center" Margin="0,0,4,0"
-                                                           Visibility="{Binding IsCollapsed, Converter={StaticResource Vis}}"/>
-                                                <TextBlock x:Name="chevron" Text="&#xE70D;" FontFamily="{StaticResource IconFont}" FontSize="10" Foreground="{StaticResource Text3}"
-                                                           VerticalAlignment="Center" Margin="2,0,4,0"/>
-                                            </StackPanel>
+                                            <TextBlock x:Name="chevron" Grid.Column="2" Text="&#xE70D;" FontFamily="{StaticResource IconFont}" FontSize="{StaticResource FsCaption}"
+                                                       Foreground="{StaticResource Text2}" VerticalAlignment="Center" Margin="2,0,4,0"/>
                                         </Grid>
                                     </Border>
 
-                                    <!-- the full card, like the game's tooltip -->
-                                    <StackPanel Visibility="{Binding IsExpanded, Converter={StaticResource Vis}}" Margin="0,0,0,8">
-                                        <Border Height="1" Margin="10,0,10,0">
-                                            <Border.Background>
-                                                <SolidColorBrush Color="{Binding RarityBrush.Color}" Opacity="0.25"/>
-                                            </Border.Background>
-                                        </Border>
-                                        <TextBlock Text="{Binding BaseType}" Foreground="{Binding RarityBrush}" FontSize="12" Opacity="0.85"
-                                                   HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Margin="10,6,10,0"
+                                    <!-- the full card: everything about the item, left-aligned -->
+                                    <StackPanel Visibility="{Binding IsExpanded, Converter={StaticResource Vis}}" Margin="10,0,10,10">
+                                        <Border Height="1" Background="{StaticResource OrnamentFadeOut}" Margin="0,0,0,6"/>
+                                        <TextBlock Text="{Binding BaseType}" Foreground="{StaticResource Text2}" FontSize="{StaticResource FsSmall}" TextWrapping="Wrap"
                                                    Visibility="{Binding ShowBase, Converter={StaticResource Vis}}"/>
                                         <!-- the item's influences, each in the colour its mods are painted below -->
-                                        <ItemsControl ItemsSource="{Binding Influences}" HorizontalAlignment="Center" Margin="0,2,0,0"
+                                        <ItemsControl ItemsSource="{Binding Influences}" Margin="0,2,0,0"
                                                       Visibility="{Binding HasInfluences, Converter={StaticResource Vis}}">
                                             <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate><WrapPanel HorizontalAlignment="Center"/></ItemsPanelTemplate>
+                                                <ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate>
                                             </ItemsControl.ItemsPanel>
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock FontSize="11">
+                                                    <TextBlock FontSize="{StaticResource FsCaption}">
                                                         <Run Text="{Binding Sep, Mode=OneWay}" Foreground="{StaticResource Text3}"/><Run Text="{Binding Name, Mode=OneWay}" Foreground="{Binding Brush}"/>
                                                     </TextBlock>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <TextBlock Text="{Binding SocketsText}" FontFamily="{StaticResource MonoFont}" FontSize="11"
-                                                   Foreground="{StaticResource Text3}" HorizontalAlignment="Center" Margin="0,6,0,0"
+                                        <TextBlock Text="{Binding SocketsText}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsCaption}"
+                                                   Foreground="{StaticResource Text3}" Margin="0,4,0,0"
                                                    Visibility="{Binding HasSockets, Converter={StaticResource Vis}}"/>
-                                        <ItemsControl ItemsSource="{Binding Implicits}" Margin="10,6,10,0"
+                                        <ItemsControl ItemsSource="{Binding Implicits}" Margin="0,6,0,0"
                                                       Visibility="{Binding HasImplicits, Converter={StaticResource Vis}}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
                                                     <!-- an anointment: its three oils beside it, the name on hover -->
-                                                    <WrapPanel HorizontalAlignment="Center">
-                                                        <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" FontSize="12" TextAlignment="Center" TextWrapping="Wrap"
+                                                    <WrapPanel>
+                                                        <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" FontSize="{StaticResource FsSmall}" TextWrapping="Wrap"
                                                                    VerticalAlignment="Center"/>
                                                         <ItemsControl ItemsSource="{Binding Oils}" Margin="8,0,0,0" VerticalAlignment="Center"
                                                                       Visibility="{Binding HasOils, Converter={StaticResource Vis}}">
@@ -541,137 +794,191 @@
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <Border Height="1" Margin="40,7,40,1" Visibility="{Binding HasImplicits, Converter={StaticResource Vis}}">
-                                            <Border.Background>
-                                                <SolidColorBrush Color="{Binding RarityBrush.Color}" Opacity="0.35"/>
-                                            </Border.Background>
-                                        </Border>
-                                        <ItemsControl ItemsSource="{Binding Explicits}" Margin="10,6,10,0"
+                                        <Border Height="1" Margin="0,7,40,1" Background="{StaticResource Line}" HorizontalAlignment="Stretch"
+                                                Visibility="{Binding HasImplicits, Converter={StaticResource Vis}}"/>
+                                        <ItemsControl ItemsSource="{Binding Explicits}" Margin="0,6,0,0"
                                                       Visibility="{Binding HasExplicits, Converter={StaticResource Vis}}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" FontSize="12" TextAlignment="Center" TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" FontSize="{StaticResource FsSmall}" TextWrapping="Wrap" Margin="0,0,0,1"/>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
-                                        <TextBlock Text="Corrupted" Foreground="{Binding CorruptBrush}" FontSize="12" HorizontalAlignment="Center" Margin="0,6,0,0"
+                                        <TextBlock Text="Corrupted" Foreground="{Binding CorruptBrush}" FontSize="{StaticResource FsSmall}" Margin="0,6,0,0"
                                                    Visibility="{Binding Corrupted, Converter={StaticResource Vis}}"/>
-                                        <!-- a cluster jewel: its small passives on this stage's tree (the notables are painted on their own lines) -->
-                                        <ItemsControl ItemsSource="{Binding TreeLines}" Margin="10,8,10,0"
+                                        <!-- a cluster jewel: how many of its small passives the stage takes ("малые 2/3"), then the passives themselves -->
+                                        <TextBlock Text="{Binding ClusterSummary}" Foreground="{Binding ClusterSummaryBrush}" FontSize="{StaticResource FsSmall}" Margin="0,8,0,0"
+                                                   TextWrapping="Wrap" Visibility="{Binding HasClusterSummary, Converter={StaticResource Vis}}"/>
+                                        <ItemsControl ItemsSource="{Binding TreeLines}" Margin="0,8,0,0"
                                                       Visibility="{Binding HasTreeLines, Converter={StaticResource Vis}}">
                                             <ItemsControl.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" FontSize="12" TextAlignment="Center" TextWrapping="Wrap"/>
+                                                    <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" FontSize="{StaticResource FsSmall}" TextWrapping="Wrap"/>
                                                 </DataTemplate>
                                             </ItemsControl.ItemTemplate>
                                         </ItemsControl>
                                         <!-- two separate actions, like the trade sites do: search, or the item text for PoB / chat -->
-                                        <Grid Margin="10,10,10,0">
+                                        <Grid Margin="0,10,0,0">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="6"/>
+                                                <ColumnDefinition Width="8"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <Button Style="{StaticResource GhostButton}" Content="{Binding TradeButton}" Command="{Binding TradeCommand}"
+                                            <Button Style="{StaticResource PrimaryButton}" Content="{Binding TradeButton}" Command="{Binding TradeCommand}" Padding="10,7"
+                                                    FontSize="{StaticResource FsSmall}"
                                                     ToolTip="{l:T 'Окно прайс-чека на этот предмет: выбери фильтры, потом «Искать» или «Открыть на трейде»'}"/>
-                                            <Button Grid.Column="2" Style="{StaticResource GhostButton}" Content="{Binding CopyButton}" Command="{Binding CopyCommand}"
+                                            <Button Grid.Column="2" Style="{StaticResource GhostButton}" Content="{Binding CopyButton}" Command="{Binding CopyCommand}" Padding="10,7"
+                                                    FontSize="{StaticResource FsSmall}"
                                                     ToolTip="{l:T 'Текст предмета в буфер: вставить в PoB (Create custom) или в чат'}"/>
                                         </Grid>
                                         <!-- a timeless jewel: what it does around its socket, on Vilsol's calculator -->
                                         <Button Style="{StaticResource GhostButton}" Content="{l:T 'Что даёт в этом сокете ↗'}" Command="{Binding TimelessCommand}"
-                                                Margin="10,6,10,0" ToolTip="{Binding TimelessTip}"
+                                                Margin="0,6,0,0" ToolTip="{Binding TimelessTip}" FontSize="{StaticResource FsSmall}"
                                                 Visibility="{Binding HasTimeless, Converter={StaticResource Vis}}"/>
                                     </StackPanel>
                                 </StackPanel>
                             </Border>
+                            <!-- the mark of a hovered / opened card: a straight bar on a square left edge (a bar on a round corner looks crumpled) -->
+                            <Rectangle x:Name="bar" Width="2" HorizontalAlignment="Left" Fill="{StaticResource Accent}" Visibility="Hidden" IsHitTestVisible="False"
+                                       SnapsToDevicePixels="True"/>
+                            </Grid>
                             <DataTemplate.Triggers>
+                                <Trigger SourceName="head" Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="card" Property="BorderBrush" Value="{StaticResource HoverBorder}"/>
+                                    <Setter TargetName="card" Property="CornerRadius" Value="0,6,6,0"/>
+                                    <Setter TargetName="bar" Property="Visibility" Value="Visible"/>
+                                </Trigger>
                                 <DataTrigger Binding="{Binding IsExpanded}" Value="True">
                                     <Setter TargetName="chevron" Property="Text" Value="&#xE70E;"/>
+                                    <Setter TargetName="card" Property="BorderBrush" Value="{StaticResource BronzeLine}"/>
+                                    <Setter TargetName="card" Property="CornerRadius" Value="0,6,6,0"/>
+                                    <Setter TargetName="bar" Property="Visibility" Value="Visible"/>
                                 </DataTrigger>
                             </DataTemplate.Triggers>
                         </DataTemplate>
                     </ScrollViewer.Resources>
                     <StackPanel Margin="14,0,8,14">
-                        <Grid Margin="4,0,0,6">
-                            <TextBlock Text="{Binding GearCaption}" Style="{StaticResource Caption}" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="0,0,90,0"/>
+                        <Grid Margin="0,0,0,6">
+                            <TextBlock Text="{Binding GearCaption}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsBody}" Foreground="{StaticResource BronzeText}"
+                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center" Margin="0,0,100,0"/>
                             <Button Style="{StaticResource GhostButton}" Content="{Binding ExpandAllText}" Command="{Binding ExpandAllCommand}" HorizontalAlignment="Right"
-                                    Padding="8,2" FontSize="11" FontWeight="Normal" Visibility="{Binding HasGear, Converter={StaticResource Vis}}"/>
+                                    Padding="10,4" FontSize="{StaticResource FsCaption}" Background="Transparent" Visibility="{Binding HasGear, Converter={StaticResource Vis}}"/>
                         </Grid>
-                        <Border BorderBrush="{StaticResource LineStrong}" BorderThickness="1" CornerRadius="8" Padding="10,7" Margin="0,0,0,10"
-                                Visibility="{Binding HasGearNote, Converter={StaticResource Vis}}">
-                            <TextBlock Text="{Binding GearNote}" TextWrapping="Wrap" FontSize="11.5" Foreground="{StaticResource Text2}"/>
-                        </Border>
-                        <ItemsControl ItemsSource="{Binding GearWorn}" ItemTemplate="{StaticResource GearRow}"/>
-                        <!-- jewels in the stage's tree, clusters among them: a group of their own, not lost under the flasks -->
-                        <TextBlock Text="{Binding JewelsCaption}" Style="{StaticResource Caption}" Margin="4,12,0,6"
-                                   Visibility="{Binding HasJewels, Converter={StaticResource Vis}}"/>
-                        <ItemsControl ItemsSource="{Binding GearJewels}" ItemTemplate="{StaticResource GearRow}"/>
+                        <!-- no set named for this stage: a quiet note, not a boxed warning -->
+                        <Grid Margin="0,0,0,8" Visibility="{Binding HasGearNote, Converter={StaticResource Vis}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="&#xE946;" FontFamily="{StaticResource IconFont}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Bronze}"
+                                       VerticalAlignment="Top" Margin="0,2,8,0"/>
+                            <TextBlock Grid.Column="1" Text="{Binding GearNote}" TextWrapping="Wrap" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}"/>
+                        </Grid>
+                        <!-- by groups: weapons (the second set apart), armour, jewellery, flasks, special slots, jewels in the tree;
+                             a click on a heading folds its group (remembered per build) -->
+                        <ItemsControl ItemsSource="{Binding GearGroups}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,0,0,4">
+                                        <Border Background="Transparent" Cursor="Hand" Padding="0,6,0,6" ToolTip="{l:T 'Свернуть или развернуть группу'}">
+                                            <Border.InputBindings>
+                                                <MouseBinding MouseAction="LeftClick" Command="{Binding ToggleCommand}"/>
+                                            </Border.InputBindings>
+                                            <l:OrnamentDivider Text="{Binding Title}"/>
+                                        </Border>
+                                        <StackPanel Visibility="{Binding IsOpen, Converter={StaticResource Vis}}">
+                                            <ItemsControl ItemsSource="{Binding Items}" ItemTemplate="{StaticResource GearRow}"/>
+                                            <StackPanel Opacity="0.8" Visibility="{Binding HasSwap, Converter={StaticResource Vis}}">
+                                                <TextBlock Text="{l:T 'Свап'}" Style="{StaticResource Caption}" Margin="4,4,0,4"
+                                                           ToolTip="{x:Static l:GroupVm.SwapText}"/>
+                                                <ItemsControl ItemsSource="{Binding Swap}" ItemTemplate="{StaticResource GearRow}"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                         <TextBlock Text="{l:T 'В PoB нет шмота для этого этапа'}" Foreground="{StaticResource Text2}" HorizontalAlignment="Center" Margin="0,30,0,0"
                                    Visibility="{Binding HasNoGear, Converter={StaticResource Vis}}"/>
                     </StackPanel>
                 </ScrollViewer>
 
                 <!-- tree summary -->
-                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,4,0"
+                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,12,6,0"
                               Visibility="{Binding ShowTreeTab, Converter={StaticResource Vis}}">
                     <StackPanel Margin="14,0,8,14">
-                        <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="12,9" Margin="0,0,0,10"
+                        <Border Background="{StaticResource Surface}" CornerRadius="{StaticResource RadiusM}" Padding="12,9" Margin="0,0,0,10"
                                 Visibility="{Binding HasTreeHint, Converter={StaticResource Vis}}">
-                            <TextBlock Text="{Binding TreeHint}" Foreground="{StaticResource Text2}" TextWrapping="Wrap" FontSize="12"/>
+                            <TextBlock Text="{Binding TreeHint}" Foreground="{StaticResource Text2}" TextWrapping="Wrap" FontSize="{StaticResource FsSmall}"/>
                         </Border>
 
                         <UniformGrid Columns="3" Margin="0,0,-6,0">
-                            <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12,10" Margin="0,0,6,0">
+                            <Border Background="{StaticResource Surface}" CornerRadius="{StaticResource RadiusM}" Padding="12,10" Margin="0,0,6,0">
                                 <StackPanel>
-                                    <TextBlock Text="{Binding PointsToTake}" FontFamily="{StaticResource DisplayFont}" FontSize="26" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding PointsToTake}" FontFamily="{StaticResource UiFont}" FontSize="{StaticResource FsHero}" FontWeight="SemiBold"/>
                                     <TextBlock Text="{l:T 'ВЗЯТЬ'}" Style="{StaticResource Caption}"/>
                                 </StackPanel>
                             </Border>
-                            <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12,10" Margin="0,0,6,0">
+                            <Border Background="{StaticResource Surface}" CornerRadius="{StaticResource RadiusM}" Padding="12,10" Margin="0,0,6,0">
                                 <StackPanel>
-                                    <TextBlock Text="{Binding RefundCount}" FontFamily="{StaticResource DisplayFont}" FontSize="26" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding RefundCount}" FontFamily="{StaticResource UiFont}" FontSize="{StaticResource FsHero}" FontWeight="SemiBold"/>
                                     <TextBlock Text="{l:T 'СНЯТЬ'}" Style="{StaticResource Caption}"/>
                                 </StackPanel>
                             </Border>
-                            <Border Background="{StaticResource Surface}" CornerRadius="8" Padding="12,10" Margin="0,0,6,0">
+                            <Border Background="{StaticResource Surface}" CornerRadius="{StaticResource RadiusM}" Padding="12,10" Margin="0,0,6,0">
                                 <StackPanel>
-                                    <TextBlock Text="{Binding AscendancyCount}" FontFamily="{StaticResource DisplayFont}" FontSize="26" FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding AscendancyCount}" FontFamily="{StaticResource UiFont}" FontSize="{StaticResource FsHero}" FontWeight="SemiBold"/>
                                     <TextBlock Text="{l:T 'АСЦЕНД'}" Style="{StaticResource Caption}"/>
                                 </StackPanel>
                             </Border>
                         </UniformGrid>
 
-                        <Border Background="{StaticResource Surface}" CornerRadius="10" Padding="3" Margin="0,12,0,0">
+                        <Border Background="{StaticResource Surface}" CornerRadius="{StaticResource RadiusM}" Padding="3" Margin="0,12,0,0">
                             <UniformGrid Rows="1">
                                 <RadioButton Style="{StaticResource Segment}" GroupName="cmp" Content="{l:T 'От прошлого этапа'}" IsChecked="{Binding CompareWithPrevious}"/>
                                 <RadioButton Style="{StaticResource Segment}" GroupName="cmp" Content="{l:T 'От персонажа'}" IsChecked="{Binding CompareWithCharacter}"/>
                             </UniformGrid>
                         </Border>
-                        <TextBlock Text="{Binding CompareHint}" Foreground="{StaticResource Text3}" FontSize="11.5" Margin="4,6,0,0" TextWrapping="Wrap"/>
+                        <TextBlock Text="{Binding CompareHint}" Foreground="{StaticResource Text3}" FontSize="{StaticResource FsSmall}" Margin="4,6,0,0" TextWrapping="Wrap"/>
 
                         <Button Style="{StaticResource PrimaryButton}" Margin="0,14,0,0" Click="OpenTree_Click">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{l:T 'Открыть дерево'}"/>
-                                <TextBlock Text="{Binding KeyTree}" FontFamily="{StaticResource MonoFont}" FontSize="10.5" Opacity="0.55" Margin="10,1,0,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding KeyTree}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsCaption}" Opacity="0.55" Margin="10,1,0,0" VerticalAlignment="Center"/>
                             </StackPanel>
                         </Button>
 
                         <StackPanel Visibility="{Binding HasAscendancy, Converter={StaticResource Vis}}" Margin="0,18,0,0">
-                            <TextBlock Text="{l:T 'АСЦЕНДАНСИ'}" Style="{StaticResource Caption}" Margin="4,0,0,8"/>
+                            <l:OrnamentDivider Text="{l:T 'Асцендант'}" Margin="0,0,0,8"/>
                             <ItemsControl ItemsSource="{Binding AscendancyNodes}">
                                 <ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <Border CornerRadius="6" BorderBrush="{StaticResource LineStrong}" BorderThickness="1" Padding="10,4" Margin="0,0,6,6">
-                                            <TextBlock Text="{Binding}" FontSize="12"/>
+                                        <Border CornerRadius="{StaticResource RadiusM}" BorderBrush="{StaticResource LineStrong}" BorderThickness="1" Padding="10,4" Margin="0,0,6,6">
+                                            <TextBlock Text="{Binding}" FontSize="{StaticResource FsSmall}"/>
                                         </Border>
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </StackPanel>
 
+
+                        <!-- the stage's choices on the tree, as poe.ninja shows a character: masteries by kind, runegrafts, tattoos -->
+                        <StackPanel Visibility="{Binding HasMasteryPicks, Converter={StaticResource Vis}}" Margin="0,16,0,0">
+                            <l:OrnamentDivider Text="{l:T 'Мастери'}" Margin="0,0,0,8"/>
+                            <ItemsControl ItemsSource="{Binding MasteryPicks}" ItemTemplate="{StaticResource TreePick}"/>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding HasRunegraftPicks, Converter={StaticResource Vis}}" Margin="0,10,0,0">
+                            <l:OrnamentDivider Text="{l:T 'Руны'}" Margin="0,0,0,8"/>
+                            <ItemsControl ItemsSource="{Binding RunegraftPicks}" ItemTemplate="{StaticResource TreePick}"/>
+                        </StackPanel>
+                        <StackPanel Visibility="{Binding HasTattooPicks, Converter={StaticResource Vis}}" Margin="0,10,0,0">
+                            <l:OrnamentDivider Text="{l:T 'Татуировки'}" Margin="0,0,0,8"/>
+                            <ItemsControl ItemsSource="{Binding TattooPicks}" ItemTemplate="{StaticResource TreePick}"/>
+                        </StackPanel>
+
                         <StackPanel Visibility="{Binding HasKeyNodes, Converter={StaticResource Vis}}" Margin="0,16,0,0">
-                            <TextBlock Text="{l:T 'ПОРЯДОК КЛЮЧЕВЫХ УЗЛОВ'}" Style="{StaticResource Caption}" Margin="4,0,0,8"/>
+                            <l:OrnamentDivider Text="{l:T 'Порядок ключевых узлов'}" Margin="0,0,0,8"/>
                             <ItemsControl ItemsSource="{Binding KeyNodes}">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
@@ -680,10 +987,10 @@
                                                 <ColumnDefinition Width="34"/>
                                                 <ColumnDefinition Width="*"/>
                                             </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding Step}" FontFamily="{StaticResource MonoFont}" FontSize="11" Foreground="{StaticResource Text3}" Margin="0,2,0,0"/>
+                                            <TextBlock Text="{Binding Step}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" Margin="0,2,0,0"/>
                                             <StackPanel Grid.Column="1">
-                                                <TextBlock Text="{Binding Name}" FontSize="13" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                                                <TextBlock Text="{Binding Detail}" FontSize="11.5" Foreground="{StaticResource Text3}" TextWrapping="Wrap"/>
+                                                <TextBlock Text="{Binding Name}" FontSize="{StaticResource FsBody}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                                <TextBlock Text="{Binding Detail}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text3}" TextWrapping="Wrap"/>
                                             </StackPanel>
                                         </Grid>
                                     </DataTemplate>
@@ -695,63 +1002,63 @@
             </Grid>
 
             <!-- footer -->
-            <!-- shown on every full page: the close-app button lives here; the progress only on the gems tab -->
-            <Grid Grid.Row="4" Margin="18,6,18,16" Visibility="{Binding IsCompact, Converter={StaticResource NotVis}}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Border Height="2" CornerRadius="1" Background="{StaticResource Surface3}" ClipToBounds="True"
-                        Visibility="{Binding ShowGems, Converter={StaticResource Vis}}">
-                    <Border Background="{StaticResource Accent}" CornerRadius="1" RenderTransformOrigin="0,0.5">
-                        <Border.RenderTransform>
-                            <ScaleTransform ScaleX="{Binding Progress}"/>
-                        </Border.RenderTransform>
-                    </Border>
-                </Border>
-                <Grid Grid.Row="1" Margin="0,10,0,0">
-                    <TextBlock Text="{Binding ProgressText}" Foreground="{StaticResource Text2}" FontSize="11.5" VerticalAlignment="Center"
-                               Visibility="{Binding ShowGems, Converter={StaticResource Vis}}"/>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <!-- shown on every full page: the close-app button lives here; "Куплено N из M" and its bar only on the gems tab -->
+            <Border x:Name="Footer" Grid.Row="4" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,0" Background="{StaticResource Well}" CornerRadius="0,0,9,9"
+                    Padding="14,10,22,10" Margin="0,6,0,0" Visibility="{Binding IsCompact, Converter={StaticResource NotVis}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center" Margin="0,0,10,0" Visibility="{Binding ShowGems, Converter={StaticResource Vis}}">
+                        <TextBlock Text="{Binding ProgressText}" Foreground="{StaticResource Text2}" FontSize="{StaticResource FsSmall}"/>
+                        <Border Height="4" CornerRadius="2" Background="{StaticResource Line}" ClipToBounds="True" Margin="0,5,0,0">
+                            <Border Background="{StaticResource Accent}" CornerRadius="2" RenderTransformOrigin="0,0.5">
+                                <Border.RenderTransform>
+                                    <ScaleTransform ScaleX="{Binding Progress}"/>
+                                </Border.RenderTransform>
+                            </Border>
+                        </Border>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                         <!-- was a settings button: an action of the gems tab, so it lives by the gems -->
-                        <Button Style="{StaticResource IconButton}" Content="&#xE762;" FontSize="13" Margin="0,0,6,0" Command="{Binding MarkAllCommand}"
+                        <Button Style="{StaticResource IconButton}" Content="&#xE762;" FontSize="{StaticResource FsBody}" Margin="0,0,4,0" Command="{Binding MarkAllCommand}"
                                 ToolTip="{l:T 'Отметить / снять все гемы этапа'}" Visibility="{Binding ShowGems, Converter={StaticResource Vis}}"/>
-                        <ToggleButton Style="{StaticResource Chip}" Content="{l:T 'Скрыть купленные'}" IsChecked="{Binding HideBought}"
-                                      Visibility="{Binding ShowGems, Converter={StaticResource Vis}}"/>
-                        <Button Style="{StaticResource IconButton}" Content="&#xE7E8;" FontSize="12" Margin="6,0,0,0"
+                        <ToggleButton Style="{StaticResource Chip}" Content="{l:T 'Скрыть купленные'}" IsChecked="{Binding HideBought}" FontSize="{StaticResource FsSmall}"
+                                      Padding="10,6" Visibility="{Binding ShowGems, Converter={StaticResource Vis}}"/>
+                        <Button Style="{StaticResource IconButton}" Content="&#xE7E8;" FontSize="{StaticResource FsSmall}" Margin="4,0,0,0"
                                 ToolTip="{l:T 'Закрыть приложение'}" Click="Close_Click"/>
                     </StackPanel>
                 </Grid>
-            </Grid>
+            </Border>
 
-            <!-- toast: over the full panel above the footer; in the mini tracker a strip under its line (the footer row is
-                 empty there), so it neither hides the stage nor blows the one-line window up with a margin -->
-            <Border Background="{StaticResource Accent}" IsHitTestVisible="False"
+            <!-- toast: on the full panel over the footer's line (progress and buttons, for the toast's two seconds) — above it,
+                 it covered the list (gems, links); in the mini tracker a strip under its line (the footer row is empty there),
+                 so it neither hides the stage nor blows the one-line window up with a margin. It takes the clicks, so a click
+                 meant for it never lands on the hidden close-app button. -->
+            <Border Grid.Row="4" Background="{StaticResource Accent}"
                     Visibility="{Binding IsToastVisible, Converter={StaticResource Vis}}">
                 <Border.Style>
                     <Style TargetType="Border">
-                        <Setter Property="Grid.Row" Value="0"/>
-                        <Setter Property="Grid.RowSpan" Value="5"/>
                         <Setter Property="VerticalAlignment" Value="Bottom"/>
-                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                        <Setter Property="Margin" Value="16,0,16,62"/>
-                        <Setter Property="CornerRadius" Value="8"/>
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="Margin" Value="12,0,12,11"/>
+                        <Setter Property="MinHeight" Value="34"/>
+                        <Setter Property="CornerRadius" Value="{StaticResource RadiusM}"/>
                         <Setter Property="Padding" Value="14,8"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsCompact}" Value="True">
-                                <Setter Property="Grid.Row" Value="4"/>
-                                <Setter Property="Grid.RowSpan" Value="1"/>
-                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                <Setter Property="MinHeight" Value="0"/>
                                 <Setter Property="Margin" Value="6,0,6,6"/>
-                                <Setter Property="CornerRadius" Value="6"/>
+                                <Setter Property="CornerRadius" Value="{StaticResource RadiusM}"/>
                                 <Setter Property="Padding" Value="10,6"/>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
                 </Border.Style>
-                <TextBlock Text="{Binding ToastText}" Foreground="{StaticResource OnAccent}" FontSize="12" FontWeight="SemiBold" TextWrapping="Wrap" TextAlignment="Center"/>
+                <TextBlock Text="{Binding ToastText}" Foreground="{StaticResource OnAccent}" FontSize="{StaticResource FsSmall}" FontWeight="SemiBold" TextWrapping="Wrap" TextAlignment="Center"
+                           VerticalAlignment="Center"/>
             </Border>
         </Grid>
-    </Border>
-    </Border>
+    </ContentControl>
 </Window>

@@ -37,6 +37,23 @@ public partial class App : Application
         finally { Shutdown(); }
     }
 
+    /// <summary>
+    /// The titles' font is embedded (Fonts\AlegreyaSC-*.ttf); if WPF cannot find both faces, everything falls back to
+    /// Segoe UI silently. Say so in overlay.log, so a broken resource shows up in a report.
+    /// </summary>
+    static void CheckDisplayFont()
+    {
+        try
+        {
+            var faces = System.Windows.Media.Fonts.GetTypefaces(new Uri("pack://application:,,,/"), "./Fonts/")
+                .Where(t => t.FontFamily.FamilyNames.Values.Any(n => n.StartsWith("Alegreya SC", StringComparison.Ordinal)))
+                .Select(t => t.Weight.ToOpenTypeWeight()).Distinct().ToList();
+            if (!faces.Contains(500) || !faces.Contains(700))
+                Log.Write($"warning: display font Alegreya SC not found in the resources (weights: {string.Join(",", faces)}); titles fall back to Segoe UI");
+        }
+        catch (Exception ex) { Log.Write("warning: display font check failed: " + ex.Message); }
+    }
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -71,6 +88,7 @@ public partial class App : Application
             return;
         }
 
+        CheckDisplayFont();
         var state = StateStore.Load();
         state.Language ??= Loc.FromSystem();
         Loc.Use(state.Language);
@@ -99,10 +117,12 @@ public partial class App : Application
             t.Start();
         }
 
-        if (e.Args.Contains("--demo-price"))
+        // "--demo-price=<file>": the item text in the file (as Ctrl+Alt+C copies it) instead of the sample boots
+        if (e.Args.FirstOrDefault(a => a.StartsWith("--demo-price")) is { } demo)
         {
+            var item = demo.Split('=', 2) is [_, var file] ? System.IO.File.ReadAllText(file) : DemoItems.Boots;
             var t = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
-            t.Tick += (_, _) => { t.Stop(); _ = main.DemoPriceCheckAsync(DemoItems.Boots); };
+            t.Tick += (_, _) => { t.Stop(); _ = main.DemoPriceCheckAsync(item); };
             t.Start();
         }
 
@@ -111,6 +131,16 @@ public partial class App : Application
         {
             main.OpenSettings();
             if (open.Split('=') is [_, var section]) vm.OpenSettingsSection(section);
+        }
+
+        // QA: "--ui-shots=<folder>" saves every open window as a PNG a few seconds in (the window itself, drawn by WPF:
+        // nothing behind it, no game, no desktop), to look at a layout change without a screen capture
+        if (e.Args.FirstOrDefault(a => a.StartsWith("--ui-shots=")) is { } shots)
+        {
+            var dir = shots["--ui-shots=".Length..];
+            var t = new System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromSeconds(7) };
+            t.Tick += (_, _) => { t.Stop(); UiShots.SaveAll(dir, vm); };
+            t.Start();
         }
 
         if (e.Args.Contains("--demo-newchar"))

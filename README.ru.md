@@ -37,7 +37,7 @@
 
 <p align="center">
   <img src="docs/screenshots/ingame-links.png" width="300" alt="Связки, бандиты, пантеон">
-  <img src="docs/screenshots/ru/new-stage.png" width="326" alt="Плашка нового этапа">
+  <img src="docs/screenshots/ru/new-stage.png" width="323" alt="Плашка нового этапа">
 </p>
 
 ### Мини-трекер
@@ -57,14 +57,21 @@
   Пока кластер не вставлен, игра его узлов не показывает — оверлей дорисовывает их игровыми иконками.
 - **Какой самоцвет в какое гнездо**: у каждого гнезда на пути карточка с самоцветом этапа — кластер с его нотаблями
   или обычный самоцвет; в настройках можно показывать все моды.
+- **Руны и татуировки**: над игровым деревом, под пятью ближайшими шагами, у рун (бирюзовые) и татуировок (фиолетовые)
+  этапа свои блоки со счётом по персонажу (`РУНЫ · 0 из 2`) и у каждой — что осталось: *стоит*, *узел взят без неё*
+  или *сначала взять узел · шаг N* (без сверки с персонажем — что она даёт). Наведите на строку — её узел подсветится
+  на дереве; кольца на обоих деревьях тех же двух цветов.
 
 <p align="center"><img src="docs/screenshots/ingame-clusters.png" alt="Кластеры на игровом дереве: дорисованные узлы и карточки самоцветов у гнёзд"></p>
+
+<p align="center"><img src="docs/screenshots/ingame-runegrafts.png" alt="Шаги, руны и татуировки над игровым деревом"></p>
+<p align="center"><img src="docs/screenshots/ingame-runegrafts-panel.png" width="300" alt="Руны и татуировки этапа в панели"></p>
 
 <p align="center"><img src="docs/screenshots/ingame-tree-late.png" alt="Act 5: весь путь от старта класса"></p>
 
 <p align="center">
   <img src="docs/screenshots/ru/tree-window.png" width="640" alt="Окно дерева с путём этапа">
-  
+  <img src="docs/screenshots/ru/tree-clusters.png" width="300" alt="Кластеры на дереве">
 </p>
 
 ### Шмот
@@ -76,6 +83,7 @@
 <p align="center">
   <img src="docs/screenshots/ingame-anoint.png" width="300" alt="Намазка с маслами">
   <img src="docs/screenshots/ru/gear-cluster.png" width="300" alt="Карточка кластера">
+  <img src="docs/screenshots/ingame-jewels.png" width="300" alt="Самоцветы в дереве">
 </p>
 
 ### Прайс-чек
@@ -148,6 +156,7 @@ Enter — одно сообщение продавцу на нажатие **Н�
 - [HeartofPhos/exile-leveling](https://github.com/HeartofPhos/exile-leveling) (MIT) — откуда берётся каждый гем.
 - [RePoE](https://github.com/repoe-fork/repoe-fork.github.io) — тиры модов и нотабли кластеров.
 - [poe.ninja](https://poe.ninja) — цены уников и валюты.
+- [Alegreya SC](https://github.com/huertatipografica/Alegreya) (SIL OFL 1.1) — шрифт заголовков и вкладок.
 
 ## Лицензия
 

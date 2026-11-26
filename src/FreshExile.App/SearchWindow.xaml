@@ -8,23 +8,22 @@
         FontFamily="{StaticResource UiFont}" Foreground="{StaticResource Text}"
         UseLayoutRounding="True">
 
-    <Border Background="{StaticResource LineStrong}" CornerRadius="12" Padding="1" UseLayoutRounding="False">
-    <Border Background="{StaticResource PanelBrush}" CornerRadius="11">
+    <ContentControl Style="{StaticResource WindowFrame}">
         <StackPanel UseLayoutRounding="True">
             <Grid Margin="16,12,8,0" Background="Transparent" MouseLeftButtonDown="Drag_MouseDown">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{l:T 'ПОИСК НА ТРЕЙДЕ'}" Style="{StaticResource Caption}" FontSize="9.5" VerticalAlignment="Center"/>
-                <Button Grid.Column="1" Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="10" ToolTip="{l:T 'Закрыть · Esc'}" Click="Close_Click"/>
+                <TextBlock Text="{l:T 'ПОИСК НА ТРЕЙДЕ'}" Style="{StaticResource Caption}" FontSize="{StaticResource FsCaption}" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}" ToolTip="{l:T 'Закрыть · Esc'}" Click="Close_Click"/>
             </Grid>
 
             <TextBox x:Name="Query" Style="{StaticResource Field}" Margin="14,8,14,0"
                      Tag="{l:T 'Название: shaper guardian map, mageblood, divine…'}"
                      TextChanged="Query_TextChanged" PreviewKeyDown="Query_PreviewKeyDown"/>
 
-            <TextBlock x:Name="StatusText" Margin="16,8,16,0" FontSize="11.5" Foreground="{StaticResource Text3}" TextWrapping="Wrap"/>
+            <TextBlock x:Name="StatusText" Margin="16,8,16,0" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text3}" TextWrapping="Wrap"/>
 
             <ListBox x:Name="Results" Margin="8,6,8,10" MaxHeight="420" Background="Transparent" BorderThickness="0"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" Focusable="False"
@@ -35,7 +34,7 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="ListBoxItem">
-                                    <Border x:Name="b" CornerRadius="6" Padding="8,5" Background="Transparent" Cursor="Hand">
+                                    <Border x:Name="b" CornerRadius="{StaticResource RadiusM}" Padding="8,5" Background="Transparent" Cursor="Hand">
                                         <ContentPresenter/>
                                     </Border>
                                     <ControlTemplate.Triggers>
@@ -58,14 +57,13 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" FontSize="13" TextTrimming="CharacterEllipsis"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Note}" Foreground="{StaticResource Text3}" FontSize="11" Margin="10,0,0,0"
+                            <TextBlock Text="{Binding Text}" Foreground="{Binding Brush}" FontSize="{StaticResource FsBody}" TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Note}" Foreground="{StaticResource Text3}" FontSize="{StaticResource FsCaption}" Margin="10,0,0,0"
                                        VerticalAlignment="Center"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
         </StackPanel>
-    </Border>
-    </Border>
+    </ContentControl>
 </Window>

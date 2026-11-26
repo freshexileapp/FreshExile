@@ -85,6 +85,53 @@ public class PriceCheckTests
         """;
 
     [Fact]
+    public void A_map_is_searched_by_its_totals_and_its_citadel_not_by_its_monster_mods()
+    {
+        // the advanced copy of a citadel map: "(...)" after the implicit, totals in the property block
+        var item = GameItem.Parse("""
+            Item Class: Maps
+            Rarity: Rare
+            Hate Incitement
+            Map (Tier 16)
+            --------
+            Atlas Drops: +46% (augmented)
+            Item Rarity: +28% (augmented)
+            Monster Pack Size: +18% (augmented)
+            --------
+            Item Level: 83
+            --------
+            Monster Level: 83
+            --------
+            { Implicit Modifier }
+            Map contains Al-Hezmin's Citadel(...)
+            --------
+            { Prefix Modifier "Antagonist's" (Tier: 1) }
+            Players have 25% less Area of Effect
+            --------
+            Travel to a Map of this tier or lower by using this in a personal Map Device. Maps can only be used once.
+            """)!;
+        var trade = TradeLink.FromData("Covens", """
+            {"result":[
+              {"id":"implicit","entries":[{"id":"implicit.stat_2563183002|3","text":"Map contains Al-Hezmin's Citadel"}]},
+              {"id":"explicit","entries":[{"id":"explicit.stat_1","text":"Players have #% less Area of Effect"}]}]}
+            """);
+
+        Assert.Equal(16, item.MapTier);
+        Assert.Equal(46, item.MapDrops);
+        Assert.Equal(28, item.MapRarity);
+        Assert.Equal(18, item.MapPackSize);
+        var check = PriceCheck.For(item, trade, 90);
+        Assert.False(check.Filters.Single(f => f.StatId == "explicit.stat_1").Enabled);
+        Assert.True(check.Filters.Single(f => f.StatId == "implicit.stat_2563183002|3").Enabled);
+
+        var q = check.Query(trade, new PriceSettings()).ToJsonString();
+        Assert.Contains("\"map_bonus\":{\"min\":41}", q);
+        Assert.Contains("\"map_iir\":{\"min\":25}", q);
+        Assert.Contains("\"map_packsize\":{\"min\":16}", q);
+        Assert.Contains("{\"id\":\"implicit.stat_2563183002\",\"value\":{\"option\":3}}", q);
+    }
+
+    [Fact]
     public void Zero_width_space_in_a_line_does_not_hide_its_trade_stat()
     {
         // the game's own copy: an invisible U+200B before "Item Rarity Support"
@@ -108,6 +155,53 @@ public class PriceCheckTests
         var f = PriceCheck.For(item, trade, 90).Filters.Single(x => x.Label.StartsWith("Socketed", StringComparison.Ordinal));
         Assert.Equal("Socketed Gems are Supported by Level 15 Item Rarity Support", f.Label);
         Assert.Equal("explicit.effect_3334987531", f.StatId);
+    }
+
+    [Fact]
+    public void A_plural_line_finds_the_sites_singular_stat()
+    {
+        var trade = TradeLink.FromData("Covens", """
+            {"result":[{"id":"explicit","entries":[
+              {"id":"explicit.stat_1582728645","text":"Gain # Charge when you are Hit by an Enemy"}]}]}
+            """);
+
+        Assert.Equal("explicit.stat_1582728645", trade.StatId("explicit", "Gain 3 Charges when you are Hit by an Enemy", false));
+    }
+
+    [Fact]
+    public void A_tierless_line_in_an_advanced_copy_is_judged_by_what_it_is_and_unticked_lines_go_to_the_site_switched_off()
+    {
+        var item = GameItem.Parse("""
+            Item Class: Wands
+            Rarity: Rare
+            Damnation Needle
+            Heathen Wand
+            --------
+            Item Level: 85
+            --------
+            { Prefix Modifier "Tyrannical" (Tier: 2) — Damage, Physical, Attack }
+            136(130-154)% increased Physical Damage
+            { Prefix Modifier "Magister's" — Caster, Gem }
+            +1 to Level of all Spell Skill Gems
+            { Suffix Modifier "of the Ranger" (Tier: 4) — Attack }
+            +428(400-450) to Accuracy Rating
+            """)!;
+        var trade = TradeLink.FromData("Covens", """
+            {"result":[{"id":"explicit","entries":[
+              {"id":"explicit.stat_1509134228","text":"#% increased Physical Damage"},
+              {"id":"explicit.stat_124131830","text":"+# to Level of all Spell Skill Gems"},
+              {"id":"explicit.stat_691932474","text":"+# to Accuracy Rating"}]}]}
+            """);
+
+        var check = PriceCheck.For(item, trade, 90);
+        Assert.True(check.Filters.Single(f => f.Label.StartsWith("+1 to Level", StringComparison.Ordinal)).Enabled);
+        Assert.False(check.Filters.Single(f => f.Label.Contains("Accuracy", StringComparison.Ordinal)).Enabled);
+
+        var stats = check.Query(trade, new PriceSettings())["query"]!["stats"]![0]!["filters"]!.AsArray();
+        Assert.Equal(5, stats.Count); // three lines and the empty prefix / suffix counts, switched off
+        var accuracy = stats.Single(s => (string?)s!["id"] == "explicit.stat_691932474")!;
+        Assert.True((bool)accuracy["disabled"]!);
+        Assert.Null(stats.Single(s => (string?)s!["id"] == "explicit.stat_124131830")!["disabled"]);
     }
 
     [Fact]
@@ -151,6 +245,15 @@ public class PriceCheckTests
     {
         Assert.Null(GameItem.Parse("hello"));
         Assert.Null(GameItem.Parse(""));
+    }
+
+    [Fact]
+    public void Maximum_resistance_is_not_counted_as_resistance()
+    {
+        Assert.False(GameItem.IsElementalResistance("+2% to maximum Fire Resistance"));
+        Assert.False(GameItem.IsElementalResistance("+1% to all maximum Resistances"));
+        Assert.False(GameItem.IsChaosResistance("+1% to all maximum Resistances"));
+        Assert.True(GameItem.IsElementalResistance("+40% to Fire Resistance"));
     }
 
     [Fact]
@@ -477,6 +580,15 @@ public class PriceCheckTests
             """;
         // a hybrid prefix (two lines) is one prefix; the implicit and the crafted line count as they should
         Assert.Equal((2, 2, 3), GameItem.Parse(ring)!.Affixes());
+
+        // the trade's "# Empty Prefix / Suffix Modifiers": offered unticked, at least the item's own open places (1 at 0 open)
+        var check = PriceCheck.For(GameItem.Parse(ring)!, TradeLink.FromData("Covens", Stats), 90);
+        var pre = check.Filters.Single(f => f.StatId == PriceCheck.EmptyPrefixStat);
+        Assert.Equal((1.0, 1.0, false, true), (pre.Value!.Value, pre.Min!.Value, pre.Enabled, pre.Shown));
+        pre.Enabled = true;
+        var q = check.Query(TradeLink.FromData("Covens", Stats), new PriceSettings()).ToJsonString();
+        Assert.Contains("{\"id\":\"pseudo.pseudo_number_of_empty_prefix_mods\",\"value\":{\"min\":1}}", q);
+        Assert.Single(check.Filters, f => f.StatId == PriceCheck.EmptySuffixStat);
 
         const string jewel = """
             Item Class: Abyss Jewels
@@ -857,6 +969,36 @@ public class PriceCheckTests
         var check = PriceCheck.For(GameItem.Parse(ChaosCluster)!, trade, 90);
         Assert.Null(check.Cluster);
         Assert.All(["explicit.stat_ue", "explicit.stat_ug", "explicit.stat_wp"], id => Assert.True(check.Filters.First(f => f.StatId == id).Enabled));
+    }
+
+    [Fact]
+    public void Twice_corrupted_is_corrupted()
+    {
+        var item = GameItem.Parse("""
+            Item Class: Gloves
+            Rarity: Unique
+            Asenath's Gentle Touch
+            Silk Gloves
+            --------
+            Energy Shield: 23
+            --------
+            Item Level: 80
+            --------
+            +22 to Intelligence
+            --------
+            Twice Corrupted
+            """)!;
+        Assert.True(item.Corrupted);
+    }
+
+    [Fact]
+    public void A_cluster_copied_as_item_class_jewels_is_searched_among_clusters()
+    {
+        // the game copies a cluster as "Item Class: Jewels": searched among plain jewels, nothing was ever found
+        var trade = TradeLink.FromData("Covens", ClusterStats);
+        var text = ChaosCluster.Contains("Item Class: Cluster Jewels") ? ChaosCluster.Replace("Item Class: Cluster Jewels", "Item Class: Jewels") : "Item Class: Jewels\n" + ChaosCluster;
+        var check = PriceCheck.For(GameItem.Parse(text)!, trade, 90);
+        Assert.Contains("\"category\":{\"option\":\"jewel.cluster\"}", check.Query(trade, new PriceSettings()).ToJsonString());
     }
 
     [Fact]

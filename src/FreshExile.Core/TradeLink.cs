@@ -20,6 +20,12 @@ public sealed partial class TradeLink
     /// <summary>The same for the item's own "(Local)" stats: armour and weapons roll those ("550% increased Evasion and Energy Shield").</summary>
     readonly Dictionary<string, Dictionary<string, string>> _local = new(StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>
+    /// The same keys with plurals dropped, a fallback: the site writes the singular for some lines the game pluralises
+    /// ("Gain # Charge when you are Hit by an Enemy" vs the flask's "Gain 3 Charges when you are Hit by an Enemy").
+    /// </summary>
+    readonly Dictionary<string, Dictionary<string, string>> _loose = new(StringComparer.OrdinalIgnoreCase);
+
     /// <summary>Gem name as the game shows it → trade type (+ "alt_x" for a transfigured one, sold under its base).</summary>
     readonly Dictionary<string, (string Type, string? Disc)> _gems = new(StringComparer.OrdinalIgnoreCase);
 
@@ -224,13 +230,18 @@ public sealed partial class TradeLink
             var kind = group.TryGetProperty("id", out var gid) ? gid.GetString() ?? "" : "";
             if (!_stats.TryGetValue(kind, out var map)) _stats[kind] = map = new(StringComparer.OrdinalIgnoreCase);
             if (!_local.TryGetValue(kind, out var local)) _local[kind] = local = new(StringComparer.OrdinalIgnoreCase);
+            if (!_loose.TryGetValue(kind, out var loose)) _loose[kind] = loose = new(StringComparer.OrdinalIgnoreCase);
             foreach (var e in group.GetProperty("entries").EnumerateArray())
             {
                 var text = e.GetProperty("text").GetString() ?? "";
                 var id = e.GetProperty("id").GetString() ?? "";
                 // "(Local)" entries share the text with the global one: kept apart, armour and weapons want the local one
                 if (text.Contains(" (Local)", StringComparison.Ordinal)) local.TryAdd(Normalize(StripLocal(text)), id);
-                else map.TryAdd(Normalize(text), id);
+                else
+                {
+                    map.TryAdd(Normalize(text), id);
+                    loose.TryAdd(Loose(Normalize(text)), id);
+                }
             }
         }
     }
@@ -340,8 +351,12 @@ public sealed partial class TradeLink
         var key = Normalize(text);
         if (preferLocal && _local.TryGetValue(kind, out var local) && local.TryGetValue(key, out var lid)) return lid;
         if (_stats.TryGetValue(kind, out var map) && map.TryGetValue(key, out var id)) return id;
-        return _local.TryGetValue(kind, out var any) && any.TryGetValue(key, out var aid) ? aid : null;
+        if (_local.TryGetValue(kind, out var any) && any.TryGetValue(key, out var aid)) return aid;
+        return _loose.TryGetValue(kind, out var loose) && loose.TryGetValue(Loose(key), out var lsid) ? lsid : null;
     }
+
+    /// <summary>Every word's trailing "s" off: "gain # charges" and "gain # charge" meet.</summary>
+    static string Loose(string key) => PluralRx().Replace(key, "");
 
     /// <summary>
     /// <see cref="Strictness"/>% of PoB's roll, so near-misses show up too. The trade site averages "Adds 5 to 10";
@@ -359,6 +374,7 @@ public sealed partial class TradeLink
 
     [GeneratedRegex(@"\d+(?:\.\d+)?")] private static partial Regex NumRx();
     [GeneratedRegex(@"\s+")] private static partial Regex WsRx();
+    [GeneratedRegex(@"(?<=\w)s\b")] private static partial Regex PluralRx();
     [GeneratedRegex(@"\bAdds \d+(?:\.\d+)? to \d+", RegexOptions.IgnoreCase)] private static partial Regex AddsRx();
     [GeneratedRegex(@"Standard|Hardcore|\bHC\b|SSF|Solo|Ruthless", RegexOptions.IgnoreCase)] private static partial Regex NotTradeRx();
 }

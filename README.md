@@ -36,7 +36,7 @@ and what your gear should look like. One hotkey prices any item under the mouse.
 
 <p align="center">
   <img src="docs/screenshots/ingame-links.png" width="300" alt="Links, bandits, pantheon">
-  <img src="docs/screenshots/en/new-stage.png" width="262" alt="New stage notice">
+  <img src="docs/screenshots/en/new-stage.png" width="323" alt="New stage notice">
 </p>
 
 ### Mini tracker
@@ -57,8 +57,15 @@ Both survive a restart of the overlay while the game is running.
   game's own art.
 - **Which jewel goes where**: every socket on the path gets a card with the stage's jewel for it — a cluster with its
   notables, or a plain jewel; settings can show every mod.
+- **Runegrafts and tattoos**: over the game's tree, under the next five steps, the stage's runegrafts (teal) and tattoos
+  (violet) get blocks of their own with a count against your character (`Runegrafts · 0 of 2`) and, for each, what is
+  left: *in place*, *the node taken without it*, or *take the node first · step N* (without the character, what it
+  grants). Hover a line and its node lights up on the tree; their rings on both trees are the same two colours.
 
 <p align="center"><img src="docs/screenshots/ingame-clusters.png" alt="Cluster jewels on the game's tree: their passives drawn in and a card at each socket"></p>
+
+<p align="center"><img src="docs/screenshots/ingame-runegrafts.png" alt="Steps, runegrafts and tattoos over the game's tree"></p>
+<p align="center"><img src="docs/screenshots/ingame-runegrafts-panel.png" width="300" alt="Runegrafts and tattoos of the stage in the panel"></p>
 
 <p align="center"><img src="docs/screenshots/ingame-tree-late.png" alt="Act 5: the whole path from the class start"></p>
 
@@ -76,6 +83,7 @@ Both survive a restart of the overlay while the game is running.
 <p align="center">
   <img src="docs/screenshots/ingame-anoint.png" width="300" alt="Anointment with its oils">
   <img src="docs/screenshots/en/gear-cluster.png" width="300" alt="Cluster jewel card">
+  <img src="docs/screenshots/ingame-jewels.png" width="300" alt="Jewels in the tree">
 </p>
 
 ### Price check
@@ -149,6 +157,7 @@ in the settings, the screen is never captured at all.
 - [HeartofPhos/exile-leveling](https://github.com/HeartofPhos/exile-leveling) (MIT) — where each gem comes from.
 - [RePoE](https://github.com/repoe-fork/repoe-fork.github.io) — mod tiers and cluster notables.
 - [poe.ninja](https://poe.ninja) — unique and currency prices.
+- [Alegreya SC](https://github.com/huertatipografica/Alegreya) (SIL OFL 1.1) — the display font of titles and tabs.
 
 ## License
 

@@ -7,21 +7,37 @@
         ShowInTaskbar="False" ShowActivated="False" ResizeMode="NoResize"
         FontFamily="{StaticResource UiFont}" Foreground="{StaticResource Text}"
         UseLayoutRounding="True" Cursor="Hand"
-        MouseLeftButtonDown="Dismiss_Click" Opacity="0">
+        MouseLeftButtonDown="Dismiss_Click" MouseEnter="Hover_Enter" MouseLeave="Hover_Leave" Opacity="0">
 
-    <!-- one glance in a fight: new stage + what is waiting in town; details live in the panel -->
-    <Border Background="{StaticResource LineStrong}" CornerRadius="8" Padding="1" UseLayoutRounding="False">
-    <Border Background="{StaticResource PanelBrush}" CornerRadius="7" Padding="9,7,13,7">
+    <!-- one glance in a fight: the new stage and what waits for it; a chip opens the panel on that tab.
+         A bronze edge with a soft flame glow (the margin leaves the glow room inside the window). -->
+    <Border Margin="14" Background="{StaticResource Bronze}" CornerRadius="{StaticResource RadiusM}" Padding="1" UseLayoutRounding="False">
+        <Border.Effect>
+            <DropShadowEffect Color="{StaticResource FlameColor}" BlurRadius="24" ShadowDepth="0" Opacity="0.3"/>
+        </Border.Effect>
+    <Border Background="{StaticResource PanelBrush}" CornerRadius="{StaticResource RadiusM}" ClipToBounds="True">
         <StackPanel UseLayoutRounding="True">
-            <StackPanel Orientation="Horizontal">
-                <Image Source="logo.png" Width="22" Height="22" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
-                <TextBlock Text="{Binding StageTitle}" FontSize="15" FontWeight="SemiBold" Margin="10,0,0,0" VerticalAlignment="Center"/>
-                <TextBlock Text="{l:T 'новый этап'}" FontSize="12" Foreground="{StaticResource Text3}" Margin="8,1,0,0" VerticalAlignment="Center"/>
-                <TextBlock Text="{Binding NoticeHint}" FontSize="12" Foreground="{StaticResource Text2}" Margin="14,1,0,0" VerticalAlignment="Center"
-                           Visibility="{Binding HasNoticeHint, Converter={StaticResource Vis}}"/>
+            <StackPanel Orientation="Horizontal" Margin="12,10,8,10">
+                <Image Source="logo.png" Width="28" Height="28" VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
+                <StackPanel Margin="10,0,14,0" VerticalAlignment="Center">
+                    <TextBlock Text="{l:T 'НОВЫЙ ЭТАП'}" FontSize="{StaticResource FsCaption}" FontWeight="SemiBold" Foreground="{StaticResource Bronze}"/>
+                    <TextBlock Text="{Binding StageTitle}" FontFamily="{StaticResource DisplayFont}" FontSize="{StaticResource FsTitle}" FontWeight="Bold"
+                               Foreground="{StaticResource TitleText}" Margin="0,-1,0,0"/>
+                </StackPanel>
+                <Button Style="{StaticResource SmallButton}" Height="28" FontSize="{StaticResource FsSmall}" Margin="0,0,6,0" VerticalAlignment="Center"
+                        Click="Gems_Click" ToolTip="{l:T 'Открыть панель на гемах'}" Visibility="{Binding HasGemsBadge, Converter={StaticResource Vis}}">
+                    <TextBlock><Run Text="{l:T 'Купить'}"/><Run Text="{Binding GemsBadge, Mode=OneWay, StringFormat=' · {0}'}"/></TextBlock>
+                </Button>
+                <Button Style="{StaticResource SmallButton}" Height="28" FontSize="{StaticResource FsSmall}" Margin="0,0,6,0" VerticalAlignment="Center"
+                        Click="Links_Click" ToolTip="{l:T 'Открыть панель на связках'}" Visibility="{Binding HasLinksBadge, Converter={StaticResource Vis}}">
+                    <TextBlock><Run Text="{l:T 'Связки'}"/><Run Text="{Binding LinksBadge, Mode=OneWay, StringFormat=' · {0}'}"/></TextBlock>
+                </Button>
+                <Button Style="{StaticResource IconButton}" Width="28" Height="28" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}" VerticalAlignment="Center"
+                        ToolTip="{l:T 'Скрыть'}" Click="Close_Click"/>
             </StackPanel>
-            <Border Height="2" CornerRadius="1" Background="{StaticResource Surface3}" Margin="0,7,0,0" ClipToBounds="True">
-                <Border Background="{StaticResource Text2}" CornerRadius="1" RenderTransformOrigin="0,0.5">
+            <!-- the countdown to hiding; it waits while the mouse is over the plate -->
+            <Border Height="2" Background="{StaticResource Line}">
+                <Border Background="{StaticResource Accent}" RenderTransformOrigin="0,0.5">
                     <Border.RenderTransform>
                         <ScaleTransform x:Name="TimerScale" ScaleX="1"/>
                     </Border.RenderTransform>

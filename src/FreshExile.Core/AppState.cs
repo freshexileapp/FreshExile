@@ -20,6 +20,10 @@ public sealed class AppState
 
     public string BuildInput { get; set; } = "";
     public string? BuildXml { get; set; }
+    /// <summary>
+    /// The open build's key: <see cref="Bought"/>, <see cref="SwapDone"/> and the stage maps are kept under it, and its
+    /// <see cref="RecentBuild.Id"/> is the same. Random per loaded build (older states have the class|ascendancy|stages hash).
+    /// </summary>
     public string? BuildId { get; set; }
 
     /// <summary>Builds loaded before, newest first (the current one among them): the build itself is kept, not just its link.</summary>
@@ -49,8 +53,9 @@ public sealed class AppState
     /// <summary>Price check: one line per seller.</summary>
     public bool PriceCollapse { get; set; } = true;
 
-    /// <summary>Price check: search right away when the window opens.</summary>
-    public bool PriceAutoSearch { get; set; } = true;
+    /// <summary>Price check: search right away when the window opens. Off by default: the search with untouched filters
+    /// used the request, and the cooldown then held back the one the player set up (a new key, so a saved "true" is dropped).</summary>
+    public bool PriceSearchOnOpen { get; set; }
 
     /// <summary>Top-mod lists edited by the player, slot key → phrases; a slot missing here keeps its default.</summary>
     public Dictionary<string, List<string>> TopMods { get; set; } = new();
@@ -62,6 +67,12 @@ public sealed class AppState
 
     /// <summary>Per build: stages whose socket changes the user has already made.</summary>
     public Dictionary<string, HashSet<int>> SwapDone { get; set; } = new();
+
+    /// <summary>Per build: the bandit / pantheon plates closed with ✕, as "bandit:3" (kind:stage) — they stay closed on that stage.</summary>
+    public Dictionary<string, HashSet<string>> PlatesHidden { get; set; } = new();
+
+    /// <summary>Per build: the gear tab's groups folded by a click on their heading ("weapons", "flasks"…).</summary>
+    public Dictionary<string, HashSet<string>> GearGroupsFolded { get; set; } = new();
 
     public string ClientLogPath { get; set; } = "";
     public bool FollowGame { get; set; } = true;
@@ -90,6 +101,9 @@ public sealed class AppState
     /// </summary>
     public bool FreshCharacter { get; set; }
     public bool HideBought { get; set; }
+
+    /// <summary>Per build: stage index → the player's own name for the stage (the PoB title still drives auto switching).</summary>
+    public Dictionary<string, Dictionary<int, string>> StageNames { get; set; } = new();
 
     /// <summary>Per build: stage index → start level set by the user (overrides the title).</summary>
     public Dictionary<string, Dictionary<int, int>> StageLevels { get; set; } = new();
@@ -207,6 +221,10 @@ public sealed class RecentBuild
     public string Id { get; set; } = "";
     /// <summary>"Ranger · Pathfinder, ур. 92".</summary>
     public string Title { get; set; } = "";
+    /// <summary>The player's own name for it ("Лук на маппинг"); null = <see cref="Title"/>.</summary>
+    public string? Name { get; set; }
+    /// <summary>Kept on top and never pushed out of the list by newer builds.</summary>
+    public bool Pinned { get; set; }
     /// <summary>The link it was loaded from; empty for a pasted code.</summary>
     public string Input { get; set; } = "";
     public string Xml { get; set; } = "";

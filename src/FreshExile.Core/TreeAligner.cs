@@ -287,28 +287,33 @@ public sealed class TreeAligner
         if (knownScales is { Count: > 0 })
         {
             AlignResult? best = null;
+            var bestRank = double.MinValue;
             foreach (var ks in knownScales)
             {
                 var v = Vote([ks], width, height);
                 if (v.Votes == 0) continue;
                 var r = Refine(v.S, v.Ox, v.Oy, 0.995, 1.005, width, height);
-                if (best == null || r.Score > best.Value.Score) best = r;
+                if (r.Score <= bestRank) continue;   // the rank is never above the score
+                var rank = Rank(r.Score, r.Scale, r.OffsetX, r.OffsetY, width, height);
+                if (rank > bestRank) { best = r; bestRank = rank; }
             }
             return best;
         }
 
         // raw vote counts favour small scales (more of the path fits on screen),
         // so every scale's best offset is judged by its hit ratio instead
-        (double S, double Ox, double Oy, double Score) pick = (0, 0, 0, -1);
+        (double S, double Ox, double Oy, double Rank) pick = (0, 0, 0, double.MinValue);
         foreach (var s in Sweep(_structure ? 1.04 : 1.025))
             foreach (var (ox, oy) in Peaks(s, width, height, 3))
                 for (var dy = -4; dy <= 4; dy += 2)
                     for (var dx = -4; dx <= 4; dx += 2)
                     {
                         var sc = Score(s, ox + dx, oy + dy, width, height).Score;
-                        if (sc > pick.Score) pick = (s, ox + dx, oy + dy, sc);
+                        if (sc <= pick.Rank) continue;
+                        var rank = Rank(sc, s, ox + dx, oy + dy, width, height);
+                        if (rank > pick.Rank) pick = (s, ox + dx, oy + dy, rank);
                     }
-        return pick.Score < 0 ? null : Refine(pick.S, pick.Ox, pick.Oy, 0.97, 1.03, width, height);
+        return pick.Rank == double.MinValue ? null : Refine(pick.S, pick.Ox, pick.Oy, 0.97, 1.03, width, height);
     }
 
     /// <summary>Top offsets (px) by votes for one scale, kept a few cells apart.</summary>
@@ -454,6 +459,37 @@ public sealed class TreeAligner
                 }
                 if (any) _cells.Add(cy * cw + cx);
             }
+    }
+
+    /// <summary>
+    /// Share of the template that is gold a few pixels off its own lines too (of the last aligned frame). A real path
+    /// is thin lines on a dark ground (low); a false fit over a dense patch of gold node frames is gold all around (high).
+    /// </summary>
+    public double Beside(AlignResult r, int w, int h) => Beside(r.Scale, r.OffsetX, r.OffsetY, w, h);
+
+    /// <summary>
+    /// How a fit is ranked against other zooms and offsets: its score minus the gold beside its lines. At a far zoom the
+    /// node frames stand close and a short path "fits" a wrong zoom at ~1.0, but there it is gold all around too.
+    /// A structure template already counts this in its score.
+    /// </summary>
+    double Rank(double score, double s, double ox, double oy, int w, int h) =>
+        _structure ? score : score - Beside(s, ox, oy, w, h);
+
+    double Beside(double s, double ox, double oy, int w, int h)
+    {
+        var d = Math.Max(5, (int)Math.Ceiling(s * 45));
+        int inside = 0, beside = 0;
+        foreach (var p in _points)
+        {
+            var x = (int)(p.X * s + ox);
+            var y = (int)(p.Y * s + oy);
+            if (x < d + 1 || y < d + 1 || x >= w - d - 1 || y >= h - d - 1) continue;
+            inside++;
+            var i = y * w + x;
+            var n = (_match[i + d] ? 1 : 0) + (_match[i - d] ? 1 : 0) + (_match[i + d * w] ? 1 : 0) + (_match[i - d * w] ? 1 : 0);
+            if (n >= 3) beside++;
+        }
+        return inside == 0 ? 1 : (double)beside / inside;
     }
 
     (double Score, int Inside) Score(double s, double ox, double oy, int w, int h)

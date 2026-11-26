@@ -8,8 +8,7 @@
         FontFamily="{StaticResource UiFont}" Foreground="{StaticResource Text}"
         UseLayoutRounding="True">
 
-    <Border Background="{StaticResource LineStrong}" CornerRadius="12" Padding="1" UseLayoutRounding="False">
-    <Border Background="{StaticResource PanelBrush}" CornerRadius="11">
+    <ContentControl Style="{StaticResource WindowFrame}">
         <StackPanel UseLayoutRounding="True" Margin="0,0,0,12">
             <!-- header: our item vs the offer (price, seller), close -->
             <Grid Margin="16,12,8,0" Background="Transparent" MouseLeftButtonDown="Drag_MouseDown">
@@ -18,21 +17,21 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel VerticalAlignment="Center">
-                    <TextBlock Text="{l:T 'СРАВНЕНИЕ'}" Style="{StaticResource Caption}" FontSize="9.5"/>
+                    <TextBlock Text="{l:T 'СРАВНЕНИЕ'}" Style="{StaticResource Caption}" FontSize="{StaticResource FsCaption}"/>
                     <TextBlock Margin="0,2,0,0" TextTrimming="CharacterEllipsis">
-                        <Run Text="{Binding Price, Mode=OneWay}" FontFamily="{StaticResource MonoFont}" FontSize="14" FontWeight="SemiBold"/>
-                        <Run Text="{Binding Currency, Mode=OneWay}" FontSize="12" Foreground="{StaticResource Text2}"/>
-                        <Run Text="  ·  " Foreground="{StaticResource Text3}"/><Run Text="{Binding Account, Mode=OneWay}" FontSize="12" Foreground="{StaticResource Text2}"/>
+                        <Run Text="{Binding Price, Mode=OneWay}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsSection}" FontWeight="SemiBold"/>
+                        <Run Text="{Binding Currency, Mode=OneWay}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}"/>
+                        <Run Text="  ·  " Foreground="{StaticResource Text3}"/><Run Text="{Binding Account, Mode=OneWay}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}"/>
                     </TextBlock>
-                    <TextBlock Text="{Binding Extra}" FontSize="11" Foreground="{StaticResource Text3}" TextTrimming="CharacterEllipsis"/>
+                    <TextBlock Text="{Binding Extra}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" TextTrimming="CharacterEllipsis"/>
                 </StackPanel>
-                <Button Grid.Column="1" Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="10" VerticalAlignment="Top"
+                <Button Grid.Column="1" Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}" VerticalAlignment="Top"
                         ToolTip="{l:T 'Закрыть'}" Click="Close_Click"/>
             </Grid>
 
             <StackPanel Margin="16,10,16,0">
-                <TextBlock Text="{Binding CompareSummary}" FontSize="12" Foreground="{StaticResource Text2}"/>
-                <TextBlock Text="{Binding TopSummary}" FontSize="12" Foreground="#E2BE62" Margin="0,2,0,0"
+                <TextBlock Text="{Binding CompareSummary}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}"/>
+                <TextBlock Text="{Binding TopSummary}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Gold}" Margin="0,2,0,0"
                            ToolTip="{l:T 'Моды, которые сами по себе делают цену: +1 к зарядам, уровни гемов, иммунитеты, саппресс, скорость передвижения…'}"/>
             </StackPanel>
 
@@ -44,8 +43,8 @@
                     <ColumnDefinition Width="84"/>
                     <ColumnDefinition Width="84"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="2" Text="{l:T 'мой'}" FontSize="10.5" Foreground="{StaticResource Text3}" TextAlignment="Right"/>
-                <TextBlock Grid.Column="3" Text="{l:T 'их'}" FontSize="10.5" Foreground="{StaticResource Text3}" TextAlignment="Right"/>
+                <TextBlock Grid.Column="2" Text="{l:T 'мой'}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" TextAlignment="Right"/>
+                <TextBlock Grid.Column="3" Text="{l:T 'их'}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" TextAlignment="Right"/>
             </Grid>
 
             <ScrollViewer x:Name="RowsScroll" VerticalScrollBarVisibility="Auto" Margin="16,0,10,0">
@@ -53,7 +52,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                            <TextBlock Text="{Binding Heading}" Style="{StaticResource Caption}" FontSize="9.5" Margin="16,8,0,2"
+                            <TextBlock Text="{Binding Heading}" Style="{StaticResource Caption}" FontSize="{StaticResource FsCaption}" Margin="16,8,0,2"
                                        Visibility="{Binding HasHeading, Converter={StaticResource Vis}}"/>
                             <Grid Margin="0,2">
                                 <Grid.ColumnDefinitions>
@@ -62,23 +61,23 @@
                                     <ColumnDefinition Width="84"/>
                                     <ColumnDefinition Width="84"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="★" FontSize="11" Foreground="#E2BE62" VerticalAlignment="Center"
+                                <TextBlock Text="★" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Gold}" VerticalAlignment="Center"
                                            Visibility="{Binding Top, Converter={StaticResource Vis}}"/>
-                                <TextBlock Grid.Column="1" Text="{Binding Label}" FontSize="12" Foreground="{StaticResource Text2}"
+                                <TextBlock Grid.Column="1" Text="{Binding Label}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}"
                                            TextTrimming="CharacterEllipsis" ToolTip="{Binding Label}" VerticalAlignment="Center"/>
                                 <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                    <Border Background="{Binding OursChipFill}" CornerRadius="3" Padding="3,0" Margin="0,0,4,0" VerticalAlignment="Center"
+                                    <Border Background="{Binding OursChipFill}" CornerRadius="{StaticResource RadiusS}" Padding="3,0" Margin="0,0,4,0" VerticalAlignment="Center"
                                             Visibility="{Binding HasOursTier, Converter={StaticResource Vis}}" ToolTip="{Binding OursChipTip}">
-                                        <TextBlock Text="{Binding OursChip}" FontSize="9.5" Foreground="{Binding OursChipText}"/>
+                                        <TextBlock Text="{Binding OursChip}" FontSize="{StaticResource FsCaption}" Foreground="{Binding OursChipText}"/>
                                     </Border>
-                                    <TextBlock Text="{Binding Ours}" FontFamily="{StaticResource MonoFont}" FontSize="12" Foreground="{Binding Brush}"/>
+                                    <TextBlock Text="{Binding Ours}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsSmall}" Foreground="{Binding Brush}"/>
                                 </StackPanel>
                                 <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                    <Border Background="{Binding TheirsChipFill}" CornerRadius="3" Padding="3,0" Margin="0,0,4,0" VerticalAlignment="Center"
+                                    <Border Background="{Binding TheirsChipFill}" CornerRadius="{StaticResource RadiusS}" Padding="3,0" Margin="0,0,4,0" VerticalAlignment="Center"
                                             Visibility="{Binding HasTheirsTier, Converter={StaticResource Vis}}" ToolTip="{Binding TheirsChipTip}">
-                                        <TextBlock Text="{Binding TheirsChip}" FontSize="9.5" Foreground="{Binding TheirsChipText}"/>
+                                        <TextBlock Text="{Binding TheirsChip}" FontSize="{StaticResource FsCaption}" Foreground="{Binding TheirsChipText}"/>
                                     </Border>
-                                    <TextBlock Text="{Binding Theirs}" FontFamily="{StaticResource MonoFont}" FontSize="12" Foreground="{StaticResource Text2}"/>
+                                    <TextBlock Text="{Binding Theirs}" FontFamily="{StaticResource MonoFont}" FontSize="{StaticResource FsSmall}" Foreground="{StaticResource Text2}"/>
                                 </StackPanel>
                             </Grid>
                             </StackPanel>
@@ -87,6 +86,5 @@
                 </ItemsControl>
             </ScrollViewer>
         </StackPanel>
-    </Border>
-    </Border>
+    </ContentControl>
 </Window>

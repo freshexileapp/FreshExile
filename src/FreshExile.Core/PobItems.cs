@@ -143,7 +143,10 @@ public static partial class PobItems
     }
 
     static readonly string[] Order =
-        ["Weapon 1", "Weapon 2", "Helmet", "Body Armour", "Gloves", "Boots", "Amulet", "Ring 1", "Ring 2", "Ring 3", "Belt", "Flask 1", "Flask 2", "Flask 3", "Flask 4", "Flask 5"];
+        ["Weapon 1", "Weapon 2", "Weapon 1 Swap", "Weapon 2 Swap", "Helmet", "Body Armour", "Gloves", "Boots", "Amulet", "Ring 1", "Ring 2", "Ring 3", "Belt",
+         "Flask 1", "Flask 2", "Flask 3", "Flask 4", "Flask 5",
+         // the special slots of some items (Greater King Crab's Claw and the like): after the flasks, not at random in the tail
+         "Body", "Arm", "Leg"];
 
     static int SlotOrder(string slot)
     {
@@ -312,7 +315,7 @@ public static partial class PobItems
     {
         switch (l)
         {
-            case "Corrupted": corrupted = true; return true;
+            case "Corrupted" or "Twice Corrupted": corrupted = true; return true;
             case "Mirrored" or "Split" or "Unidentified" or "Synthesised Item": return true;
         }
         Influence? x = l switch
