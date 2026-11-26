@@ -654,6 +654,9 @@ public sealed class NinjaExchange(HttpClient http)
     const string Url = "https://poe.ninja/poe1/api/economy/exchange/current/overview";
     static readonly string[] Types =
         ["Currency", "Fragment", "Oil", "Essence", "DivinationCard", "DeliriumOrb", "Fossil", "Resonator", "Omen", "Tattoo", "Runegraft", "Artifact", "AllflameEmber"];
+    /// <summary>Exchange goods poe.ninja prices only in its item lists (its exchange overview has none of them): the Maven's invitations.</summary>
+    const string StashUrl = "https://poe.ninja/poe1/api/economy/stash/current/item/overview";
+    static readonly string[] StashTypes = ["Invitation"];
 
     readonly Dictionary<string, (DateTime At, Dictionary<string, double> Chaos, HashSet<string> Types)> _cache = new();
 
@@ -666,6 +669,8 @@ public sealed class NinjaExchange(HttpClient http)
             var all = new Dictionary<string, double>(StringComparer.OrdinalIgnoreCase);
             foreach (var json in await Task.WhenAll(Types.Select(t => GetAsync(t, league, ct))))
                 if (json != null) Read(json, all);
+            foreach (var json in await Task.WhenAll(StashTypes.Select(t => GetAsync(t, league, ct, StashUrl))))
+                if (json != null) ReadStash(json, all);
             if (all.Count == 0) return null;
             _cache[league] = c = (DateTime.UtcNow, all, new HashSet<string>(Types, StringComparer.OrdinalIgnoreCase));
         }
@@ -678,9 +683,9 @@ public sealed class NinjaExchange(HttpClient http)
         return null;
     }
 
-    async Task<string?> GetAsync(string type, string league, CancellationToken ct)
+    async Task<string?> GetAsync(string type, string league, CancellationToken ct, string url = Url)
     {
-        try { return await http.GetStringAsync($"{Url}?league={Uri.EscapeDataString(league)}&type={type}", ct); }
+        try { return await http.GetStringAsync($"{url}?league={Uri.EscapeDataString(league)}&type={type}", ct); }
         catch (Exception) when (!ct.IsCancellationRequested) { return null; }
     }
 
@@ -706,6 +711,21 @@ public sealed class NinjaExchange(HttpClient http)
                     into.TryAdd(i, v.GetDouble());
         }
         catch (JsonException) { /* a list that did not come whole: the others still price */ }
+    }
+
+    /// <summary>poe.ninja's item lists: lines[] = {detailsId: "incandescent-invitation", chaosValue: 87.5} — the same ids as the trade's exchange.</summary>
+    public static void ReadStash(string json, Dictionary<string, double> into)
+    {
+        try
+        {
+            using var doc = JsonDocument.Parse(json);
+            if (!doc.RootElement.TryGetProperty("lines", out var lines) || lines.ValueKind != JsonValueKind.Array) return;
+            foreach (var l in lines.EnumerateArray())
+                if (l.TryGetProperty("detailsId", out var id) && id.GetString() is { Length: > 0 } i
+                    && l.TryGetProperty("chaosValue", out var v) && v.ValueKind == JsonValueKind.Number && v.GetDouble() > 0)
+                    into.TryAdd(i, v.GetDouble());
+        }
+        catch (JsonException) { }
     }
 }
 

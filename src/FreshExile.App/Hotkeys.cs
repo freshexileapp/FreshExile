@@ -73,7 +73,7 @@ public sealed record HotkeyBinding(ModifierKeys Mods, Key Key)
 
 public static class HotkeyActions
 {
-    public const string Main = "main", Tree = "tree", Through = "through", Prev = "prev", Next = "next", Compact = "compact", Price = "price", Search = "search";
+    public const string Main = "main", Tree = "tree", Through = "through", Prev = "prev", Next = "next", Compact = "compact", Price = "price", Search = "search", Merc = "merc";
 
     public static readonly (string Id, string Title, string Default)[] All =
     [
@@ -86,6 +86,7 @@ public static class HotkeyActions
         // not Ctrl+D: Awakened PoE Trade and Scalpel take it by default, and players often run one of them
         (Price, Loc.T("Прайс-чек предмета"), "Ctrl+Alt+D"),
         (Search, Loc.T("Поиск на трейде по названию"), "Ctrl+Alt+F"),
+        (Merc, Loc.T("Прайс-чек наёмника по его окну"), "Ctrl+Alt+M"),
     ];
 }
 

@@ -63,7 +63,7 @@ public sealed partial class MainViewModel
         FlashVendorSearchButton(_vendorSearch.Count == 1 ? Loc.T("Скопировано ✓") : Loc.T($"Часть {part + 1} из {_vendorSearch.Count} ✓"));
     }
 
-    static bool TrySetClipboard(string text)
+    internal static bool TrySetClipboard(string text)
     {
         // another program can hold the clipboard for a moment
         for (var i = 0; i < 3; i++)

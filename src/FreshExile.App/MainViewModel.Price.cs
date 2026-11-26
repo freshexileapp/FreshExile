@@ -40,6 +40,26 @@ public sealed partial class MainViewModel
         return await PreparePriceCheckAsync(item, pick);
     }
 
+    /// <summary>The in-game mercenary window, cut out of a capture: read and priced as a warrant of its build.</summary>
+    public async Task<(PriceCheckViewModel? Vm, string? Error)> PrepareMercenaryCheckAsync(Pixels window)
+    {
+        MercReading reading;
+        try { reading = await MercScan.ReadAsync(_http, window); }
+        catch (Exception ex)
+        {
+            Log.Write("merc scan failed: " + ex.Message);
+            return (null, Loc.T("Не получилось прочитать окно наёмника."));
+        }
+        if (reading.Warrant.Skills.Count == 0)
+            return (null, Loc.T("Не нашёл умений наёмника. Открой его окно в игре и обведи целиком кнопкой наёмника в панели."));
+        var item = new GameItem
+        {
+            ItemClass = "Map Fragments", RarityText = "Normal", Rarity = ItemRarity.Normal, BaseType = "Mercenary Warrant",
+            Name = reading.Warrant.Mercenary, Warrant = reading.Warrant,
+        };
+        return await PreparePriceCheckAsync(item);
+    }
+
     const int MaxRecentSearches = 10;
 
     /// <summary>A name picked in the search window goes on top of the recent ones.</summary>

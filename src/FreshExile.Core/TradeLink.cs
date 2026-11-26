@@ -31,6 +31,20 @@ public sealed partial class TradeLink
 
     readonly HashSet<string> _types = new(StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>A stat's exact text (lowercase) → id, per kind: a mercenary's "Faster Attacks (Tier 2)" is not "Lesser Faster Attacks (Tier 1)".</summary>
+    readonly Dictionary<string, Dictionary<string, string>> _exact = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>A mercenary build as a warrant names it ("Cardinal") → the site's type ("AurasMinionsTemplarStaff").</summary>
+    readonly Dictionary<string, string> _warrants = new(StringComparer.OrdinalIgnoreCase);
+
+    /// <summary>The stat whose text is exactly this one; numbers count.</summary>
+    public string? StatIdExact(string kind, string text) =>
+        _exact.TryGetValue(kind, out var map) && map.TryGetValue(text.Trim(), out var id) ? id : null;
+
+    /// <summary>The trade type of a warrant of this build: {"option": "AurasMinionsTemplarStaff", "discriminator": "mercenary_warrant"}.</summary>
+    public JsonNode? WarrantType(string build) =>
+        _warrants.TryGetValue(build, out var type) ? new JsonObject { ["option"] = type, ["discriminator"] = "mercenary_warrant" } : null;
+
     /// <summary>
     /// The trade site's type for a name: the name itself when the site knows it, else the longest known type inside it,
     /// whole words only ("Greater Engorged Eye" → "Engorged Eye"); the name as it is when nothing fits.
@@ -92,7 +106,10 @@ public sealed partial class TradeLink
     /// essences, cards, oils…; null for anything sold one by one.
     /// </summary>
     public string? ExchangeId(GameItem item) =>
-        item.BaseType.Length > 0 && _exchange.TryGetValue(item.BaseType, out var b) ? b
+        // the exchange sells plain pieces: a magic or rare map, an influenced one ("Area is influenced by The Elder"),
+        // is priced by its mods through the item search — the exchange's "Map (Tier 16)" is any white T16 for 1c
+        item.Rarity is ItemRarity.Magic or ItemRarity.Rare || (item.ItemClass == "Maps" && item.Mods.Count > 0) ? null
+        : item.BaseType.Length > 0 && _exchange.TryGetValue(item.BaseType, out var b) ? b
         : item.Name.Length > 0 && _exchange.TryGetValue(item.Name, out var n) ? n
         : null;
 
@@ -188,6 +205,10 @@ public sealed partial class TradeLink
                 {
                     _types.Add(ty);
                     AddToCatalog(e, ty, label, gems);
+                    // "Mercenary Warrant (Cardinal)", disc "mercenary_warrant": one type per build
+                    if (e.TryGetProperty("disc", out var wd) && wd.GetString() == "mercenary_warrant"
+                        && e.TryGetProperty("text", out var wt) && WarrantRx().Match(wt.GetString() ?? "") is { Success: true } wm)
+                        _warrants.TryAdd(wm.Groups[1].Value, ty);
                 }
             }
             if (!group.TryGetProperty("id", out var gid) || gid.GetString() != "gem") continue;
@@ -231,10 +252,12 @@ public sealed partial class TradeLink
             if (!_stats.TryGetValue(kind, out var map)) _stats[kind] = map = new(StringComparer.OrdinalIgnoreCase);
             if (!_local.TryGetValue(kind, out var local)) _local[kind] = local = new(StringComparer.OrdinalIgnoreCase);
             if (!_loose.TryGetValue(kind, out var loose)) _loose[kind] = loose = new(StringComparer.OrdinalIgnoreCase);
+            if (!_exact.TryGetValue(kind, out var exact)) _exact[kind] = exact = new(StringComparer.OrdinalIgnoreCase);
             foreach (var e in group.GetProperty("entries").EnumerateArray())
             {
                 var text = e.GetProperty("text").GetString() ?? "";
                 var id = e.GetProperty("id").GetString() ?? "";
+                exact.TryAdd(text, id);
                 // "(Local)" entries share the text with the global one: kept apart, armour and weapons want the local one
                 if (text.Contains(" (Local)", StringComparison.Ordinal)) local.TryAdd(Normalize(StripLocal(text)), id);
                 else
@@ -352,7 +375,9 @@ public sealed partial class TradeLink
         if (preferLocal && _local.TryGetValue(kind, out var local) && local.TryGetValue(key, out var lid)) return lid;
         if (_stats.TryGetValue(kind, out var map) && map.TryGetValue(key, out var id)) return id;
         if (_local.TryGetValue(kind, out var any) && any.TryGetValue(key, out var aid)) return aid;
-        return _loose.TryGetValue(kind, out var loose) && loose.TryGetValue(Loose(key), out var lsid) ? lsid : null;
+        if (_loose.TryGetValue(kind, out var loose) && loose.TryGetValue(Loose(key), out var lsid)) return lsid;
+        // "applies an extra -5% to Fire Resistance" is listed as "+#%": the site keeps the sign in the value
+        return key.Contains("-#", StringComparison.Ordinal) ? Find(kind, Regex.Replace(text, @"-(?=\d)", "+"), preferLocal) : null;
     }
 
     /// <summary>Every word's trailing "s" off: "gain # charges" and "gain # charge" meet.</summary>
@@ -374,6 +399,7 @@ public sealed partial class TradeLink
 
     [GeneratedRegex(@"\d+(?:\.\d+)?")] private static partial Regex NumRx();
     [GeneratedRegex(@"\s+")] private static partial Regex WsRx();
+    [GeneratedRegex(@"^Mercenary Warrant \((.+)\)$")] private static partial Regex WarrantRx();
     [GeneratedRegex(@"(?<=\w)s\b")] private static partial Regex PluralRx();
     [GeneratedRegex(@"\bAdds \d+(?:\.\d+)? to \d+", RegexOptions.IgnoreCase)] private static partial Regex AddsRx();
     [GeneratedRegex(@"Standard|Hardcore|\bHC\b|SSF|Solo|Ruthless", RegexOptions.IgnoreCase)] private static partial Regex NotTradeRx();

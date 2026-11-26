@@ -216,23 +216,24 @@
                     </Border>
                     </WrapPanel>
                     <TextBlock Grid.Row="1" Text="{l:T 'Состояние'}" FontSize="{StaticResource FsCaption}" Foreground="{StaticResource Text3}" Margin="0,8,0,0"/>
-                    <!-- two per row (a hidden one takes no cell), the captions one width, right against their segments -->
-                    <UniformGrid Grid.Row="1" Grid.Column="1" Columns="2" Grid.IsSharedSizeScope="True" HorizontalAlignment="Left">
-                    <l:TriSegment Label="{l:T 'Коррапт'}" Value="{Binding CorruptedState}" Margin="0,0,20,6"/>
-                    <l:TriSegment Label="Mirrored" Value="{Binding MirroredState}" Margin="0,0,20,6"
+                    <!-- two per row while they fit, else one under another (a grid of two cut the right one off: "не…");
+                         a hidden one takes no place, the captions one width, right against their segments -->
+                    <WrapPanel Grid.Row="1" Grid.Column="1" Grid.IsSharedSizeScope="True">
+                    <l:TriSegment Label="{l:T 'Коррапт'}" Value="{Binding CorruptedState}" Margin="0,0,14,6"/>
+                    <l:TriSegment Label="Mirrored" Value="{Binding MirroredState}" Margin="0,0,14,6"
                                   Visibility="{Binding IsEquipment, Converter={StaticResource Vis}}"/>
-                    <l:TriSegment Label="Fractured" Value="{Binding FracturedState}" Margin="0,0,20,6"
+                    <l:TriSegment Label="Fractured" Value="{Binding FracturedState}" Margin="0,0,14,6"
                                   Visibility="{Binding HasFractured, Converter={StaticResource Vis}}"/>
-                    <l:TriSegment Label="{l:T 'Неопознан'}" Value="{Binding UnidState}" Margin="0,0,20,6"
+                    <l:TriSegment Label="{l:T 'Неопознан'}" Value="{Binding UnidState}" Margin="0,0,14,6"
                                   Visibility="{Binding IsUnique, Converter={StaticResource Vis}}"/>
-                    <l:TriSegment Label="Foulborn" Value="{Binding FoulbornState}" Margin="0,0,20,6"
+                    <l:TriSegment Label="Foulborn" Value="{Binding FoulbornState}" Margin="0,0,14,6"
                                   Visibility="{Binding IsUnique, Converter={StaticResource Vis}}"/>
-                    </UniformGrid>
+                    </WrapPanel>
                 </Grid>
 
                 <l:OrnamentDivider Margin="16,6,16,2" Visibility="{Binding HasFilters, Converter={StaticResource Vis}}"/>
                 <!-- the min / max columns named once, above them -->
-                <Grid Margin="7,0,24,2" Visibility="{Binding HasFilters, Converter={StaticResource Vis}}">
+                <Grid Margin="7,0,24,2" Visibility="{Binding ShowFilterList, Converter={StaticResource Vis}}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="54"/>
@@ -245,7 +246,7 @@
 
                 <!-- filters: tick, line, tier, min, max -->
                 <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Visible" Margin="7,0,2,0"
-                              Visibility="{Binding HasFilters, Converter={StaticResource Vis}}">
+                              Visibility="{Binding ShowFilterList, Converter={StaticResource Vis}}">
                     <ItemsControl ItemsSource="{Binding Filters}" Margin="0,0,6,0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
@@ -257,7 +258,7 @@
                                         <ColumnDefinition Width="54"/>
                                     </Grid.ColumnDefinitions>
                                     <CheckBox x:Name="tick" Style="{StaticResource GemCheck}" IsChecked="{Binding Enabled}" IsEnabled="{Binding Searchable}"
-                                              ToolTip="{Binding ToolTip}">
+                                              ToolTip="{Binding ToolTip}" Margin="{Binding Indent}">
                                         <WrapPanel>
                                             <!-- "!": unticked, but this line alone can make the price -->
                                             <Border Background="{StaticResource Gold}" CornerRadius="{StaticResource RadiusS}" Width="16" Height="16" Margin="0,0,6,0" VerticalAlignment="Center"
@@ -314,10 +315,10 @@
                                     </CheckBox>
                                     <TextBox x:Name="min" Grid.Column="1" Style="{StaticResource Field}" Padding="6,4" FontSize="{StaticResource FsSmall}" FontFamily="{StaticResource MonoFont}"
                                              Tag="—" Text="{Binding MinText, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,2,0,2"
-                                             IsEnabled="{Binding Searchable}"/>
+                                             IsEnabled="{Binding Searchable}" Visibility="{Binding HasBounds, Converter={StaticResource Vis}}"/>
                                     <TextBox x:Name="max" Grid.Column="3" Style="{StaticResource Field}" Padding="6,4" FontSize="{StaticResource FsSmall}" FontFamily="{StaticResource MonoFont}"
                                              Tag="—" Text="{Binding MaxText, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Margin="0,2,0,2"
-                                             IsEnabled="{Binding Searchable}"/>
+                                             IsEnabled="{Binding Searchable}" Visibility="{Binding HasBounds, Converter={StaticResource Vis}}"/>
                                 </Grid>
                                 <DataTemplate.Triggers>
                                     <DataTrigger Binding="{Binding Enabled}" Value="False">
@@ -339,6 +340,45 @@
                                         <Setter TargetName="tier" Property="Foreground" Value="{StaticResource Text}"/>
                                     </DataTrigger>
                                 </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+
+                <!-- a warrant: one card per skill, two to a row (a row as tall as its taller card, nothing overlaps) -->
+                <ScrollViewer MaxHeight="470" VerticalScrollBarVisibility="Auto" Margin="12,6,6,0"
+                              Visibility="{Binding IsWarrant, Converter={StaticResource Vis}}">
+                    <ItemsControl ItemsSource="{Binding WarrantCards}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate><WrapPanel ItemWidth="252"/></ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}"
+                                        Padding="8,6,8,6" Margin="0,0,6,6">
+                                    <StackPanel>
+                                        <CheckBox Style="{StaticResource GemCheck}" DataContext="{Binding Skill}" IsChecked="{Binding Enabled}" IsEnabled="{Binding Searchable}"
+                                                  ToolTip="{Binding ToolTip}">
+                                            <TextBlock Text="{Binding Label}" FontSize="{StaticResource FsSmall}" FontWeight="SemiBold" Foreground="{StaticResource Accent}"
+                                                       TextTrimming="CharacterEllipsis"/>
+                                        </CheckBox>
+                                        <ItemsControl ItemsSource="{Binding Supports}" Margin="2,3,0,0" Visibility="{Binding HasSupports, Converter={StaticResource Vis}}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox Style="{StaticResource GemCheck}" IsChecked="{Binding Enabled}" IsEnabled="{Binding Searchable}" Margin="0,1,0,0"
+                                                              ToolTip="{Binding Label}">
+                                                        <DockPanel>
+                                                            <TextBlock DockPanel.Dock="Right" Text="{Binding ShortTier}" FontSize="10" Foreground="{StaticResource Text3}"
+                                                                       VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                            <TextBlock Text="{Binding ShortLabel}" FontSize="{StaticResource FsCaption}" Foreground="{Binding Brush}"
+                                                                       TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
+                                                        </DockPanel>
+                                                    </CheckBox>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
@@ -386,7 +426,18 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <!-- art | price | seller and item | how long ago, all centred in the row -->
-                                <Border Background="{StaticResource Surface}" CornerRadius="{StaticResource RadiusM}" Padding="8,6,6,6" Margin="0,0,0,4">
+                                <Border CornerRadius="{StaticResource RadiusM}" Padding="8,6,6,6" Margin="0,0,0,4" ToolTip="{Binding BaitTip}">
+                                    <!-- a bait lot ("13c" among sellers asking a divine) is greyed: not the price, likely gone or fake -->
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="Background" Value="{StaticResource Surface}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsBait}" Value="True">
+                                                    <Setter Property="Opacity" Value="0.45"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="34"/>

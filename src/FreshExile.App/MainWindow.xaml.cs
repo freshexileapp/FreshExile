@@ -327,7 +327,7 @@ public partial class MainWindow : Window
         {
             if (row.Binding is not { } b) continue;
             // Ctrl+D and the like belong to other programs (a browser's bookmark): taken only while the game is in front
-            if (row.Id == HotkeyActions.Price && !_gameSide) continue;
+            if (row.Id is HotkeyActions.Price or HotkeyActions.Merc && !_gameSide) continue;
             Action action = row.Id switch
             {
                 HotkeyActions.Main => ToggleVisible,
@@ -337,6 +337,7 @@ public partial class MainWindow : Window
                 HotkeyActions.Compact => ToggleCompact,
                 HotkeyActions.Price => () => _ = RunPriceCheckAsync(),
                 HotkeyActions.Search => () => _ = OpenSearchAsync(),
+                HotkeyActions.Merc => () => _ = RunMercCheckAsync(pick: false),
                 _ => () => _vm.StepStage(1),
             };
             var ok = _hotkeys.Register(b.NativeMods, b.Key, action);
@@ -352,6 +353,59 @@ public partial class MainWindow : Window
     /// The panel steps aside meanwhile, so the two do not lie on top of each other, and is back when settings close.
     /// </summary>
     void Settings_Click(object sender, RoutedEventArgs e) => OpenSettings();
+
+    void Merc_Click(object sender, RoutedEventArgs e) => _ = RunMercCheckAsync(pick: true);
+
+    /// <summary>
+    /// The mercenary window priced: the screen captured, the window's rectangle picked by hand (the button, or the first
+    /// time) or the one picked before (the hotkey), read, and shown as a warrant in the price window.
+    /// </summary>
+    async Task RunMercCheckAsync(bool pick)
+    {
+        if (_priceRunning) { Log.Write("merc check: the price check is still busy"); return; }
+        _priceRunning = true;
+        try
+        {
+            if (GameFocus.Front() == FrontWindow.Game) _gameWindow = GameInput.GetForegroundWindow();
+            byte[] screen;
+            int w, h;
+            using (var cap = new ScreenCapture())
+            {
+                var (bytes, cw, ch) = cap.Capture();
+                screen = (byte[])bytes.Clone();
+                (w, h) = (cw, ch);
+            }
+            Int32Rect region;
+            if (!pick && _vm.State.MercRegion is [var x, var y, var rw, var rh]) region = new Int32Rect(x, y, rw, rh);
+            else
+            {
+                var picked = await RegionPickWindow.PickAsync(screen, w, h, Loc.T("Обведи окно наёмника мышкой: имя сверху, умения с саппортами снизу · Esc — отмена"));
+                if (picked is not { } r) { Log.Write("merc check: no region picked"); return; }
+                region = r;
+                _vm.State.MercRegion = [r.X, r.Y, r.Width, r.Height];
+                _vm.SaveState();
+            }
+            Log.Write($"merc check: region {region.X},{region.Y} {region.Width}x{region.Height}");
+            _price ??= new PriceCheckWindow();
+            var (vm, error) = await _vm.PrepareMercenaryCheckAsync(MercScan.Crop(screen, w, h, region));
+            if (vm == null) { _price.ShowMessage(error ?? "", _gameWindow); return; }
+            _price.ShowCheck(vm, _gameWindow);
+            if (_vm.PriceAutoSearch && vm.CanRequest) await vm.SearchAsync();
+        }
+        catch (Exception ex)
+        {
+            Log.Write("merc check failed: " + ex.Message);
+        }
+        finally { _priceRunning = false; }
+    }
+
+    MapRegexWindow? _mapRegex;
+
+    void MapRegex_Click(object sender, RoutedEventArgs e)
+    {
+        _mapRegex ??= new MapRegexWindow(new MapRegexViewModel(_vm.State.MapRegex, _vm.SaveState));
+        _mapRegex.ShowBeside(this, _gameWindow);
+    }
 
     public void OpenSettings()
     {

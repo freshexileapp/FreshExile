@@ -10,6 +10,27 @@ public sealed class WindowPlacement
     public double Height { get; set; }
 }
 
+/// <summary>
+/// The map regex window's picks. Mods are kept by their text, not their row: a new league's MapMods.tsv may reorder
+/// them, and a mod gone from the game simply drops out.
+/// </summary>
+public sealed class MapRegexState
+{
+    public string Name { get; set; } = "";
+    public List<string> Avoid { get; set; } = new();
+    public List<string> Want { get; set; } = new();
+    public bool WantAll { get; set; }
+    /// <summary>"Quantity" → 80: the property block's totals, at least so many percent.</summary>
+    public Dictionary<string, int> Totals { get; set; } = new();
+    public bool? Corrupted { get; set; }
+    public bool? Unidentified { get; set; }
+    public bool Normal { get; set; }
+    public bool Magic { get; set; }
+    public bool Rare { get; set; }
+    /// <summary>Saved sets, by name (only on the window's own state, not inside a set).</summary>
+    public List<MapRegexState> Presets { get; set; } = new();
+}
+
 public sealed class AppState
 {
     /// <summary>Interface language, "ru" or "en"; null until the first start picks it from Windows.</summary>
@@ -137,6 +158,10 @@ public sealed class AppState
     public bool Compact { get; set; }
 
     public double TreeBgOpacity { get; set; } = 0.97;
+    /// <summary>The map regex window: what is picked now and the saved sets.</summary>
+    public MapRegexState MapRegex { get; set; } = new();
+    /// <summary>Where the mercenary window was picked on the screen, in pixels: x, y, width, height.</summary>
+    public int[]? MercRegion { get; set; }
     public WindowPlacement? Main { get; set; }
 
     /// <summary>Where the mini tracker sits; independent of the full panel.</summary>

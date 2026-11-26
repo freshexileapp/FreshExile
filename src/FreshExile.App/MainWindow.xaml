@@ -141,6 +141,10 @@
                     </TextBlock>
                 </DockPanel>
                 <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- the mercenary window priced: pick its rectangle on the screen (then Ctrl+Alt+M reads the same place) -->
+                    <Button Style="{StaticResource IconButton}" Content="&#xE7EE;" ToolTip="{l:T 'Прайс-чек наёмника: обведи его окно в игре мышкой. Потом то же место читает Ctrl+Alt+M'}" Click="Merc_Click"/>
+                    <!-- the map regex builder: a string for the stash / map device search -->
+                    <Button Style="{StaticResource IconButton}" Content="&#xE71C;" ToolTip="{l:T 'Regex карт: строка поиска для тайника и устройства карт'}" Click="MapRegex_Click"/>
                     <Button Style="{StaticResource IconButton}" Content="&#xE713;" ToolTip="{l:T 'Настройки'}" Click="Settings_Click"/>
                     <!-- X folds into the mini tracker; the app itself closes from the footer -->
                     <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}" ToolTip="{l:T 'Свернуть в мини'}" Click="Collapse_Click"/>

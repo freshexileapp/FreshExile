@@ -106,6 +106,19 @@ static class UiShots
         enc.Save(f);
     }
 
+    /// <summary>A window drawn far off the screen, never seen, then closed.</summary>
+    public static void SaveOffScreen(Window w, string path)
+    {
+        w.ShowActivated = false;
+        w.WindowStartupLocation = WindowStartupLocation.Manual;
+        w.Left = -20000;
+        w.Top = -20000;
+        w.Show();
+        w.Dispatcher.Invoke(() => { }, DispatcherPriority.ApplicationIdle);
+        Save(w, path);
+        w.Close();
+    }
+
     static void Save(Window w, string path)
     {
         if (!w.IsVisible || w.ActualWidth < 1 || w.ActualHeight < 1) return;

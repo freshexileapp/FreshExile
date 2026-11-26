@@ -32,6 +32,10 @@ public sealed class PriceFilter
     /// shown with a "!" so the player tries the search with it. Null for an ordinary line.
     /// </summary>
     public string? Hint { get; set; }
+    /// <summary>A word beside the line in place of its kind: a warrant's "умение".</summary>
+    public string? Note { get; init; }
+    /// <summary>Shown under the line before it: a warrant's support under its skill.</summary>
+    public bool Nested { get; init; }
     public bool Searchable => Kind != PriceFilterKind.Stat || StatId != null;
 }
 
@@ -119,6 +123,7 @@ public sealed partial class PriceCheck
         var filters = new List<PriceFilter>();
         var rareish = item.Rarity is ItemRarity.Rare or ItemRarity.Magic;
         var unique = item.Rarity == ItemRarity.Unique;
+        var normal = item.Rarity == ItemRarity.Normal && !item.IsGem && item.MapTier == null;
         // a magic item nobody can change any more is worth exactly what it rolled
         var exact = item.Rarity == ItemRarity.Magic && (item.Corrupted || item.Mirrored);
         var spread = 100 - strictness;
@@ -130,6 +135,8 @@ public sealed partial class PriceCheck
             f.Min ??= f.DefaultMin;
             filters.Add(f);
         }
+
+        if (item.Warrant is { } warrant) return ForWarrant(item, warrant, trade, filters, Add);
 
         if (item.HasDefences && !item.IsGem)
         {
@@ -231,6 +238,8 @@ public sealed partial class PriceCheck
 
         // tiers come with the advanced copy (always, from the hotkey); a plain copy pasted by hand falls back to a list
         var hasTiers = mods.Any(m => m.Tier != null);
+        var gear = category != null && (category.StartsWith("armour.", StringComparison.Ordinal) || category.StartsWith("weapon", StringComparison.Ordinal)
+                                        || category.StartsWith("accessory", StringComparison.Ordinal) || category.StartsWith("jewel", StringComparison.Ordinal));
         var localSlot = category != null && (category.StartsWith("armour.", StringComparison.Ordinal) || category.StartsWith("weapon", StringComparison.Ordinal));
         // a cluster jewel is its enchant ("Adds 8", sockets, what the small passives grant) and its notables
         var cluster = item.BaseType.EndsWith("Cluster Jewel", StringComparison.OrdinalIgnoreCase);
@@ -263,6 +272,10 @@ public sealed partial class PriceCheck
                 : m.Kind != ModKind.Crafted && ValuableRx().IsMatch(m.Text);
             var enabled = map ? id != null && m.Kind == ModKind.Implicit
                 : id != null && rareish && m.Kind is not (ModKind.Implicit or ModKind.Enchant) && !covered && good;
+            // a plain base out of a league mechanic (a Viscera's "Greater Flaming Furnace"): its rolled implicit is
+            // all it is sold for. Gear's implicits are fixed by the base and searched with it
+            if (normal && id != null && m.Kind == ModKind.Implicit && !gear && m.Range is { } r0 && ParseRange(r0) is (double a0, double b0) && a0 != b0)
+                enabled = true;
             // a line with no number (an immunity, "cannot be Frozen") or a known big one: not ticked, but flagged.
             // A unique's fixed lines are the same on every copy, so they say nothing about this one's price.
             var hint = id != null && !enabled && !unique && !map && !covered && (m.Value == null || NotableRx().IsMatch(m.Text))
@@ -283,6 +296,13 @@ public sealed partial class PriceCheck
             else if (unique && rolled && m.Value is double v)
                 // a unique: the minimum comes off the roll range, not off the value; a perfect roll is searched as it is
                 min = v >= hi ? v : Math.Max(lo!.Value, Math.Floor(v - (hi!.Value - lo!.Value) * spread / 100.0));
+            else if (m.Value is double neg && neg < 0)
+            {
+                // "applies an extra -5% to Fire Resistance": the site keeps the sign, and the stronger roll is the lower
+                // number (-6 beats -4), so it is a maximum: as strong as this one or stronger
+                min = null;
+                max = -Min(-neg);
+            }
             else
                 min = Min(m.Value);
 
@@ -360,6 +380,27 @@ public sealed partial class PriceCheck
         return check;
     }
 
+    /// <summary>
+    /// A Mercenary Warrant: the build is its type, every skill ticked (a mercenary is bought for what it casts), each
+    /// support unticked, to add the ones that make this one better than the rest. The site does not tell which skill a
+    /// support sits under: a support is searched anywhere on the warrant.
+    /// </summary>
+    static PriceCheck ForWarrant(GameItem item, MercenaryWarrant w, TradeLink trade, List<PriceFilter> filters, Action<PriceFilter> add)
+    {
+        foreach (var skill in w.Skills)
+        {
+            var id = trade.StatIdExact("mercenary", skill.Name);
+            // ModKind's default is Implicit: said outright, or the window labels every line "имплисит"
+            add(new PriceFilter { Label = skill.Name, StatId = id, ModKind = ModKind.Explicit, Enabled = id != null, Shown = true, Note = Loc.T("умение") });
+            foreach (var sup in skill.Supports)
+                add(new PriceFilter
+                {
+                    Label = sup.TradeText, StatId = trade.StatIdExact("mercenary", sup.TradeText), ModKind = ModKind.Explicit, Enabled = false, Shown = true, Nested = true,
+                });
+        }
+        return new PriceCheck(item, filters, null);
+    }
+
     public const string EmptyPrefixStat = "pseudo.pseudo_number_of_empty_prefix_mods";
     public const string EmptySuffixStat = "pseudo.pseudo_number_of_empty_suffix_mods";
 
@@ -394,6 +435,7 @@ public sealed partial class PriceCheck
             query["type"] = item.BaseType;
         }
         else if (item.IsGem) query["type"] = trade.GemType(item.BaseType);
+        else if (item.Warrant is { } w && trade.WarrantType(w.Build) is { } warrantType) query["type"] = warrantType;
         else if ((UseBase || BaseOnly) && item.BaseType.Length > 0) query["type"] = trade.TypeFor(item.BaseType);
         var typeF = new JsonObject();
         if (query["type"] == null && Category != null) typeF["category"] = Opt(Category);
@@ -513,6 +555,21 @@ public sealed partial class PriceCheck
 
         static JsonObject Group(JsonObject f) => new() { ["filters"] = f };
         static JsonObject Opt(string v) => new() { ["option"] = v };
+    }
+
+    /// <summary>
+    /// How many of the cheapest bulk offers (sorted, chaos per piece) are bait, not a price: far below the market rate,
+    /// or with no rate far below the middle of the list ("13c" among sellers asking 1 div). Such a lot is gone or fake
+    /// by the time one whispers, and the "from" answer should not rest on it. Never all of them.
+    /// </summary>
+    public static int BaitCount(IReadOnlyList<double> sortedChaos, double? marketChaos)
+    {
+        var reference = marketChaos is > 0 ? marketChaos.Value
+            : sortedChaos.Count >= 4 ? sortedChaos[sortedChaos.Count / 2] : 0;
+        if (reference <= 0) return 0;
+        var n = 0;
+        while (n < sortedChaos.Count - 1 && sortedChaos[n] < reference * 0.4) n++;
+        return n;
     }
 
     /// <summary>Item Class line → trade category; null for things searched by base alone.</summary>

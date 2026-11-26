@@ -35,11 +35,19 @@ public sealed class PriceFilterVm(PriceFilter f) : Observable
     public bool HasTier => Filter.Tier != null;
     public string? RangeText => Filter.Range is { } r ? $"({r})" : null;
     public bool HasRange => Filter.Range != null;
-    /// <summary>" (7–10)" at the end of the line's text, an en dash between the numbers.</summary>
-    public string RangeSuffix => Filter.Range is { } r ? " (" + System.Text.RegularExpressions.Regex.Replace(r, @"(\d)-(\d|-)", "$1–$2") + ")" : "";
+    /// <summary>
+    /// " (7–10)" at the end of the line's text, an en dash between the numbers; a negative range as " (−6 … −4)":
+    /// "-6–-4" ran the dash into the minus and read as "-6—4".
+    /// </summary>
+    public string RangeSuffix => Filter.Range is { } r && System.Text.RegularExpressions.Regex.Match(r, @"^(-?[\d.]+)-(-?[\d.]+)$") is { Success: true } m
+        ? m.Groups[1].Value.StartsWith('-') || m.Groups[2].Value.StartsWith('-')
+            ? $" ({m.Groups[1].Value.Replace('-', '−')} … {m.Groups[2].Value.Replace('-', '−')})"
+            : $" ({m.Groups[1].Value}–{m.Groups[2].Value})"
+        : Filter.Range is { } raw ? $" ({raw})" : "";
     public bool IsTopTier => Filter.Tier is 1 or 2;
     public string KindText => Filter.ModKind switch
     {
+        _ when Filter.Note != null => Filter.Note,
         _ when Filter.IsPseudo || Filter.Kind != PriceFilterKind.Stat => "",
         ModKind.Implicit => Loc.T("имплисит"),
         ModKind.Crafted => Loc.T("крафт"),
@@ -48,6 +56,14 @@ public sealed class PriceFilterVm(PriceFilter f) : Observable
         _ => "",
     };
     public bool HasKind => KindText.Length > 0;
+    /// <summary>A warrant support without its "(Tier 3)", which goes to <see cref="ShortTier"/> as "T3".</summary>
+    public string ShortLabel => TierSuffixRx.Match(Label) is { Success: true } m ? Label[..m.Index] : Label;
+    public string ShortTier => TierSuffixRx.Match(Label) is { Success: true } m ? "T" + m.Groups[1].Value : "";
+    static readonly System.Text.RegularExpressions.Regex TierSuffixRx = new(@" \(Tier (\d+)\)$");
+    /// <summary>A warrant's support sits under its skill.</summary>
+    public System.Windows.Thickness Indent => Filter.Nested ? new(24, 0, 0, 0) : default;
+    /// <summary>Min / max boxes only for a line with a number: a skill or "cannot be Frozen" has nothing to bound.</summary>
+    public bool HasBounds => Filter.Kind != PriceFilterKind.Stat || Filter.Value != null || Filter.Min != null || Filter.Max != null;
 
     /// <summary>A cluster notable under the "Под мой билд" card: "из билда" (required) or "в «любой из N»" (counted there).</summary>
     public string? ClusterTag { get; set; }
@@ -94,6 +110,14 @@ public sealed class PriceFilterVm(PriceFilter f) : Observable
 }
 
 /// <summary>One offer: price, seller, how long ago it was listed.</summary>
+/// <summary>A warrant skill's card: the skill line and its supports.</summary>
+public sealed class WarrantCardVm(PriceFilterVm skill)
+{
+    public PriceFilterVm Skill { get; } = skill;
+    public List<PriceFilterVm> Supports { get; } = [];
+    public bool HasSupports => Supports.Count > 0;
+}
+
 public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? check = null, TopMods? top = null) : Observable
 {
     static readonly Brush Ahead = Frozen(0x4A, 0xDE, 0x80);
@@ -240,8 +264,22 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
         l.Currency == "divine" && divineChaos is double d ? $"≈ {Math.Round(l.Amount * d)}c" : null,
     }.Where(x => !string.IsNullOrEmpty(x)));
 
-    /// <summary>The price in chaos for ranking offers in different currencies; the listed amount when no rate is known.</summary>
-    public double UnitChaos { get; } = l.Currency == "divine" && divineChaos is double r ? l.Amount * r : l.Amount;
+    bool _bait;
+    /// <summary>Far below the market and the other sellers: shown greyed, not taken for the "from" price.</summary>
+    public bool IsBait { get => _bait; set { if (Set(ref _bait, value)) Raise(nameof(BaitTip)); } }
+    public string? BaitTip => _bait ? Loc.T("Подозрительно дешёво: намного ниже рынка и остальных продавцов — скорее приманка или уже продано. В цену «от» не взят") : null;
+
+    /// <summary>
+    /// The price in chaos for ranking offers in different currencies. Only chaos and divine are known here: any other
+    /// currency ranks last ("1 mirror" read as 1 chaos made the cheapest of a list that began at 50 chaos), the site
+    /// already sends the offers cheapest first by its own rates.
+    /// </summary>
+    public double UnitChaos { get; } = l.Currency switch
+    {
+        "chaos" => l.Amount,
+        "divine" => divineChaos is double r ? l.Amount * r : l.Amount,
+        _ => double.PositiveInfinity,
+    };
 
     static string Amount(double v) => v.ToString(v < 1 ? "0.###" : "0.##", CultureInfo.InvariantCulture);
 
@@ -392,7 +430,9 @@ public sealed class PriceCheckViewModel : Observable
     }
 
     public string Title => Item.Title;
-    public string? BaseLine => Item.Name.Length > 0 && Item.BaseType != Item.Name ? Item.BaseType : null;
+    public string? BaseLine => Item.Warrant is { } w
+        ? Loc.T($"{Item.BaseType} · {w.Build} · ур. {w.Level}")
+        : Item.Name.Length > 0 && Item.BaseType != Item.Name ? Item.BaseType : null;
     public bool HasBaseLine => BaseLine != null;
 
     /// <summary>"свободно: 1 префикс · 2 суффикса" — room for a craft or an exalt; null when the copy does not tell.</summary>
@@ -434,8 +474,15 @@ public sealed class PriceCheckViewModel : Observable
 
     string? _lowest;
     /// <summary>The cheapest offer found: the answer at a glance.</summary>
-    public string? LowestText { get => _lowest; private set { Set(ref _lowest, value); Raise(nameof(HasLowest)); } }
+    public string? LowestText { get => _lowest; private set { Set(ref _lowest, value); Raise(nameof(HasLowest)); Raise(nameof(HistoryPrice)); } }
     public bool HasLowest => !string.IsNullOrEmpty(_lowest);
+
+    /// <summary>The answer in the history column: the market rate for currency and the like, else the cheapest offer, else poe.ninja.</summary>
+    public string? HistoryPrice => IsMarketPrice ? NinjaText : LowestText ?? NinjaText;
+
+    bool _current;
+    /// <summary>This check is the one open in the window: its history entry is marked.</summary>
+    public bool IsCurrent { get => _current; set => Set(ref _current, value); }
 
     public Brush RarityBrush => Item.Rarity switch
     {
@@ -450,6 +497,23 @@ public sealed class PriceCheckViewModel : Observable
 
     public ObservableCollection<PriceFilterVm> Filters { get; }
     public bool HasFilters => Filters.Count > 0;
+    /// <summary>The plain list of lines; a warrant shows <see cref="WarrantCards"/> instead.</summary>
+    public bool ShowFilterList => HasFilters && !IsWarrant;
+    public bool IsWarrant => Item.Warrant != null;
+
+    /// <summary>A warrant's skills as cards, two to a row: the skill's tick on top, its supports under it.</summary>
+    public IReadOnlyList<WarrantCardVm> WarrantCards => _cards ??= BuildCards();
+    IReadOnlyList<WarrantCardVm>? _cards;
+
+    IReadOnlyList<WarrantCardVm> BuildCards()
+    {
+        var cards = new List<WarrantCardVm>();
+        if (!IsWarrant) return cards;
+        foreach (var f in Filters)
+            if (!f.Filter.Nested || cards.Count == 0) cards.Add(new WarrantCardVm(f));
+            else cards[^1].Supports.Add(f);
+        return cards;
+    }
     public ObservableCollection<ListingVm> Listings { get; } = new();
 
     #region Chips
@@ -654,12 +718,17 @@ public sealed class PriceCheckViewModel : Observable
             if (_art != null && art != null) _ = LoadArtAsync(l, art);
             LoadCurrencyArt(l);
         }
-        if (Listings.Count > 0) LowestText = Loc.T($"от {Listings[0].Price} {Listings[0].Currency}");
         Status = Listings.Count == 0 ? Loc.T("На трейде никто не продаёт — смотри рыночный курс") : Loc.T($"Обмен на трейде: продавцов {_exchange.Total}");
+        // a lone "13c" among sellers asking a divine is bait: the answer rests on the first real offer, the bait is greyed
+        var bait = PriceCheck.BaitCount(Listings.Select(r => r.UnitChaos).ToList(), _ninja is { Market: true } mk ? mk.Chaos : null);
+        for (var i = 0; i < bait; i++) Listings[i].IsBait = true;
+        if (bait > 0) Status += Loc.T($" · подозрительно дешёвых лотов: {bait}");
+        var first = Listings.Count > bait ? Listings[bait] : null;
+        if (first != null) LowestText = Loc.T($"от {first.Price} {first.Currency}");
         // the trade's few bulk sellers often ask far above the in-game exchange: said plainly, not left to a guess
-        if (Listings.Count > 0 && _ninja is { Market: true } m && Listings[0].UnitChaos > m.Chaos * 1.5)
+        if (first != null && _ninja is { Market: true } m && first.UnitChaos > m.Chaos * 1.5)
         {
-            Status += Loc.T($" · на трейде в {Listings[0].UnitChaos / m.Chaos:0.#} раза дороже рынка");
+            Status += Loc.T($" · на трейде в {first.UnitChaos / m.Chaos:0.#} раза дороже рынка");
             // the gold chip is "the answer": a few overpriced sellers are not, the market rate beside it is
             LowestText = null;
         }

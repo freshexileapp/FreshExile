@@ -19,6 +19,10 @@
     <EmbeddedResource Include="Data/ModTiers.tsv" LogicalName="ModTiers.tsv" />
     <!-- mod lines of the influences (eldritch implicits, Shaper / Elder / conqueror explicits): tools/update-influence-mods.ps1 -->
     <EmbeddedResource Include="Data/InfluenceMods.tsv" LogicalName="InfluenceMods.tsv" />
+    <!-- the mods a map rolls, for the map regex window: tools/update-map-mods.ps1 -->
+    <EmbeddedResource Include="Data/MapMods.tsv" LogicalName="MapMods.tsv" />
+    <!-- mercenary builds, skills and the supports each skill can carry: tools/update-merc-data.ps1 -->
+    <EmbeddedResource Include="Data/Mercenaries.tsv" LogicalName="Mercenaries.tsv" />
     <!-- the interface in English, keyed by its Russian text: see Loc -->
     <EmbeddedResource Include="Data/en.json" LogicalName="en.json" />
   </ItemGroup>

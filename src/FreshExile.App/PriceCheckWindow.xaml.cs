@@ -17,11 +17,15 @@ public partial class PriceCheckWindow : Window
         SourceInitialized += (_, _) => Native.SetToolWindow(this);
         PreviewKeyDown += (_, e) => { if (e.Key == Key.Escape) { e.Handled = true; CloseAndReturn(); } };
         // offers arrive after the window is placed: it grows, and must not run off the bottom of the screen
-        SizeChanged += (_, _) => { KeepOnScreen(); _compare?.Place(this); };
-        LocationChanged += (_, _) => _compare?.Place(this);
+        SizeChanged += (_, _) => { KeepOnScreen(); _compare?.Place(this); _history?.Place(this); };
+        LocationChanged += (_, _) => { _compare?.Place(this); _history?.Place(this); };
     }
 
     CompareWindow? _compare;
+    PriceHistoryWindow? _history;
+    const int MaxHistory = 12;
+    /// <summary>The session's checks, newest first; each keeps its offers, so going back costs no trade request.</summary>
+    readonly System.Collections.ObjectModel.ObservableCollection<PriceCheckViewModel> _checks = new();
     PriceCheckViewModel? _vm;
     bool _away;
 
@@ -32,7 +36,7 @@ public partial class PriceCheckWindow : Window
     public void SetAway(bool away)
     {
         _away = away;
-        foreach (var w in new Window?[] { this, _compare })
+        foreach (var w in new Window?[] { this, _compare, _history })
         {
             if (w == null) continue;
             w.Opacity = away ? 0 : 1;
@@ -69,12 +73,46 @@ public partial class PriceCheckWindow : Window
     public void ShowCheck(PriceCheckViewModel vm, IntPtr game)
     {
         _game = game;
+        Remember(vm);
         Bind(vm);
         DataContext = vm;
         Links.Visibility = Visibility.Visible;
         MessageText.Visibility = Visibility.Collapsed;
         Body.Visibility = Visibility.Visible;
         Present();
+        ShowHistory();
+    }
+
+    /// <summary>A new check on top of the history; the same item checked again replaces its older entry.</summary>
+    void Remember(PriceCheckViewModel vm)
+    {
+        var old = _checks.FirstOrDefault(c => c != vm && c.Title == vm.Title && c.BaseLine == vm.BaseLine);
+        if (old != null) _checks.Remove(old);
+        if (!_checks.Contains(vm)) _checks.Insert(0, vm);
+        while (_checks.Count > MaxHistory) _checks.RemoveAt(_checks.Count - 1);
+        foreach (var c in _checks) c.IsCurrent = c == vm;
+    }
+
+    /// <summary>The history column beside the window, once there is something to go back to.</summary>
+    void ShowHistory()
+    {
+        if (_checks.Count < 2) { _history?.Hide(); return; }
+        if (_history == null)
+        {
+            _history = new PriceHistoryWindow(_checks);
+            _history.Picked += Reopen;
+        }
+        _history.Opacity = _away ? 0 : 1;
+        _history.IsHitTestVisible = !_away;
+        _history.ShowBeside(this);
+    }
+
+    /// <summary>An older check back in the window as it was; the request pause is the newest one's, not its own old one.</summary>
+    void Reopen(PriceCheckViewModel vm)
+    {
+        if (vm == _vm) return;
+        vm.InheritCooldown(_checks.Max(c => c.ReadyAt));
+        ShowCheck(vm, _game);
     }
 
     /// <summary>No item under the mouse, the trade site is down…: one line instead of the filters.</summary>
@@ -82,6 +120,7 @@ public partial class PriceCheckWindow : Window
     {
         _game = game;
         Bind(null);
+        _history?.Hide();
         DataContext = new MessageHeader();
         Links.Visibility = Visibility.Collapsed;
         MessageText.Text = text;
@@ -115,6 +154,7 @@ public partial class PriceCheckWindow : Window
     {
         _vm?.CloseCompare();
         _compare?.Hide();
+        _history?.Hide();
         Hide();
         if (_game != IntPtr.Zero) GameInput.SetForegroundWindow(_game);
     }

@@ -54,6 +54,37 @@ public partial class App : Application
         catch (Exception ex) { Log.Write("warning: display font check failed: " + ex.Message); }
     }
 
+    async Task ShotMercAsync(MainViewModel vm, string file, string png, bool search)
+    {
+        try
+        {
+            var frame = new System.Windows.Media.Imaging.FormatConvertedBitmap(
+                System.Windows.Media.Imaging.BitmapFrame.Create(new Uri(System.IO.Path.GetFullPath(file))), System.Windows.Media.PixelFormats.Bgra32, null, 0);
+            var px = new byte[frame.PixelWidth * frame.PixelHeight * 4];
+            frame.CopyPixels(px, frame.PixelWidth * 4, 0);
+            var crop = MercScan.Crop(px, frame.PixelWidth, frame.PixelHeight, new Int32Rect(0, 0, frame.PixelWidth, frame.PixelHeight));
+            var (check, error) = await vm.PrepareMercenaryCheckAsync(crop);
+            if (check == null) { Log.Write("shot-merc: " + error); return; }
+            if (search && check.CanRequest) await check.SearchAsync();
+            UiShots.SaveOffScreen(new PriceCheckWindow { DataContext = check }, png);
+        }
+        catch (Exception ex) { Log.Write("shot-merc failed: " + ex.Message); }
+        finally { Shutdown(); }
+    }
+
+    async Task ShotPriceAsync(MainViewModel vm, string text, string png, bool search)
+    {
+        try
+        {
+            var (check, error) = await vm.PreparePriceCheckAsync(text);
+            if (check == null) { Log.Write("shot-price: " + error); return; }
+            if (search && check.CanRequest) await check.SearchAsync();
+            UiShots.SaveOffScreen(new PriceCheckWindow { DataContext = check }, png);
+        }
+        catch (Exception ex) { Log.Write("shot-price failed: " + ex.Message); }
+        finally { Shutdown(); }
+    }
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -94,8 +125,35 @@ public partial class App : Application
         Loc.Use(state.Language);
         UiScale.Set(state.UiScale);
 
+        // QA: "--shot-map-regex=<png>" draws the map regex window off screen and quits: no overlay over a running game
+        if (e.Args.FirstOrDefault(a => a.StartsWith("--shot-map-regex=")) is { } regexShot)
+        {
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            UiShots.SaveOffScreen(new MapRegexWindow(new MapRegexViewModel(state.MapRegex, () => { })), regexShot["--shot-map-regex=".Length..]);
+            Shutdown();
+            return;
+        }
+
         var vm = new MainViewModel(state, http);
         vmRef = vm;
+
+        // QA: "--shot-merc=<window.png>=<png>": a picture of the mercenary window read as the screen would be, priced,
+        // the price window drawn off screen, then quit
+        if (e.Args.FirstOrDefault(a => a.StartsWith("--shot-merc=")) is { } mercShot && mercShot.Split('=', 3) is [_, var mercFile, var mercPng])
+        {
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            _ = ShotMercAsync(vm, mercFile, mercPng, e.Args.Contains("--shot-search"));
+            return;
+        }
+
+        // QA: "--shot-price=<item.txt>=<png>": the price check window on that item text, drawn off screen (with the
+        // search done, when "--shot-search" is given too), then quit: nothing over a running game
+        if (e.Args.FirstOrDefault(a => a.StartsWith("--shot-price=")) is { } priceShot && priceShot.Split('=', 3) is [_, var itemFile, var png])
+        {
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            _ = ShotPriceAsync(vm, System.IO.File.ReadAllText(itemFile), png, e.Args.Contains("--shot-search"));
+            return;
+        }
         var main = new MainWindow(vm);
         MainWindow = main;
         main.Show();

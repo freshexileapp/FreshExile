@@ -16,6 +16,13 @@ public static partial class BuildChoices
     /// </summary>
     public const int PantheonAct = 6;
 
+    /// <summary>
+    /// Past these levels the choice is long made: Act 2 ends around 23, Act 6 around 50. An end-game character still
+    /// walks through the Act 2 town (a waypoint, a league NPC) and would see the bandits again.
+    /// </summary>
+    public const int BanditMaxLevel = 40;
+    public const int PantheonMaxLevel = 65;
+
     /// <summary>"помочь Alira — убить Kraityn и Oak"; PoB's "None" is killing all three; null when PoB says nothing.</summary>
     public static string? BanditText(string? bandit)
     {

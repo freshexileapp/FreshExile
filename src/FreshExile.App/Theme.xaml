@@ -677,7 +677,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
-                    <Border x:Name="b" SnapsToDevicePixels="True" Background="Transparent" CornerRadius="{StaticResource RadiusS}" Width="42" Height="26">
+                    <Border x:Name="b" SnapsToDevicePixels="True" Background="Transparent" CornerRadius="{StaticResource RadiusS}" MinWidth="36" Padding="7,0" Height="26">
                         <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
@@ -699,7 +699,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ToggleButton">
-                    <Border x:Name="b" SnapsToDevicePixels="True" Background="Transparent" CornerRadius="{StaticResource RadiusS}" Width="42" Height="26">
+                    <Border x:Name="b" SnapsToDevicePixels="True" Background="Transparent" CornerRadius="{StaticResource RadiusS}" MinWidth="36" Padding="7,0" Height="26">
                         <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>

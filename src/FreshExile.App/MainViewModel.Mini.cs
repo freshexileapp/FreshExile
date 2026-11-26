@@ -139,9 +139,9 @@ public sealed partial class MainViewModel
     public bool HasChoices => HasBandit || HasPantheon;
 
     /// <summary>The bandit line in the compact panel only while in Act 2, where the choice is made.</summary>
-    public bool ShowMiniBandit => ShowMini && HasBandit && (_currentAct ?? StageAct()) == BuildChoices.BanditAct;
+    public bool ShowMiniBandit => ShowMini && HasBandit && ChoiceDue(BuildChoices.BanditAct, BuildChoices.BanditMaxLevel);
     /// <summary>The pantheon line in the compact panel in the act its first god is freed.</summary>
-    public bool ShowMiniPantheon => ShowMini && HasPantheon && (_currentAct ?? StageAct()) == BuildChoices.PantheonAct;
+    public bool ShowMiniPantheon => ShowMini && HasPantheon && ChoiceDue(BuildChoices.PantheonAct, BuildChoices.PantheonMaxLevel);
 
     /// <summary>"Бандиты: помочь Alira · Пантеон: The Brine King + Ralakesh" under the open build in the switcher.</summary>
     public string ChoicesLine => string.Join(Environment.NewLine, new[]
@@ -151,8 +151,14 @@ public sealed partial class MainViewModel
     }.OfType<string>());
 
     /// <summary>The full panel's plate, while in the act of the choice and until ✕ on this stage.</summary>
-    public bool ShowBanditPlate => !IsCompact && HasBandit && (_currentAct ?? StageAct()) == BuildChoices.BanditAct && !PlateHidden("bandit");
-    public bool ShowPantheonPlate => !IsCompact && HasPantheon && (_currentAct ?? StageAct()) == BuildChoices.PantheonAct && !PlateHidden("pantheon");
+    public bool ShowBanditPlate => !IsCompact && HasBandit && ChoiceDue(BuildChoices.BanditAct, BuildChoices.BanditMaxLevel) && !PlateHidden("bandit");
+    public bool ShowPantheonPlate => !IsCompact && HasPantheon && ChoiceDue(BuildChoices.PantheonAct, BuildChoices.PantheonMaxLevel) && !PlateHidden("pantheon");
+
+    /// <summary>
+    /// In the act of the choice, while levelling through it: an end-game character passing through the Forest Encampment
+    /// (a waypoint, a league NPC) made the choice long ago.
+    /// </summary>
+    bool ChoiceDue(int act, int maxLevel) => (_currentAct ?? StageAct()) == act && !(_gameLevel > maxLevel);
 
     bool PlateHidden(string kind) =>
         Build != null && _s.PlatesHidden.TryGetValue(MarksKey, out var hidden) && hidden.Contains($"{kind}:{StageIndex}");

@@ -982,6 +982,7 @@ public sealed partial class MainViewModel : Observable
                 // "с N ур." hints depend on the current level
                 if (_gems != null && sw == null) RefreshStage();
                 if (string.IsNullOrEmpty(Character)) Character = l.Character;
+                RaiseChoices();
                 break;
             case AreaGenerated a:
                 OnArea(a);

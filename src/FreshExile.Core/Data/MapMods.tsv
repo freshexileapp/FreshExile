@@ -1,0 +1,124 @@
+s	u	All Damage from Monsters' Hits can Poison | Monsters have 100% increased Poison Duration | Monsters Poison on Hit
+p	u	All Monster Damage can Ignite, Freeze and Shock | Monsters Ignite, Freeze and Shock on Hit
+p	r	All Monster Damage from Hits always Ignites
+s	r	Area contains a buried Apex Sentinel
+s	r	Area contains a buried Pandemonium Sentinel
+s	r	Area contains a buried Stalker Sentinel
+s	r	Area contains a Mirage
+s	r	Area contains a Mirror of Delirium
+s	r	Area contains an Evocator of Beidat
+s	r	Area contains an Evocator of Ghorr
+s	r	Area contains an Evocator of K'Tash
+p	u	Area contains Drowning Orbs
+p	u	Area contains Labyrinth Hazards
+p	r	Area contains many Totems
+s	u	Area contains patches of moving Marked Ground, inflicting random Marks
+p	u	Area contains Runes of the Searing Exarch
+s	r	Area contains the Viridian Wildwood
+p	r	Area contains two Unique Bosses
+s	u	Area contains Unstable Tentacle Fiends
+p	r	Area has increased monster variety
+s	r	Area has patches of Burning Ground
+s	r	Area has patches of Chilled Ground
+s	r	Area has patches of Consecrated Ground
+s	r	Area has patches of desecrated ground
+s	r	Area has patches of Shocked Ground which increase Damage taken by (20-50)%
+p	r	Area is inhabited by Abominations
+p	r	Area is inhabited by Animals
+p	r	Area is inhabited by Cultists of Kitava
+p	r	Area is inhabited by Demons
+p	r	Area is inhabited by Ghosts
+p	r	Area is inhabited by Goatmen
+p	r	Area is inhabited by Humanoids
+p	r	Area is inhabited by Lunaris fanatics
+p	r	Area is inhabited by ranged monsters
+p	r	Area is inhabited by Sea Witches and their Spawn
+p	r	Area is inhabited by Skeletons
+p	r	Area is inhabited by Solaris fanatics
+p	r	Area is inhabited by Undead
+s	u	Auras from Player Skills which affect Allies also affect Enemies
+s	ru	Buffs on Players expire (30-100)% faster
+s	u	25% chance for Rare Monsters to Fracture on death
+s	u	Debuffs on Monsters expire 100% faster
+s	r	(20-30)% increased Magic Monsters
+p	ru	(20-45)% increased Monster Attack Speed | (20-45)% increased Monster Cast Speed | (15-30)% increased Monster Movement Speed
+p	ru	(14-40)% increased Monster Damage
+p	r	(20-30)% increased number of Rare Monsters
+p	u	(35-45)% increased number of Rare Monsters | Rare Monsters each have 1 additional Modifier
+p	r	(25-60)% less effect of Curses on Monsters
+p	u	Map Boss is accompanied by a Synthesis Boss
+p	r	+(15-25)% Monster Chaos Resistance | +(20-40)% Monster Elemental Resistances
+p	u	+35% Monster Chaos Resistance | +55% Monster Elemental Resistances | +50% Monster Physical Damage Reduction
+s	u	Monster Damage Penetrates 15% Elemental Resistances
+p	r	+(20-40)% Monster Physical Damage Reduction
+p	r	Monsters are Hexproof
+s	r	Monsters Blind on Hit
+s	r	Monsters cannot be Leeched from
+s	u	Monsters cannot be Stunned | Monsters' Action Speed cannot be modified to below Base Value | Monsters' Movement Speed cannot be modified to below Base Value
+p	r	Monsters cannot be Taunted | Monsters' Action Speed cannot be modified to below Base Value | Monsters' Movement Speed cannot be modified to below Base Value
+p	r	Monsters deal (50-110)% extra Physical Damage as Cold
+p	r	Monsters deal (50-110)% extra Physical Damage as Fire
+p	r	Monsters deal (50-110)% extra Physical Damage as Lightning
+p	r	Monsters fire 2 additional Projectiles
+p	u	Monsters fire 2 additional Projectiles | Monsters have 100% increased Area of Effect
+p	ru	Monsters gain (20-80)% of Maximum Life as Extra Maximum Energy Shield
+p	u	Monsters gain (80-100)% of their Physical Damage as Extra Chaos Damage
+p	r	Monsters gain (21-35)% of their Physical Damage as Extra Chaos Damage | Monsters Inflict Withered for 2 seconds on Hit
+p	u	Monsters gain (180-200)% of their Physical Damage as Extra Damage of a random Element
+s	r	Monsters gain a Frenzy Charge on Hit
+s	u	Monsters gain a Frenzy Charge on Hit | Monsters have +1 to Maximum Frenzy Charges
+s	r	Monsters gain a Power Charge on Hit
+s	u	Monsters gain a Power Charge on Hit | Monsters have +1 to Maximum Power Charges
+s	r	Monsters gain an Endurance Charge on Hit
+s	u	Monsters gain an Endurance Charge when hit | Monsters have +1 to Maximum Endurance Charges
+s	r	Monsters have (30-70)% chance to Avoid Elemental Ailments
+p	u	Monsters have +50% Chance to Block Attack Damage
+p	ru	Monsters have +(30-100)% chance to Suppress Spell Damage
+s	r	Monsters have (30-50)% increased Accuracy Rating | Players have (-20--10)% to amount of Suppressed Spell Damage Prevented
+s	r	Monsters have (45-100)% increased Area of Effect
+p	r	Monsters have a (20-50)% chance to avoid Poison, Impale, and Bleeding
+p	r	Monsters have a (15-20)% chance to Ignite, Freeze and Shock on Hit
+s	r	Monsters Hinder on Hit with Spells
+p	u	Monsters inflict 2 Grasping Vines on Hit
+s	r	Monsters Maim on Hit with Attacks
+s	r	Monsters Poison on Hit
+s	r	Monsters steal Power, Frenzy and Endurance charges on Hit
+s	ru	Monsters take (25-45)% reduced Extra Damage from Critical Strikes
+p	r	Monsters' Attacks have (25-60)% chance to Impale on Hit
+p	u	Monsters' Projectiles can Chain when colliding with Terrain | Monsters' skills Chain 3 additional times
+p	r	Monsters' skills Chain 2 additional times
+p	ru	(20-100)% more Monster Life
+p	r	(15-30)% more Monster Life | Monsters cannot be Stunned
+p	u	Players are assaulted by Bloodstained Sawblades
+s	r	Players are Cursed with Elemental Weakness
+s	u	Players are Cursed with Elemental Weakness | Players are Cursed with Temporal Chains | Players are Cursed with Vulnerability
+s	r	Players are Cursed with Enfeeble
+s	r	Players are Cursed with Temporal Chains
+s	r	Players are Cursed with Vulnerability
+s	u	Players are targeted by a Meteor when they use a Flask
+s	r	Players cannot inflict Exposure
+s	r	Players cannot Regenerate Life, Mana or Energy Shield
+s	r	Players gain (30-50)% reduced Flask Charges
+s	r	Players have (15-25)% less Accuracy Rating
+s	ru	Players have (15-25)% less Area of Effect
+s	r	Players have (20-30)% less Armour | Players have (20-40)% reduced Chance to Block
+s	r	Players have (20-40)% less Cooldown Recovery Rate
+s	u	Players have (25-30)% less Defences
+p	u	Players have 40% less effect of Flasks applied to them
+s	r	Players have (20-60)% less Recovery Rate of Life and Energy Shield
+s	r	Players have (25-60)% reduced effect of Non-Curse Auras from Skills
+s	u	Players have (50-60)% reduced Maximum total Life, Mana and Energy Shield Recovery per second from Leech
+s	r	Players have -(8-9)% to all maximum Resistances
+s	u	Players have -20% to all maximum Resistances
+p	r	Rare Monsters have Elemental Thorns reflecting (900-1500) Elemental Damage
+p	u	Rare Monsters have Elemental Thorns reflecting 2500 Elemental Damage | Rare Monsters have Physical Thorns reflecting 1500 Physical Damage
+p	r	Rare Monsters have Physical Thorns reflecting (400-800) Physical Damage
+p	u	Rare Monsters have Volatile Cores
+p	u	Rare monsters in area are Shaper-Touched
+s	u	Rare monsters in area Temporarily Revive on death
+s	u	The Maven interferes with Players
+s	ru	+(30-75)% to Monster Critical Strike Multiplier | Monsters have (160-700)% increased Critical Strike Chance
+p	r	Unique Boss deals (15-25)% increased Damage | Unique Boss has (20-30)% increased Attack and Cast Speed
+p	r	Unique Boss has (45-70)% increased Area of Effect | Unique Boss has (25-35)% increased Life
+p	ru	Unique Bosses are Possessed
+s	u	Unique Monsters have a random Shrine Buff

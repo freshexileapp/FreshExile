@@ -132,6 +132,50 @@ public class PriceCheckTests
     }
 
     [Fact]
+    public void A_plain_league_base_is_searched_by_its_rolled_implicit_and_a_negative_roll_is_a_maximum()
+    {
+        // Covens' Viscera: a normal "Greater Flaming Furnace" sells by its exposure roll alone (-6 beats -4)
+        var item = GameItem.Parse("""
+            Item Class: Viscera
+            Rarity: Normal
+            Greater Flaming Furnace
+            --------
+            Item Level: 83
+            --------
+            { Implicit Modifier }
+            Fire Exposure you inflict applies an extra -5(-6--4)% to Fire Resistance
+            """)!;
+        var trade = TradeLink.FromData("Covens", """
+            {"result":[{"id":"implicit","entries":[{"id":"implicit.stat_2356684802","text":"Fire Exposure you inflict applies an extra +#% to Fire Resistance"}]}]}
+            """);
+
+        var f = PriceCheck.For(item, trade, 90).Filters.Single(x => x.StatId == "implicit.stat_2356684802");
+        Assert.True(f.Enabled);
+        Assert.Null(f.Min);
+        Assert.Equal(-5, f.Max);
+    }
+
+    [Fact]
+    public void A_normal_gear_base_does_not_tick_its_implicit()
+    {
+        var item = GameItem.Parse("""
+            Item Class: Rings
+            Rarity: Normal
+            Two-Stone Ring
+            --------
+            Item Level: 84
+            --------
+            { Implicit Modifier }
+            +14(12-16)% to Fire and Cold Resistances
+            """)!;
+        var trade = TradeLink.FromData("Covens", """
+            {"result":[{"id":"implicit","entries":[{"id":"implicit.stat_1","text":"+#% to Fire and Cold Resistances"}]}]}
+            """);
+
+        Assert.False(PriceCheck.For(item, trade, 90).Filters.Single(x => x.StatId == "implicit.stat_1").Enabled);
+    }
+
+    [Fact]
     public void Zero_width_space_in_a_line_does_not_hide_its_trade_stat()
     {
         // the game's own copy: an invisible U+200B before "Item Rarity Support"
@@ -533,6 +577,31 @@ public class PriceCheckTests
     }
 
     [Fact]
+    public void Invitations_are_priced_from_poe_ninja_item_list_by_details_id()
+    {
+        // poe.ninja's exchange overview has no invitations; its item list does, detailsId = the trade's exchange id
+        const string json = """
+            {"lines":[{"id":93814,"name":"Incandescent Invitation","chaosValue":87.5,"divineValue":0.23,"detailsId":"incandescent-invitation"}]}
+            """;
+        var rates = new Dictionary<string, double>();
+        NinjaExchange.ReadStash(json, rates);
+        Assert.Equal(87.5, rates["incandescent-invitation"]);
+    }
+
+    [Theory]
+    // the screenshot of 2026-11-26: 13c, then sellers asking 1 div (170c) and up — 13c is bait
+    [InlineData(new double[] { 13, 170, 186, 220, 245, 250, 255 }, null, 1)]
+    // with a market rate: anything under 40 % of it
+    [InlineData(new double[] { 5, 10, 80, 90 }, 87.5, 2)]
+    // an even list has no bait
+    [InlineData(new double[] { 150, 160, 170, 180 }, null, 0)]
+    // too few offers to judge without a rate; never all of them
+    [InlineData(new double[] { 1, 200 }, null, 0)]
+    [InlineData(new double[] { 1, 2 }, 100.0, 1)]
+    public void A_lone_far_too_cheap_bulk_offer_is_bait(double[] prices, double? market, int expected) =>
+        Assert.Equal(expected, PriceCheck.BaitCount(prices, market));
+
+    [Fact]
     public void An_item_copied_from_a_client_in_another_language_is_told_apart()
     {
         const string ru = "Класс предметов: Кольца\nРедкость: Редкий\nУзел Судьбы\nАметистовое кольцо\n--------\nТребуется Уровень: 30";
@@ -621,6 +690,21 @@ public class PriceCheckTests
         Assert.Equal("eldritch-exalted-orb", link.ExchangeId(new GameItem { BaseType = "Eldritch Exalted Orb" }));
         Assert.Equal("the-doctor", link.ExchangeId(new GameItem { BaseType = "The Doctor" }));
         Assert.Null(link.ExchangeId(new GameItem { BaseType = "Murderous Eye Jewel", Name = "Foul Scalpel" }));
+    }
+
+    [Fact]
+    public void A_rare_or_influenced_map_is_priced_by_its_mods_not_on_the_exchange()
+    {
+        const string staticJson = """{"result":[{"id":"Maps","entries":[{"id":"map-tier-16","text":"Map (Tier 16)"}]}]}""";
+        var link = TradeLink.FromData("Covens", null, null, staticJson);
+        Assert.Equal("map-tier-16", link.ExchangeId(new GameItem { ItemClass = "Maps", BaseType = "Map (Tier 16)" }));
+        // the screenshot of 2026-11-26: a rare Elder T16 went to the exchange and came back "from 1 chaos"
+        var rare = GameItem.Parse("Item Class: Maps\nRarity: Rare\nDamnation Intent\nMap (Tier 16)\n--------\nItem Level: 83\n--------\n"
+                                  + "Area is influenced by The Elder (implicit)\n--------\nMonster Pack Size: +16%")!;
+        Assert.Null(link.ExchangeId(rare));
+        var elderWhite = GameItem.Parse("Item Class: Maps\nRarity: Normal\nMap (Tier 16)\n--------\nItem Level: 83\n--------\n"
+                                        + "Area is influenced by The Elder (implicit)")!;
+        Assert.Null(link.ExchangeId(elderWhite));
     }
 
     [Fact]

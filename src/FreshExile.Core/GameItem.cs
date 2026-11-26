@@ -28,6 +28,18 @@ public sealed record GameMod(string Text, ModKind Kind)
     public double? Value => GameItem.ValueOf(Text);
 }
 
+/// <summary>A mercenary's skill on a warrant and the supports linked to it: "Holy Strike" with "Hallow" tier 3.</summary>
+public sealed record MercenarySkill(string Name, IReadOnlyList<MercenarySupport> Supports);
+
+/// <summary>"Greater Multistrike (Tier: 3)" → ("Greater Multistrike", 3); the trade site lists it as "Greater Multistrike (Tier 3)".</summary>
+public sealed record MercenarySupport(string Name, int Tier)
+{
+    public string TradeText => $"{Name} (Tier {Tier})";
+}
+
+/// <summary>A Mercenary Warrant: who ("Karrak, the Faithful"), the build ("Cardinal"), the level, the skills.</summary>
+public sealed record MercenaryWarrant(string Mercenary, string Build, int Level, IReadOnlyList<MercenarySkill> Skills);
+
 /// <summary>
 /// An item as the game puts it into the clipboard on Ctrl+C (plain) or Ctrl+Alt+C (advanced, with mod tiers and ranges).
 /// Only what a price check needs is read.
@@ -68,6 +80,8 @@ public sealed partial record GameItem
     /// <summary>A Foulborn (mutated) unique: priced apart from the plain one.</summary>
     public bool Foulborn { get; init; }
     public IReadOnlyList<GameMod> Mods { get; init; } = [];
+    /// <summary>A Mercenary Warrant's build and skills; null for any other item.</summary>
+    public MercenaryWarrant? Warrant { get; init; }
 
     public string Title => Name.Length > 0 ? Name : BaseType;
     public bool IsGem => RarityText.Equals("Gem", StringComparison.OrdinalIgnoreCase);
@@ -273,8 +287,12 @@ public sealed partial record GameItem
         // the current maps carry no "Map Tier:" line: the base is "Map (Tier 16)"
         if (mapTier == null && MapBaseRx().Match(baseType) is { Success: true } mb) mapTier = int.Parse(mb.Groups[1].Value, CultureInfo.InvariantCulture);
 
+        var warrant = baseType == "Mercenary Warrant" ? ReadWarrant(sections) : null;
+        if (warrant != null && warrant.Mercenary.Length > 0) name = warrant.Mercenary;
+
         return new GameItem
         {
+            Warrant = warrant,
             ItemClass = itemClass, Rarity = rarity, RarityText = rarityText, Name = name, BaseType = baseType,
             ItemLevel = itemLevel, RequiredLevel = requiredLevel, Quality = quality, Sockets = sockets,
             Armour = armour, Evasion = evasion, EnergyShield = es, Ward = ward, GemLevel = gemLevel, MapTier = mapTier,
@@ -282,6 +300,38 @@ public sealed partial record GameItem
             AreaLevel = areaLevel, HeistJob = heistJob, HeistJobLevel = heistJobLevel,
             Corrupted = corrupted, Mirrored = mirrored, Unidentified = unidentified, FracturedItem = fracturedItem, Foulborn = foulborn, Mods = mods,
         };
+    }
+
+    /// <summary>
+    /// "Karrak, the Faithful" / "Build: Cardinal", "Mercenary Level: 83" / one section per skill: its name, then its
+    /// supports as "Hallow (Tier: 3)"; the usage hint at the end is not a skill.
+    /// </summary>
+    static MercenaryWarrant ReadWarrant(List<List<string>> sections)
+    {
+        string mercenary = "", build = "";
+        var level = 0;
+        var skills = new List<MercenarySkill>();
+        for (var i = 1; i < sections.Count; i++)
+        {
+            var sec = sections[i];
+            if (sec.Any(l => l.StartsWith("Build:", StringComparison.Ordinal)))
+            {
+                foreach (var l in sec)
+                {
+                    if (l.StartsWith("Build:", StringComparison.Ordinal)) build = l[6..].Trim();
+                    else if (l.StartsWith("Mercenary Level:", StringComparison.Ordinal)) level = Int(l[16..]) ?? 0;
+                }
+                continue;
+            }
+            if (sec[0].StartsWith("Right click", StringComparison.Ordinal) || sec[0].StartsWith("Open a portal", StringComparison.Ordinal)
+                || sec[0].StartsWith("Note:", StringComparison.Ordinal) || sec[0].Contains(':')) continue;
+            // the first section is the mercenary's name, unless it already reads like a skill with supports
+            if (build.Length == 0 && mercenary.Length == 0 && sec.Count == 1) { mercenary = sec[0]; continue; }
+            var supports = sec.Skip(1).Select(l => MercSupportRx().Match(l)).Where(m => m.Success)
+                .Select(m => new MercenarySupport(m.Groups[1].Value.Trim(), int.Parse(m.Groups[2].Value, CultureInfo.InvariantCulture))).ToList();
+            skills.Add(new MercenarySkill(sec[0], supports));
+        }
+        return new MercenaryWarrant(mercenary, build, level, skills);
     }
 
     /// <summary>"{ Prefix Modifier "Agile" (Tier: 3) — Attributes }" then its lines ("+40(38-42) to Dexterity").</summary>
@@ -465,6 +515,7 @@ public sealed partial record GameItem
     private static partial Regex HeistJobRx();
     [GeneratedRegex(@"(\d+(?:\.\d+)?)\((-?\d+(?:\.\d+)?)-(-?\d+(?:\.\d+)?)\)")] private static partial Regex RangeRx();
     [GeneratedRegex(@"-?\d+(?:\.\d+)?")] private static partial Regex NumRx();
+    [GeneratedRegex(@"^(.+?) \(Tier: (\d+)\)$")] private static partial Regex MercSupportRx();
     [GeneratedRegex(@"^(\d+)% increased ((?:Armour|Evasion(?: Rating)?|Energy Shield)(?:,? (?:and )?(?:Armour|Evasion(?: Rating)?|Energy Shield))*)$")]
     private static partial Regex IncreasedRx();
     // "+2% to maximum Fire Resistance" raises the cap, not the resistance: never in the sums
