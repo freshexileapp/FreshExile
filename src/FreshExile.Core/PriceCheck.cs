@@ -572,6 +572,25 @@ public sealed partial class PriceCheck
         return n;
     }
 
+    /// <summary>
+    /// Which offer the "from" answer rests on, among offers sorted cheapest first, from <paramref name="start"/> (past
+    /// the bait): the first listed within the hour among the next five, else the middle of those five. A cheapest lot
+    /// listed hours ago is often a seller who is away (200c five hours old, then 220c seven minutes old: the price is
+    /// 220). Offers in a currency with no known rate (infinite chaos, sorted last) are left out unless there is nothing
+    /// else. -1 when there is no offer.
+    /// </summary>
+    public static int AnswerIndex(IReadOnlyList<(double Chaos, DateTime? Indexed)> sorted, int start, DateTime nowUtc)
+    {
+        const int Window = 5;
+        if (start >= sorted.Count) return -1;
+        var count = 0;
+        while (count < Window && start + count < sorted.Count && !double.IsInfinity(sorted[start + count].Chaos)) count++;
+        if (count == 0) return start;
+        for (var i = start; i < start + count; i++)
+            if (sorted[i].Indexed is DateTime t && nowUtc - t <= TimeSpan.FromHours(1)) return i;
+        return start + (count - 1) / 2;
+    }
+
     /// <summary>Item Class line → trade category; null for things searched by base alone.</summary>
     public static string? CategoryOf(string itemClass) => itemClass switch
     {

@@ -10,8 +10,13 @@
 
     <ContentControl Style="{StaticResource WindowFrame}">
         <DockPanel Margin="0,8,0,6">
-            <TextBlock DockPanel.Dock="Top" Text="{l:T 'ИСТОРИЯ'}" Style="{StaticResource Caption}" FontSize="{StaticResource FsCaption}"
-                       Margin="12,0,8,6" ToolTip="{l:T 'Последние проверки за эту сессию: клик открывает её снова, без нового запроса к трейду'}"/>
+            <DockPanel DockPanel.Dock="Top" Margin="12,0,4,6">
+                <!-- put away: the clock in the price window's header brings it back -->
+                <Button DockPanel.Dock="Right" Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="9" Width="20" Height="20"
+                        ToolTip="{l:T 'Скрыть историю (вернуть — часы в заголовке прайс-чека)'}" Click="Hide_Click"/>
+                <TextBlock Text="{l:T 'ИСТОРИЯ'}" Style="{StaticResource Caption}" FontSize="{StaticResource FsCaption}" VerticalAlignment="Center"
+                           ToolTip="{l:T 'Последние проверки за эту сессию: клик открывает её снова, без нового запроса к трейду'}"/>
+            </DockPanel>
             <ScrollViewer x:Name="Scroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <ItemsControl x:Name="List">
                     <ItemsControl.ItemTemplate>

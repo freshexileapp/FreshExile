@@ -70,6 +70,9 @@
                                 </TextBlock.Style>
                             </TextBlock>
                         </Border>
+                        <!-- the history column beside the window: shown or put away, remembered -->
+                        <Button x:Name="HistoryButton" Style="{StaticResource IconButton}" Content="&#xE81C;" FontSize="{StaticResource FsCaption}"
+                                ToolTip="{l:T 'История проверок: показать / скрыть'}" Click="History_Click"/>
                         <Button Style="{StaticResource IconButton}" Content="&#xE8BB;" FontSize="{StaticResource FsCaption}" ToolTip="{l:T 'Закрыть · Esc'}" Click="Close_Click"/>
                     </StackPanel>
                     <!-- small outlined links -->
@@ -345,17 +348,14 @@
                     </ItemsControl>
                 </ScrollViewer>
 
-                <!-- a warrant: one card per skill, two to a row (a row as tall as its taller card, nothing overlaps) -->
-                <ScrollViewer MaxHeight="470" VerticalScrollBarVisibility="Auto" Margin="12,6,6,0"
+                <!-- a warrant: one card per skill, two to a row (a row as tall as its taller card, nothing overlaps); the two
+                     columns and the gap between them as wide as the Search / Open on trade buttons below -->
+                <ScrollViewer MaxHeight="470" VerticalScrollBarVisibility="Auto" Margin="14,6,14,0"
                               Visibility="{Binding IsWarrant, Converter={StaticResource Vis}}">
-                    <ItemsControl ItemsSource="{Binding WarrantCards}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate><WrapPanel ItemWidth="252"/></ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
+                    <ScrollViewer.Resources>
+                            <DataTemplate DataType="{x:Type l:WarrantCardVm}">
                                 <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}" BorderThickness="1" CornerRadius="{StaticResource RadiusM}"
-                                        Padding="8,6,8,6" Margin="0,0,6,6">
+                                        Padding="8,6,8,6" Margin="0,0,0,8">
                                     <StackPanel>
                                         <CheckBox Style="{StaticResource GemCheck}" DataContext="{Binding Skill}" IsChecked="{Binding Enabled}" IsEnabled="{Binding Searchable}"
                                                   ToolTip="{Binding ToolTip}">
@@ -370,6 +370,9 @@
                                                         <DockPanel>
                                                             <TextBlock DockPanel.Dock="Right" Text="{Binding ShortTier}" FontSize="10" Foreground="{StaticResource Text3}"
                                                                        VerticalAlignment="Center" Margin="4,0,0,0"/>
+                                                            <!-- the support's icon, as in the mercenary window: the two matched by eye -->
+                                                            <Image DockPanel.Dock="Left" Source="{Binding Icon}" Width="18" Height="18" Margin="0,0,5,0"
+                                                                   VerticalAlignment="Center" RenderOptions.BitmapScalingMode="HighQuality"/>
                                                             <TextBlock Text="{Binding ShortLabel}" FontSize="{StaticResource FsCaption}" Foreground="{Binding Brush}"
                                                                        TextTrimming="CharacterEllipsis" VerticalAlignment="Center"/>
                                                         </DockPanel>
@@ -379,6 +382,20 @@
                                         </ItemsControl>
                                     </StackPanel>
                                 </Border>
+                            </DataTemplate>
+                    </ScrollViewer.Resources>
+                    <ItemsControl ItemsSource="{Binding WarrantRows}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="8"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <ContentControl Content="{Binding Left}" Focusable="False"/>
+                                    <ContentControl Grid.Column="2" Content="{Binding Right}" Focusable="False"/>
+                                </Grid>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

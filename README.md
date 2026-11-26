@@ -99,8 +99,23 @@ Both survive a restart of the overlay while the game is running.
 - **Smart cluster search**: your build's notables are required, and the free places may be any notable that sits
   *off their path* on the ring — so you never pay for a jewel that makes you walk through a notable you don't want.
 
+- **History**: a column beside the window keeps the session's checks; a click opens one again with no new trade request.
+  The clock in the window's header hides it or brings it back.
+
 <p align="center">
   <img src="docs/screenshots/en/price-cluster.png" width="420" alt="Smart cluster search">
+</p>
+
+### Mercenary price check
+- Open a mercenary's window in game (the one with **Take Item** / **Rematch**), press the mercenary button in the panel
+  and circle the window with the mouse once. After that `Ctrl+Alt+N` reads the same place in one keystroke.
+- The build, its skills and each skill's supports with their tiers are read off the screen (the names by Windows' own
+  text recognition, the supports by their icons) and searched on the trade as a **Mercenary Warrant**.
+- Every support shows its icon next to its name, so you can match it with the game's window at a glance; tick the ones
+  that make the price, and search.
+
+<p align="center">
+  <img src="docs/screenshots/en/price-merc.png" width="720" alt="Mercenary price check next to the game's mercenary window">
 </p>
 
 ### And also
@@ -137,6 +152,7 @@ close the app (*Settings → About*).
 | `Ctrl+Alt+←` / `→` | previous / next stage |
 | `Ctrl+Alt+D` | price check the item under the mouse (taken only while the game is in front) |
 | `Ctrl+Alt+F` | search the trade by name (maps, uniques, currency…), no item needed; the result opens in the price check window |
+| `Ctrl+Alt+N` | price check the mercenary whose window is open (the place circled once with the panel's mercenary button) |
 
 All of them can be changed in *Settings → Keys*.
 
@@ -147,7 +163,8 @@ It never reads the game's memory. The only keystrokes it sends to the game are `
 press of the price check hotkey — and Enter, Ctrl+V, Enter for one whisper per click of **Whisper**, as Awakened PoE
 Trade and similar tools do. Trade requests are made only on your
 action and never faster than the site allows. The tree overlay looks at a screenshot of the game; with tracking off
-in the settings, the screen is never captured at all.
+in the settings, the screen is never captured for it. The mercenary price check takes one screenshot per press and
+sends nothing to the game.
 
 ## Credits
 

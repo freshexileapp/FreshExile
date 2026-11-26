@@ -86,7 +86,8 @@ public static class HotkeyActions
         // not Ctrl+D: Awakened PoE Trade and Scalpel take it by default, and players often run one of them
         (Price, Loc.T("Прайс-чек предмета"), "Ctrl+Alt+D"),
         (Search, Loc.T("Поиск на трейде по названию"), "Ctrl+Alt+F"),
-        (Merc, Loc.T("Прайс-чек наёмника по его окну"), "Ctrl+Alt+M"),
+        // not Ctrl+Alt+M: other programs often hold it system-wide (seen taken on a player's machine with the game closed)
+        (Merc, Loc.T("Прайс-чек наёмника по его окну"), "Ctrl+Alt+N"),
     ];
 }
 

@@ -28,7 +28,13 @@ public sealed class MercData
 {
     public IReadOnlyDictionary<string, IReadOnlyList<string>> Builds { get; }
     public IReadOnlyDictionary<string, IReadOnlyList<MercSupportInfo>> SkillSupports { get; }
-    public IReadOnlyCollection<string> Skills => SkillSupports.Keys.Concat(Builds.Values.SelectMany(s => s)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+    /// <summary>A support's icon path on the CDN by its name ("Greater Brutality"); null for a name not in the data.</summary>
+    public string? IconOf(string support) =>
+        (_icons ??= SkillSupports.Values.SelectMany(s => s).GroupBy(s => s.Name, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(g => g.Key, g => g.First().Icon, StringComparer.OrdinalIgnoreCase)).GetValueOrDefault(support);
+    Dictionary<string, string>? _icons;
+
+    public IReadOnlyCollection<string> Skills =>SkillSupports.Keys.Concat(Builds.Values.SelectMany(s => s)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
 
     MercData(Dictionary<string, IReadOnlyList<string>> builds, Dictionary<string, IReadOnlyList<MercSupportInfo>> skills)
     {
@@ -111,11 +117,25 @@ public static partial class MercRecognizer
         // the skills: lines that read as one of the build's skills (any mercenary skill when the build is not read)
         var pool = build.Length > 0 ? data.Builds[build] : data.Skills.ToList();
         var skillLines = new List<(OcrLine Line, string Skill)>();
-        foreach (var l in lines.OrderBy(l => l.Y))
+        (string Skill, int D) Best(OcrLine l)
         {
             var t = Letters(l.Text);
-            if (t.Length < 3) continue;
-            var best = pool.Select(s => (Skill: s, D: Distance(t, Letters(s)))).OrderBy(x => x.D).First();
+            return t.Length < 3 ? ("", int.MaxValue) : pool.Select(s => (Skill: s, D: Distance(t, Letters(s)))).OrderBy(x => x.D).First();
+        }
+        var ordered = lines.OrderBy(l => l.Y).ToList();
+        for (var k = 0; k < ordered.Count; k++)
+        {
+            var l = ordered[k];
+            var best = Best(l);
+            // a long name wraps ("SPECTRAL SHIELD THROW OF" / "TRARTHUS"): the line right under it, at the same left edge,
+            // read together with it; the row's icons sit level with the middle of the two
+            if (ordered.FirstOrDefault(n => n != l && Math.Abs(n.X - l.X) < l.H && n.Y > l.Y && n.Y - l.Bottom < l.H * 1.2) is { } wrap)
+            {
+                var both = new OcrLine(l.Text + " " + wrap.Text, Math.Min(l.X, wrap.X), l.Y,
+                    Math.Max(l.Right, wrap.Right) - Math.Min(l.X, wrap.X), wrap.Bottom - l.Y);
+                var joined = Best(both);
+                if (joined.D <= Tolerance(joined.Skill) && joined.D < best.D) { l = both; best = joined; ordered.Remove(wrap); }
+            }
             if (best.D <= Tolerance(best.Skill) && skillLines.All(s => s.Skill != best.Skill)) skillLines.Add((l, best.Skill));
         }
         if (skillLines.Count == 0) notes.Add(Loc.T("Не нашёл умений наёмника: выдели окно с его умениями"));

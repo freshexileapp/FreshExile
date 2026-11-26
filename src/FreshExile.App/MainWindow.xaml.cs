@@ -205,7 +205,7 @@ public partial class MainWindow : Window
             else text = GameInput.ReadClipboard();
             Log.Write(text == null ? "price check: nothing copied" : $"price check: copied {text.Length} chars, item={GameItem.Parse(text) != null}");
 
-            _price ??= new PriceCheckWindow();
+            _price ??= NewPriceWindow();
             var (vm, error) = await _vm.PreparePriceCheckAsync(text, pick);
             if (vm == null)
             {
@@ -260,7 +260,7 @@ public partial class MainWindow : Window
         try
         {
             _vm.RememberSearch(entry.Text);
-            _price ??= new PriceCheckWindow();
+            _price ??= NewPriceWindow();
             var (vm, error) = await _vm.PreparePriceCheckAsync(entry.ToItem());
             if (vm == null)
             {
@@ -341,7 +341,7 @@ public partial class MainWindow : Window
                 _ => () => _vm.StepStage(1),
             };
             var ok = _hotkeys.Register(b.NativeMods, b.Key, action);
-            if (row.Id == HotkeyActions.Price) Log.Write($"price hotkey {b.Display}: {(ok ? "registered" : "taken by another program")}");
+            if (row.Id == HotkeyActions.Price || !ok) Log.Write($"{row.Id} hotkey {b.Display}: {(ok ? "registered" : "taken by another program")}");
             if (!ok) _vm.ReportHotkeyFailure(row.Id);
         }
     }
@@ -355,6 +355,14 @@ public partial class MainWindow : Window
     void Settings_Click(object sender, RoutedEventArgs e) => OpenSettings();
 
     void Merc_Click(object sender, RoutedEventArgs e) => _ = RunMercCheckAsync(pick: true);
+
+    /// <summary>The price window, its history column shown or put away as the player left it.</summary>
+    PriceCheckWindow NewPriceWindow()
+    {
+        var w = new PriceCheckWindow { HistoryHidden = _vm.State.PriceHistoryHidden };
+        w.HistoryHiddenChanged += hidden => { _vm.State.PriceHistoryHidden = hidden; _vm.SaveState(); };
+        return w;
+    }
 
     /// <summary>
     /// The mercenary window priced: the screen captured, the window's rectangle picked by hand (the button, or the first
@@ -386,7 +394,7 @@ public partial class MainWindow : Window
                 _vm.SaveState();
             }
             Log.Write($"merc check: region {region.X},{region.Y} {region.Width}x{region.Height}");
-            _price ??= new PriceCheckWindow();
+            _price ??= NewPriceWindow();
             var (vm, error) = await _vm.PrepareMercenaryCheckAsync(MercScan.Crop(screen, w, h, region));
             if (vm == null) { _price.ShowMessage(error ?? "", _gameWindow); return; }
             _price.ShowCheck(vm, _gameWindow);

@@ -93,14 +93,39 @@ public partial class PriceCheckWindow : Window
         foreach (var c in _checks) c.IsCurrent = c == vm;
     }
 
-    /// <summary>The history column beside the window, once there is something to go back to.</summary>
+    bool _historyHidden;
+
+    /// <summary>The history column put away by the player; remembered by the owner through <see cref="HistoryHiddenChanged"/>.</summary>
+    public bool HistoryHidden
+    {
+        get => _historyHidden;
+        set
+        {
+            _historyHidden = value;
+            HistoryButton.Opacity = value ? 0.55 : 1;
+            if (IsVisible && Body.Visibility == Visibility.Visible) ShowHistory();
+        }
+    }
+
+    public event Action<bool>? HistoryHiddenChanged;
+
+    void SetHistoryHidden(bool hidden)
+    {
+        HistoryHidden = hidden;
+        HistoryHiddenChanged?.Invoke(hidden);
+    }
+
+    void History_Click(object sender, RoutedEventArgs e) => SetHistoryHidden(!_historyHidden);
+
+    /// <summary>The history column beside the window, once there is something to go back to, unless put away.</summary>
     void ShowHistory()
     {
-        if (_checks.Count < 2) { _history?.Hide(); return; }
+        if (_checks.Count < 2 || _historyHidden) { _history?.Hide(); return; }
         if (_history == null)
         {
             _history = new PriceHistoryWindow(_checks);
             _history.Picked += Reopen;
+            _history.HideRequested += () => SetHistoryHidden(true);
         }
         _history.Opacity = _away ? 0 : 1;
         _history.IsHitTestVisible = !_away;

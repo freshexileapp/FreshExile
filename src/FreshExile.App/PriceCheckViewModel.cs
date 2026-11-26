@@ -59,6 +59,10 @@ public sealed class PriceFilterVm(PriceFilter f) : Observable
     /// <summary>A warrant support without its "(Tier 3)", which goes to <see cref="ShortTier"/> as "T3".</summary>
     public string ShortLabel => TierSuffixRx.Match(Label) is { Success: true } m ? Label[..m.Index] : Label;
     public string ShortTier => TierSuffixRx.Match(Label) is { Success: true } m ? "T" + m.Groups[1].Value : "";
+
+    ImageSource? _icon;
+    /// <summary>A warrant support's icon as the mercenary window draws it: to match the two by eye.</summary>
+    public ImageSource? Icon { get => _icon; set => Set(ref _icon, value); }
     static readonly System.Text.RegularExpressions.Regex TierSuffixRx = new(@" \(Tier (\d+)\)$");
     /// <summary>A warrant's support sits under its skill.</summary>
     public System.Windows.Thickness Indent => Filter.Nested ? new(24, 0, 0, 0) : default;
@@ -117,6 +121,9 @@ public sealed class WarrantCardVm(PriceFilterVm skill)
     public List<PriceFilterVm> Supports { get; } = [];
     public bool HasSupports => Supports.Count > 0;
 }
+
+/// <summary>Two warrant cards side by side; the right one missing on an odd last row.</summary>
+public sealed record WarrantRowVm(WarrantCardVm Left, WarrantCardVm? Right);
 
 public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? check = null, TopMods? top = null) : Observable
 {
@@ -252,6 +259,7 @@ public sealed class ListingVm(TradeListing l, double? divineChaos, PriceCheck? c
     public string Currency { get; } = CurrencyName(l.Currency) + (l.Stackable ? Loc.T("/шт") : "");
     public string Account { get; } = l.Account;
     public string Age { get; } = AgeText(l.Indexed);
+    public DateTime? Indexed { get; } = l.Indexed;
     public string Extra { get; } = string.Join("  ·  ", new[]
     {
         // "4 шт за 1 divine": the exchange's offer as the seller set it
@@ -505,14 +513,27 @@ public sealed class PriceCheckViewModel : Observable
     public IReadOnlyList<WarrantCardVm> WarrantCards => _cards ??= BuildCards();
     IReadOnlyList<WarrantCardVm>? _cards;
 
+    /// <summary>The cards two to a row, each row as tall as its taller card, the two columns as wide as the buttons below.</summary>
+    public IReadOnlyList<WarrantRowVm> WarrantRows => WarrantCards.Chunk(2).Select(p => new WarrantRowVm(p[0], p.Length > 1 ? p[1] : null)).ToList();
+
     IReadOnlyList<WarrantCardVm> BuildCards()
     {
         var cards = new List<WarrantCardVm>();
         if (!IsWarrant) return cards;
         foreach (var f in Filters)
             if (!f.Filter.Nested || cards.Count == 0) cards.Add(new WarrantCardVm(f));
-            else cards[^1].Supports.Add(f);
+            else
+            {
+                cards[^1].Supports.Add(f);
+                if (_art != null && MercData.Default.IconOf(f.ShortLabel) is { } icon) _ = LoadSupportIconAsync(f, $"https://web.poecdn.com/image/Art/{icon}.png");
+            }
         return cards;
+    }
+
+    async Task LoadSupportIconAsync(PriceFilterVm row, string url)
+    {
+        try { row.Icon = await _art!(url); }
+        catch (Exception) { /* the name and tier stay */ }
     }
     public ObservableCollection<ListingVm> Listings { get; } = new();
 
@@ -723,7 +744,8 @@ public sealed class PriceCheckViewModel : Observable
         var bait = PriceCheck.BaitCount(Listings.Select(r => r.UnitChaos).ToList(), _ninja is { Market: true } mk ? mk.Chaos : null);
         for (var i = 0; i < bait; i++) Listings[i].IsBait = true;
         if (bait > 0) Status += Loc.T($" · подозрительно дешёвых лотов: {bait}");
-        var first = Listings.Count > bait ? Listings[bait] : null;
+        var at = PriceCheck.AnswerIndex(Listings.Select(r => (r.UnitChaos, r.Indexed)).ToList(), bait, DateTime.UtcNow);
+        var first = at >= 0 ? Listings[at] : null;
         if (first != null) LowestText = Loc.T($"от {first.Price} {first.Currency}");
         // the trade's few bulk sellers often ask far above the in-game exchange: said plainly, not left to a guess
         if (first != null && _ninja is { Market: true } m && first.UnitChaos > m.Chaos * 1.5)
@@ -843,7 +865,9 @@ public sealed class PriceCheckViewModel : Observable
             LoadCurrencyArt(row);
         }
         // stacks sell whole: the cheapest piece is not always on the first (cheapest stack) line
-        if (Listings.Count > 0 && Listings.MinBy(r => r.UnitChaos) is { } low) LowestText = Loc.T($"от {low.Price} {low.Currency}");
+        var sorted = Listings.OrderBy(r => r.UnitChaos).ToList();
+        var at = PriceCheck.AnswerIndex(sorted.Select(r => (r.UnitChaos, r.Indexed)).ToList(), 0, DateTime.UtcNow);
+        if (at >= 0) { var low = sorted[at]; LowestText = Loc.T($"от {low.Price} {low.Currency}"); }
         if (_result.Total > 0) Status = Loc.T($"Найдено: {_result.Total}") + (_widened != null ? Loc.T(" (с мгновенным выкупом — 0, показаны «лично»)") : "") + HintNote;
     }
 

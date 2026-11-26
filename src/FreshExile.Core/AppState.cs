@@ -71,6 +71,9 @@ public sealed class AppState
     /// <summary>Price check: listed within ("" any time, "1day", "3days", "1week").</summary>
     public string PriceListed { get; set; } = "";
 
+    /// <summary>The price check's history column put away (the clock button in the window's header brings it back).</summary>
+    public bool PriceHistoryHidden { get; set; }
+
     /// <summary>Price check: one line per seller.</summary>
     public bool PriceCollapse { get; set; } = true;
 

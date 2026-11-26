@@ -107,4 +107,20 @@ public class MercRecognizerTests(ITestOutputHelper output)
         // the crit chance wheel and the crit damage one (the same wheel with arrows) side by side
         Assert.Equal(["Increased Area of Effect", "Critical Chance", "Greater Critical Damage"], r.Warrant.Skills[2].Supports.Take(3).Select(x => x.Name));
     }
+
+    [Fact]
+    public void A_skill_name_on_two_lines_is_one_skill()
+    {
+        // "SPECTRAL SHIELD THROW OF" / "TRARTHUS": the OCR reads two lines, neither of them a skill on its own
+        var r = MercRecognizer.Read(Load(Path.Combine(Dir, "corvil-bastion.png")), Ocr("corvil-ocr.tsv"), MercData.Default, Icon);
+        foreach (var s in r.Warrant.Skills)
+            output.WriteLine($"{s.Name}: {string.Join(", ", s.Supports.Select(x => x.TradeText))}");
+        foreach (var sl in r.Slots) output.WriteLine($"slot {sl.Skill} x={sl.X} y={sl.Y} s={sl.Size} score={sl.Score:0.00} T{sl.Tier} {sl.Icon}");
+        if (Environment.GetEnvironmentVariable("MERC_DEBUG3") is { Length: > 0 } dbg) Debug(r, dbg, "corvil-bastion.png");
+
+        Assert.Equal("Infamous Bastion", r.Warrant.Build);
+        Assert.Equal(["Shield Crush", "Shield Charge", "Prismplate", "Spectral Shield Throw of Trarthus", "Dash", "Determination"],
+            r.Warrant.Skills.Select(s => s.Name));
+        Assert.Equal(5, r.Slots.Count(s => s.Skill == 3));
+    }
 }

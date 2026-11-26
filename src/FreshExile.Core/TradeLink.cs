@@ -380,8 +380,11 @@ public sealed partial class TradeLink
         return key.Contains("-#", StringComparison.Ordinal) ? Find(kind, Regex.Replace(text, @"-(?=\d)", "+"), preferLocal) : null;
     }
 
-    /// <summary>Every word's trailing "s" off: "gain # charges" and "gain # charge" meet.</summary>
-    static string Loose(string key) => PluralRx().Replace(key, "");
+    /// <summary>
+    /// Every word's trailing "s" off: "gain # charges" and "gain # charge" meet. And "within # metres" is "nearby": the
+    /// game now writes "while a Rare or Unique Enemy is Nearby", the site still "is within 6 metres".
+    /// </summary>
+    static string Loose(string key) => PluralRx().Replace(MetresRx().Replace(key, "nearby"), "");
 
     /// <summary>
     /// <see cref="Strictness"/>% of PoB's roll, so near-misses show up too. The trade site averages "Adds 5 to 10";
@@ -401,6 +404,7 @@ public sealed partial class TradeLink
     [GeneratedRegex(@"\s+")] private static partial Regex WsRx();
     [GeneratedRegex(@"^Mercenary Warrant \((.+)\)$")] private static partial Regex WarrantRx();
     [GeneratedRegex(@"(?<=\w)s\b")] private static partial Regex PluralRx();
+    [GeneratedRegex(@"\bwithin # metres?\b")] private static partial Regex MetresRx();
     [GeneratedRegex(@"\bAdds \d+(?:\.\d+)? to \d+", RegexOptions.IgnoreCase)] private static partial Regex AddsRx();
     [GeneratedRegex(@"Standard|Hardcore|\bHC\b|SSF|Solo|Ruthless", RegexOptions.IgnoreCase)] private static partial Regex NotTradeRx();
 }

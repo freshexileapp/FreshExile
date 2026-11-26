@@ -34,6 +34,11 @@ public partial class PriceHistoryWindow : Window
         Top = Math.Max(area.Top + 8, Math.Min(anchor.Top, area.Bottom - 8 - ActualHeight));
     }
 
+    /// <summary>The cross in the header: the column put away until the clock in the price window brings it back.</summary>
+    public event Action? HideRequested;
+
+    void Hide_Click(object sender, RoutedEventArgs e) => HideRequested?.Invoke();
+
     void Entry_Click(object sender, RoutedEventArgs e)
     {
         if (sender is FrameworkElement { DataContext: PriceCheckViewModel vm }) Picked?.Invoke(vm);

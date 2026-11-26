@@ -213,6 +213,18 @@ public class PriceCheckTests
     }
 
     [Fact]
+    public void Nearby_in_the_game_is_within_metres_on_the_site()
+    {
+        var trade = TradeLink.FromData("Covens", """
+            {"result":[{"id":"crafted","entries":[
+              {"id":"crafted.stat_2238019079","text":"Regenerate # Energy Shield per second while a Rare or Unique Enemy is within 6 metres"}]}]}
+            """);
+
+        Assert.Equal("crafted.stat_2238019079",
+            trade.StatId("crafted", "Regenerate 162 Energy Shield per second while a Rare or Unique Enemy is Nearby", false));
+    }
+
+    [Fact]
     public void A_tierless_line_in_an_advanced_copy_is_judged_by_what_it_is_and_unticked_lines_go_to_the_site_switched_off()
     {
         var item = GameItem.Parse("""
@@ -600,6 +612,25 @@ public class PriceCheckTests
     [InlineData(new double[] { 1, 2 }, 100.0, 1)]
     public void A_lone_far_too_cheap_bulk_offer_is_bait(double[] prices, double? market, int expected) =>
         Assert.Equal(expected, PriceCheck.BaitCount(prices, market));
+
+    static readonly DateTime Now = new(2026, 11, 26, 23, 40, 0, DateTimeKind.Utc);
+
+    /// <param name="ages">Minutes since each offer was listed, cheapest first; -1 = unknown.</param>
+    [Theory]
+    // the game's case: 3 bait, 200c five hours old, 220c seven minutes old → 220
+    [InlineData(new double[] { 10, 10, 21, 200, 220, 220, 240 }, new[] { 240, 1020, 1080, 300, 7, 180, 6 }, 3, 4)]
+    // the cheapest is fresh: it stays the answer
+    [InlineData(new double[] { 200, 220 }, new[] { 5, 300 }, 0, 0)]
+    // nothing fresh among the first five: their middle
+    [InlineData(new double[] { 100, 110, 120, 130, 140, 150 }, new[] { 300, 300, 300, 300, 300, 1 }, 0, 2)]
+    [InlineData(new double[] { 100, 110 }, new[] { 300, -1 }, 0, 0)]
+    // a fresh offer in a currency with no rate is not the answer
+    [InlineData(new double[] { 100, 110, double.PositiveInfinity }, new[] { 300, 300, 1 }, 0, 0)]
+    [InlineData(new double[] { double.PositiveInfinity }, new[] { 300 }, 0, 0)]
+    [InlineData(new double[] { }, new int[] { }, 0, -1)]
+    public void The_from_price_rests_on_a_fresh_offer_not_a_stale_cheapest(double[] chaos, int[] ages, int start, int expected) =>
+        Assert.Equal(expected, PriceCheck.AnswerIndex(
+            chaos.Zip(ages, (c, a) => (c, a < 0 ? (DateTime?)null : Now.AddMinutes(-a))).ToList(), start, Now));
 
     [Fact]
     public void An_item_copied_from_a_client_in_another_language_is_told_apart()

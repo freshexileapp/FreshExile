@@ -362,11 +362,12 @@ public sealed partial class MainViewModel
     public string TipNext => Loc.T($"Следующий этап · {KeyText(HotkeyActions.Next)}");
     public string TipThrough => Loc.T($"Сквозной режим: клики уходят в игру · {KeyThrough}");
     public string TipHideTree => Loc.T($"Скрыть · {KeyTree}");
+    public string TipMerc => Loc.T($"Прайс-чек наёмника: обведи его окно в игре мышкой. Потом то же место читает {KeyText(HotkeyActions.Merc)}");
 
     void RaiseKeys()
     {
         MarkHotkeyClashes();
-        foreach (var n in new[] { nameof(KeyMain), nameof(KeyTree), nameof(KeyThrough), nameof(TipPrev), nameof(TipNext), nameof(TipThrough), nameof(TipHideTree), "PriceHint" })
+        foreach (var n in new[] { nameof(KeyMain), nameof(KeyTree), nameof(KeyThrough), nameof(TipPrev), nameof(TipNext), nameof(TipThrough), nameof(TipHideTree), nameof(TipMerc), "PriceHint" })
             Raise(n);
     }
 
